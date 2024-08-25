@@ -29,13 +29,13 @@ Developed by the [activist community](https://github.com/activist-org), this act
 
 - All key base paths should be the file path where the key is used
 - If a key is used in more than one file, then the lowest common directory followed by `_global` is the base path
-- Base paths should be followed by a minimally descriptive content reference that are checked only for formatting
+- Base paths should be followed by a minimally descriptive content reference
+  - The formatting of these content references is checked, but nothing more
 - Separate base directory paths by periods (`.`)
 - Separate all directory and file name components as well as content references by underscores (`_`)
 - Repeat words in file paths for organization should not be repeated in the key
 
-> [!NOTE]
-> An example valid key is:
+> [!NOTE] An example valid key is:
 >
 > `"components.search_bar.CONTENT_REFERENCE"` for a key used in `components/search/SearchBar.ext`
 
