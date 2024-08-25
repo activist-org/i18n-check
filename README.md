@@ -36,6 +36,7 @@ Developed by the [activist community](https://github.com/activist-org), this act
 
 > [!NOTE]
 > An example valid key is:
+>
 > `"components.search_bar.CONTENT_REFERENCE"` for a key used in `components/search/SearchBar.ext`
 
 <a id="how-it-works"></a>
