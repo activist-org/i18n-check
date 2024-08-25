@@ -43,11 +43,11 @@ Developed by the [activist community](https://github.com/activist-org), this act
 
 # How it works [`⇧`](#contents)
 
-You provide `i18n-check` with the directory path to your i18n/L10n files and the name of the source JSON file. From there the following checks are ran across your codebase:
+You provide `i18n-check` with the directory path to your i18n/L10n files (`i18n-directory`) and the name of the source file (`source-file`). From there the following checks are ran across your codebase:
 
-1. `key_identifiers`: Does the source JSON file have keys that don't match the above format or naming conventions?
-2. `unused_keys`: Does the source JSON file have keys that are not used in the codebase?
-3. `non_source_keys`: Do the i18n/L10n JSON files have keys that are not in the source JSON file?
-4. `repeat_values`: Does the source JSON file have repeat values that can be combined into a single key?
+1. `key_identifiers`: Does the source file have keys that don't match the above format or naming conventions?
+2. `unused_keys`: Does the source file have keys that are not used in the codebase?
+3. `non_source_keys`: Do the i18n/L10n files have keys that are not in the source file?
+4. `repeat_values`: Does the source file have repeat values that can be combined into a single key?
 
 Each of the above checks is ran in parallel with directions for how to fix the i18n/L10n files being provided when errors are raised.
