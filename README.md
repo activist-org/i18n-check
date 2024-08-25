@@ -43,11 +43,17 @@ Developed by the [activist community](https://github.com/activist-org), this act
 
 # How it works [`⇧`](#contents)
 
-You provide `i18n-check` with the directory path to your i18n/L10n files (`i18n-directory`) and the name of the source file (`source-file`). From there the following checks are ran across your codebase:
+You provide `i18n-check` with the following arguments:
 
-1. `key_identifiers`: Does the source file have keys that don't match the above format or naming conventions?
-2. `unused_keys`: Does the source file have keys that are not used in the codebase?
-3. `non_source_keys`: Do the i18n/L10n files have keys that are not in the source file?
-4. `repeat_values`: Does the source file have repeat values that can be combined into a single key?
+1. `src-dir`: The path to the directory that has source code to check
+2. `i18n-dir`: The directory path to your i18n/L10n files
+3. `i18n-src`: The name of the i18n/L10n source file
 
-Each of the above checks is ran in parallel with directions for how to fix the i18n/L10n files being provided when errors are raised.
+From there the following checks are ran across your codebase:
+
+4. `key_identifiers`: Does the source file have keys that don't match the above format or name conventions?
+5. `unused_keys`: Does the source file have keys that are not used in the codebase?
+6. `non_source_keys`: Do the target files have keys that are not in the source file?
+7. `repeat_values`: Does the source file have repeat values that can be combined into a single key?
+
+Each of the above checks is ran in parallel with directions for how to fix the i18n/L10n files being provided when errors are raised. Checks can also be disabled in the workflow via options passed in the YAML file.
