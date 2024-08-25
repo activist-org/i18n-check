@@ -25,13 +25,13 @@ Developed by the [activist community](https://github.com/activist-org), this act
 
 # Conventions [`⇧`](#contents)
 
-[activist](https://github.com/activist-org/activist) i18n/L10n keys follow the following conventions that are enforced by `i18n-check`:
+[activist](https://github.com/activist-org/activist) i18n keys follow the following conventions that are enforced by `i18n-check`:
 
 - All key base paths should be the file path where the key is used
 - If a key is used in more than one file, then the lowest common directory followed by `_global` is the base path
 - Base paths should be followed by a minimally descriptive content reference that are checked only for formatting
-- Separate base directory paths by `.`
-- Separate all directory and file name components as well as content references by `_`
+- Separate base directory paths by periods (`.`)
+- Separate all directory and file name components as well as content references by underscores (`_`)
 - Repeat words in file paths for organization should not be repeated in the key
 
 > [!NOTE]
@@ -46,8 +46,8 @@ Developed by the [activist community](https://github.com/activist-org), this act
 You provide `i18n-check` with the following arguments:
 
 1. `src-dir`: The path to the directory that has source code to check
-2. `i18n-dir`: The directory path to your i18n/L10n files
-3. `i18n-src`: The name of the i18n/L10n source file
+2. `i18n-dir`: The directory path to your i18n files
+3. `i18n-src`: The name of the i18n source file
 
 From there the following checks are ran across your codebase:
 
@@ -56,4 +56,4 @@ From there the following checks are ran across your codebase:
 6. `non_source_keys`: Do the target files have keys that are not in the source file?
 7. `repeat_values`: Does the source file have repeat values that can be combined into a single key?
 
-Each of the above checks is ran in parallel with directions for how to fix the i18n/L10n files being provided when errors are raised. Checks can also be disabled in the workflow via options passed in the YAML file.
+Each of the above checks is ran in parallel with directions for how to fix the i18n files being provided when errors are raised. Checks can also be disabled in the workflow via options passed in the YAML file.
