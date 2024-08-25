@@ -14,7 +14,16 @@
 
 Developed by the [activist community](https://github.com/activist-org), this action is meant to assure that development and i18n/L10n teams are in sync when using JSON based localization processes. The action can be expanded later to work for other file type processes as needed.
 
-# Conventions
+<a id="contents"></a>
+
+# **Contents**
+
+- [Conventions](#contentions)
+- [How it works](#how-it-works)
+
+<a id="conventions"></a>
+
+# Conventions [`⇧`](#contents)
 
 [activist](https://github.com/activist-org/activist) i18n/L10n keys follow the following conventions that are enforced by `i18n-check`:
 
@@ -26,9 +35,13 @@ Developed by the [activist community](https://github.com/activist-org), this act
 - Repeat words in file paths for organization should not be repeated in the key
 
 > [!NOTE]
-> Example: `"components.search_bar.CONTENT_REFERENCE"` for a key used in the `components/search/SearchBar.ext` file
+> Example:
+>
+> `"components.search_bar.CONTENT_REFERENCE"` for a key used in the `components/search/SearchBar.ext` file
 
-# How it works
+<a id="how-it-works"></a>
+
+# How it works [`⇧`](#contents)
 
 You provide `i18n-check` with the directory path to your i18n/L10n files and the name of the source JSON file. From there the following checks are ran across your codebase:
 
