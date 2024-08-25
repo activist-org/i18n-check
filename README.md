@@ -35,9 +35,8 @@ Developed by the [activist community](https://github.com/activist-org), this act
 - Repeat words in file paths for organization should not be repeated in the key
 
 > [!NOTE]
-> Example:
->
-> `"components.search_bar.CONTENT_REFERENCE"` for a key used in the `components/search/SearchBar.ext` file
+> An example valid key is:
+> `"components.search_bar.CONTENT_REFERENCE"` for a key used in `components/search/SearchBar.ext`
 
 <a id="how-it-works"></a>
 
