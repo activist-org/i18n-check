@@ -25,7 +25,7 @@ Developed by the [activist community](https://github.com/activist-org), this act
 - Separate all directory and file name components as well as content references by `_`
 - Repeat words in file paths for organization should not be repeated in the key
 
-  Example: `"components.search_bar.CONTENT_REFERENCE"` for a key used in the `components/search/SearchBar.ext` file
+> Example: `"components.search_bar.CONTENT_REFERENCE"` for a key used in the `components/search/SearchBar.ext` file
 
 # How it works
 
