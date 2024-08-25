@@ -35,7 +35,8 @@ Developed by the [activist community](https://github.com/activist-org), this act
 - Separate all directory and file name components as well as content references by underscores (`_`)
 - Repeat words in file paths for organization should not be repeated in the key
 
-> [!NOTE] An example valid key is:
+> [!NOTE]
+> An example valid key is:
 >
 > `"components.search_bar.CONTENT_REFERENCE"` for a key used in `components/search/SearchBar.ext`
 
