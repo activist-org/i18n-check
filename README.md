@@ -38,7 +38,8 @@ Developed by the [activist community](https://github.com/activist-org), this act
 > [!NOTE]
 > An example valid key is:
 >
-> `"components.component_name.CONTENT_REFERENCE"` for a key used in `components/component/ComponentName.ext`
+> Key: `"components.component_name.CONTENT_REFERENCE"`
+> File: `components/component/ComponentName.ext`
 
 <a id="how-it-works"></a>
 
