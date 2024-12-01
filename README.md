@@ -39,6 +39,7 @@ Developed by the [activist community](https://github.com/activist-org), this act
 > An example valid key is:
 >
 > Key: `"components.component_name.CONTENT_REFERENCE"`
+>
 > File: `components/component/ComponentName.ext`
 
 <a id="how-it-works"></a>
