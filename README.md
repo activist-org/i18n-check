@@ -3,7 +3,7 @@
 </div>
 
 [![issues](https://img.shields.io/github/issues/activist-org/i18n-check-action?label=%20&logo=github)](https://github.com/activist-org/i18n-check-action/issues)
-[![rust](https://img.shields.io/badge/Rust%201.80.1-CE412B.svg?logo=rust&logoColor=ffffff)](#tech-stack)
+[![python](https://img.shields.io/badge/Python-4B8BBE.svg?logo=python&logoColor=ffffff)](https://github.com/activist-org/i18n-check-action/blob/main/CONTRIBUTING.md)
 [![license](https://img.shields.io/github/license/activist-org/i18n-check-action.svg?label=%20)](https://github.com/activist-org/i18n-check-action/blob/main/LICENSE.txt)
 [![coc](https://img.shields.io/badge/Contributor%20Covenant-ff69b4.svg)](https://github.com/activist-org/i18n-check-action/blob/main/.github/CODE_OF_CONDUCT.md)
 [![matrix](https://img.shields.io/badge/Matrix-000000.svg?logo=matrix&logoColor=ffffff)](https://matrix.to/#/#activist_community:matrix.org)
@@ -30,7 +30,7 @@ Developed by the [activist community](https://github.com/activist-org), this act
 - All key base paths should be the file path where the key is used
 - If a key is used in more than one file, then the lowest common directory followed by `_global` is the base path
 - Base paths should be followed by a minimally descriptive content reference
-  - The formatting of these content references is checked, but nothing more
+  - Only the formatting of these content references is checked via `i18n-check`
 - Separate base directory paths by periods (`.`)
 - Separate all directory and file name components as well as content references by underscores (`_`)
 - Repeat words in file paths for organization should not be repeated in the key
@@ -38,7 +38,7 @@ Developed by the [activist community](https://github.com/activist-org), this act
 > [!NOTE]
 > An example valid key is:
 >
-> `"components.search_bar.CONTENT_REFERENCE"` for a key used in `components/search/SearchBar.ext`
+> `"components.component_name.CONTENT_REFERENCE"` for a key used in `components/component/ComponentName.ext`
 
 <a id="how-it-works"></a>
 
@@ -46,15 +46,15 @@ Developed by the [activist community](https://github.com/activist-org), this act
 
 You provide `i18n-check` with the following arguments:
 
-1. `src-dir`: The path to the directory that has source code to check
-2. `i18n-dir`: The directory path to your i18n files
-3. `i18n-src`: The name of the i18n source file
+- `src-dir`: The path to the directory that has source code to check
+- `i18n-dir`: The directory path to your i18n files
+- `i18n-src`: The name of the i18n source file
 
 From there the following checks are ran across your codebase:
 
-4. `key_identifiers`: Does the source file have keys that don't match the above format or name conventions?
-5. `unused_keys`: Does the source file have keys that are not used in the codebase?
-6. `non_source_keys`: Do the target files have keys that are not in the source file?
-7. `repeat_values`: Does the source file have repeat values that can be combined into a single key?
+- `key_identifiers`: Does the source file have keys that don't match the above format or name conventions?
+- `unused_keys`: Does the source file have keys that are not used in the codebase?
+- `non_source_keys`: Do the target files have keys that are not in the source file?
+- `repeat_values`: Does the source file have repeat values that can be combined into a single key?
 
 Each of the above checks is ran in parallel with directions for how to fix the i18n files being provided when errors are raised. Checks can also be disabled in the workflow via options passed in the YAML file.

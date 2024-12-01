@@ -1,0 +1,25 @@
+name: pr_ci_i18n
+
+on:
+  pull_request:
+    branches:
+      - main
+    types: [opened, reopened, synchronize]
+    paths:
+      - "**/SOURCE_JSON.json"
+
+  push:
+    branches:
+      - main
+    paths:
+      - "**/SOURCE_JSON.json"
+
+jobs:
+  i18n_check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Run i18n-check
+        uses: actions/i18n-check@v1
+        with:
+          i18n-directory: "/path/to/i18n/files"
+          source-file: "SOURCE_JSON.json"
