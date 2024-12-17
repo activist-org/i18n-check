@@ -20,6 +20,7 @@ Developed by the [activist community](https://github.com/activist-org), this act
 
 - [Conventions](#contentions)
 - [How it works](#how-it-works)
+- [Usage](#usage)
 
 <a id="conventions"></a>
 
@@ -33,7 +34,7 @@ Developed by the [activist community](https://github.com/activist-org), this act
   - Only the formatting of these content references is checked via `i18n-check`
 - Separate base directory paths by periods (`.`)
 - Separate all directory and file name components as well as content references by underscores (`_`)
-- Repeat words in file paths for organization should not be repeated in the key
+- Repeat words in file paths for sub directory organization should not be repeated in the key
 
 > [!NOTE]
 > An example valid key is:
@@ -60,3 +61,9 @@ From there the following checks are ran across your codebase:
 - `repeat_values`: Does the source file have repeat values that can be combined into a single key?
 
 Each of the above checks is ran in parallel with directions for how to fix the i18n files being provided when errors are raised. Checks can also be disabled in the workflow via options passed in the YAML file.
+
+<a id="usage"></a>
+
+# Usage [`⇧`](#usage)
+
+WIP
