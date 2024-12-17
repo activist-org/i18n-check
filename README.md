@@ -66,4 +66,19 @@ Each of the above checks is ran in parallel with directions for how to fix the i
 
 # Usage [`⇧`](#usage)
 
-WIP
+```yaml
+name: i18n-check
+
+on:
+  pull_request:
+  push:
+    branches: [opened, reopened, synchronize]
+
+jobs:
+  i18n-check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v3
+      - uses: activist/i18n-check-action@v1
+```
