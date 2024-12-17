@@ -64,7 +64,9 @@ Each of the above checks is ran in parallel with directions for how to fix the i
 
 <a id="usage"></a>
 
-# Usage [`⇧`](#usage)
+# Usage [`⇧`](#contents)
+
+To use this action, make a file `.github/workflows/i18n-check.yml` and include the following template configuration:
 
 ```yaml
 name: i18n-check
@@ -81,4 +83,8 @@ jobs:
       - uses: actions/checkout@v3
       - uses: actions/setup-python@v3
       - uses: activist/i18n-check-action@v1
+        with:
+          src-dir: PATH_TO_CODE_TO_CHECK
+          i18n-dir: PATH_TO_I18N_FILES
+          i18n-src: PATH_TO_I18N_SOURCE_FILE
 ```
