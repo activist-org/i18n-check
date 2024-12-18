@@ -21,6 +21,7 @@ Developed by the [activist community](https://github.com/activist-org), this act
 - [Conventions](#contentions)
 - [How it works](#how-it-works)
 - [Usage](#usage)
+- [Contributors](#contributors)
 
 <a id="conventions"></a>
 
@@ -75,6 +76,14 @@ on:
   pull_request:
   push:
     branches: [opened, reopened, synchronize]
+    paths:
+      - "**/SOURCE_I18N_FILE"
+
+  push:
+    branches:
+      - main
+    paths:
+      - "**/SOURCE_I18N_FILE"
 
 jobs:
   i18n-check:
@@ -86,5 +95,15 @@ jobs:
         with:
           src-dir: PATH_TO_CODE_TO_CHECK
           i18n-dir: PATH_TO_I18N_FILES
-          i18n-src: PATH_TO_I18N_SOURCE_FILE
+          i18n-src: PATH_TO_SOURCE_I18N_FILE
 ```
+
+<a id="contributors"></a>
+
+# Contributors [`⇧`](#contents)
+
+Thanks to all our amazing [contributors](https://github.com/activist-org/i18n-check-action/graphs/contributors)! ❤️
+
+<a href="https://github.com/activist-org/i18n-check-action/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=activist-org/i18n-check-action" />
+</a>
