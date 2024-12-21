@@ -8,11 +8,11 @@
 [![coc](https://img.shields.io/badge/Contributor%20Covenant-ff69b4.svg)](https://github.com/activist-org/i18n-check-action/blob/main/.github/CODE_OF_CONDUCT.md)
 [![matrix](https://img.shields.io/badge/Matrix-000000.svg?logo=matrix&logoColor=ffffff)](https://matrix.to/#/#activist_community:matrix.org)
 
-### A GitHub action to check i18n/L10n keys and values
+### Check i18n/L10n keys and values
 
-`i18n-check` is a GitHub action used to automate the validation of keys and values of your internationalization and localization processes.
+`i18n-check` is a Python package to automate the validation of keys and values of your internationalization and localization processes.
 
-Developed by the [activist community](https://github.com/activist-org), this action is meant to assure that development and i18n/L10n teams are in sync when using JSON based localization processes. The action can be expanded later to work for other file type processes as needed.
+Developed by the [activist community](https://github.com/activist-org), this process is meant to assure that development and i18n/L10n teams are in sync when using JSON based localization processes. The action can be expanded later to work for other file type processes as needed.
 
 <a id="contents"></a>
 
