@@ -7,7 +7,7 @@ body:
     attributes:
       label: Terms
       options:
-        - label: I have searched [open and closed issues](https://github.com/activist-org/i18n-check-action/issues?q=is%3Aissue)
+        - label: I have searched [open and closed issues](https://github.com/activist-org/i18n-check/issues?q=is%3Aissue)
           required: true
         - label: I agree to follow activist's [Code of Conduct](.github/CODE_OF_CONDUCT.md)
           required: true

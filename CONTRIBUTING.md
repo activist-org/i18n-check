@@ -55,7 +55,7 @@ Thank you for your interest in contributing to activist community projects! We l
 > </p>
 > </details>
 
-2. [Fork](https://docs.github.com/en/get-started/quickstart/fork-a-repo) the [i18n-check-action repo](https://github.com/activist-org/i18n-check-action), clone your fork, and configure the remotes:
+2. [Fork](https://docs.github.com/en/get-started/quickstart/fork-a-repo) the [i18n-check repo](https://github.com/activist-org/i18n-check), clone your fork, and configure the remotes:
 
 > [!NOTE]
 >
@@ -76,11 +76,11 @@ Thank you for your interest in contributing to activist community projects! We l
 
 ```bash
 # Clone your fork of the repo into the current directory.
-git clone https://github.com/<your-username>/i18n-check-action.git
+git clone https://github.com/<your-username>/i18n-check.git
 # Navigate to the newly cloned directory.
-cd i18n-check-action
+cd i18n-check
 # Assign the original repo to a remote called "upstream".
-git remote add upstream https://github.com/activist-org/i18n-check-action.git
+git remote add upstream https://github.com/activist-org/i18n-check.git
 ```
 
 - Now, if you run `git remote -v` you should see two remote repositories named:
@@ -116,7 +116,7 @@ For the backend [Ruff](https://github.com/astral-sh/ruff) is installed via the r
 
 ## Issues and projects [`⇧`](#contents)
 
-The [issue tracker for i18n-check](https://github.com/activist-org/i18n-check-action/issues) is the preferred channel for [bug reports](#bug-reports), [features requests](#feature-requests) and [submitting pull requests](#pull-requests). The activist community also organizes related issues into [projects](https://github.com/activist-org/i18n-check-action/projects).
+The [issue tracker for i18n-check](https://github.com/activist-org/i18n-check/issues) is the preferred channel for [bug reports](#bug-reports), [features requests](#feature-requests) and [submitting pull requests](#pull-requests). The activist community also organizes related issues into [projects](https://github.com/activist-org/i18n-check/projects).
 
 <a name="bug-reports"></a>
 
@@ -140,7 +140,7 @@ Guidelines for bug reports:
 - What actually happens
 - Notes (why this might be happening, things tried that didn't work, etc)
 
-To make the above steps easier, the activist team asks that contributors report bugs using the [bug report template](https://github.com/activist-org/i18n-check-action/issues/new?assignees=&labels=bug&projects=activist-org%2F1&template=bug_report.yml), with these issues further being marked with the [`bug`](https://github.com/activist-org/i18n-check-action/issues?q=is%3Aopen+is%3Aissue+label%3Abug) label.
+To make the above steps easier, the activist team asks that contributors report bugs using the [bug report template](https://github.com/activist-org/i18n-check/issues/new?assignees=&labels=bug&projects=activist-org%2F1&template=bug_report.yml), with these issues further being marked with the [`bug`](https://github.com/activist-org/i18n-check/issues?q=is%3Aopen+is%3Aissue+label%3Abug) label.
 
 Again, thank you for your time in reporting issues!
 
@@ -148,7 +148,7 @@ Again, thank you for your time in reporting issues!
 
 ## Feature requests [`⇧`](#contents)
 
-Feature requests are more than welcome! Please take a moment to find out whether your idea fits with the scope and aims of the project. When making a suggestion, provide as much detail and context as possible, and further make clear the degree to which you would like to contribute in its development. Feature requests are marked with the [`feature`](https://github.com/activist-org/i18n-check-action/issues?q=is%3Aopen+is%3Aissue+label%3Afeature) label in the [issues](https://github.com/activist-org/i18n-check-action/issues).
+Feature requests are more than welcome! Please take a moment to find out whether your idea fits with the scope and aims of the project. When making a suggestion, provide as much detail and context as possible, and further make clear the degree to which you would like to contribute in its development. Feature requests are marked with the [`feature`](https://github.com/activist-org/i18n-check/issues?q=is%3Aopen+is%3Aissue+label%3Afeature) label in the [issues](https://github.com/activist-org/i18n-check/issues).
 
 <a name="pull-requests-"></a>
 

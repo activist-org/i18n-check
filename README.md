@@ -1,11 +1,13 @@
 <div align="center">
-  <a href="https://github.com/activist-org/i18n-check-action"><img src="https://raw.githubusercontent.com/activist-org/i18n-check-action/main/.github/resources/i18nCheckGitHubBanner.png" width=1024 alt="i18n check logo"></a>
+  <a href="https://github.com/activist-org/i18n-check"><img src="https://raw.githubusercontent.com/activist-org/i18n-check/main/.github/resources/i18nCheckGitHubBanner.png" width=1024 alt="i18n check logo"></a>
 </div>
 
-[![issues](https://img.shields.io/github/issues/activist-org/i18n-check-action?label=%20&logo=github)](https://github.com/activist-org/i18n-check-action/issues)
-[![python](https://img.shields.io/badge/Python-4B8BBE.svg?logo=python&logoColor=ffffff)](https://github.com/activist-org/i18n-check-action/blob/main/CONTRIBUTING.md)
-[![license](https://img.shields.io/github/license/activist-org/i18n-check-action.svg?label=%20)](https://github.com/activist-org/i18n-check-action/blob/main/LICENSE.txt)
-[![coc](https://img.shields.io/badge/Contributor%20Covenant-ff69b4.svg)](https://github.com/activist-org/i18n-check-action/blob/main/.github/CODE_OF_CONDUCT.md)
+[![issues](https://img.shields.io/github/issues/activist-org/i18n-check?label=%20&logo=github)](https://github.com/activist-org/i18n-check/issues)
+[![python](https://img.shields.io/badge/Python-4B8BBE.svg?logo=python&logoColor=ffffff)](https://github.com/activist-org/i18n-check/blob/main/CONTRIBUTING.md)
+[![pypi](https://img.shields.io/pypi/v/i18n-check.svg?label=%20&color=4B8BBE)](https://pypi.org/project/i18n-check/)
+[![pypistatus](https://img.shields.io/pypi/status/i18n-check.svg?label=%20)](https://pypi.org/project/i18n-check/)
+[![license](https://img.shields.io/github/license/activist-org/i18n-check.svg?label=%20)](https://github.com/activist-org/i18n-check/blob/main/LICENSE.txt)
+[![coc](https://img.shields.io/badge/Contributor%20Covenant-ff69b4.svg)](https://github.com/activist-org/i18n-check/blob/main/.github/CODE_OF_CONDUCT.md)
 [![matrix](https://img.shields.io/badge/Matrix-000000.svg?logo=matrix&logoColor=ffffff)](https://matrix.to/#/#activist_community:matrix.org)
 
 ### Check i18n/L10n keys and values
@@ -14,13 +16,15 @@
 
 Developed by the [activist community](https://github.com/activist-org), this process is meant to assure that development and i18n/L10n teams are in sync when using JSON based localization processes. The action can be expanded later to work for other file type processes as needed.
 
+> [!NOTE]
+> For the GitHub action please see [activist-org/i18n-check-action](https://github.com/activist-org/i18n-check-action).
+
 <a id="contents"></a>
 
 # **Contents**
 
 - [Conventions](#contentions)
 - [How it works](#how-it-works)
-- [Usage](#usage)
 - [Contributors](#contributors)
 
 <a id="conventions"></a>
@@ -63,47 +67,12 @@ From there the following checks are ran across your codebase:
 
 Each of the above checks is ran in parallel with directions for how to fix the i18n files being provided when errors are raised. Checks can also be disabled in the workflow via options passed in the YAML file.
 
-<a id="usage"></a>
-
-# Usage [`⇧`](#contents)
-
-To use this action, make a file `.github/workflows/i18n-check.yml` and include the following template configuration:
-
-```yaml
-name: i18n-check
-
-on:
-  pull_request:
-  push:
-    branches: [opened, reopened, synchronize]
-    paths:
-      - "**/SOURCE_I18N_FILE"
-
-  push:
-    branches:
-      - main
-    paths:
-      - "**/SOURCE_I18N_FILE"
-
-jobs:
-  i18n-check:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-python@v3
-      - uses: activist/i18n-check-action@v1
-        with:
-          src-dir: PATH_TO_CODE_TO_CHECK
-          i18n-dir: PATH_TO_I18N_FILES
-          i18n-src: PATH_TO_SOURCE_I18N_FILE
-```
-
 <a id="contributors"></a>
 
 # Contributors [`⇧`](#contents)
 
-Thanks to all our amazing [contributors](https://github.com/activist-org/i18n-check-action/graphs/contributors)! ❤️
+Thanks to all our amazing [contributors](https://github.com/activist-org/i18n-check/graphs/contributors)! ❤️
 
-<a href="https://github.com/activist-org/i18n-check-action/graphs/contributors">
-  <img src="https://contrib.rocks/image?repo=activist-org/i18n-check-action" />
+<a href="https://github.com/activist-org/i18n-check/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=activist-org/i18n-check" />
 </a>
