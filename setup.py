@@ -30,7 +30,8 @@ setup(
     classifiers=[
         "Development Status :: 1 - Production/Stable",
         "Intended Audience :: Developers",
-        "Intended Audience :: Education",
+        "Topic :: Software Development :: Internationalization",
+        "Topic :: Software Development :: Localization",
         "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
         "Programming Language :: Python",
         "Programming Language :: Python :: 3",

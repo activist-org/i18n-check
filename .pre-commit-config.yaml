@@ -12,10 +12,11 @@ repos:
       - id: ruff
         args: [--fix, --exit-non-zero-on-fix]
       - id: ruff-format
+
   - repo: https://github.com/psf/black
-      rev: 24.10.0
-      hooks:
-        - id: black
+    rev: 24.10.0
+    hooks:
+      - id: black
 
   - repo: https://github.com/tcort/markdown-link-check
     rev: v3.13.6
@@ -27,11 +28,3 @@ repos:
     rev: v1.0.0
     hooks:
       - id: sphinx-lint
-
-  - repo: local
-  hooks:
-    - id: check-i18n
-      name: Check i18n/L10n Keys and Values
-      entry: python -m i18n_check
-      language: python
-      types: [vue, ts, js]
