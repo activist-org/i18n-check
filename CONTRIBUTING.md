@@ -1,6 +1,6 @@
 # Contributing to i18n-check
 
-Thank you for contributing to activist!
+Thank you for contributing to i18n-check!
 
 Please take a moment to review this document in order to make the contribution process easy and effective for everyone involved.
 
@@ -85,7 +85,7 @@ git remote add upstream https://github.com/activist-org/i18n-check.git
 
 - Now, if you run `git remote -v` you should see two remote repositories named:
   - `origin` (forked repository)
-  - `upstream` (activist repository)
+  - `upstream` (i18n-check repository)
 
 3. Create a virtual environment, activate it and install dependencies:
 
@@ -140,7 +140,7 @@ Guidelines for bug reports:
 - What actually happens
 - Notes (why this might be happening, things tried that didn't work, etc)
 
-To make the above steps easier, the activist team asks that contributors report bugs using the [bug report template](https://github.com/activist-org/i18n-check/issues/new?assignees=&labels=bug&projects=activist-org%2F1&template=bug_report.yml), with these issues further being marked with the [`bug`](https://github.com/activist-org/i18n-check/issues?q=is%3Aopen+is%3Aissue+label%3Abug) label.
+To make the above steps easier, the i18n-check team asks that contributors report bugs using the [bug report template](https://github.com/activist-org/i18n-check/issues/new?assignees=&labels=bug&projects=activist-org%2F1&template=bug_report.yml), with these issues further being marked with the [`bug`](https://github.com/activist-org/i18n-check/issues?q=is%3Aopen+is%3Aissue+label%3Abug) label.
 
 Again, thank you for your time in reporting issues!
 
@@ -154,7 +154,7 @@ Feature requests are more than welcome! Please take a moment to find out whether
 
 ## Pull requests [`⇧`](#contents)
 
-Good pull requests — patches, improvements and new features — are the foundation of our community making activist. They should remain focused in scope and avoid containing unrelated commits. Note that all contributions to this project will be made under [the specified license](LICENSE.txt) and should follow the coding indentation and style standards (contact us if unsure).
+Good pull requests — patches, improvements and new features — are the foundation of our community making i18n-check. They should remain focused in scope and avoid containing unrelated commits. Note that all contributions to this project will be made under [the specified license](LICENSE.txt) and should follow the coding indentation and style standards (contact us if unsure).
 
 **Please ask first** before embarking on any significant pull request (implementing features, refactoring code, etc), otherwise you risk spending a lot of time working on something that the developers might not want to merge into the project. With that being said, major additions are very appreciated!
 
