@@ -3,7 +3,7 @@ Checks if the i18n target JSON files have keys that are not in es-US.json.
 If yes, suggest that they be removed from the their respective JSON files.
 
 Usage:
-    python3 frontend/i18n/check/i18n_check_non_source_keys.py
+    python3 src/i18n_check/i18n_check_non_source_keys.py
 """
 
 import glob

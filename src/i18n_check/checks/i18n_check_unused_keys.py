@@ -3,7 +3,7 @@ Checks if the en-US.json file has keys that are not used in the codebase.
 If yes, suggest that they be removed from the en-US.json.
 
 Usage:
-    python3 frontend/i18n/check/i18n_check_unused_keys.py
+    python3 src/i18n_check/i18n_check_unused_keys.py
 """
 
 import json

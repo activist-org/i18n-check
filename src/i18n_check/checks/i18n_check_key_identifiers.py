@@ -3,7 +3,7 @@ Checks if the en-US.json file has invalid keys given their usage or formatting.
 If yes, suggest new names for the keys at the lowest possible level of usage.
 
 Usage:
-    python3 frontend/i18n/check/i18n_check_key_identifiers.py
+    python3 src/i18n_check/i18n_check_key_identifiers.py
 """
 
 import json
