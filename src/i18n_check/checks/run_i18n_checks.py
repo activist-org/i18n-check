@@ -1,8 +1,9 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
 """
 Runs all i18n checks for the project.
 
 Usage:
-    python3 src/i18n_check/run_i18n_checks.py
+    python3 src/i18n_check/checks/run_i18n_checks.py
 """
 
 import subprocess
@@ -37,6 +38,7 @@ def main():
         "i18n_check_non_source_keys.py",
         "i18n_check_unused_keys.py",
         "i18n_check_repeat_values.py",
+        # "i18n_check_map_object.py",
     ]
 
     for check in checks:

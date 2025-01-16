@@ -67,6 +67,8 @@ From there the following checks are ran across your codebase:
 
 Each of the above checks is ran in parallel with directions for how to fix the i18n files being provided when errors are raised. Checks can also be disabled in the workflow via options passed in the YAML file.
 
+`i18n-check` can also generate an `i18nMap` object from the `i18n-src` file that can be used to load in i18n keys. Using `i18nMap` allows development teams to check the existence of all i18n keys used in the codebase as linting will detect that keys don't exist on the object. The package will check that `i18nMap` up to date with the `i18n-src` file if this functionality is enabled.
+
 <a id="contributors"></a>
 
 # Contributors [`⇧`](#contents)

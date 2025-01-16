@@ -1,9 +1,10 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
 """
 Checks if the en-US.json file has repeat string values.
 If yes, suggest that they be combined using a `_global` sub key at the lowest matching level of en-US.json.
 
 Usage:
-    python src/i18n_check/i18n_check_repeat_values.py
+    python src/i18n_check/checks/i18n_check_repeat_values.py
 """
 
 import json

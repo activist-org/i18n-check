@@ -1,9 +1,10 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
 """
 Checks if the en-US.json file has invalid keys given their usage or formatting.
 If yes, suggest new names for the keys at the lowest possible level of usage.
 
 Usage:
-    python3 src/i18n_check/i18n_check_key_identifiers.py
+    python3 src/i18n_check/checks/i18n_check_key_identifiers.py
 """
 
 import json
@@ -26,6 +27,7 @@ directories_to_skip = [
     str((frontend_directory / ".nuxt").resolve()),
     str((frontend_directory / "node_modules").resolve()),
 ]
+files_to_skip = ["i18n-map.ts"]
 file_types_to_check = [".vue", ".ts", ".js"]
 
 with open(json_file_directory / "en-US.json", encoding="utf-8") as f:
@@ -38,6 +40,7 @@ for root, dirs, files in os.walk(frontend_directory):
         for file in files
         if all(root[: len(d)] != d for d in directories_to_skip)
         and any(file[-len(t) :] == t for t in file_types_to_check)
+        and file not in files_to_skip
     )
 
 file_to_check_contents = {}
@@ -126,6 +129,9 @@ for k in key_file_dict:
             )
         ]
 
+        # Get rid of repeat key parts for files that are the same name as their directory.
+        valid_key_parts = [p for p in valid_key_parts if valid_key_parts.count(p) == 1]
+
         ideal_key_base = ".".join(valid_key_parts) + "."
 
     else:
@@ -157,9 +163,6 @@ for k in key_file_dict:
                 and p != extended_key_base_split[-1]
             )
         ]
-
-        # Get rid of repeat key parts for files that are the same name as their directory.
-        valid_key_parts = [p for p in valid_key_parts if valid_key_parts.count(p) == 1]
 
         ideal_key_base = ".".join(valid_key_parts)
 
