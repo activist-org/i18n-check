@@ -7,9 +7,10 @@ Usage:
 """
 
 import subprocess
+from pathlib import Path
 
 
-def run_check(script_name):
+def run_check(script_name) -> bool:
     """
     Runs a check script and reports the results via the terminal.
 
@@ -18,18 +19,24 @@ def run_check(script_name):
     script_name : str
         The filename for the script to run.
 
+    Returns
+    -------
+    bool
+        Whether the given script passed or not from subprocess.run.check.
+
     Raises
     -------
     subprocess.CalledProcessError
         An error that the given check script has failed.
     """
     try:
-        subprocess.run(["python", f"./src/i18n_check/{script_name}"], check=True)
+        subprocess.run(
+            ["python", Path("src") / "i18n_check" / "checks" / script_name], check=True
+        )
         print(f"{script_name} ran successfully.")
 
     except subprocess.CalledProcessError as e:
         print(f"Error running {script_name}: {e}")
-        raise
 
 
 def main():
@@ -38,11 +45,17 @@ def main():
         "i18n_check_non_source_keys.py",
         "i18n_check_unused_keys.py",
         "i18n_check_repeat_values.py",
-        # "i18n_check_map_object.py",
+        "i18n_check_map_object.py",
     ]
 
-    for check in checks:
-        run_check(check)
+    check_results = []
+    check_results.extend(run_check(check) for check in checks)
+
+    assert all(check_results), (
+        "\nError: Some i18n checks did not pass. Please see the error messages above."
+    )
+
+    print("\nSuccess: All i18n checks passed!")
 
 
 if __name__ == "__main__":
