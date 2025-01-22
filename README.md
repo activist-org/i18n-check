@@ -74,12 +74,14 @@ From there the following checks are ran across your codebase:
   - Remove them as they won't be used in the application.
 - `repeat_values`: Does the source file have repeat values that can be combined into a single key?
   - Combine them so the localization team only needs to localize one of them.
+- `map_object`: Do the `i18nMap` object keys match the `i18n-src` keys.
+  - Make sure that the key map object is up to date if using `i18nMap` (see below).
 
 Each of the above checks is ran in parallel with directions for how to fix the i18n files being provided when errors are raised. Checks can also be disabled in the workflow via options passed in the configuration YAML file.
 
 ### i18n Object
 
-`i18n-check` can also generate an `i18nMap` object from the `i18n-src` file that can be used to load in i18n keys. Methods within this object map to keys within the source file as in the following example:
+`i18n-check` can also generate an `i18nMap` object from the `i18n-src` file that can be used to load in i18n keys. Keys within this object map to keys within the source file as in the following example:
 
 ```ts
 // _global.hello_global would be a key in our i18n-src file.
