@@ -29,7 +29,7 @@ setup_args = dict(
     packages=find_packages(),
     install_requires=requirements,
     classifiers=[
-        "Development Status :: 1 - Production/Stable",
+        "Development Status :: 5 - Production/Stable",
         "Intended Audience :: Developers",
         "Topic :: Software Development :: Internationalization",
         "Topic :: Software Development :: Localization",
