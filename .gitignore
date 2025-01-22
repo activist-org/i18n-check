@@ -1,8 +1,23 @@
-# System files
+# MARK: System files
+
 .DS_Store
 .vscode/*
 !.vscode/extensions.json
 .idea/
 /target
+
+# MARK: Python Files
+
+# setup.py working directory
+build
+# setup.py dist directory
+dist
+# Egg metadata
+*.egg-info
+# Caches
+__pycache__
+# Test coverage output
+.coverage
+# Virtual environment
 venv
 .venv
