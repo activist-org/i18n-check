@@ -103,13 +103,24 @@ Using `i18nMap` allows development teams to check the existence of all i18n keys
 
 # Configuration [`⇧`](#contents)
 
-The following details the `.18n-check.yaml` configuration file, with a further example being the [configuration file for this repository](/.i18n-check-config.yaml) that we use in testing.
+The following details the `.18n-check.yaml` configuration file, with a further example being the [configuration file for this repository](/.i18n-check.yaml) that we use in testing.
 
 ```yaml
 src-dir: frontend
 i18n-dir: frontend/i18n
 i18n-src: frontend/i18n/en.json
 i18n-map: frontend/types/i18n-map.ts
+
+checks:
+  - key_identifiers: true
+  - unused_keys: true
+  - non_source_keys: true
+  - repeat_values: true
+  - map_object: true
+
+file_types_to_check: [.vue, .ts, .js]
+directories_to_skip: [frontend/node_modules]
+files_to_skip: []
 ```
 
 <a id="contributors"></a>
