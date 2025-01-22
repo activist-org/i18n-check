@@ -13,6 +13,7 @@ checks:
   - repeat_values: true
   - map_object: true
 
-file_types_to_check:
-directories_to_skip:
-files_to_skip:
+file_types_to_check: [.ts]
+directories_to_skip: []
+files_to_skip: []
+warn_on_nested_i18n_src: true

@@ -123,6 +123,7 @@ checks:
 file_types_to_check: [.ts, .js]
 directories_to_skip: [frontend/node_modules]
 files_to_skip: []
+warn_on_nested_i18n_src: true
 ```
 
 Common additional arguments for using specific web frameworks can be found in the dropdowns below:
