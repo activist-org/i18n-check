@@ -1,0 +1,4 @@
+{
+  "_global.hello_global": "Hello, global in another language!",
+  "_global.not_in_i18n_src": "I'm a reference that can't be used!"
+}
