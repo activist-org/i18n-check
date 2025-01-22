@@ -53,12 +53,16 @@ Developed by the [activist community](https://github.com/activist-org), this pro
 
 # How it works [`⇧`](#contents)
 
+### Arguments
+
 You provide `i18n-check` with the following arguments:
 
 - `src-dir`: The path to the directory that has source code to check
 - `i18n-dir`: The directory path to your i18n files
 - `i18n-src`: The name of the i18n source file
 - `i18n-map`: The path to the i18n-map file (optional - see below)
+
+### Checks
 
 From there the following checks are ran across your codebase:
 
@@ -71,7 +75,9 @@ From there the following checks are ran across your codebase:
 - `repeat_values`: Does the source file have repeat values that can be combined into a single key?
   - Combine them so the localization team only needs to localize one of them.
 
-Each of the above checks is ran in parallel with directions for how to fix the i18n files being provided when errors are raised. Checks can also be disabled in the workflow via options passed in the YAML file.
+Each of the above checks is ran in parallel with directions for how to fix the i18n files being provided when errors are raised. Checks can also be disabled in the workflow via options passed in the configuration YAML file.
+
+### i18n Object
 
 `i18n-check` can also generate an `i18nMap` object from the `i18n-src` file that can be used to load in i18n keys. Methods within this object map to keys within the source file as in the following example:
 
@@ -97,7 +103,7 @@ Using `i18nMap` allows development teams to check the existence of all i18n keys
 
 # Configuration [`⇧`](#contents)
 
-The following details the `.18n-check.yaml` configuration file for `i18n-check`, with a further example being the [configuration file for this repository](/.i18n-check-config.yaml) that we use in testing.
+The following details the `.18n-check.yaml` configuration file, with a further example being the [configuration file for this repository](/.i18n-check-config.yaml) that we use in testing.
 
 ```yaml
 src-dir: frontend
