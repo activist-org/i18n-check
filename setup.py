@@ -2,7 +2,7 @@
 import os
 
 try:
-    from setuptools import setup, find_packages
+    from setuptools import find_packages, setup
 except ImportError:
     from distutils.core import setup
 
@@ -16,7 +16,7 @@ on_rtd = os.environ.get("READTHEDOCS") == "True"
 if on_rtd:
     requirements = []
 
-setup(
+setup_args = dict(
     name="",
     version="0.0.1",
     package_dir={"": "src"},
@@ -41,6 +41,7 @@ setup(
         "Programming Language :: Python :: 3.10",
         "Programming Language :: Python :: 3.11",
         "Programming Language :: Python :: 3.12",
+        "Programming Language :: Python :: 3.13",
         "Operating System :: OS Independent",
     ],
     python_requires=">=3.8",
