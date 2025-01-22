@@ -22,6 +22,7 @@ i18n_check_dir = str(Path(__file__).parent.resolve())
 json_file_directory = Path(__file__).parent.parent.resolve()
 frontend_directory = Path(__file__).parent.parent.parent.resolve()
 
+file_types_to_check = [".vue", ".ts", ".js"]
 directories_to_skip = [
     i18n_check_dir,
     str((frontend_directory / ".nuxt").resolve()),
@@ -29,7 +30,6 @@ directories_to_skip = [
     str((frontend_directory / "node_modules").resolve()),
 ]
 files_to_skip = ["i18n-map.ts"]
-file_types_to_check = [".vue", ".ts", ".js"]
 
 with open(json_file_directory / "en-US.json", encoding="utf-8") as f:
     en_us_json_dict = json.loads(f.read())

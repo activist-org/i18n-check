@@ -1,0 +1,18 @@
+# Configuration file for i18n-check validation.
+# See https://github.com/activist-org/i18n-check for details.
+
+src-dir: tests
+i18n-dir: tests/test_i18n
+i18n-src: tests/test_i18n/test-i18n-src.json
+i18n-map: tests/test_frontend/test-i18n-map.ts
+
+checks:
+  - key_identifiers: true
+  - unused_keys: true
+  - non_source_keys: true
+  - repeat_values: true
+  - map_object: true
+
+file_types_to_check:
+directories_to_skip:
+files_to_skip:
