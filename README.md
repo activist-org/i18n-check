@@ -120,10 +120,23 @@ checks:
   - repeat_values: true
   - map_object: true
 
-file_types_to_check: [.vue, .ts, .js]
+file_types_to_check: [.ts, .js]
 directories_to_skip: [frontend/node_modules]
 files_to_skip: []
 ```
+
+Common additional arguments for using specific web frameworks can be found in the dropdowns below:
+
+<details><summary>Vue.js</summary>
+<p>
+
+```yaml
+file_types_to_check: [.vue]
+directories_to_skip: [.nuxt, .output]
+```
+
+</p>
+</details>
 
 <a id="contributors"></a>
 
