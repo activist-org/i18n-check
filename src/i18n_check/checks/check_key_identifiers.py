@@ -1,10 +1,10 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 """
-Checks if the en-US.json file has invalid keys given their usage or formatting.
+Checks if the i18n-src file has invalid keys given their usage or formatting.
 If yes, suggest new names for the keys at the lowest possible level of usage.
 
 Usage:
-    python3 src/i18n_check/checks/i18n_check_key_identifiers.py
+    python3 src/i18n_check/checks/check_key_identifiers.py
 """
 
 import json
@@ -31,7 +31,7 @@ directories_to_skip = [
 ]
 files_to_skip = ["i18n-map.ts"]
 
-with open(json_file_directory / "en-US.json", encoding="utf-8") as f:
+with open(json_file_directory / "i18n-src", encoding="utf-8") as f:
     en_us_json_dict = json.loads(f.read())
 
 files_to_check = []
@@ -78,11 +78,21 @@ def is_valid_key(s):
     return bool(re.match(pattern, s))
 
 
-def path_to_valid_key(p):
+def path_to_valid_key(p: list[str]):
     """
     Converts a path to a valid key with period separators and all words being snake case.
 
     Note: [id] and [group_id] are removed in this step as it doesn't add anything to keys.
+
+    Parameters
+    ----------
+    p : list[str]
+        The list of the directory path of a file that has a key.
+
+    Returns
+    -------
+    valid_key : str
+        The correct i18n key that would match the directory structure passed.
     """
     # Insert underscores between words, but only if the word is preceded by a lowercase letter and followed by an uppercase letter (i.e. except for abbreviations).
     valid_key = ""
@@ -112,15 +122,19 @@ def path_to_valid_key(p):
     )
 
 
+# MARK: Reduce Keys
+
 invalid_keys_by_format = []
 invalid_keys_by_name = {}
 for k in key_file_dict:
     if not is_valid_key(k):
         invalid_keys_by_format.append(k)
 
+    # Key is used in one file.
     if len(key_file_dict[k]) == 1:
         formatted_potential_key = path_to_valid_key(key_file_dict[k][0])
         potential_key_parts = formatted_potential_key.split(".")
+        # Is the part in the last key part such that it's a parent directory that's included in the file name.
         valid_key_parts = [
             p
             for p in potential_key_parts
@@ -135,6 +149,7 @@ for k in key_file_dict:
 
         ideal_key_base = ".".join(valid_key_parts) + "."
 
+    # Key is used in multiple files.
     else:
         formatted_potential_keys = [path_to_valid_key(p) for p in key_file_dict[k]]
         potential_key_parts = [k.split(".") for k in formatted_potential_keys]

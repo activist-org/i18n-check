@@ -1,10 +1,10 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 """
-Checks if the en-US.json file has repeat string values.
-If yes, suggest that they be combined using a `_global` sub key at the lowest matching level of en-US.json.
+Checks if the i18n-src file has repeat string values.
+If yes, suggest that they be combined using a `_global` sub key at the lowest matching level of i18n-src.
 
 Usage:
-    python src/i18n_check/checks/i18n_check_repeat_values.py
+    python src/i18n_check/checks/check_repeat_values.py
 """
 
 import json
@@ -16,7 +16,7 @@ from pathlib import Path
 
 json_file_directory = Path(__file__).parent.parent.resolve()
 
-with open(json_file_directory / "en-US.json", encoding="utf-8") as f:
+with open(json_file_directory / "i18n-src", encoding="utf-8") as f:
     en_us_json_dict = json.loads(f.read())
 
 

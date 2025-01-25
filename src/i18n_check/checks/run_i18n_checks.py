@@ -41,12 +41,17 @@ def run_check(script_name) -> bool:
 
 def main():
     checks = [
-        "i18n_check_key_identifiers.py",
-        "i18n_check_non_source_keys.py",
-        "i18n_check_unused_keys.py",
-        "i18n_check_repeat_values.py",
-        "i18n_check_map_object.py",
+        "check_key_identifiers.py",
+        "check_non_source_keys.py",
+        "check_unused_keys.py",
+        "check_repeat_values.py",
     ]
+
+    if True:
+        checks.append("check_nested_i18n_src")
+
+    if True:
+        checks.append("check_map_object")
 
     check_results = []
     check_results.extend(run_check(check) for check in checks)

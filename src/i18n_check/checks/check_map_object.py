@@ -3,7 +3,7 @@
 Checks the i18nMap object to make sure that it's in sync with the base localization file.
 
 Usage:
-    python3 src/i18n_check/checks/i18n_check_map_object.py
+    python3 src/i18n_check/checks/check_map_object.py
 """
 
 import json
@@ -13,7 +13,7 @@ from pathlib import Path
 # MARK: Load Base i18n
 
 i18n_check_dir = Path(__file__).parent.parent.resolve()
-with open(i18n_check_dir / "en-US.json", encoding="utf-8") as f:
+with open(i18n_check_dir / "i18n-src", encoding="utf-8") as f:
     en_us_json_dict = json.loads(f.read())
 
 flat_en_us_json_dict = {k: k for k, _ in en_us_json_dict.items()}
@@ -89,8 +89,8 @@ flat_i18n_object_dict = flatten_nested_dict(i18n_object_dict)
 
 # MARK: Compare Dicts
 
-assert (
-    flat_en_us_json_dict == flat_i18n_object_dict
-), "\nThe current i18nMap object doesn't match the base i18n JSON file. Please re-generate the i18nMap object.\n"
+assert flat_en_us_json_dict == flat_i18n_object_dict, (
+    "\nThe current i18nMap object doesn't match the base i18n JSON file. Please re-generate the i18nMap object.\n"
+)
 
 print("\nSuccess: The current i18nMap object matches the base i18n JSON file.\n")

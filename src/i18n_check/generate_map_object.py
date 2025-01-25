@@ -15,7 +15,7 @@ from pathlib import Path
 
 i18n_check_dir = Path(__file__).parent.parent.resolve()
 
-with open(i18n_check_dir / "en-US.json", encoding="utf-8") as f:
+with open(i18n_check_dir / "i18n-src", encoding="utf-8") as f:
     en_us_json_dict = json.loads(f.read())
 
 # MARK: Create Map

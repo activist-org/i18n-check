@@ -1,10 +1,10 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 """
-Checks if the en-US.json file has keys that are not used in the codebase.
-If yes, suggest that they be removed from the en-US.json.
+Checks if the i18n-src file has keys that are not used in the codebase.
+If yes, suggest that they be removed from the i18n-src.
 
 Usage:
-    python3 src/i18n_check/checks/i18n_check_unused_keys.py
+    python3 src/i18n_check/checks/check_unused_keys.py
 """
 
 import json
@@ -26,7 +26,7 @@ directories_to_skip = [
 ]
 files_to_skip = ["i18n-map.ts"]
 
-with open(json_file_directory / "en-US.json", encoding="utf-8") as f:
+with open(json_file_directory / "i18n-src", encoding="utf-8") as f:
     en_us_json_dict = json.loads(f.read())
 
 files_to_check = []

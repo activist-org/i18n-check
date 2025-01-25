@@ -4,7 +4,7 @@ Checks if the i18n target JSON files have keys that are not in es-US.json.
 If yes, suggest that they be removed from the their respective JSON files.
 
 Usage:
-    python3 src/i18n_check/checks/i18n_check_non_source_keys.py
+    python3 src/i18n_check/checks/check_non_source_keys.py
 """
 
 import glob
@@ -19,7 +19,7 @@ path_separator = "\\" if os.name == "nt" else "/"
 
 json_file_directory = Path(__file__).parent.parent.resolve()
 
-with open(json_file_directory / "en-US.json", encoding="utf-8") as f:
+with open(json_file_directory / "i18n-src", encoding="utf-8") as f:
     en_us_json_dict = json.loads(f.read())
 
 all_en_us_keys = en_us_json_dict.keys()
@@ -28,7 +28,7 @@ all_en_us_keys = en_us_json_dict.keys()
 
 non_source_keys_dict = {}
 for json_file in glob.glob(f"{json_file_directory}{path_separator}*.json"):
-    if json_file.split(path_separator)[-1] != "en-US.json":
+    if json_file.split(path_separator)[-1] != "i18n-src":
         with open(json_file, encoding="utf-8") as f:
             json_dict = json.loads(f.read())
 
@@ -47,10 +47,10 @@ if non_source_keys_dict:
         for k in non_source_keys_dict
     )
     raise ValueError(
-        f"There are some i18n target JSON files that have keys that are not in en-US.json. Please remove or rename the following keys:\n\n{non_source_keys_string}\n"
+        f"There are some i18n target JSON files that have keys that are not in i18n-src. Please remove or rename the following keys:\n\n{non_source_keys_string}\n"
     )
 
 else:
     print(
-        "\nSuccess: No i18n target file has keys that are not in the en-US.json source file.\n"
+        "\nSuccess: No i18n target file has keys that are not in the i18n-src source file.\n"
     )
