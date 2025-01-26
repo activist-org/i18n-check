@@ -9,6 +9,7 @@ Usage:
 
 import json
 import os
+import re
 from pathlib import Path
 
 # MARK: Paths / Files
@@ -49,10 +50,10 @@ for frontend_file in files_to_check:
 all_keys = list(en_us_json_dict.keys())
 used_keys = []
 for k in all_keys:
-    for value in file_to_check_contents.values():
-        if k in value:
-            used_keys.append(k)
-
+    # Allow for i18nMap keys that are sometimes split  to be found.
+    key_search_pattern = r"[\s\S]*\.".join(k.split("."))
+    for file_contents in file_to_check_contents.values():
+        if re.search(key_search_pattern, file_contents):
             break
 
 # MARK: Error Outputs
