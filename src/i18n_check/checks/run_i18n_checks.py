@@ -61,7 +61,7 @@ def main():
         "\nError: Some i18n checks did not pass. Please see the error messages above."
     )
 
-    print("\nSuccess: All i18n checks passed!")
+    print("\nSuccess: All i18n checks have passed!")
 
 
 if __name__ == "__main__":
