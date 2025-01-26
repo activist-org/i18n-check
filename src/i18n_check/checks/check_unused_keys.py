@@ -63,10 +63,10 @@ if unused_keys := list(set(all_keys) - set(used_keys)):
     key_to_be = "keys that are" if len(unused_keys) > 1 else "key that is"
     key_or_keys = "keys" if len(unused_keys) > 1 else "key"
     raise ValueError(
-        f"There {to_be} {len(unused_keys)} i18n {key_to_be} unused. Please remove or assign the following {key_or_keys}:\n\n{', '.join(unused_keys)}\n"
+        f"\ncheck_unused_keys failure: There {to_be} {len(unused_keys)} i18n {key_to_be} unused. Please remove or assign the following {key_or_keys}:\n\n{', '.join(unused_keys)}\n"
     )
 
 else:
     print(
-        "\nSuccess: All i18n keys in the en-US source file are used in the project.\n"
+        "check_unused_keys success: All i18n keys in the i18n-src file are used in the project."
     )
