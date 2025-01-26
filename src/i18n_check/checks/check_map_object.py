@@ -90,10 +90,8 @@ flat_i18n_object_dict = flatten_nested_dict(i18n_object_dict)
 # MARK: Compare Dicts
 
 assert flat_en_us_json_dict == flat_i18n_object_dict, (
-    "\ncheck_map_object failure: The current i18nMap object doesn't match the base i18n JSON file. Please re-generate the i18nMap object.\n"
+    "\ncheck_map_object failure: The current i18nMap object doesn't match the i18n-src file. Please re-generate the i18nMap object.\n"
 )
 
 
-print(
-    "check_map_object success: The current i18nMap object matches the base i18n JSON file."
-)
+print("check_map_object success: The current i18nMap object matches the i18n-src file.")
