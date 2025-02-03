@@ -11,7 +11,7 @@ import json
 import re
 from pathlib import Path
 
-SPDX_LICENSE_IDENTIFIER = "SPDX-License-Identifier: AGPL-3.0-or-later"
+from i18n_check.utils import SPDX_LICENSE_IDENTIFIER
 
 # MARK: Paths / Files
 
@@ -75,7 +75,7 @@ frontend_types_dir = (Path(__file__).parent.parent.parent / "types").resolve()
 
 with open(frontend_types_dir / "i18n-map.ts", encoding="utf-8", mode="w") as f:
     f.write(
-        f"// {SPDX_LICENSE_IDENTIFIER}\nexport const i18nMap = {json.dumps(i18n_map_dict, indent=2)}"
+        f"// SPDX-License-Identifier: {SPDX_LICENSE_IDENTIFIER}\nexport const i18nMap = {json.dumps(i18n_map_dict, indent=2)}"
     )
 
 # Rewrite to format the keys to not have quotes.

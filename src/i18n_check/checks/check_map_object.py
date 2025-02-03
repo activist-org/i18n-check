@@ -10,6 +10,8 @@ import json
 from collections.abc import MutableMapping
 from pathlib import Path
 
+from i18n_check.utils import SPDX_LICENSE_IDENTIFIER
+
 # MARK: Load Base i18n
 
 i18n_check_dir = Path(__file__).parent.parent.resolve()
@@ -39,6 +41,8 @@ with open(frontend_types_dir / "i18n-map.ts", encoding="utf-8") as f:
 
     i18n_object = (
         "".join(i18n_object_list_with_key_quotes)
+        .replace('"// SPDX-License-Identifier": ', "")
+        .replace(SPDX_LICENSE_IDENTIFIER, "")
         .replace("export const i18nMap = ", "")
         .replace("};", "}")
         .replace('"{', "{")
