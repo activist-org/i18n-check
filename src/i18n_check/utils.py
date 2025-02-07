@@ -32,7 +32,7 @@ i18n_map_file = Path(config["i18n-map"]).resolve()
 frontend_types_dir = Path(config["types_dir"]).resolve()
 
 
-
+SPDX_LICENSE_IDENTIFIER = "AGPL-3.0-or-later"
 
 # Check for Windows and derive directory path separator.
 path_separator = "\\" if os.name == "nt" else "/"
@@ -253,3 +253,4 @@ def read_files_to_dict(files):
         with open(file, "r", encoding="utf-8") as f:
             file_contents[file] = f.read()
     return file_contents
+
