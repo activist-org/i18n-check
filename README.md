@@ -25,6 +25,9 @@ Developed by the [activist community](https://github.com/activist-org), this pro
 
 - [Conventions](#contentions)
 - [How it works](#how-it-works)
+  - [Arguments](#arguments)
+  - [Checks](#checks)
+  - [i18n Object](#i18n-object)
 - [Configuration](#configuration)
 - [Contributors](#contributors)
 
@@ -53,7 +56,9 @@ Developed by the [activist community](https://github.com/activist-org), this pro
 
 # How it works [`⇧`](#contents)
 
-### Arguments
+<a id="arguments"></a>
+
+### Arguments [`⇧`](#contents)
 
 You provide `i18n-check` with the following arguments:
 
@@ -62,7 +67,9 @@ You provide `i18n-check` with the following arguments:
 - `i18n-src`: The name of the i18n source file
 - `i18n-map`: The path to the i18n-map file (optional - see below)
 
-### Checks
+<a id="checks"></a>
+
+### Checks [`⇧`](#contents)
 
 From there the following checks are ran across your codebase:
 
@@ -79,7 +86,9 @@ From there the following checks are ran across your codebase:
 
 Each of the above checks is ran in parallel with directions for how to fix the i18n files being provided when errors are raised. Checks can also be disabled in the workflow via options passed in the configuration YAML file.
 
-### i18n Object
+<a id="i18n-object"></a>
+
+### i18n Object [`⇧`](#contents)
 
 `i18n-check` can also generate an `i18nMap` object from the `i18n-src` file that can be used to load in i18n keys. Keys within this object map to keys within the source file as in the following example:
 
@@ -99,7 +108,7 @@ The map is then used in files in the following way:
 const hello_global_i18n_scope = i18n.t(i18nMap._global.hello_global);
 ```
 
-Using `i18nMap` allows development teams to check the existence of all i18n keys used in the codebase as linting will detect that keys don't exist on the object. The package will check that `i18nMap` is up to date with the `i18n-src` file if this functionality is enabled in the configuration file.
+Using `i18nMap` allows development teams to check the existence of all i18n keys used in the codebase as linting will detect that keys don't exist on the object. This prevents misspelled keys as well as hanging references to deleted keys. Think of this like strict mode for i18n usage in your codebase where all string key references should instead be the `i18nMap` keys. The package will further check that `i18nMap` is up to date with the `i18n-src` file if this functionality is enabled in the configuration file.
 
 <a id="configuration"></a>
 
@@ -133,7 +142,7 @@ Common additional arguments for using specific web frameworks can be found in th
 
 ```yaml
 file_types_to_check: [.vue]
-directories_to_skip: [.nuxt, .output]
+directories_to_skip: [.nuxt, .output, dist]
 ```
 
 </p>
