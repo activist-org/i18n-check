@@ -7,42 +7,29 @@ Usage:
     python3 src/i18n_check/checks/check_key_identifiers.py
 """
 
-import json
-import os
-import re
+
 from collections import defaultdict
-from pathlib import Path
+
+from i18n_check.utils import (
+    frontend_directory,
+    en_us_json_file,
+    read_json_file, 
+    collect_files,
+    is_valid_key, 
+    path_to_valid_key, 
+    filter_valid_key_parts,
+    file_types_to_check,
+    directories_to_skip
+)
 
 # MARK: Paths / Files
 
-# Check for Windows and derive directory path separator.
-path_separator = "\\" if os.name == "nt" else "/"
 
-i18n_check_dir = str(Path(__file__).parent.resolve())
-json_file_directory = Path(__file__).parent.parent.resolve()
-frontend_directory = Path(__file__).parent.parent.parent.resolve()
-
-file_types_to_check = [".vue", ".ts", ".js"]
-directories_to_skip = [
-    i18n_check_dir,
-    str((frontend_directory / ".nuxt").resolve()),
-    str((frontend_directory / ".output").resolve()),
-    str((frontend_directory / "node_modules").resolve()),
-]
 files_to_skip = ["i18n-map.ts"]
 
-with open(json_file_directory / "i18n-src", encoding="utf-8") as f:
-    en_us_json_dict = json.loads(f.read())
+en_us_json_dict = read_json_file(en_us_json_file)
 
-files_to_check = []
-for root, dirs, files in os.walk(frontend_directory):
-    files_to_check.extend(
-        os.path.join(root, file)
-        for file in files
-        if all(root[: len(d)] != d for d in directories_to_skip)
-        and any(file[-len(t) :] == t for t in file_types_to_check)
-        and file not in files_to_skip
-    )
+files_to_check =collect_files(frontend_directory, file_types_to_check, directories_to_skip, files_to_skip)
 
 file_to_check_contents = {}
 for frontend_file in files_to_check:
@@ -67,61 +54,6 @@ for k in all_keys:
 # Note: This removes empty lists that are unused keys as this is handled by i18n_check_unused_keys.
 key_file_dict = {k: list(set(v)) for k, v in key_file_dict.items() if len(v) > 0}
 
-# MARK: Invalid Keys
-
-
-def is_valid_key(s):
-    """
-    Checks that a i18n key is only lowercase letters, number, periods or underscores.
-    """
-    pattern = r"^[a-z0-9._]+$"
-    return bool(re.match(pattern, s))
-
-
-def path_to_valid_key(p: list[str]):
-    """
-    Converts a path to a valid key with period separators and all words being snake case.
-
-    Note: [id] and [group_id] are removed in this step as it doesn't add anything to keys.
-
-    Parameters
-    ----------
-    p : list[str]
-        The list of the directory path of a file that has a key.
-
-    Returns
-    -------
-    valid_key : str
-        The correct i18n key that would match the directory structure passed.
-    """
-    # Insert underscores between words, but only if the word is preceded by a lowercase letter and followed by an uppercase letter (i.e. except for abbreviations).
-    valid_key = ""
-    for i, c in enumerate(p):
-        if c.isupper():
-            if i == 0:
-                valid_key += c.lower()
-
-            elif i == len(p) - 1:
-                valid_key += f"_{c.lower()}"
-
-            elif p[i - 1].isupper() and p[i + 1].isupper():
-                valid_key += c.lower()
-
-            else:
-                valid_key += f"_{c.lower()}"
-
-        else:
-            valid_key += c
-
-    return (
-        valid_key.replace(path_separator, ".")
-        .replace("._", ".")
-        .replace("-", "_")
-        .replace(".[id]", "")
-        .replace(".[group_id]", "")
-    )
-
-
 # MARK: Reduce Keys
 
 invalid_keys_by_format = []
@@ -135,14 +67,7 @@ for k in key_file_dict:
         formatted_potential_key = path_to_valid_key(key_file_dict[k][0])
         potential_key_parts = formatted_potential_key.split(".")
         # Is the part in the last key part such that it's a parent directory that's included in the file name.
-        valid_key_parts = [
-            p
-            for p in potential_key_parts
-            if f"{p}_" not in potential_key_parts[-1]
-            and not (
-                p == potential_key_parts[-1][-len(p) :] and p != potential_key_parts[-1]
-            )
-        ]
+        valid_key_parts = filter_valid_key_parts(potential_key_parts)
 
         # Get rid of repeat key parts for files that are the same name as their directory.
         valid_key_parts = [p for p in valid_key_parts if valid_key_parts.count(p) == 1]
@@ -170,15 +95,7 @@ for k in key_file_dict:
 
         # Don't include a key part if it's included in the final one (i.e. organizational sub dir).
         extended_key_base_split = extended_key_base.split()
-        valid_key_parts = [
-            p
-            for p in extended_key_base_split
-            if f"{p}_" not in extended_key_base_split[-1]
-            and not (
-                p == extended_key_base_split[-1][-len(p) :]
-                and p != extended_key_base_split[-1]
-            )
-        ]
+        valid_key_parts = filter_valid_key_parts(extended_key_base_split)
 
         ideal_key_base = ".".join(valid_key_parts)
 

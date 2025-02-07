@@ -7,23 +7,18 @@ Usage:
     python src/i18n_check/checks/check_repeat_values.py
 """
 
-import json
-import string
 from collections import Counter
-from pathlib import Path
 
-# MARK: Paths / Values
+from i18n_check.utils import (
+    read_json_file,  
+    en_us_json_file,
+    lower_and_remove_punctuation
 
-json_file_directory = Path(__file__).parent.parent.resolve()
+)
 
-with open(json_file_directory / "i18n-src", encoding="utf-8") as f:
-    en_us_json_dict = json.loads(f.read())
+en_us_json_dict = read_json_file(en_us_json_file)
 
-
-def lower_and_remove_punctuation(value):
-    punctuation_no_exclamation = string.punctuation.replace("!", "")
-    return value.lower().translate(str.maketrans("", "", punctuation_no_exclamation))
-
+# MARK: Repeat Values
 
 all_json_values = [
     lower_and_remove_punctuation(value=v) for v in list(en_us_json_dict.values())

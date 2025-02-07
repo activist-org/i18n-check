@@ -7,30 +7,26 @@ Usage:
     python3 src/i18n_check/checks/check_non_source_keys.py
 """
 
-import glob
-import json
-import os
-from pathlib import Path
+from i18n_check.utils import (
+    read_json_file,  
+    path_separator,
+    en_us_json_file,
+    json_file_directory,
+    get_all_json_files
+
+)
 
 # MARK: Paths / Files
 
-# Check for Windows and derive directory path separator.
-path_separator = "\\" if os.name == "nt" else "/"
-
-json_file_directory = Path(__file__).parent.parent.resolve()
-
-with open(json_file_directory / "i18n-src", encoding="utf-8") as f:
-    en_us_json_dict = json.loads(f.read())
-
+en_us_json_dict = read_json_file(en_us_json_file)
 all_en_us_keys = en_us_json_dict.keys()
 
 # MARK: Non Source Keys
 
 non_source_keys_dict = {}
-for json_file in glob.glob(f"{json_file_directory}{path_separator}*.json"):
+for json_file in get_all_json_files(json_file_directory, path_separator):
     if json_file.split(path_separator)[-1] != "i18n-src":
-        with open(json_file, encoding="utf-8") as f:
-            json_dict = json.loads(f.read())
+        json_dict = read_json_file(json_file)
 
         all_keys = json_dict.keys()
 

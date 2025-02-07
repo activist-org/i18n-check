@@ -7,42 +7,26 @@ Usage:
     python3 src/i18n_check/checks/check_unused_keys.py
 """
 
-import json
-import os
-from pathlib import Path
+
+from i18n_check.utils import (
+    read_json_file,  
+    en_us_json_file,
+    collect_files,
+    frontend_directory,
+    file_types_to_check, 
+    directories_to_skip,
+    read_files_to_dict,
+)
 
 # MARK: Paths / Files
 
-i18n_check_dir = str(Path(__file__).parent.resolve())
-json_file_directory = Path(__file__).parent.parent.resolve()
-frontend_directory = Path(__file__).parent.parent.parent.resolve()
-
-file_types_to_check = [".vue", ".ts", ".js"]
-directories_to_skip = [
-    i18n_check_dir,
-    str((frontend_directory / ".nuxt").resolve()),
-    str((frontend_directory / ".output").resolve()),
-    str((frontend_directory / "node_modules").resolve()),
-]
 files_to_skip = ["i18n-map.ts"]
 
-with open(json_file_directory / "i18n-src", encoding="utf-8") as f:
-    en_us_json_dict = json.loads(f.read())
+en_us_json_dict = read_json_file(en_us_json_file)
 
-files_to_check = []
-for root, dirs, files in os.walk(frontend_directory):
-    files_to_check.extend(
-        os.path.join(root, file)
-        for file in files
-        if all(root[: len(d)] != d for d in directories_to_skip)
-        and any(file[-len(t) :] == t for t in file_types_to_check)
-        and file not in files_to_skip
-    )
+files_to_check = collect_files(frontend_directory, file_types_to_check, directories_to_skip, files_to_skip)
 
-file_to_check_contents = {}
-for frontend_file in files_to_check:
-    with open(frontend_file, "r", encoding="utf-8") as f:
-        file_to_check_contents[frontend_file] = f.read()
+file_to_check_contents = read_files_to_dict(files_to_check)
 
 # MARK: Unused Keys
 

@@ -9,14 +9,14 @@ Usage:
 
 import json
 import re
-from pathlib import Path
+from i18n_check.utils import (
+    read_json_file,
+    en_us_json_file,
+    frontend_types_dir,
+    )
 
-# MARK: Paths / Files
 
-i18n_check_dir = Path(__file__).parent.parent.resolve()
-
-with open(i18n_check_dir / "i18n-src", encoding="utf-8") as f:
-    en_us_json_dict = json.loads(f.read())
+en_us_json_dict = read_json_file(en_us_json_file)
 
 # MARK: Create Map
 
@@ -69,7 +69,6 @@ i18n_map_dict = nest_flat_dict({k: k for k, _ in en_us_json_dict.items()})
 
 # MARK: Write Map
 
-frontend_types_dir = (Path(__file__).parent.parent.parent / "types").resolve()
 
 with open(frontend_types_dir / "i18n-map.ts", encoding="utf-8", mode="w") as f:
     f.write(f"export const i18nMap = {json.dumps(i18n_map_dict, indent=2)}")
