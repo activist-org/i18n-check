@@ -108,7 +108,7 @@ The map is then used in files in the following way:
 const hello_global_i18n_scope = i18n.t(i18nMap._global.hello_global);
 ```
 
-Using `i18nMap` allows development teams to check the existence of all i18n keys used in the codebase as linting will detect that keys don't exist on the object. This prevents misspelled keys as well as hanging references to deleted keys. Think of this like strict mode for i18n usage in your codebase where all string key references should instead be the `i18nMap` keys. The package will further check that `i18nMap` is up to date with the `i18n-src` file if this functionality is enabled in the configuration file.
+Using `i18nMap` allows development teams to check the existence of all i18n keys used in the codebase as type checking will detect that keys don't exist on the object. This prevents misspelled keys as well as hanging references to deleted keys. Think of this like strict mode for i18n usage in your codebase where all string key references should instead be the `i18nMap` keys. The package will further check that `i18nMap` is up to date with the `i18n-src` file if this functionality is enabled in the configuration file.
 
 <a id="configuration"></a>
 

@@ -158,9 +158,14 @@ def path_to_valid_key(p: str):
             valid_key += c
 
     # Replace path segments like '[id]' that are not useful information for keys.
-    valid_key = re.sub(r"\\\.\\\[(.*?)\\\]", "", valid_key)
+    valid_key = re.sub(r"\[.*?\]", "", valid_key)
 
-    return valid_key.replace(path_separator, ".").replace("._", ".").replace("-", "_")
+    return (
+        valid_key.replace(path_separator, ".")
+        .replace("..", ".")
+        .replace("._", ".")
+        .replace("-", "_")
+    )
 
 
 # MARK: Valid Parts
