@@ -5,8 +5,13 @@ export const i18nMap = {
   },
   sub_dir: {
     _global: { hello_sub_dir: "sub_dir._global.hello_sub_dir" },
-    first_sub_test_file: "sub_dir.first_sub_test_file",
-    second_sub_test_file: "sub_dir.second_sub_test_file",
+    first_file: {
+      hello_sub_dir_first_file: "sub_dir.first_file.hello_sub_dir_first_file",
+    },
+    second_file: {
+      hello_sub_dir_second_file:
+        "sub_dir.second_file.hello_sub_dir_second_file",
+    },
   },
   test_file: "test_file.hello_test_file",
 };

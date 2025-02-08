@@ -1,9 +1,9 @@
 {
   "_global.hello_global": "Hello, global!",
-  "_global.hello_global_repeat": "Hello, global!",
-  "_global.unused_i18n_key": "I'm an unused reference!",
+  "_global.hello_global_repeat": "hello, global!",
+  "_global.unused_i18n_key": "An unused key that's also not in the i18nMap.",
   "sub_dir._global.hello_sub_dir": "Hello, sub directory!",
-  "sub_dir.first_sub_test_file.hello_sub_dir_first_test_file": "Hello, first sub directory test file!",
-  "sub_dir.second_sub_test_file.hello_sub_dir_first_test_file": "Hello, second sub directory test file!",
+  "sub_dir.first_file.hello_sub_dir_first_file": "Hello, sub directory first file!",
+  "sub_dir.second_file.hello_sub_dir_second_file": "Hello, sub directory second file!",
   "test_file.hello_test_file": "Hello, test file!"
 }
