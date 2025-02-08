@@ -73,15 +73,15 @@ You provide `i18n-check` with the following arguments:
 
 From there the following checks are ran across your codebase:
 
-- `key_identifiers`: Does the source file have keys that don't match the above format or name conventions?
+- `key-identifiers`: Does the source file have keys that don't match the above format or name conventions?
   - Rename them so i18n key usage is consistent and their scope is communicated in their name.
-- `unused_keys`: Does the source file have keys that are not used in the codebase?
+- `unused-keys`: Does the source file have keys that are not used in the codebase?
   - Remove them so the localization team isn't working on strings that aren't used.
-- `non_source_keys`: Do the target locale files have keys that are not in the source file?
+- `non-source-keys`: Do the target locale files have keys that are not in the source file?
   - Remove them as they won't be used in the application.
-- `repeat_values`: Does the source file have repeat values that can be combined into a single key?
+- `repeat-values`: Does the source file have repeat values that can be combined into a single key?
   - Combine them so the localization team only needs to localize one of them.
-- `map_object`: Do the `i18nMap` object keys match the `i18n-src` keys.
+- `map-object`: Do the `i18nMap` object keys match the `i18n-src` keys.
   - Make sure that the key map object is up to date if using `i18nMap` (see below).
 
 Each of the above checks is ran in parallel with directions for how to fix the i18n files being provided when errors are raised. Checks can also be disabled in the workflow via options passed in the configuration YAML file.
@@ -123,16 +123,17 @@ i18n-src: frontend/i18n/en.json
 i18n-map: frontend/types/i18n-map.ts
 
 checks:
-  - key_identifiers: true
-  - unused_keys: true
-  - non_source_keys: true
-  - repeat_values: true
-  - map_object: true
+  - key-identifiers: true
+  - unused-keys: true
+  - non-source-keys: true
+  - repeat-values: true
+  - map-object: true
 
-file_types_to_check: [.ts, .js]
-directories_to_skip: [frontend/node_modules]
-files_to_skip: []
-warn_on_nested_i18n_src: true
+file-types-to-check: [.ts, .js]
+directories-to-skip: [frontend/node_modules]
+files-to-skip: []
+warn-on-nested-i18n-src: true
+spdx-license-identifier: GPL-3.0-or-later # license header to add to map file
 ```
 
 Common additional arguments for using specific web frameworks can be found in the dropdowns below:

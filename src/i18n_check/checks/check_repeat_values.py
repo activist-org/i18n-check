@@ -7,39 +7,30 @@ Usage:
     python src/i18n_check/checks/check_repeat_values.py
 """
 
-import json
-import string
 from collections import Counter
-from pathlib import Path
 
-# MARK: Paths / Values
+from i18n_check.utils import (
+    i18n_src_file,
+    lower_and_remove_punctuation,
+    read_json_file,
+)
 
-json_file_directory = Path(__file__).parent.parent.resolve()
+i18n_src_dict = read_json_file(file_path=i18n_src_file)
 
-with open(json_file_directory / "i18n-src", encoding="utf-8") as f:
-    en_us_json_dict = json.loads(f.read())
-
-
-def lower_and_remove_punctuation(value):
-    punctuation_no_exclamation = string.punctuation.replace("!", "")
-    return value.lower().translate(str.maketrans("", "", punctuation_no_exclamation))
-
+# MARK: Repeat Values
 
 all_json_values = [
-    lower_and_remove_punctuation(value=v) for v in list(en_us_json_dict.values())
+    lower_and_remove_punctuation(value=v) for v in list(i18n_src_dict.values())
 ]
-
 json_repeat_value_counts = {
     k: v for k, v in dict(Counter(all_json_values)).items() if v > 1
 }
-
-# MARK: Repeat Values
 
 keys_to_remove = []
 for repeat_value in json_repeat_value_counts:
     i18n_keys = [
         k
-        for k, v in en_us_json_dict.items()
+        for k, v in i18n_src_dict.items()
         if repeat_value == lower_and_remove_punctuation(value=v)
         and k[-len("_lower") :] != "_lower"
     ]

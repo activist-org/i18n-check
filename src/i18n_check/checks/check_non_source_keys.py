@@ -7,36 +7,31 @@ Usage:
     python3 src/i18n_check/checks/check_non_source_keys.py
 """
 
-import glob
-import json
-import os
-from pathlib import Path
+from i18n_check.utils import (
+    get_all_json_files,
+    i18n_directory,
+    i18n_src_file,
+    path_separator,
+    read_json_file,
+)
 
 # MARK: Paths / Files
 
-# Check for Windows and derive directory path separator.
-path_separator = "\\" if os.name == "nt" else "/"
-
-json_file_directory = Path(__file__).parent.parent.resolve()
-
-with open(json_file_directory / "i18n-src", encoding="utf-8") as f:
-    en_us_json_dict = json.loads(f.read())
-
-all_en_us_keys = en_us_json_dict.keys()
+i18n_src_dict = read_json_file(file_path=i18n_src_file)
+all_src_keys = i18n_src_dict.keys()
 
 # MARK: Non Source Keys
 
 non_source_keys_dict = {}
-for json_file in glob.glob(f"{json_file_directory}{path_separator}*.json"):
-    if json_file.split(path_separator)[-1] != "i18n-src":
-        with open(json_file, encoding="utf-8") as f:
-            json_dict = json.loads(f.read())
+for json_file in get_all_json_files(i18n_directory, path_separator):
+    if json_file.split(path_separator)[-1] != i18n_src_file.split(path_separator)[-1]:
+        json_dict = read_json_file(json_file)
 
         all_keys = json_dict.keys()
 
-        if len(all_keys - all_en_us_keys) > 0:
+        if len(all_keys - all_src_keys) > 0:
             non_source_keys_dict[json_file.split(path_separator)[-1]] = (
-                all_keys - all_en_us_keys
+                all_keys - all_src_keys
             )
 
 # MARK: Error Outputs

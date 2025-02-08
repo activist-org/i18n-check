@@ -49,10 +49,8 @@ def main():
     ]
 
     if True:
-        checks.append("check_nested_i18n_src")
-
-    if True:
-        checks.append("check_map_object")
+        checks.append("check_nested_i18n_src.py")
+        checks.append("check_map_object.py")
 
     check_results = []
     check_results.extend(run_check(check) for check in checks)
