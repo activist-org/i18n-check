@@ -7,29 +7,31 @@ Usage:
     python3 src/i18n_check/checks/check_key_identifiers.py
 """
 
-
 from collections import defaultdict
 
 from i18n_check.utils import (
-    frontend_directory,
-    en_us_json_file,
-    read_json_file, 
-    collect_files,
-    is_valid_key, 
-    path_to_valid_key, 
-    filter_valid_key_parts,
+    collect_files_to_check,
+    directories_to_skip,
     file_types_to_check,
-    directories_to_skip
+    files_to_skip,
+    filter_valid_key_parts,
+    i18n_src_file,
+    is_valid_key,
+    path_to_valid_key,
+    read_json_file,
+    src_directory,
 )
 
 # MARK: Paths / Files
 
+i18n_src_dict = read_json_file(file_path=i18n_src_file)
 
-files_to_skip = ["i18n-map.ts"]
-
-en_us_json_dict = read_json_file(en_us_json_file)
-
-files_to_check =collect_files(frontend_directory, file_types_to_check, directories_to_skip, files_to_skip)
+files_to_check = collect_files_to_check(
+    directory=src_directory,
+    file_types=file_types_to_check,
+    directories_to_skip=directories_to_skip,
+    files_to_skip=files_to_skip,
+)
 
 file_to_check_contents = {}
 for frontend_file in files_to_check:
@@ -38,13 +40,13 @@ for frontend_file in files_to_check:
 
 # MARK: Key-Files Dict
 
-all_keys = list(en_us_json_dict.keys())
+all_keys = list(i18n_src_dict.keys())
 key_file_dict = defaultdict()
 for k in all_keys:
     key_file_dict[k] = []
     for i, v in file_to_check_contents.items():
         if k in v:
-            filepath_from_src = i.split(str(frontend_directory))[1]
+            filepath_from_src = i.split(str(src_directory))[1]
             filepath_from_src = filepath_from_src[1:]
             for file_type in file_types_to_check:
                 filepath_from_src = filepath_from_src.replace(file_type, "")

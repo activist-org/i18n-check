@@ -8,31 +8,30 @@ Usage:
 """
 
 from i18n_check.utils import (
-    read_json_file,  
+    get_all_json_files,
+    i18n_directory,
+    i18n_src_file,
     path_separator,
-    en_us_json_file,
-    json_file_directory,
-    get_all_json_files
-
+    read_json_file,
 )
 
 # MARK: Paths / Files
 
-en_us_json_dict = read_json_file(en_us_json_file)
-all_en_us_keys = en_us_json_dict.keys()
+i18n_src_dict = read_json_file(file_path=i18n_src_file)
+all_src_keys = i18n_src_dict.keys()
 
 # MARK: Non Source Keys
 
 non_source_keys_dict = {}
-for json_file in get_all_json_files(json_file_directory, path_separator):
-    if json_file.split(path_separator)[-1] != "i18n-src":
+for json_file in get_all_json_files(i18n_directory, path_separator):
+    if json_file.split(path_separator)[-1] != i18n_src_file.split(path_separator)[-1]:
         json_dict = read_json_file(json_file)
 
         all_keys = json_dict.keys()
 
-        if len(all_keys - all_en_us_keys) > 0:
+        if len(all_keys - all_src_keys) > 0:
             non_source_keys_dict[json_file.split(path_separator)[-1]] = (
-                all_keys - all_en_us_keys
+                all_keys - all_src_keys
             )
 
 # MARK: Error Outputs

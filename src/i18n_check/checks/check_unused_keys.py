@@ -7,31 +7,34 @@ Usage:
     python3 src/i18n_check/checks/check_unused_keys.py
 """
 
-
+import re
 
 from i18n_check.utils import (
-    read_json_file,  
-    en_us_json_file,
-    collect_files,
-    frontend_directory,
-    file_types_to_check, 
+    collect_files_to_check,
     directories_to_skip,
+    file_types_to_check,
+    i18n_src_file,
     read_files_to_dict,
+    read_json_file,
+    src_directory,
 )
 
 # MARK: Paths / Files
 
 files_to_skip = ["i18n-map.ts"]
 
-en_us_json_dict = read_json_file(en_us_json_file)
-
-files_to_check = collect_files(frontend_directory, file_types_to_check, directories_to_skip, files_to_skip)
-
-file_to_check_contents = read_files_to_dict(files_to_check)
+i18n_src_dict = read_json_file(file_path=i18n_src_file)
+files_to_check = collect_files_to_check(
+    directory=src_directory,
+    file_types=file_types_to_check,
+    directories_to_skip=directories_to_skip,
+    files_to_skip=files_to_skip,
+)
+file_to_check_contents = read_files_to_dict(files=files_to_check)
 
 # MARK: Unused Keys
 
-all_keys = list(en_us_json_dict.keys())
+all_keys = list(i18n_src_dict.keys())
 used_keys = []
 for k in all_keys:
     # Allow for i18nMap keys that are sometimes split  to be found.

@@ -1,3 +1,4 @@
+# SPDX-License-Identifier: GPL-3.0-or-later
 """
 Checks if the i18n-src file is a nested JSON object.
 If yes, warns the user that this structure makes replacing invalid keys more difficult.
