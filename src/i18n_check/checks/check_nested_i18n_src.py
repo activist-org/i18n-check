@@ -9,7 +9,8 @@ Usage:
 
 import json
 from pathlib import Path
-from i18n_check.utils import warn_on_nested_i18n_src, i18n_directory, read_json_file
+
+from i18n_check.utils import i18n_directory, read_json_file, warn_on_nested_i18n_src
 
 
 def is_nested_json(data):
@@ -28,6 +29,7 @@ def is_nested_json(data):
     """
     if isinstance(data, dict):
         return any(isinstance(value, dict) for value in data.values())
+
     return False
 
 
@@ -47,12 +49,12 @@ def check_i18n_files(directory):
     for file_path in Path(directory).rglob("*.json"):
         try:
             data = read_json_file(file_path)
-            if is_nested_json(data):
-                if warn_on_nested_i18n_src:
-                    print(f"Warning: Nested JSON structure detected in {file_path}")
-                    print(
-                        "i18n-check recommends using flat JSON files to allow easy find-and-replace operations."
-                    )
+            if is_nested_json(data) and warn_on_nested_i18n_src:
+                print(f"Warning: Nested JSON structure detected in {file_path}")
+                print(
+                    "i18n-check recommends using flat JSON files to allow easy find-and-replace operations."
+                )
+
         except (json.JSONDecodeError, IOError) as e:
             print(f"Error processing {file_path}: {e}")
 
