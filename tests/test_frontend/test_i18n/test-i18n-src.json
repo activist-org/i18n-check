@@ -5,5 +5,8 @@
   "sub_dir._global.hello_sub_dir": "Hello, sub directory!",
   "sub_dir.first_file.hello_sub_dir_first_file": "Hello, sub directory first file!",
   "sub_dir.second_file.hello_sub_dir_second_file": "Hello, sub directory second file!",
-  "test_file.hello_test_file": "Hello, test file!"
+  "test_file.hello_test_file": "Hello, test file!",
+  "_global.nested_example": {
+    "nestedKey": "This is a nested i18n key."
+  }
 }
