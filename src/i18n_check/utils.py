@@ -130,7 +130,7 @@ def path_to_valid_key(p: str):
 
     Parameters
     ----------
-    p : list[str]
+    p : str
         The string of the directory path of a file that has a key.
 
     Returns

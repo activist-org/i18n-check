@@ -1,6 +1,11 @@
 {
   "_global.hello_global": "Hello, global!",
   "_global.hello_global_repeat": "hello, global!",
+  "_global.incorrectly-formatted-key": "This key isn't formatted correctly",
+  "_global.incorrectly_named_key": "This key needs to be renamed",
+  "_global.nested_example": {
+    "nested_key": "This key should not be nested"
+  },
   "_global.unused_i18n_key": "An unused key that's also not in the i18nMap.",
   "sub_dir._global.hello_sub_dir": "Hello, sub directory!",
   "sub_dir.first_file.hello_sub_dir_first_file": "Hello, sub directory first file!",
