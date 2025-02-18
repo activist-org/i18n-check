@@ -37,7 +37,8 @@ Developed by the [activist community](https://github.com/activist-org), this pro
 
 [activist](https://github.com/activist-org/activist) i18n keys follow the following conventions that are enforced by `i18n-check`:
 
-- All key base paths should be the file path where the key is used
+- All key base paths should be the file path where the key is used prepended with `i18n.`
+  - Starting i18n keys with a common identifier allows them to be found within checks
 - If a key is used in more than one file, then the lowest common directory followed by `_global` is the base path
 - Base paths should be followed by a minimally descriptive content reference
   - Only the formatting of these content references is checked via `i18n-check`
@@ -65,7 +66,6 @@ You provide `i18n-check` with the following arguments:
 - `src-dir`: The path to the directory that has source code to check
 - `i18n-dir`: The directory path to your i18n files
 - `i18n-src`: The name of the i18n source file
-- `i18n-map`: The path to the i18n-map file (optional - see below)
 
 <a id="checks"></a>
 
@@ -73,6 +73,7 @@ You provide `i18n-check` with the following arguments:
 
 From there the following checks are ran across your codebase:
 
+- `invalid_keys`: Does the include i18n keys that are not within the source file?
 - `key-identifiers`: Does the source file have keys that don't match the above format or name conventions?
   - Rename them so i18n key usage is consistent and their scope is communicated in their name.
 - `unused-keys`: Does the source file have keys that are not used in the codebase?
@@ -81,34 +82,8 @@ From there the following checks are ran across your codebase:
   - Remove them as they won't be used in the application.
 - `repeat-values`: Does the source file have repeat values that can be combined into a single key?
   - Combine them so the localization team only needs to localize one of them.
-- `map-object`: Do the `i18nMap` object keys match the `i18n-src` keys.
-  - Make sure that the key map object is up to date if using `i18nMap` (see below).
 
 Each of the above checks is ran in parallel with directions for how to fix the i18n files being provided when errors are raised. Checks can also be disabled in the workflow via options passed in the configuration YAML file.
-
-<a id="i18n-object"></a>
-
-### i18n Object [`⇧`](#contents)
-
-`i18n-check` can also generate an `i18nMap` object from the `i18n-src` file that can be used to load in i18n keys. Keys within this object map to keys within the source file as in the following example:
-
-```ts
-// _global.hello_global would be a key in our i18n-src file.
-export const i18nMap = {
-  _global: {
-    hello_global: "_global.hello_global",
-  },
-};
-```
-
-The map is then used in files in the following way:
-
-```ts
-// Using vue-i18n:
-const hello_global_i18n_scope = i18n.t(i18nMap._global.hello_global);
-```
-
-Using `i18nMap` allows development teams to check the existence of all i18n keys used in the codebase as type checking will detect that keys don't exist on the object. This prevents misspelled keys as well as hanging references to deleted keys. Think of this like strict mode for i18n usage in your codebase where all string key references should instead be the `i18nMap` keys. The package will further check that `i18nMap` is up to date with the `i18n-src` file if this functionality is enabled in the configuration file.
 
 <a id="configuration"></a>
 
@@ -120,20 +95,18 @@ The following details the `.18n-check.yaml` configuration file, with a further e
 src-dir: frontend
 i18n-dir: frontend/i18n
 i18n-src: frontend/i18n/en.json
-i18n-map: frontend/types/i18n-map.ts
 
 checks:
+  - invalid-keys: true
   - key-identifiers: true
   - unused-keys: true
   - non-source-keys: true
   - repeat-values: true
-  - map-object: true
 
 file-types-to-check: [.ts, .js]
 directories-to-skip: [frontend/node_modules]
 files-to-skip: []
 warn-on-nested-i18n-src: true
-spdx-license-identifier: GPL-3.0-or-later # license header to add to map file
 ```
 
 Common additional arguments for using specific web frameworks can be found in the dropdowns below:

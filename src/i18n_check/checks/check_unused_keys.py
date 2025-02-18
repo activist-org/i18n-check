@@ -13,6 +13,7 @@ from i18n_check.utils import (
     collect_files_to_check,
     directories_to_skip,
     file_types_to_check,
+    files_to_skip,
     i18n_src_file,
     read_files_to_dict,
     read_json_file,
@@ -20,8 +21,6 @@ from i18n_check.utils import (
 )
 
 # MARK: Paths / Files
-
-files_to_skip = ["i18n-map.ts"]
 
 i18n_src_dict = read_json_file(file_path=i18n_src_file)
 files_to_check = collect_files_to_check(
@@ -37,8 +36,7 @@ file_to_check_contents = read_files_to_dict(files=files_to_check)
 all_keys = list(i18n_src_dict.keys())
 used_keys = []
 for k in all_keys:
-    # Allow for i18nMap keys that are sometimes split  to be found.
-    key_search_pattern = r"[\s\S]*\.".join(k.split("."))
+    key_search_pattern = r"[\S]*\.".join(k.split("."))
     for file_contents in file_to_check_contents.values():
         if re.search(key_search_pattern, file_contents):
             break

@@ -42,6 +42,7 @@ def run_check(script_name) -> bool:
 
 def main():
     checks = [
+        "check_invalid_keys.py",
         "check_key_identifiers.py",
         "check_non_source_keys.py",
         "check_unused_keys.py",
@@ -50,7 +51,6 @@ def main():
 
     if True:
         checks.append("check_nested_i18n_src.py")
-        checks.append("check_map_object.py")
 
     check_results = []
     check_results.extend(run_check(check) for check in checks)

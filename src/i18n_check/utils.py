@@ -8,7 +8,6 @@ import json
 import os
 import re
 import string
-from collections.abc import MutableMapping
 from pathlib import Path
 
 import yaml
@@ -26,7 +25,6 @@ with open(config_path, "r", encoding="utf-8") as file:
 src_directory = Path(config["src-dir"]).resolve()
 i18n_directory = Path(config["i18n-dir"]).resolve()
 i18n_src_file = Path(config["i18n-src"]).resolve()
-i18n_map_file = Path(config["i18n-map"]).resolve()
 
 file_types_to_check = config["file-types-to-check"]
 directories_to_skip = config["directories-to-skip"]
@@ -193,45 +191,6 @@ def filter_valid_key_parts(potential_key_parts: list[str]):
             p == potential_key_parts[-1][-len(p) :] and p != potential_key_parts[-1]
         )
     ]
-
-
-# MARK: Flattening Dicts
-
-
-def flatten_nested_dict(
-    dictionary: MutableMapping, parent_key: str = "", sep: str = "."
-) -> MutableMapping:
-    """
-    Flattens a nested dictionary.
-
-    Parameters
-    ----------
-    d : MutableMapping
-        The nested dictionary to flatten.
-
-    parent_key : str
-        The key of the current value being flattened.
-
-    sep : str
-        The separator to be used to join the nested keys.
-
-    Returns
-    -------
-    MutableMapping
-        The flattened version of the given nested dictionary.
-    """
-    items = []
-    for k, v in dictionary.items():
-        new_key = parent_key + sep + k if parent_key else k
-        if isinstance(v, MutableMapping):
-            items.extend(
-                flatten_nested_dict(dictionary=v, parent_key=new_key, sep=sep).items()
-            )
-
-        else:
-            items.append((new_key, v))
-
-    return dict(items)
 
 
 # MARK: JSON Files
