@@ -30,7 +30,6 @@ file_types_to_check = config["file-types-to-check"]
 directories_to_skip = config["directories-to-skip"]
 files_to_skip = config["files-to-skip"]
 warn_on_nested_i18n_src = config["warn-on-nested-i18n-src"]
-spdx_license_identifier = config["spdx-license-identifier"]
 
 # Check for Windows and derive directory path separator.
 path_separator = "\\" if os.name == "nt" else "/"
@@ -60,7 +59,10 @@ def read_json_file(file_path: str):
 
 
 def collect_files_to_check(
-    directory: str, file_types: list[str], directories_to_skip: list[str], files_to_skip
+    directory: str,
+    file_types: list[str],
+    directories_to_skip: list[str],
+    files_to_skip: list[str],
 ):
     """
     Collects all files with a given extension from a directory and its subdirectories.
@@ -86,11 +88,15 @@ def collect_files_to_check(
     """
     files_to_check = []
     for root, dirs, files in os.walk(directory):
+        # Skip directories in directories_to_skip
+        if any(skip_dir in root for skip_dir in directories_to_skip):
+            continue
+
+        # Collect files that match the file_types and are not in files_to_skip
         files_to_check.extend(
             os.path.join(root, file)
             for file in files
-            if all(root[: len(d)] != d for d in directories_to_skip)
-            and any(file[-len(t) :] == t for t in file_types)
+            if any(file.endswith(file_type) for file_type in file_types)
             and file not in files_to_skip
         )
 
@@ -145,7 +151,7 @@ def path_to_valid_key(p: str):
             if i == 0:
                 valid_key += c.lower()
 
-            elif p[i - 1].isupper() and (i == len(p) - 1 or p[i + 1].isupper()):
+            elif p[i - 1].isupper() or (i == len(p) - 1 or p[i + 1].isupper()):
                 # Middle or end of an abbreviation: append lowercase without underscore.
                 valid_key += c.lower()
 
@@ -172,6 +178,10 @@ def path_to_valid_key(p: str):
 def filter_valid_key_parts(potential_key_parts: list[str]):
     """
     Filters out parts from potential_key_parts based on specific conditions.
+
+    A key part is excluded if:
+    - It appears as a prefix (with an underscore) in the last element of the list.
+    - It is a suffix of the last element but is not equal to the full last element.
 
     Parameters
     ----------
