@@ -92,7 +92,7 @@ def collect_files_to_check(
         if any(skip_dir in root for skip_dir in directories_to_skip):
             continue
 
-        # Collect files that match the file_types and are not in files_to_skip
+        # Collect files that match the file_types and are not in files_to_skip.
         files_to_check.extend(
             os.path.join(root, file)
             for file in files

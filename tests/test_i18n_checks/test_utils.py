@@ -1,3 +1,9 @@
+# SPDX-License-Identifier: AGPL-3.0-or-later
+
+"""
+Tests for utility functions in i18n-check.
+"""
+
 import unittest
 import tempfile
 import json
