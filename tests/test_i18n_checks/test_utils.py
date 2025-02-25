@@ -4,40 +4,40 @@
 Tests for utility functions in i18n-check.
 """
 
-import unittest
-import tempfile
 import json
 import os
+import tempfile
+import unittest
+
 import pytest
 
 from i18n_check.utils import (
-    read_json_file,
     collect_files_to_check,
-    is_valid_key,
-    path_to_valid_key,
     filter_valid_key_parts,
     get_all_json_files,
+    is_valid_key,
     lower_and_remove_punctuation,
+    path_to_valid_key,
     read_files_to_dict,
+    read_json_file,
 )
 
 
 class TestUtils(unittest.TestCase):
     def test_read_json_file(self):
-        # Sample JSON data
+        # Sample JSON data.
         sample_data = {"name": "Test", "value": 123}
 
-        # Create a temp JSON
+        # Create a temp JSON.
         with tempfile.NamedTemporaryFile(
             mode="w", delete=False, encoding="utf-8", suffix=".json"
         ) as temp_file:
             json.dump(sample_data, temp_file)
             temp_file_path = temp_file.name
 
-        # Read the JSON file using the function
+        # Read the JSON file using the function.
         result = read_json_file(temp_file_path)
 
-        # Assertions
         assert isinstance(result, dict)
         assert result == sample_data
 
@@ -118,9 +118,9 @@ class TestUtils(unittest.TestCase):
 @pytest.mark.parametrize(
     "input_path, expected_key",
     [
-        (os.path.join("user", "ProfileSettings"), "user.profile_settings"),
+        (os.path.join("user", "ProfilePage"), "user.profile_page"),
         (os.path.join("admin", "Config", "Settings"), "admin.config.settings"),
-        (os.path.join("API", "v1", "UserData"), "api.v1.user_data"),
+        (os.path.join("API", "v1", "RequestData"), "api.v1.request_data"),
         (
             os.path.join("folder", "SubFolder", "FileName"),
             "folder.sub_folder.file_name",

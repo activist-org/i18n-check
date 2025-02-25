@@ -9,6 +9,7 @@ import os
 import re
 import string
 from pathlib import Path
+from typing import Dict
 
 import yaml
 
@@ -37,7 +38,7 @@ path_separator = "\\" if os.name == "nt" else "/"
 # MARK: File Reading
 
 
-def read_json_file(file_path: str):
+def read_json_file(file_path: str) -> Dict[str, str]:
     """
     Reads a JSON file and returns its content.
 
@@ -63,7 +64,7 @@ def collect_files_to_check(
     file_types: list[str],
     directories_to_skip: list[str],
     files_to_skip: list[str],
-):
+) -> list:
     """
     Collects all files with a given extension from a directory and its subdirectories.
 
@@ -88,17 +89,16 @@ def collect_files_to_check(
     """
     files_to_check = []
     for root, dirs, files in os.walk(directory):
-        # Skip directories in directories_to_skip
-        if any(skip_dir in root for skip_dir in directories_to_skip):
-            continue
-
-        # Collect files that match the file_types and are not in files_to_skip.
-        files_to_check.extend(
-            os.path.join(root, file)
-            for file in files
-            if any(file.endswith(file_type) for file_type in file_types)
-            and file not in files_to_skip
-        )
+        # Skip directories in directories_to_skip.
+        if all(skip_dir not in root for skip_dir in directories_to_skip):
+            # Collect files that match the file_types and are not in files_to_skip.
+            files_to_check.extend(
+                os.path.join(root, file)
+                for file in files
+                if not any(root.startswith(d) for d in directories_to_skip)
+                and any(file.endswith(file_type) for file_type in file_types)
+                and file not in files_to_skip
+            )
 
     return files_to_check
 
@@ -106,7 +106,7 @@ def collect_files_to_check(
 # MARK: Invalid Keys
 
 
-def is_valid_key(k: str):
+def is_valid_key(k: str) -> bool:
     """
     Checks that a i18n key is only lowercase letters, number, periods or underscores.
 
@@ -128,7 +128,7 @@ def is_valid_key(k: str):
 # MARK: Renaming Keys
 
 
-def path_to_valid_key(p: str):
+def path_to_valid_key(p: str) -> str:
     """
     Converts a path to a valid key with period separators and all words being snake case.
 
@@ -175,7 +175,7 @@ def path_to_valid_key(p: str):
 # MARK: Valid Parts
 
 
-def filter_valid_key_parts(potential_key_parts: list[str]):
+def filter_valid_key_parts(potential_key_parts: list[str]) -> list[str]:
     """
     Filters out parts from potential_key_parts based on specific conditions.
 
@@ -206,7 +206,7 @@ def filter_valid_key_parts(potential_key_parts: list[str]):
 # MARK: JSON Files
 
 
-def get_all_json_files(directory: str, path_separator: str):
+def get_all_json_files(directory: str, path_separator: str) -> list:
     """
     Get all JSON files in the specified directory.
 
@@ -229,7 +229,7 @@ def get_all_json_files(directory: str, path_separator: str):
 # MARK: Lower and Remove Punctuation
 
 
-def lower_and_remove_punctuation(value):
+def lower_and_remove_punctuation(text: str) -> str:
     """
     Converts the input text to lowercase and removes punctuation.
 
@@ -245,13 +245,13 @@ def lower_and_remove_punctuation(value):
     """
     punctuation_no_exclamation = string.punctuation.replace("!", "")
 
-    return value.lower().translate(str.maketrans("", "", punctuation_no_exclamation))
+    return text.lower().translate(str.maketrans("", "", punctuation_no_exclamation))
 
 
 # MARK: Reading to Dicts
 
 
-def read_files_to_dict(files: list[str]):
+def read_files_to_dict(files: list[str]) -> Dict[str, str]:
     """
     Reads multiple files and stores their content in a dictionary.
 

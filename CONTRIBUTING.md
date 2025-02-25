@@ -15,6 +15,7 @@ If you have questions or would like to communicate with the team, please [join u
 - [First steps as a contributor](#first-steps-)
 - [Development environment](#dev-env-)
 - [Linting](#linting-)
+- [Testing](#testing-)
 - [Issues and projects](#issues-projects-)
 - [Bug reports](#bug-reports-)
 - [Feature requests](#feature-requests-)
@@ -67,7 +68,7 @@ Thank you for your interest in contributing to activist community projects! We l
 >
 > To run git commands with SSH, remember then to substitute the HTTPS URL, `https://github.com/...`, with the SSH one, `git@github.com:...`.
 >
-> - e.g. Cloning now becomes `git clone git@github.com:<your-username>/activist.git`
+> - e.g. Cloning now becomes `git clone git@github.com:<your-username>/i18n-check.git`
 >
 > GitHub also has their documentation on how to [Generate a new SSH key](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent) 🔑
 >
@@ -100,8 +101,10 @@ git remote add upstream https://github.com/activist-org/i18n-check.git
 
    # After activating venv:
    pip install --upgrade pip
-   pip install -r backend/requirements-dev.txt
+   pip install -r requirements-dev.txt
    ```
+
+You're now ready to work on `i18n-check`!
 
 > [!NOTE]
 > Feel free to contact the team in the [Development room on Matrix](https://matrix.to/#/!CRgLpGeOBNwxYCtqmK:matrix.org?via=matrix.org&via=acter.global&via=chat.0x7cd.xyz) if you're having problems getting your environment setup!
@@ -111,6 +114,22 @@ git remote add upstream https://github.com/activist-org/i18n-check.git
 ## Linting [`⇧`](#contents)
 
 For the backend [Ruff](https://github.com/astral-sh/ruff) is installed via the required packages to assure that errors are reported correctly. We'd also suggest that VS Code users install the [Ruff extension](https://marketplace.visualstudio.com/items?itemName=charliermarsh.ruff).
+
+<a id="testing-"></a>
+
+## Testing [`⇧`](#contents)
+
+Please run the following commands from the project root to test:
+
+```bash
+# Format the src directory, lint the code and run static type checks:
+ruff format ./src
+ruff check ./src
+mypy ./src --config-file ./pyproject.toml
+
+# Run tests:
+pytest
+```
 
 <a id="issues-projects"></a>
 
