@@ -10,7 +10,7 @@ import subprocess
 from pathlib import Path
 
 
-def run_check(script_name) -> bool:
+def run_check(script_name: str) -> bool:
     """
     Runs a check script and reports the results via the terminal.
 
@@ -40,7 +40,7 @@ def run_check(script_name) -> bool:
         return False
 
 
-def main():
+def main() -> None:
     checks = [
         "check_invalid_keys.py",
         "check_key_identifiers.py",
@@ -52,7 +52,7 @@ def main():
     if True:
         checks.append("check_nested_i18n_src.py")
 
-    check_results = []
+    check_results: list[bool] = []
     check_results.extend(run_check(check) for check in checks)
 
     assert all(check_results), (

@@ -20,7 +20,7 @@ i18n_src_dict = read_json_file(file_path=i18n_src_file)
 # MARK: Repeat Values
 
 all_json_values = [
-    lower_and_remove_punctuation(value=v) for v in list(i18n_src_dict.values())
+    lower_and_remove_punctuation(text=v) for v in list(i18n_src_dict.values())
 ]
 json_repeat_value_counts = {
     k: v for k, v in dict(Counter(all_json_values)).items() if v > 1
@@ -31,7 +31,7 @@ for repeat_value in json_repeat_value_counts:
     i18n_keys = [
         k
         for k, v in i18n_src_dict.items()
-        if repeat_value == lower_and_remove_punctuation(value=v)
+        if repeat_value == lower_and_remove_punctuation(text=v)
         and k[-len("_lower") :] != "_lower"
     ]
 

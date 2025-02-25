@@ -1,4 +1,4 @@
-# SPDX-License-Identifier: AGPL-3.0-or-later
+# SPDX-License-Identifier: GPL-3.0-or-later
 """
 Checks the i18n keys used in the project and makes sure that each of them appears in the i18n-src file.
 If there are invalid keys, alert the user to their presence.

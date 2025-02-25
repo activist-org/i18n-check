@@ -9,11 +9,12 @@ Usage:
 
 import json
 from pathlib import Path
+from typing import Dict
 
 from i18n_check.utils import i18n_directory, read_json_file, warn_on_nested_i18n_src
 
 
-def is_nested_json(data):
+def is_nested_json(data: Dict[str, str]) -> bool:
     """
     Check if the JSON structure is nested.
 
@@ -33,7 +34,7 @@ def is_nested_json(data):
     return False
 
 
-def check_i18n_files(directory):
+def check_i18n_files(directory) -> None:
     """
     Check all JSON files in the given directory for nested structures.
 

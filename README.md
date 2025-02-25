@@ -23,15 +23,15 @@ Developed by the [activist community](https://github.com/activist-org), this pro
 
 # **Contents**
 
-- [Conventions](#contentions)
-- [How it works](#how-it-works)
-  - [Arguments](#arguments)
-  - [Checks](#checks)
-  - [i18n Object](#i18n-object)
-- [Configuration](#configuration)
-- [Contributors](#contributors)
+- [Conventions](#contentions-)
+- [How it works](#how-it-works-)
+  - [Arguments](#arguments-)
+  - [Checks](#checks-)
+- [Configuration](#configuration-)
+- [Development environment](#dev-env-)
+- [Contributors](#contributors-)
 
-<a id="conventions"></a>
+<a id="conventions-"></a>
 
 # Conventions [`⇧`](#contents)
 
@@ -53,11 +53,11 @@ Developed by the [activist community](https://github.com/activist-org), this pro
 >
 > File: `components/component/ComponentName.ext`
 
-<a id="how-it-works"></a>
+<a id="how-it-works-"></a>
 
 # How it works [`⇧`](#contents)
 
-<a id="arguments"></a>
+<a id="arguments-"></a>
 
 ### Arguments [`⇧`](#contents)
 
@@ -67,7 +67,7 @@ You provide `i18n-check` with the following arguments:
 - `i18n-dir`: The directory path to your i18n files
 - `i18n-src`: The name of the i18n source file
 
-<a id="checks"></a>
+<a id="checks-"></a>
 
 ### Checks [`⇧`](#contents)
 
@@ -85,7 +85,7 @@ From there the following checks are ran across your codebase:
 
 Each of the above checks is ran in parallel with directions for how to fix the i18n files being provided when errors are raised. Checks can also be disabled in the workflow via options passed in the configuration YAML file.
 
-<a id="configuration"></a>
+<a id="configuration-"></a>
 
 # Configuration [`⇧`](#contents)
 
@@ -122,7 +122,82 @@ directories_to_skip: [.nuxt, .output, dist]
 </p>
 </details>
 
-<a id="contributors"></a>
+<a id="dev-env-"></a>
+
+## Development environment [`⇧`](#contents)
+
+1. First and foremost, please see the suggested IDE setup in the dropdown below to make sure that your editor is ready for development.
+
+> [!IMPORTANT]
+>
+> <details><summary>Suggested IDE setup</summary>
+>
+> <p>
+>
+> VS Code
+>
+> Install the following extensions:
+>
+> - [charliermarsh.ruff](https://marketplace.visualstudio.com/items?itemName=charliermarsh.ruff)
+> - [streetsidesoftware.code-spell-checker](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker)
+>
+> </p>
+> </details>
+
+2. [Fork](https://docs.github.com/en/get-started/quickstart/fork-a-repo) the [i18n-check repo](https://github.com/activist-org/i18n-check), clone your fork, and configure the remotes:
+
+> [!NOTE]
+>
+> <details><summary>Consider using SSH</summary>
+>
+> <p>
+>
+> Alternatively to using HTTPS as in the instructions below, consider SSH to interact with GitHub from the terminal. SSH allows you to connect without a user-pass authentication flow.
+>
+> To run git commands with SSH, remember then to substitute the HTTPS URL, `https://github.com/...`, with the SSH one, `git@github.com:...`.
+>
+> - e.g. Cloning now becomes `git clone git@github.com:<your-username>/i18n-check.git`
+>
+> GitHub also has their documentation on how to [Generate a new SSH key](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent) 🔑
+>
+> </p>
+> </details>
+
+```bash
+# Clone your fork of the repo into the current directory.
+git clone https://github.com/<your-username>/i18n-check.git
+# Navigate to the newly cloned directory.
+cd i18n-check
+# Assign the original repo to a remote called "upstream".
+git remote add upstream https://github.com/activist-org/i18n-check.git
+```
+
+- Now, if you run `git remote -v` you should see two remote repositories named:
+  - `origin` (forked repository)
+  - `upstream` (i18n-check repository)
+
+3. Create a virtual environment, activate it and install dependencies:
+
+   ```bash
+   # Unix or MacOS:
+   python3 -m venv venv
+   source venv/bin/activate
+
+   # Windows:
+   python -m venv venv
+   venv\Scripts\activate.bat
+
+   # After activating venv:
+   pip install --upgrade pip
+   pip install -r requirements-dev.txt
+   ```
+
+You're now ready to work on `i18n-check`!
+
+> [!NOTE]
+> Feel free to contact the team in the [Development room on Matrix](https://matrix.to/#/!CRgLpGeOBNwxYCtqmK:matrix.org?via=matrix.org&via=acter.global&via=chat.0x7cd.xyz) if you're having problems getting your environment setup!
+
+<a id="contributors-"></a>
 
 # Contributors [`⇧`](#contents)
 
