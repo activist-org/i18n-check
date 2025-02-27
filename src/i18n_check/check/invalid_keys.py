@@ -4,7 +4,7 @@ Checks the i18n keys used in the project and makes sure that each of them appear
 If there are invalid keys, alert the user to their presence.
 
 Usage:
-    python3 src/i18n_check/checks/i18n_check_invalid_keys.py
+    python3 src/i18n_check/check/invalid_keys.py
 """
 
 import os
@@ -71,10 +71,10 @@ if invalid_keys := list(all_used_i18n_keys - all_keys):
     key_to_be = "keys that are" if len(invalid_keys) > 1 else "key that is"
     key_or_keys = "keys" if len(invalid_keys) > 1 else "key"
     raise ValueError(
-        f"\ncheck_invalid_keys failure: There {to_be} {len(invalid_keys)} i18n {key_to_be} not in the en-US source file. Please check the validity of the following {key_or_keys}:\n\n{', '.join(invalid_keys)}\n"
+        f"\ninvalid_keys failure: There {to_be} {len(invalid_keys)} i18n {key_to_be} not in the en-US source file. Please check the validity of the following {key_or_keys}:\n\n{', '.join(invalid_keys)}\n"
     )
 
 else:
     print(
-        "check_invalid_keys success: All i18n keys that are used in the project are in the en-US source file."
+        "invalid_keys success: All i18n keys that are used in the project are in the en-US source file."
     )

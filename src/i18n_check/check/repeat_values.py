@@ -4,7 +4,7 @@ Checks if the i18n-src file has repeat string values.
 If yes, suggest that they be combined using a `_global` sub key at the lowest matching level of i18n-src.
 
 Usage:
-    python src/i18n_check/checks/check_repeat_values.py
+    python src/i18n_check/check/repeat_values.py
 """
 
 from collections import Counter
@@ -76,10 +76,8 @@ if json_repeat_value_counts:
         value_to_be = "values are"
 
     raise ValueError(
-        f"\ncheck_repeat_values failure: {len(json_repeat_value_counts)} repeat i18n {value_to_be} present. Please combine given the suggestions above.\n"
+        f"\nrepeat_values failure: {len(json_repeat_value_counts)} repeat i18n {value_to_be} present. Please combine given the suggestions above.\n"
     )
 
 else:
-    print(
-        "check_repeat_values success: No repeat i18n values found in the i18n-src file."
-    )
+    print("repeat_values success: No repeat i18n values found in the i18n-src file.")

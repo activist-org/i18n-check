@@ -4,7 +4,7 @@ Checks if the i18n-src file has invalid keys given their usage or formatting.
 If yes, suggest new names for the keys at the lowest possible level of usage.
 
 Usage:
-    python3 src/i18n_check/checks/check_key_identifiers.py
+    python3 src/i18n_check/check/key_identifiers.py
 """
 
 from collections import defaultdict
@@ -136,7 +136,7 @@ error_string = ""
 
 if not invalid_keys_by_format and not invalid_keys_by_name:
     print(
-        "check_key_identifiers success: All i18n keys are formatted and named correctly in the i18n-src file."
+        "key_identifiers success: All i18n keys are formatted and named correctly in the i18n-src file."
     )
 
 elif invalid_keys_by_format and invalid_keys_by_name:
@@ -150,7 +150,7 @@ else:
 
     else:
         print(
-            "\ncheck_key_identifiers failure: There is an error with key names, but all i18n keys are formatted correctly in the i18n-src file.\n"
+            "\nkey_identifiers failure: There is an error with key names, but all i18n keys are formatted correctly in the i18n-src file.\n"
         )
 
     if invalid_keys_by_name:
@@ -158,7 +158,7 @@ else:
 
     else:
         print(
-            "\ncheck_key_identifiers failure: There is an error with key formatting, but all i18n keys are named appropriately in the i18n-src file.\n"
+            "\nkey_identifiers failure: There is an error with key formatting, but all i18n keys are named appropriately in the i18n-src file.\n"
         )
 
     raise ValueError(error_string)

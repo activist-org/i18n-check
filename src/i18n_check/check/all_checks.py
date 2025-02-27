@@ -42,15 +42,15 @@ def run_check(script_name: str) -> bool:
 
 def main() -> None:
     checks = [
-        "check_invalid_keys.py",
-        "check_key_identifiers.py",
-        "check_non_source_keys.py",
-        "check_unused_keys.py",
-        "check_repeat_values.py",
+        "invalid_keys.py",
+        "key_identifiers.py",
+        "non_source_keys.py",
+        "unused_keys.py",
+        "repeat_values.py",
     ]
 
     if True:
-        checks.append("check_nested_i18n_src.py")
+        checks.append("nested_i18n_src.py")
 
     check_results: list[bool] = []
     check_results.extend(run_check(check) for check in checks)

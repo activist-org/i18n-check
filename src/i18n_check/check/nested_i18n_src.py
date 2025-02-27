@@ -4,7 +4,7 @@ Checks if i18n-dir contains JSON files with nested JSON objects.
 If yes, warns the user that this structure makes replacing invalid keys more difficult.
 
 Usage:
-    python3 src/i18n_check/checks/check_nested_i18n_src.py
+    python3 src/i18n_check/check/nested_i18n_src.py
 """
 
 import json

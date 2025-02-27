@@ -4,7 +4,7 @@ Checks if the i18n-src file has keys that are not used in the codebase.
 If yes, suggest that they be removed from the i18n-src.
 
 Usage:
-    python3 src/i18n_check/checks/check_unused_keys.py
+    python3 src/i18n_check/check/unused_keys.py
 """
 
 import re
@@ -49,10 +49,10 @@ if unused_keys := list(set(all_keys) - set(used_keys)):
     key_to_be = "keys that are" if len(unused_keys) > 1 else "key that is"
     key_or_keys = "keys" if len(unused_keys) > 1 else "key"
     raise ValueError(
-        f"\ncheck_unused_keys failure: There {to_be} {len(unused_keys)} i18n {key_to_be} unused. Please remove or assign the following {key_or_keys}:\n\n{', '.join(unused_keys)}\n"
+        f"\nunused_keys failure: There {to_be} {len(unused_keys)} i18n {key_to_be} unused. Please remove or assign the following {key_or_keys}:\n\n{', '.join(unused_keys)}\n"
     )
 
 else:
     print(
-        "check_unused_keys success: All i18n keys in the i18n-src file are used in the project."
+        "unused_keys success: All i18n keys in the i18n-src file are used in the project."
     )
