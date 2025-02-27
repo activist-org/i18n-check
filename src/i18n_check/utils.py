@@ -9,7 +9,7 @@ import os
 import re
 import string
 from pathlib import Path
-from typing import Dict
+from typing import Any, Dict, List
 
 import yaml
 
@@ -38,7 +38,7 @@ path_separator = "\\" if os.name == "nt" else "/"
 # MARK: File Reading
 
 
-def read_json_file(file_path: str) -> Dict[str, str]:
+def read_json_file(file_path: str | Path) -> Any:
     """
     Reads a JSON file and returns its content.
 
@@ -60,11 +60,11 @@ def read_json_file(file_path: str) -> Dict[str, str]:
 
 
 def collect_files_to_check(
-    directory: str,
+    directory: str | Path,
     file_types: list[str],
     directories_to_skip: list[str],
     files_to_skip: list[str],
-) -> list:
+) -> List[str]:
     """
     Collects all files with a given extension from a directory and its subdirectories.
 
@@ -87,7 +87,7 @@ def collect_files_to_check(
     files_to_check : list
         A list of file paths that match the given extension.
     """
-    files_to_check = []
+    files_to_check: List[str] = []
     for root, dirs, files in os.walk(directory):
         # Skip directories in directories_to_skip.
         if all(skip_dir not in root for skip_dir in directories_to_skip):
@@ -206,7 +206,7 @@ def filter_valid_key_parts(potential_key_parts: list[str]) -> list[str]:
 # MARK: JSON Files
 
 
-def get_all_json_files(directory: str, path_separator: str) -> list:
+def get_all_json_files(directory: str | Path, path_separator: str) -> List[str]:
     """
     Get all JSON files in the specified directory.
 

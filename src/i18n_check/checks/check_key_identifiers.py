@@ -8,6 +8,7 @@ Usage:
 """
 
 from collections import defaultdict
+from typing import Dict, List
 
 from i18n_check.utils import (
     collect_files_to_check,
@@ -41,7 +42,7 @@ for frontend_file in files_to_check:
 # MARK: Key-Files Dict
 
 all_keys = list(i18n_src_dict.keys())
-key_file_dict = defaultdict()
+key_file_dict: Dict[str, List[str]] = defaultdict()
 for k in all_keys:
     key_file_dict[k] = []
     for i, v in file_to_check_contents.items():
@@ -67,7 +68,7 @@ for k in key_file_dict:
     # Key is used in one file.
     if len(key_file_dict[k]) == 1:
         formatted_potential_key = path_to_valid_key(key_file_dict[k][0])
-        potential_key_parts = formatted_potential_key.split(".")
+        potential_key_parts: List[str] = formatted_potential_key.split(".")
         # Is the part in the last key part such that it's a parent directory that's included in the file name.
         valid_key_parts = filter_valid_key_parts(potential_key_parts)
 
@@ -79,21 +80,25 @@ for k in key_file_dict:
     # Key is used in multiple files.
     else:
         formatted_potential_keys = [path_to_valid_key(p) for p in key_file_dict[k]]
-        potential_key_parts = [k.split(".") for k in formatted_potential_keys]
+        potential_key_parts = [
+            part for k in formatted_potential_keys for part in k.split(".")
+        ]
 
         # Match all entries with their counterparts from other valid key parts.
-        corresponding_valid_key_parts = list(zip(*potential_key_parts))
+        corresponding_valid_key_parts = list(
+            zip(*(k.split(".") for k in formatted_potential_keys))
+        )
 
         # Append all parts in order so long as all valid keys share the same part.
         extended_key_base = ""
         global_added = False
-        for i in range(len(corresponding_valid_key_parts)):
-            if len(set(corresponding_valid_key_parts[i])) != 1 and not global_added:
+        for current_parts in corresponding_valid_key_parts:
+            if len(set(current_parts)) != 1 and not global_added:
                 extended_key_base += "_global."
                 global_added = True
 
-            if len(set(corresponding_valid_key_parts[i])) == 1:
-                extended_key_base += f"{corresponding_valid_key_parts[i][0]}."
+            if len(set(current_parts)) == 1:
+                extended_key_base += f"{(current_parts)[0]}."
 
         # Don't include a key part if it's included in the final one (i.e. organizational sub dir).
         extended_key_base_split = extended_key_base.split()

@@ -44,8 +44,8 @@ jobs:
 
       - name: Run mypy - Static Type Checking
         if: always()
-        run: mypy ./src --config-file ./src/pyproject.toml
+        run: mypy ./src --config-file ./pyproject.toml
 
       - name: Run pytest - Unit Tests
         if: always()
-        run: pytest . -vv
+        run: pytest . --cov=. --cov-report=term-missing --cov-fail-under=70 --cov-config=./pyproject.toml
