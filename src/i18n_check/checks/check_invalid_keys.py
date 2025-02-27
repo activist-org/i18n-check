@@ -9,6 +9,7 @@ Usage:
 
 import os
 import re
+from typing import Any, List, Set
 
 from i18n_check.utils import (
     collect_files_to_check,
@@ -52,16 +53,16 @@ all_i18n_key_patterns = [
     i18n_key_pattern_back_tick,
 ]
 
-all_used_i18n_keys = []
+all_used_i18n_keys: Set[Any] = set()
 for v in file_to_check_contents.values():
-    all_file_i18n_keys = []
+    all_file_i18n_keys: List[Any] = []
     all_file_i18n_keys.extend(
         re.findall(i18n_kp, v) for i18n_kp in all_i18n_key_patterns
     )
     # Remove the first and last characters that are the quotes or back ticks.
     all_file_i18n_keys = [k[1:-1] for ks in all_file_i18n_keys for k in ks]
 
-    all_used_i18n_keys += all_file_i18n_keys
+    all_used_i18n_keys.add(all_file_i18n_keys)
 
 all_used_i18n_keys = set(all_used_i18n_keys)
 

@@ -24,7 +24,10 @@ all_src_keys = i18n_src_dict.keys()
 
 non_source_keys_dict = {}
 for json_file in get_all_json_files(i18n_directory, path_separator):
-    if json_file.split(path_separator)[-1] != i18n_src_file.split(path_separator)[-1]:
+    if (
+        json_file.split(path_separator)[-1]
+        != str(i18n_src_file).split(path_separator)[-1]
+    ):
         json_dict = read_json_file(json_file)
 
         all_keys = json_dict.keys()

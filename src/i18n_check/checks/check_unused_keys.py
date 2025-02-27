@@ -8,6 +8,7 @@ Usage:
 """
 
 import re
+from typing import List
 
 from i18n_check.utils import (
     collect_files_to_check,
@@ -34,7 +35,7 @@ file_to_check_contents = read_files_to_dict(files=files_to_check)
 # MARK: Unused Keys
 
 all_keys = list(i18n_src_dict.keys())
-used_keys = []
+used_keys: List[str] = []
 for k in all_keys:
     key_search_pattern = r"[\S]*\.".join(k.split("."))
     for file_contents in file_to_check_contents.values():

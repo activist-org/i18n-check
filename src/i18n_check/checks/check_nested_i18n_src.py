@@ -34,7 +34,7 @@ def is_nested_json(data: Dict[str, str]) -> bool:
     return False
 
 
-def check_i18n_files(directory) -> None:
+def check_i18n_files(directory: str | Path) -> None:
     """
     Check all JSON files in the given directory for nested structures.
 
