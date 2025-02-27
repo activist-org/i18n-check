@@ -48,4 +48,4 @@ jobs:
 
       - name: Run pytest - Unit Tests
         if: always()
-        run: pytest . -vv
+        run: pytest . --cov=. --cov-report=term-missing --cov-fail-under=60 --cov-config=./pyproject.toml

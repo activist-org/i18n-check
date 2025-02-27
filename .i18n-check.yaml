@@ -3,7 +3,7 @@
 
 src-dir: tests
 i18n-dir: tests/test_frontend/test_i18n
-i18n-src: tests/test_frontend/test-i18n/test-i18n-src.json
+i18n-src: tests/test_frontend/test_i18n/test_i18n_src.json
 
 checks:
   - invalid-keys: true

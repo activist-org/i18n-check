@@ -92,7 +92,7 @@ for k in key_file_dict:
         # Append all parts in order so long as all valid keys share the same part.
         extended_key_base = ""
         global_added = False
-        for i, current_parts in enumerate(corresponding_valid_key_parts):
+        for current_parts in corresponding_valid_key_parts:
             if len(set(current_parts)) != 1 and not global_added:
                 extended_key_base += "_global."
                 global_added = True
