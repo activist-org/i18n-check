@@ -73,7 +73,7 @@ You provide `i18n-check` with the following arguments:
 
 From there the following checks are ran across your codebase:
 
-- `invalid_keys`: Does the include i18n keys that are not within the source file?
+- `invalid-keys`: Does the include i18n keys that are not within the source file?
 - `key-identifiers`: Does the source file have keys that don't match the above format or name conventions?
   - Rename them so i18n key usage is consistent and their scope is communicated in their name.
 - `unused-keys`: Does the source file have keys that are not used in the codebase?
@@ -99,9 +99,9 @@ i18n-src: frontend/i18n/en.json
 checks:
   - invalid-keys: true
   - key-identifiers: true
-  - unused-keys: true
   - non-source-keys: true
   - repeat-values: true
+  - unused-keys: true
 
 file-types-to-check: [.ts, .js]
 directories-to-skip: [frontend/node_modules]

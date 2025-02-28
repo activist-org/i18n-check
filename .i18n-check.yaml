@@ -8,9 +8,9 @@ i18n-src: tests/test_frontend/test_i18n/test_i18n_src.json
 checks:
   - invalid-keys: true
   - key-identifiers: true
-  - unused-keys: true
   - non-source-keys: true
   - repeat-values: true
+  - unused-keys: true
 
 file-types-to-check: [.ts]
 directories-to-skip: []
