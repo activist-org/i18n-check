@@ -27,8 +27,14 @@ src_directory = Path(config["src-dir"]).resolve()
 i18n_directory = Path(config["i18n-dir"]).resolve()
 i18n_src_file = Path(config["i18n-src"]).resolve()
 
+global_skip = config["checks"]["all"]["skip"]
+invalid_keys_skip = global_skip + config["checks"]["invalid-keys"]["skip"]
+key_identifiers_skip = global_skip + config["checks"]["key-identifiers"]["skip"]
+non_source_skip = global_skip + config["checks"]["non-source-keys"]["skip"]
+repeat_values_skip = global_skip + config["checks"]["repeat-values"]["skip"]
+unused_keys_skip = global_skip + config["checks"]["unused-keys"]["skip"]
+
 file_types_to_check = config["file-types-to-check"]
-directories_to_skip = config["directories-to-skip"]
 files_to_skip = config["files-to-skip"]
 warn_on_nested_i18n_src = config["warn-on-nested-i18n-src"]
 
