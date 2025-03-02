@@ -1,6 +1,6 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 """
-Utility functions for i18-check.
+Utility functions for i18n-check.
 """
 
 import glob
