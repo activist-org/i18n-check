@@ -17,6 +17,20 @@ from i18n_check.cli.version import get_latest_version, get_local_version
 
 
 def upgrade_cli() -> None:
+    """
+    Upgrades the CLI tool to the latest version.
+
+    This function checks the current version of the i18n-check CLI tool
+    and compares it with the latest version available on GitHub. If a
+    newer version is available, it downloads the latest version, extracts
+    the files, updates the local files, and installs the updated version
+    locally.
+
+    Raises
+    ------
+    subprocess.CalledProcessError
+        If the installation of the updated version fails.
+    """
     local_version = get_local_version()
     latest_version = get_latest_version()
     latest_version = latest_version.split("v")[-1]

@@ -10,6 +10,13 @@ import requests
 
 
 def get_local_version() -> str:
+    """
+    Get the local version of the i18n-check package.
+
+    Returns:
+        str: The version of the installed i18n-check package, or a message indicating
+            that the package is not installed via pip.
+    """
     try:
         return metadata.version("i18n-check")
 
@@ -18,6 +25,13 @@ def get_local_version() -> str:
 
 
 def get_latest_version() -> Any:
+    """
+    Get the latest version of the i18n-check package from GitHub.
+
+    Returns:
+        Any: The latest version of the i18n-check package, or a message indicating
+             that the version could not be fetched.
+    """
     try:
         response = requests.get(
             "https://api.github.com/repos/activist-org/i18n-check/releases/latest"
@@ -30,6 +44,13 @@ def get_latest_version() -> Any:
 
 
 def get_version_message() -> str:
+    """
+    Get a message indicating the local and latest versions of the i18n-check package.
+
+    Returns:
+        str: A message indicating the local version, the latest version, and whether
+             an upgrade is available.
+    """
     local_version = get_local_version()
     latest_version = get_latest_version()
 
