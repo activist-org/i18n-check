@@ -21,14 +21,104 @@ config_path = Path(__file__).parent.parent.parent / ".i18n-check.yaml"
 with open(config_path, "r", encoding="utf-8") as file:
     config = yaml.safe_load(file)
 
-# MARK: Define Globals
+# MARK: Paths
 
 src_directory = Path(config["src-dir"]).resolve()
 i18n_directory = Path(config["i18n-dir"]).resolve()
 i18n_src_file = Path(config["i18n-src"]).resolve()
 
+# MARK: Active Checks
+
+if "global" in config["checks"] and "active" in config["checks"]["global"]:
+    global_active = config["checks"]["global"]["active"]
+
+if global_active:
+    invalid_keys_active = global_active
+    key_identifiers_active = global_active
+    non_source_active = global_active
+    repeat_values_active = global_active
+    unused_keys_active = global_active
+
+else:
+    if (
+        "invalid-keys" in config["checks"]
+        and "active" in config["checks"]["invalid-keys"]
+    ):
+        invalid_keys_active = config["checks"]["invalid-keys"]["active"]
+
+    else:
+        invalid_keys_active = False
+
+    if (
+        "key-identifiers" in config["checks"]
+        and "active" in config["checks"]["key-identifiers"]
+    ):
+        key_identifiers_active = config["checks"]["key-identifiers"]["active"]
+
+    else:
+        key_identifiers_active = False
+
+    if (
+        "non-source-keys" in config["checks"]
+        and "active" in config["checks"]["non-source-keys"]
+    ):
+        non_source_active = config["checks"]["non-source-keys"]["active"]
+
+    else:
+        non_source_active = False
+
+    if (
+        "repeat-values" in config["checks"]
+        and "active" in config["checks"]["repeat-values"]
+    ):
+        repeat_values_active = config["checks"]["repeat-values"]["active"]
+
+    else:
+        repeat_values_active = False
+
+    if (
+        "unused-keys" in config["checks"]
+        and "active" in config["checks"]["unused-keys"]
+    ):
+        unused_keys_active = config["checks"]["unused-keys"]["active"]
+
+    else:
+        unused_keys_active = False
+
+# MARK: Check Skips
+
+global_skip = []
+if "global" in config["checks"] and "skip" in config["checks"]["global"]:
+    global_skip = config["checks"]["global"]["skip"]
+
+invalid_keys_skip = global_skip
+key_identifiers_skip = global_skip
+non_source_skip = global_skip
+repeat_values_skip = global_skip
+unused_keys_skip = global_skip
+
+if "invalid-keys" in config["checks"] and "skip" in config["checks"]["invalid-keys"]:
+    invalid_keys_skip += config["checks"]["invalid-keys"]["skip"]
+
+if (
+    "key-identifiers" in config["checks"]
+    and "skip" in config["checks"]["key-identifiers"]
+):
+    invalid_keys_skip += config["checks"]["key-identifiers"]["skip"]
+
+if (
+    "non-source-keys" in config["checks"]
+    and "skip" in config["checks"]["non-source-keys"]
+):
+    invalid_keys_skip += config["checks"]["non-source-keys"]["skip"]
+
+if "repeat-values" in config["checks"] and "skip" in config["checks"]["repeat-values"]:
+    invalid_keys_skip += config["checks"]["repeat-values"]["skip"]
+
+if "unused-keys" in config["checks"] and "skip" in config["checks"]["unused-keys"]:
+    invalid_keys_skip += config["checks"]["unused-keys"]["skip"]
+
 file_types_to_check = config["file-types-to-check"]
-directories_to_skip = config["directories-to-skip"]
 files_to_skip = config["files-to-skip"]
 warn_on_nested_i18n_src = config["warn-on-nested-i18n-src"]
 

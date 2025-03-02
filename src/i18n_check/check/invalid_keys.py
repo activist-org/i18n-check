@@ -13,10 +13,10 @@ from typing import Any, List, Set
 
 from i18n_check.utils import (
     collect_files_to_check,
-    directories_to_skip,
     file_types_to_check,
     files_to_skip,
     i18n_src_file,
+    invalid_keys_skip,
     read_json_file,
     src_directory,
 )
@@ -31,7 +31,7 @@ i18n_src_dict = read_json_file(file_path=i18n_src_file)
 files_to_check = collect_files_to_check(
     directory=src_directory,
     file_types=file_types_to_check,
-    directories_to_skip=directories_to_skip,
+    directories_to_skip=invalid_keys_skip,
     files_to_skip=files_to_skip,
 )
 
@@ -62,7 +62,7 @@ for v in file_to_check_contents.values():
     # Remove the first and last characters that are the quotes or back ticks.
     all_file_i18n_keys = [k[1:-1] for ks in all_file_i18n_keys for k in ks]
 
-    all_used_i18n_keys.add(all_file_i18n_keys)
+    all_used_i18n_keys.update(all_file_i18n_keys)
 
 all_used_i18n_keys = set(all_used_i18n_keys)
 

@@ -12,13 +12,13 @@ from typing import List
 
 from i18n_check.utils import (
     collect_files_to_check,
-    directories_to_skip,
     file_types_to_check,
     files_to_skip,
     i18n_src_file,
     read_files_to_dict,
     read_json_file,
     src_directory,
+    unused_keys_skip,
 )
 
 # MARK: Paths / Files
@@ -27,7 +27,7 @@ i18n_src_dict = read_json_file(file_path=i18n_src_file)
 files_to_check = collect_files_to_check(
     directory=src_directory,
     file_types=file_types_to_check,
-    directories_to_skip=directories_to_skip,
+    directories_to_skip=unused_keys_skip,
     files_to_skip=files_to_skip,
 )
 file_to_check_contents = read_files_to_dict(files=files_to_check)
