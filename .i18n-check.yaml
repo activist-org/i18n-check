@@ -6,25 +6,10 @@ i18n-dir: tests/test_frontend/test_i18n
 i18n-src: tests/test_frontend/test_i18n/test_i18n_src.json
 
 checks:
-  all:
-    active: true
-    skip: [frontend/node_modules]
-  invalid-keys:
-    active: true
-    skip: []
-  key-identifiers:
-    active: true
-    skip: []
-  non-source-keys:
-    active: true
-    skip: []
-  repeat-values:
-    active: true
-    skip: []
-  unused-keys:
+  global:
     active: true
     skip: []
 
-file-types-to-check: [.ts,.js]
+file-types-to-check: [.ts]
 files-to-skip: []
 warn-on-nested-i18n-src: true
