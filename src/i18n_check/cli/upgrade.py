@@ -44,7 +44,7 @@ def upgrade_cli() -> None:
 
     print("Updating i18n-check...")
 
-    url = f"https://github.com/scribe-org/i18n-check/archive/refs/tags/{latest_version}.tar.gz"
+    url = f"https://github.com/activist-org/i18n-check/archive/refs/tags/{latest_version}.tar.gz"
     print(f"Downloading i18n-check v{latest_version}...")
     response = requests.get(url)
 

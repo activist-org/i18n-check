@@ -17,7 +17,7 @@ def main() -> None:
     # MARK: CLI Base
 
     parser = argparse.ArgumentParser(
-        description="A CLI is a tool for checking i18n/L10n keys and values.",
+        description="i18n-check is a CLI tool for checking i18n/L10n keys and values.",
         epilog=CLI_EPILOG,
         formatter_class=lambda prog: argparse.HelpFormatter(prog, max_help_position=60),
     )
