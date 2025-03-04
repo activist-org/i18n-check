@@ -190,6 +190,9 @@ git remote add upstream https://github.com/activist-org/i18n-check.git
    # After activating venv:
    pip install --upgrade pip
    pip install -r requirements-dev.txt
+
+   # To install the CLI for local development:
+   pip install -e .
    ```
 
 You're now ready to work on `i18n-check`!

@@ -18,3 +18,4 @@ pytest
 pytest-cov
 ruff
 types-PyYAML
+types-requests
