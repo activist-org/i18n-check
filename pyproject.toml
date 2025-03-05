@@ -49,14 +49,7 @@ testpaths = ["tests"]
 filterwarnings = "error"
 
 [tool.coverage.run]
-omit = [
-    "*/migrations/*",
-    "*/tests/*",
-    "tests.py",
-    "asgi.py",
-    "wsgi.py",
-    "manage.py",
-]
+omit = ["*/tests/*"]
 
 [tool.mypy]
 mypy_path = "src"
