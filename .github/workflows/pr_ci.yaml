@@ -24,16 +24,13 @@ jobs:
         with:
           python-version: "3.11"
 
-      - name: Install Dependencies
+      - name: Create Environment and Install Dependencies
         run: |
           python -m pip install --upgrade uv
           uv venv
-          uv pip install -r requirements-dev.txt
-
-      - name: Activate Virtual Environment
-        run: |
           . .venv/bin/activate
           echo PATH=$PATH >> $GITHUB_ENV
+          uv pip install -r requirements-dev.txt
 
       - name: Run Ruff Format - Formatting Check
         run: ruff format ./src
