@@ -23,13 +23,14 @@ Developed by the [activist community](https://github.com/activist-org), this pro
 
 # **Contents**
 
-- [Conventions](#contentions-)
-- [How it works](#how-it-works-)
-  - [Arguments](#arguments-)
-  - [Checks](#checks-)
-- [Configuration](#configuration-)
-- [Development environment](#dev-env-)
-- [Contributors](#contributors-)
+- [**Contents**](#contents)
+- [Conventions `⇧`](#conventions-)
+- [How it works `⇧`](#how-it-works-)
+    - [Arguments `⇧`](#arguments-)
+    - [Checks `⇧`](#checks-)
+- [Configuration `⇧`](#configuration-)
+  - [Development environment `⇧`](#development-environment-)
+- [Contributors `⇧`](#contributors-)
 
 <a id="conventions-"></a>
 
@@ -82,6 +83,8 @@ From there the following checks are ran across your codebase:
   - Remove them as they won't be used in the application.
 - `repeat-values`: Does the source file have repeat values that can be combined into a single key?
   - Combine them so the localization team only needs to localize one of them.
+- `nested-keys`: Does the source file contain nested JSON structures?
+  - Flatten them to make replacing invalid keys easier and to allow easy find-and-replace operations.
 
 Each of the above checks is ran in parallel with directions for how to fix the i18n files being provided when errors are raised. Checks can also be disabled in the workflow via options passed in the configuration YAML file.
 
