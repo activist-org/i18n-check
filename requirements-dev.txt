@@ -8,13 +8,11 @@ build==1.2.2.post1
     # via pip-tools
 certifi==2025.1.31
     # via
-    #   -r /Users/andrewtavis/coding/activist-org/i18n-check/requirements.txt
     #   requests
 cfgv==3.4.0
     # via pre-commit
 charset-normalizer==3.4.1
     # via
-    #   -r /Users/andrewtavis/coding/activist-org/i18n-check/requirements.txt
     #   requests
 click==8.1.8
     # via pip-tools
@@ -28,7 +26,6 @@ identify==2.6.8
     # via pre-commit
 idna==3.10
     # via
-    #   -r /Users/andrewtavis/coding/activist-org/i18n-check/requirements.txt
     #   requests
 iniconfig==2.0.0
     # via pytest
@@ -62,12 +59,10 @@ pytest-cov==6.0.0
     # via -r requirements-dev.in
 pyyaml==6.0.2
     # via
-    #   -r /Users/andrewtavis/coding/activist-org/i18n-check/requirements.txt
     #   -r requirements-dev.in
     #   pre-commit
 requests==2.32.3
     # via
-    #   -r /Users/andrewtavis/coding/activist-org/i18n-check/requirements.txt
     #   -r requirements-dev.in
 ruff==0.9.7
     # via -r requirements-dev.in
@@ -79,7 +74,6 @@ typing-extensions==4.12.2
     # via mypy
 urllib3==2.3.0
     # via
-    #   -r /Users/andrewtavis/coding/activist-org/i18n-check/requirements.txt
     #   requests
     #   types-requests
 virtualenv==20.29.2
