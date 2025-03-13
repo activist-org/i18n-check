@@ -19,7 +19,7 @@ def main() -> None:
     ]
 
     if True:
-        checks.append("nested_i18n_src.py")
+        checks.append("nested_keys.py")
 
     check_results: list[bool] = []
     check_results.extend(run_check(check) for check in checks)

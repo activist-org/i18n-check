@@ -121,7 +121,7 @@ if "unused-keys" in config["checks"] and "skip" in config["checks"]["unused-keys
 
 file_types_to_check = config["file-types-to-check"]
 files_to_skip = config["files-to-skip"]
-warn_on_nested_i18n_src = config["warn-on-nested-i18n-src"]
+warn_on_nested_keys = config["warn-on-nested-keys"]
 
 # Check for Windows and derive directory path separator.
 path_separator = "\\" if os.name == "nt" else "/"

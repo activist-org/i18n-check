@@ -22,6 +22,9 @@ def main() -> None:
         epilog=CLI_EPILOG,
         formatter_class=lambda prog: argparse.HelpFormatter(prog, max_help_position=60),
     )
+
+    parser._actions[0].help = "Show this help message and exit."
+
     parser.add_argument(
         "-v",
         "--version",
@@ -38,34 +41,6 @@ def main() -> None:
     )
 
     parser.add_argument(
-        "-uk",
-        "--unused-keys",
-        action="store_true",
-        help="Check for unused i18n keys in the codebase.",
-    )
-
-    parser.add_argument(
-        "-rv",
-        "--repeat-values",
-        action="store_true",
-        help="Check for values in the i18n-src file have repeat string.",
-    )
-
-    parser.add_argument(
-        "-nsk",
-        "--non-source-keys",
-        action="store_true",
-        help="Check if i18n translation JSON files have keys that are not in es-US.json.",
-    )
-
-    parser.add_argument(
-        "-nf",
-        "--nested-i18n-src",
-        action="store_true",
-        help="Check for nested i18n source keys in the i18n-src file.",
-    )
-
-    parser.add_argument(
         "-ki",
         "--key-identifiers",
         action="store_true",
@@ -76,15 +51,44 @@ def main() -> None:
         "-ik",
         "--invalid-keys",
         action="store_true",
-        help="Check for keys used in the project appear in the i18n-src file.",
+        help="Check if the codebase includes i18n keys that are not within the source file.",
     )
 
     parser.add_argument(
-        "-ach",
+        "-uk",
+        "--unused-keys",
+        action="store_true",
+        help="Check for unused i18n keys in the codebase.",
+    )
+
+    parser.add_argument(
+        "-nsk",
+        "--non-source-keys",
+        action="store_true",
+        help="Check if i18n translation JSON files have keys that are not in the source file.",
+    )
+
+    parser.add_argument(
+        "-rv",
+        "--repeat-values",
+        action="store_true",
+        help="Check if values in the i18n-src file have repeat strings.",
+    )
+
+    parser.add_argument(
+        "-nk",
+        "--nested-keys",
+        action="store_true",
+        help="Check for nested i18n source and translation keys.",
+    )
+
+    parser.add_argument(
+        "-a",
         "--all-checks",
         action="store_true",
-        help="Run all i18n checks for the project.",
+        help="Run all i18n checks on the project.",
     )
+
     # MARK: Setup CLI
 
     args = parser.parse_args()
@@ -93,28 +97,28 @@ def main() -> None:
         upgrade_cli()
         return
 
-    if args.unused_keys:
-        run_check("unused_keys.py")
-        return
-
-    if args.repeat_values:
-        run_check("repeat_values.py")
-        return
-
-    if args.non_source_keys:
-        run_check("non_source_keys.py")
-        return
-
-    if args.nested_i18n_src:
-        run_check("nested_i18n_src.py")
-        return
-
     if args.key_identifiers:
         run_check("key_identifiers.py")
         return
 
     if args.invalid_keys:
         run_check("invalid_keys.py")
+        return
+
+    if args.unused_keys:
+        run_check("unused_keys.py")
+        return
+
+    if args.non_source_keys:
+        run_check("non_source_keys.py")
+        return
+
+    if args.repeat_values:
+        run_check("repeat_values.py")
+        return
+
+    if args.nested_keys:
+        run_check("nested_keys.py")
         return
 
     if args.all_checks:

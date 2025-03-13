@@ -12,4 +12,4 @@ checks:
 
 file-types-to-check: [.ts]
 files-to-skip: []
-warn-on-nested-i18n-src: true
+warn-on-nested-keys: true
