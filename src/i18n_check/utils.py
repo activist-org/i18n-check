@@ -8,6 +8,7 @@ import json
 import os
 import re
 import string
+import subprocess
 from pathlib import Path
 from typing import Any, Dict, List
 
@@ -120,7 +121,7 @@ if "unused-keys" in config["checks"] and "skip" in config["checks"]["unused-keys
 
 file_types_to_check = config["file-types-to-check"]
 files_to_skip = config["files-to-skip"]
-warn_on_nested_i18n_src = config["warn-on-nested-i18n-src"]
+warn_on_nested_keys = config["warn-on-nested-keys"]
 
 # Check for Windows and derive directory path separator.
 path_separator = "\\" if os.name == "nt" else "/"
@@ -361,3 +362,36 @@ def read_files_to_dict(files: list[str]) -> Dict[str, str]:
             file_contents[file] = f.read()
 
     return file_contents
+
+
+# MARK: Run Check
+
+
+def run_check(script_name: str) -> bool:
+    """
+    Runs a check script and reports the results via the terminal.
+
+    Parameters
+    ----------
+    script_name : str
+        The filename for the script to run.
+
+    Returns
+    -------
+    bool
+        Whether the given script passed or not from subprocess.run.check.
+
+    Raises
+    -------
+    subprocess.CalledProcessError
+        An error that the given check script has failed.
+    """
+    try:
+        subprocess.run(
+            ["python", Path("src") / "i18n_check" / "check" / script_name], check=True
+        )
+        return True
+
+    except subprocess.CalledProcessError as e:
+        print(f"Error running {script_name}: {e}")
+        return False

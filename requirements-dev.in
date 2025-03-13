@@ -16,6 +16,7 @@ pip-tools
 pre-commit
 pytest
 pytest-cov
+requests
 ruff
 types-PyYAML
 types-requests

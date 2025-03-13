@@ -17,8 +17,8 @@ if on_rtd:
     requirements = []
 
 setup_args = dict(
-    name="",
-    version="0.0.1",
+    name="i18n-check",
+    version="0.1.0",
     package_dir={"": "src"},
     author="Andrew Tavis McAllister",
     author_email="andrew.t.mcallister@gmail.com",
@@ -26,7 +26,12 @@ setup_args = dict(
     long_description=open("README.md").read(),
     long_description_content_type="text/markdown",
     url="https://github.com/activist-org/i18n-check",
-    packages=find_packages(),
+    packages=find_packages(where="src"),
+    entry_points={
+        "console_scripts": [
+            "i18n-check=i18n_check.cli.main:main",
+        ],
+    },
     install_requires=requirements,
     classifiers=[
         "Development Status :: 5 - Production/Stable",
