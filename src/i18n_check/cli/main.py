@@ -83,6 +83,13 @@ def main() -> None:
     )
 
     parser.add_argument(
+        "-rk",
+        "--repeat-keys",
+        action="store_true",
+        help="Check for duplicate keys in i18n JSON files",
+    )
+
+    parser.add_argument(
         "-a",
         "--all-checks",
         action="store_true",
@@ -119,6 +126,10 @@ def main() -> None:
 
     if args.nested_keys:
         run_check("nested_keys.py")
+        return
+
+    if args.repeat_keys:
+        run_check("repeat_keys.py")
         return
 
     if args.all_checks:
