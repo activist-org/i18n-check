@@ -15,6 +15,7 @@ def main() -> None:
         "key_identifiers.py",
         "non_source_keys.py",
         "unused_keys.py",
+        "repeat_keys.py",
         "repeat_values.py",
     ]
 
