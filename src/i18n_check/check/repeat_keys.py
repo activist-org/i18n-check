@@ -22,14 +22,17 @@ def find_duplicate_keys(json_str: str) -> Dict[str, List[str]]:
     """
     grouped = defaultdict(list)
 
-    def check_duplicates(pairs) -> Dict:
-        for key, value in pairs:
+    def create_key_values_dict(pairs: dict) -> Dict:
+        """
+        Creates a dictionary of keys and their potentially duplicate values meaning the key is repeated.
+        """
+        for key, value in pairs.items():
             grouped[key].append(str(value))
 
         return dict(pairs)
 
     try:
-        json.loads(json_str, object_pairs_hook=check_duplicates)
+        json.loads(json_str, object_pairs_hook=create_key_values_dict)
         duplicates = {
             k: values_list for k, values_list in grouped.items() if len(values_list) > 1
         }
