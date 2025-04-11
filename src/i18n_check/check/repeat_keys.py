@@ -11,7 +11,7 @@ python3 src/i18n_check/check/non_source_keys.py
 import json
 from collections import defaultdict
 from pathlib import Path
-from typing import Dict, List, Tuple
+from typing import Any, Dict, List, Tuple
 
 from i18n_check.utils import get_all_json_files, i18n_directory, path_separator
 
@@ -22,11 +22,11 @@ def find_duplicate_keys(json_str: str) -> Dict[str, List[str]]:
     """
     grouped = defaultdict(list)
 
-    def create_key_values_dict(pairs: dict) -> Dict[str : List[str]]:
+    def create_key_values_dict(pairs: List[Tuple[Any, Any]]) -> Dict[str, Any]:
         """
         Creates a dictionary of keys and their potentially duplicate values meaning the key is repeated.
         """
-        for key, value in pairs.items():
+        for key, value in pairs:
             grouped[key].append(str(value))
 
         return dict(pairs)
