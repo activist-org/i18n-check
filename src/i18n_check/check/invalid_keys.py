@@ -3,8 +3,9 @@
 Checks the i18n keys used in the project and makes sure that each of them appears in the i18n-src file.
 If there are invalid keys, alert the user to their presence.
 
-Usage:
-    python3 src/i18n_check/check/invalid_keys.py
+Usage
+-----
+python3 src/i18n_check/check/invalid_keys.py
 """
 
 import os

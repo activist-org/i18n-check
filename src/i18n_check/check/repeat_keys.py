@@ -2,6 +2,10 @@
 """
 Checks for duplicate keys in i18n JSON files using JSON parsing.
 Identifies exact key duplicates that might occur during mass replacements.
+
+Usage
+-----
+python3 src/i18n_check/check/non_source_keys.py
 """
 
 import json
@@ -13,12 +17,15 @@ from i18n_check.utils import get_all_json_files, i18n_directory, path_separator
 
 
 def find_duplicate_keys(json_str: str) -> Dict[str, List[str]]:
-    """Identifies duplicate keys using JSON parser with custom hook."""
+    """
+    Identifies duplicate keys using JSON parser with custom hook.
+    """
     grouped = defaultdict(list)
 
-    def check_duplicates(pairs):
+    def check_duplicates(pairs) -> Dict:
         for key, value in pairs:
             grouped[key].append(str(value))
+
         return dict(pairs)
 
     try:
@@ -27,19 +34,25 @@ def find_duplicate_keys(json_str: str) -> Dict[str, List[str]]:
             k: values_list for k, values_list in grouped.items() if len(values_list) > 1
         }
         return duplicates
+
     except json.JSONDecodeError as e:
         raise ValueError(f"Invalid JSON: {e}")
 
 
 def check_file(file_path: str) -> Tuple[str, Dict[str, List[str]]]:
-    """Checks a single JSON file for duplicates."""
+    """
+    Checks a single JSON file for duplicates.
+    """
     with open(file_path, "r", encoding="utf-8") as f:
         content = f.read()
+
     return (Path(file_path).name, find_duplicate_keys(content))
 
 
 def main() -> None:
-    """Main check execution."""
+    """
+    Main check execution.
+    """
     json_files = get_all_json_files(i18n_directory, path_separator)
     has_errors = False
 
@@ -48,6 +61,7 @@ def main() -> None:
         if duplicates:
             has_errors = True
             print(f"\nDuplicate keys in {filename}:")
+
             for key, values in duplicates.items():
                 print(f"  '{key}' appears {len(values)} times with values: {values}")
 

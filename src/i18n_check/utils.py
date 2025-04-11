@@ -37,6 +37,7 @@ if global_active:
     invalid_keys_active = global_active
     key_identifiers_active = global_active
     non_source_active = global_active
+    repeat_keys_active = global_active
     repeat_values_active = global_active
     unused_keys_active = global_active
 
@@ -69,6 +70,15 @@ else:
         non_source_active = False
 
     if (
+        "repeat-keys" in config["checks"]
+        and "active" in config["checks"]["repeat-keys"]
+    ):
+        repeat_keys_active = config["checks"]["repeat-keys"]["active"]
+
+    else:
+        repeat_keys_active = False
+
+    if (
         "repeat-values" in config["checks"]
         and "active" in config["checks"]["repeat-values"]
     ):
@@ -95,6 +105,7 @@ if "global" in config["checks"] and "skip" in config["checks"]["global"]:
 invalid_keys_skip = global_skip
 key_identifiers_skip = global_skip
 non_source_skip = global_skip
+repeat_keys_skip = global_skip
 repeat_values_skip = global_skip
 unused_keys_skip = global_skip
 
@@ -112,6 +123,9 @@ if (
     and "skip" in config["checks"]["non-source-keys"]
 ):
     invalid_keys_skip += config["checks"]["non-source-keys"]["skip"]
+
+if "repeat-keys" in config["checks"] and "skip" in config["checks"]["repeat-keys"]:
+    invalid_keys_skip += config["checks"]["repeat-keys"]["skip"]
 
 if "repeat-values" in config["checks"] and "skip" in config["checks"]["repeat-values"]:
     invalid_keys_skip += config["checks"]["repeat-values"]["skip"]

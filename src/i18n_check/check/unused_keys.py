@@ -3,8 +3,9 @@
 Checks if the i18n-src file has keys that are not used in the codebase.
 If yes, suggest that they be removed from the i18n-src.
 
-Usage:
-    python3 src/i18n_check/check/unused_keys.py
+Usage
+-----
+python3 src/i18n_check/check/unused_keys.py
 """
 
 import re
