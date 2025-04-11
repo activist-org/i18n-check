@@ -22,7 +22,7 @@ def find_duplicate_keys(json_str: str) -> Dict[str, List[str]]:
     """
     grouped = defaultdict(list)
 
-    def create_key_values_dict(pairs: dict) -> Dict:
+    def create_key_values_dict(pairs: dict) -> Dict[str : List[str]]:
         """
         Creates a dictionary of keys and their potentially duplicate values meaning the key is repeated.
         """
