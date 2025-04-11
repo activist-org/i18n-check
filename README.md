@@ -81,6 +81,8 @@ From there the following checks are ran across your codebase:
   - Remove them so the localization team isn't working on strings that aren't used.
 - `non-source-keys`: Do the target locale files have keys that are not in the source file?
   - Remove them as they won't be used in the application.
+- `repeat-keys`: Do any of localization files have repeat keys?
+  - Separate them so that the values are not mixed when they're in production.
 - `repeat-values`: Does the source file have repeat values that can be combined into a single key?
   - Combine them so the localization team only needs to localize one of them.
 - `nested-keys`: Do the i18n files contain nested JSON structures?
@@ -104,6 +106,7 @@ checks:
   - invalid-keys: true
   - unused-keys: true
   - non-source-keys: true
+  - repeat-keys: true
   - repeat-values: true
   - nested-keys: true
 

@@ -69,6 +69,13 @@ def main() -> None:
     )
 
     parser.add_argument(
+        "-rk",
+        "--repeat-keys",
+        action="store_true",
+        help="Check for duplicate keys in i18n JSON files.",
+    )
+
+    parser.add_argument(
         "-rv",
         "--repeat-values",
         action="store_true",
@@ -111,6 +118,10 @@ def main() -> None:
 
     if args.non_source_keys:
         run_check("non_source_keys.py")
+        return
+
+    if args.repeat_keys:
+        run_check("repeat_keys.py")
         return
 
     if args.repeat_values:
