@@ -4,9 +4,11 @@ Checks for duplicate keys in i18n JSON files using JSON parsing.
 
 Identifies exact key duplicates that might occur during mass replacements.
 
-Usage
------
-python3 src/i18n_check/check/non_source_keys.py
+Examples
+--------
+Run the following script in terminal:
+
+>>> python3 src/i18n_check/check/non_source_keys.py
 """
 
 import json

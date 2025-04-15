@@ -4,9 +4,11 @@ Checks if the i18n-src file has repeat string values.
 
 If yes, suggest that they be combined using a `_global` sub key at the lowest matching level of i18n-src.
 
-Usage
------
-python src/i18n_check/check/repeat_values.py
+Examples
+--------
+Run the following script in terminal:
+
+>>> python src/i18n_check/check/repeat_values.py
 """
 
 from collections import Counter
