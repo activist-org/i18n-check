@@ -1,6 +1,7 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 """
 Checks for duplicate keys in i18n JSON files using JSON parsing.
+
 Identifies exact key duplicates that might occur during mass replacements.
 
 Usage

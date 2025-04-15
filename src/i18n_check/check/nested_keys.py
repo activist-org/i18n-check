@@ -1,6 +1,7 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 """
 Checks if i18n-dir contains JSON files with nested JSON objects.
+
 If yes, warns the user that this structure makes replacing invalid keys more difficult.
 
 Usage
