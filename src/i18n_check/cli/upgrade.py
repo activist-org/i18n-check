@@ -18,7 +18,7 @@ from i18n_check.cli.version import get_latest_version, get_local_version
 
 def upgrade_cli() -> None:
     """
-    Upgrades the CLI tool to the latest version.
+    Upgrade the CLI tool to the latest version available on GitHub.
 
     This function checks the current version of the i18n-check CLI tool
     and compares it with the latest version available on GitHub. If a

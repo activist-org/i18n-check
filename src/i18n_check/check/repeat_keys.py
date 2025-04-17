@@ -21,13 +21,13 @@ from i18n_check.utils import get_all_json_files, i18n_directory, path_separator
 
 def find_duplicate_keys(json_str: str) -> Dict[str, List[str]]:
     """
-    Identifies duplicate keys using JSON parser with custom hook.
+    Identify duplicate keys in a JSON string using a custom JSON parser hook.
     """
     grouped = defaultdict(list)
 
     def create_key_values_dict(pairs: List[Tuple[Any, Any]]) -> Dict[str, Any]:
         """
-        Creates a dictionary of keys and their potentially duplicate values meaning the key is repeated.
+        Create a dictionary while tracking all key-value pairs for duplicate detection.
         """
         for key, value in pairs:
             grouped[key].append(str(value))
@@ -47,7 +47,7 @@ def find_duplicate_keys(json_str: str) -> Dict[str, List[str]]:
 
 def check_file(file_path: str) -> Tuple[str, Dict[str, List[str]]]:
     """
-    Checks a single JSON file for duplicates.
+    Check a single JSON file for duplicate keys.
     """
     with open(file_path, "r", encoding="utf-8") as f:
         content = f.read()
