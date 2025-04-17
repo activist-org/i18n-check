@@ -189,7 +189,7 @@ def collect_files_to_check(
 
     Returns
     -------
-    files_to_check : list
+    list
         A list of file paths that match the given extension.
     """
     files_to_check: List[str] = []
@@ -244,7 +244,7 @@ def path_to_valid_key(p: str) -> str:
 
     Returns
     -------
-    valid_key : str
+    str
         The correct i18n key that would match the directory structure passed.
     """
 
@@ -295,7 +295,7 @@ def filter_valid_key_parts(potential_key_parts: list[str]) -> list[str]:
 
     Returns
     -------
-    valid_key_parts : list[str]
+    list[str]
         The filtered list of valid key parts.
     """
     return [
