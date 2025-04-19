@@ -145,7 +145,7 @@ path_separator = "\\" if os.name == "nt" else "/"
 
 def read_json_file(file_path: str | Path) -> Any:
     """
-    Reads a JSON file and returns its content.
+    Read JSON file and return its content as a Python object.
 
     Parameters
     ----------
@@ -171,7 +171,7 @@ def collect_files_to_check(
     files_to_skip: list[str],
 ) -> List[str]:
     """
-    Collects all files with a given extension from a directory and its subdirectories.
+    Collect all files with a given extension from a directory and its subdirectories.
 
     Parameters
     ----------
@@ -189,7 +189,7 @@ def collect_files_to_check(
 
     Returns
     -------
-    files_to_check : list
+    list
         A list of file paths that match the given extension.
     """
     files_to_check: List[str] = []
@@ -213,7 +213,7 @@ def collect_files_to_check(
 
 def is_valid_key(k: str) -> bool:
     """
-    Checks that a i18n key is only lowercase letters, number, periods or underscores.
+    Check that an i18n key is only lowercase letters, number, periods or underscores.
 
     Parameters
     ----------
@@ -235,7 +235,7 @@ def is_valid_key(k: str) -> bool:
 
 def path_to_valid_key(p: str) -> str:
     """
-    Converts a path to a valid key with period separators and all words being snake case.
+    Convert a path to a valid key with period separators and all words being snake case.
 
     Parameters
     ----------
@@ -244,7 +244,7 @@ def path_to_valid_key(p: str) -> str:
 
     Returns
     -------
-    valid_key : str
+    str
         The correct i18n key that would match the directory structure passed.
     """
 
@@ -282,7 +282,7 @@ def path_to_valid_key(p: str) -> str:
 
 def filter_valid_key_parts(potential_key_parts: list[str]) -> list[str]:
     """
-    Filters out parts from potential_key_parts based on specific conditions.
+    Filter out parts from potential_key_parts based on specific conditions.
 
     A key part is excluded if:
     - It appears as a prefix (with an underscore) in the last element of the list.
@@ -295,7 +295,7 @@ def filter_valid_key_parts(potential_key_parts: list[str]) -> list[str]:
 
     Returns
     -------
-    valid_key_parts : list[str]
+    list[str]
         The filtered list of valid key parts.
     """
     return [
@@ -336,7 +336,7 @@ def get_all_json_files(directory: str | Path, path_separator: str) -> List[str]:
 
 def lower_and_remove_punctuation(text: str) -> str:
     """
-    Converts the input text to lowercase and removes punctuation.
+    Convert the input text to lowercase and remove punctuation.
 
     Parameters
     ----------
@@ -358,11 +358,11 @@ def lower_and_remove_punctuation(text: str) -> str:
 
 def read_files_to_dict(files: list[str]) -> Dict[str, str]:
     """
-    Reads multiple files and stores their content in a dictionary.
+    Read multiple files and store their content in a dictionary.
 
     Parameters
     ----------
-    file_paths : list[str]
+    files : list[str]
         A list of file paths to read.
 
     Returns
@@ -383,7 +383,7 @@ def read_files_to_dict(files: list[str]) -> Dict[str, str]:
 
 def run_check(script_name: str) -> bool:
     """
-    Runs a check script and reports the results via the terminal.
+    Run a check script and report the results via the terminal.
 
     Parameters
     ----------

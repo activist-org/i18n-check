@@ -1,11 +1,14 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 """
 Checks if the i18n target JSON files have keys that are not in the source file.
+
 If yes, suggest that they be removed from the their respective JSON files.
 
-Usage
------
-python3 src/i18n_check/check/non_source_keys.py
+Examples
+--------
+Run the following script in terminal:
+
+>>> python3 src/i18n_check/check/non_source_keys.py
 """
 
 from i18n_check.utils import (

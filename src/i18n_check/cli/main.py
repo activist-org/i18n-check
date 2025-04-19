@@ -15,6 +15,37 @@ CLI_EPILOG = (
 
 
 def main() -> None:
+    """
+    Execute the i18n-check CLI based on provided arguments.
+
+    This function serves as the entry point for the i18n-check command line interface.
+    It parses command line arguments and executes the appropriate checks or actions.
+
+    Returns
+    -------
+    None
+        This function returns nothing; it executes checks and outputs results directly.
+
+    Notes
+    -----
+    The available command line arguments are:
+    - --version (-v): Show the version of the i18n-check CLI
+    - --upgrade (-u): Upgrade the i18n-check CLI to the latest version
+    - --key-identifiers (-ki): Check i18n key usage and formatting
+    - --invalid-keys (-ik): Check for invalid i18n keys in codebase
+    - --unused-keys (-uk): Check for unused i18n keys
+    - --non-source-keys (-nsk): Check for keys in translations not in source
+    - --repeat-keys (-rk): Check for duplicate keys in JSON files
+    - --repeat-values (-rv): Check for repeated values in source file
+    - --nested-keys (-nk): Check for nested i18n keys
+    - --all-checks (-a): Run all available checks
+
+    Examples
+    --------
+    >>> i18n-check --ki
+    >>> i18n-check --all-checks
+    >>> i18n-check --invalid-keys --unused-keys
+    """
     # MARK: CLI Base
 
     parser = argparse.ArgumentParser(
