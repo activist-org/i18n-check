@@ -13,6 +13,30 @@ from i18n_check.utils import run_check
 
 
 def main() -> None:
+    """
+    Run all internationalization (i18n) checks for the project.
+
+    This function executes a series of checks to validate the project's
+    internationalization setup, including key validation, usage checks,
+    and duplicate detection.
+
+    Raises
+    ------
+    AssertionError
+        If any of the i18n checks fail, an assertion error is raised with
+        a message indicating that some checks didn't pass.
+
+    Notes
+    -----
+    The checks performed include:
+    - Invalid key detection
+    - Key identifier validation
+    - Non-source key detection
+    - Unused key detection
+    - Repeated key detection
+    - Repeated value detection
+    - Nested key detection (conditionally enabled)
+    """
     checks = [
         "invalid_keys.py",
         "key_identifiers.py",
