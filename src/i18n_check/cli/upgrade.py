@@ -1,7 +1,6 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 """
 Functions to update the i18n-check CLI based on install method.
-
 """
 
 import os
