@@ -362,7 +362,7 @@ def read_files_to_dict(files: list[str]) -> Dict[str, str]:
 
     Parameters
     ----------
-    file_paths : list[str]
+    files : list[str]
         A list of file paths to read.
 
     Returns
