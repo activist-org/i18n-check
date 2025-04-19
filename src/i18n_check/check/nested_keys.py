@@ -46,10 +46,6 @@ def check_i18n_files(directory: str | Path) -> None:
     ----------
     directory : str
         The directory path to check for JSON files.
-
-    Returns
-    -------
-    None
     """
     for file_path in Path(directory).rglob("*.json"):
         try:
