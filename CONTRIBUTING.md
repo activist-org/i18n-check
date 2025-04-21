@@ -34,6 +34,32 @@ Thank you for your interest in contributing to activist community projects! We l
   - Feel free to introduce yourself and tell us what your interests are if you're comfortable :)
 - Consider joining our [bi-weekly developer sync](https://etherpad.wikimedia.org/p/activist-dev-sync)!
 
+<a id="learning-the-tech-"></a>
+
+## Learning the tech stack [`⇧`](#contents)
+
+i18n-check is very open to contributions from people in the early stages of their coding journey! The following is a select list of documentation pages to help you understand the technologies we use.
+
+<details><summary>Docs for those new to programming</summary>
+<p>
+
+- [Mozilla Developer Network Learning Area](https://developer.mozilla.org/en-US/docs/Learn)
+  - Doing MDN sections for HTML, CSS and JavaScript is the best ways to get into web development!
+- [Open Source Guides](https://opensource.guide/)
+  - Guides from GitHub about open-source software including how to start and much more!
+
+</p>
+</details>
+
+<details><summary>Python learning docs</summary>
+<p>
+
+- [Python getting started guide](https://docs.python.org/3/tutorial/introduction.html)
+- [Python getting started resources](https://www.python.org/about/gettingstarted/)
+
+</p>
+</details>
+
 <a id="dev-env-"></a>
 
 ## Development environment [`⇧`](#contents)
