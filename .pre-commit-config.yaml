@@ -7,7 +7,7 @@ repos:
       - id: check-yaml
 
   - repo: https://github.com/astral-sh/ruff-pre-commit
-    rev: v0.3.0
+    rev: v0.11.6
     hooks:
       - id: ruff
         args: [--fix, --exit-non-zero-on-fix]
@@ -24,9 +24,9 @@ repos:
     hooks:
       - id: sphinx-lint
 
-  # - repo: https://github.com/numpy/numpydoc
-  #   rev: v1.8.0
-  #   hooks:
-  #     - id: numpydoc-validation
-  #       files: ^src/
-  #       exclude: ^tests/
+  - repo: https://github.com/numpy/numpydoc
+    rev: v1.8.0
+    hooks:
+      - id: numpydoc-validation
+        files: ^src/
+        exclude: ^(tests/|.*__init__\.py$)

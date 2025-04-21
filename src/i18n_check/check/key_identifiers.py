@@ -1,11 +1,14 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 """
 Checks if the i18n-src file has invalid keys given their usage or formatting.
+
 If yes, suggest new names for the keys at the lowest possible level of usage.
 
-Usage
------
-python3 src/i18n_check/check/key_identifiers.py
+Examples
+--------
+Run the following script in terminal:
+
+>>> python3 src/i18n_check/check/key_identifiers.py
 """
 
 from collections import defaultdict

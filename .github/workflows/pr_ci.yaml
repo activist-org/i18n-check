@@ -33,7 +33,7 @@ jobs:
           uv pip install -r requirements-dev.txt
 
       - name: Run Ruff Format - Formatting Check
-        run: ruff format ./src
+        run: ruff format ./src --check
 
       - name: Run Ruff - Linting and Import Sorting Check
         if: always()
