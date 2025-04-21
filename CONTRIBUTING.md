@@ -13,6 +13,7 @@ If you have questions or would like to communicate with the team, please [join u
 ## **Contents**
 
 - [First steps as a contributor](#first-steps-)
+- [Learning the tech stack](#learning-the-tech-stack-)
 - [Development environment](#dev-env-)
 - [Linting](#linting-)
 - [Testing](#testing-)
@@ -34,7 +35,7 @@ Thank you for your interest in contributing to activist community projects! We l
   - Feel free to introduce yourself and tell us what your interests are if you're comfortable :)
 - Consider joining our [bi-weekly developer sync](https://etherpad.wikimedia.org/p/activist-dev-sync)!
 
-<a id="learning-the-tech-"></a>
+<a id="learning-the-tech-stack-"></a>
 
 ## Learning the tech stack [`⇧`](#contents)
 
