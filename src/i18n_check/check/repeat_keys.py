@@ -31,7 +31,7 @@ def find_duplicate_keys(json_str: str) -> Dict[str, List[str]]:
     Returns
     -------
     Dict[str, List[str]]
-        A dictionary where keys are the duplicate keys found in the JSON, and values
+        A dictionary where keys are the duplicate keys found in the JSON and values
         are lists of string representations of all corresponding values.
 
     Raises
@@ -102,6 +102,7 @@ def check_file(file_path: str) -> Tuple[str, Dict[str, List[str]]]:
     ------
     FileNotFoundError
         If the specified file does not exist.
+
     ValueError
         If the file contains invalid JSON.
 

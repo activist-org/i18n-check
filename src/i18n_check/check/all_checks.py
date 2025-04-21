@@ -9,7 +9,7 @@ Run the following script in terminal:
 >>> python3 src/i18n_check/checks/run_i18n_checks.py
 """
 
-from i18n_check.utils import run_check
+from i18n_check.utils import run_check, warn_on_nested_keys
 
 
 def main() -> None:
@@ -17,7 +17,7 @@ def main() -> None:
     Run all internationalization (i18n) checks for the project.
 
     This function executes a series of checks to validate the project's
-    internationalization setup, including key validation, usage checks,
+    internationalization setup, including key validation, usage checks
     and duplicate detection.
 
     Raises
@@ -46,7 +46,7 @@ def main() -> None:
         "repeat_values.py",
     ]
 
-    if True:
+    if warn_on_nested_keys:
         checks.append("nested_keys.py")
 
     check_results: list[bool] = []
