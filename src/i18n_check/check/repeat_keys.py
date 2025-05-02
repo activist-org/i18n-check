@@ -8,7 +8,7 @@ Examples
 --------
 Run the following script in terminal:
 
->>> python3 src/i18n_check/check/non_source_keys.py
+>>> python3 src/i18n_check/check/repeat_keys.py
 """
 
 import json
