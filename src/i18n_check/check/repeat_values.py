@@ -51,7 +51,7 @@ def get_repeat_value_counts(i18n_src_dict: Dict[str, str]) -> Dict[str, int]:
 
 
 def analyze_and_suggest_keys(
-    i18n_src_dict: Dict[str, str], json_repeat_value_counts: Dict[str, str]
+    i18n_src_dict: Dict[str, str], json_repeat_value_counts: Dict[str, int]
 ) -> Dict[str, int]:
     """
     Analyze repeated values and suggest solutions for key modification or removal.
@@ -60,7 +60,7 @@ def analyze_and_suggest_keys(
     ----------
     i18n_src_dict : Dict[str, str]
         A dictionary of i18n keys and their corresponding translation strings.
-    json_repeat_value_counts : Dict[str, str]
+    json_repeat_value_counts : Dict[str, int]
         A dictionary of repeated values and their occurrence counts.
 
     Returns
@@ -114,13 +114,13 @@ def analyze_and_suggest_keys(
 # MARK: Error Outputs
 
 
-def validate_repeats(json_repeat_value_counts: Dict[str, str]) -> None:
+def validate_repeats(json_repeat_value_counts: Dict[str, int]) -> None:
     """
     Check and report if there are repeat translation values.
 
     Parameters
     ----------
-    json_repeat_value_counts : Dict[str, str]
+    json_repeat_value_counts : Dict[str, int]
         A dictionary with repeat i18n values and their counts.
 
     Returns
