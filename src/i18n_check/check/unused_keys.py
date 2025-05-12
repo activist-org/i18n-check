@@ -12,7 +12,7 @@ Run the following script in terminal:
 """
 
 import re
-from typing import List
+from typing import Dict, List
 
 from i18n_check.utils import (
     collect_files_to_check,
@@ -38,25 +38,74 @@ file_to_check_contents = read_files_to_dict(files=files_to_check)
 
 # MARK: Unused Keys
 
-all_keys = list(i18n_src_dict.keys())
-used_keys: List[str] = []
-for k in all_keys:
-    key_search_pattern = r"[\S]*\.".join(k.split("."))
-    for file_contents in file_to_check_contents.values():
-        if re.search(key_search_pattern, file_contents):
+
+def find_unused_keys(
+    i18n_src_dict: Dict[str, str], file_contents: Dict[str, str]
+) -> List[str]:
+    """
+    Identify unused translation keys from the i18n source dictionary.
+
+    Parameters
+    ----------
+    i18n_src_dict : Dict[str, str]
+        A dictionary of all translation keys and their corresponding strings.
+    file_contents : Dict[str, str]
+        A mapping of filenames to their contents, used to search for key usage.
+
+    Returns
+    -------
+    List[str]
+        A list of keys that are not used in any of the provided file contents.
+    """
+    all_keys = list(i18n_src_dict.keys())
+    used_keys: List[str] = []
+
+    for k in all_keys:
+        key_search_pattern = r"[\S]*\.".join(k.split("."))
+        # key_search_pattern = re.compile(r"\b" + re.escape(k) + r"\b")
+    for content in file_contents.values():
+        # if key_search_pattern.search(content):
+        if re.search(key_search_pattern, content):
             break
+    unused_keys = list(set(all_keys) - set(used_keys))
+    return unused_keys
+
 
 # MARK: Error Outputs
 
-if unused_keys := list(set(all_keys) - set(used_keys)):
-    to_be = "are" if len(unused_keys) > 1 else "is"
-    key_to_be = "keys that are" if len(unused_keys) > 1 else "key that is"
-    key_or_keys = "keys" if len(unused_keys) > 1 else "key"
-    raise ValueError(
-        f"\nunused_keys failure: There {to_be} {len(unused_keys)} i18n {key_to_be} unused. Please remove or assign the following {key_or_keys}:\n\n{', '.join(unused_keys)}\n"
-    )
 
-else:
-    print(
-        "unused_keys success: All i18n keys in the i18n-src file are used in the project."
-    )
+def print_unused_keys(unused_keys: List[str]) -> None:
+    """
+    Print a message reporting unused translation keys or success.
+
+    Parameters
+    ----------
+    unused_keys : List[str]
+        A list of keys that are unused in the project.
+
+    Returns
+    -------
+    None
+        This function doesn't return anything; it either raises an error or prints a success message.
+
+    Raises
+    ------
+    ValueError
+        If there are unused keys, a ValueError is raised with a message detailing the unused keys.
+    """
+    if unused_keys:
+        to_be = "are" if len(unused_keys) > 1 else "is"
+        key_to_be = "keys that are" if len(unused_keys) > 1 else "key that is"
+        key_or_keys = "keys" if len(unused_keys) > 1 else "key"
+        raise ValueError(
+            f"\nunused_keys failure: There {to_be} {len(unused_keys)} i18n {key_to_be} unused. Please remove or assign the following {key_or_keys}:\n\n{', '.join(unused_keys)}\n"
+        )
+    else:
+        print(
+            "unused_keys success: All i18n keys in the i18n-src file are used in the project."
+        )
+
+
+if __name__ == "__main__":
+    unused_keys = find_unused_keys(i18n_src_dict, file_to_check_contents)
+    print_unused_keys(unused_keys)
