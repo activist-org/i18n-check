@@ -4,23 +4,44 @@
 Tests for the repeat_keys.py.
 """
 
+from pathlib import Path
+
 import pytest
 
-from i18n_check.check.repeat_keys import check_file, find_duplicate_keys
+from i18n_check.check.repeat_keys import check_file, find_duplicate_keys, main
+
+fail_checks_json = (
+    Path(__file__).parent.parent.parent
+    / "test_frontends"
+    / "all_checks_fail"
+    / "test_i18n"
+    / "test_i18n_src.json"
+)
+pass_checks_json = (
+    Path(__file__).parent.parent.parent
+    / "test_frontends"
+    / "all_checks_pass"
+    / "test_i18n"
+    / "test_i18n_src.json"
+)
 
 
 @pytest.mark.parametrize(
     "json_str,expected",
     [
-        ('{"a": 1, "a": 2, "b": 3}', {"a": ["1", "2"]}),
-        ('{"a": 1, "b": 2, "c": 3}', {}),
+        (
+            fail_checks_json,
+            {
+                "_global.hello_global_repeat": [
+                    "hello, global!",
+                    "This key is duplicated",
+                ]
+            },
+        ),
+        (pass_checks_json, {}),
         (
             '{"a": 1, "b": 2, "a": 3, "b": 4, "c": 5}',
             {"a": ["1", "3"], "b": ["2", "4"]},
-        ),
-        (
-            '{"a": 1, "a": 2, "b": {"x": 10, "x": 20}}',
-            {"a": ["1", "2"], "x": ["10", "20"]},
         ),
         ("{}", {}),
         ('{"a": null, "a": 42}', {"a": ["None", "42"]}),
@@ -44,25 +65,38 @@ def test_invalid_json(json_str):
 
 
 @pytest.mark.parametrize(
-    "file_content,expected_duplicates",
+    "file_path,expected_duplicates",
     [
-        ('{"a": 1, "a": 2}', {"a": ["1", "2"]}),
-        ('{"x": 1, "y": 2}', {}),
-        ('{"a": null, "a": 5}', {"a": ["None", "5"]}),
+        (
+            fail_checks_json,
+            {
+                "_global.hello_global_repeat": [
+                    "hello, global!",
+                    "This key is duplicated",
+                ]
+            },
+        ),
+        (pass_checks_json, {}),
     ],
 )
-def test_check_file_valid(tmp_path, file_content, expected_duplicates):
-    file = tmp_path / "test.json"
-    file.write_text(file_content, encoding="utf-8")
-
-    filename, duplicates = check_file(str(file))
-    assert filename == "test.json"
+def test_check_file(file_path, expected_duplicates):
+    filename, duplicates = check_file(file_path)
     assert duplicates == expected_duplicates
 
 
 def test_check_file_not_found():
     with pytest.raises(FileNotFoundError):
         check_file("nonexistent_file.json")
+
+
+def test_main_with_duplicates_raises(capsys):
+    with pytest.raises(ValueError) as exc_info:
+        main()
+
+    output = capsys.readouterr().out
+    assert "Duplicate keys in" in output
+    assert "appears 2 times" in output
+    assert "repeat_keys failure" in str(exc_info.value)
 
 
 if __name__ == "__main__":

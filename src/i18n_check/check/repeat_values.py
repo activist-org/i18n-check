@@ -152,7 +152,5 @@ def validate_repeats(json_repeat_value_counts: Dict[str, int]) -> None:
 
 if __name__ == "__main__":
     json_repeat_value_counts = get_repeat_value_counts(i18n_src_dict)
-    json_repeat_value_counts = analyze_and_suggest_keys(
-        i18n_src_dict, json_repeat_value_counts
-    )
+    analyze_and_suggest_keys(i18n_src_dict, json_repeat_value_counts)
     validate_repeats(json_repeat_value_counts)

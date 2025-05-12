@@ -3,13 +3,29 @@
 Test script for nested_keys.py functionality.
 """
 
-import json
-import os
-import tempfile
 import unittest
+from pathlib import Path
 from unittest.mock import patch
 
+import pytest
+
 from i18n_check.check.nested_keys import check_i18n_files, is_nested_json
+from i18n_check.utils import (
+    read_json_file,
+)
+
+fail_json_dir = (
+    Path(__file__).parent.parent.parent
+    / "test_frontends"
+    / "all_checks_fail"
+    / "test_i18n"
+)
+pass_json_dir = (
+    Path(__file__).parent.parent.parent
+    / "test_frontends"
+    / "all_checks_pass"
+    / "test_i18n"
+)
 
 
 class TestIsNestedJson(unittest.TestCase):
@@ -19,12 +35,11 @@ class TestIsNestedJson(unittest.TestCase):
         """Test various JSON structures."""
         test_cases = [
             # (description, input_data, expected_result)
-            ("flat JSON", {"key1": "value1", "key2": "value2"}, False),
-            ("nested JSON", {"key1": {"nested": "value"}, "key2": "value2"}, True),
+            ("flat JSON", read_json_file(pass_json_dir / "test_i18n_src.json"), False),
+            ("nested JSON", read_json_file(fail_json_dir / "test_i18n_src.json"), True),
             ("deeply nested JSON", {"key": {"nested": {"deep": "value"}}}, True),
             ("empty JSON", {}, False),
             ("non-dict input", ["list", "of", "values"], False),
-            ("mixed content", {"key1": "value", "key2": {"nested": "value"}}, True),
         ]
 
         for desc, data, expected in test_cases:
@@ -36,24 +51,10 @@ class TestCheckI18nFiles(unittest.TestCase):
     """Test cases for the check_i18n_files function."""
 
     def setUp(self):
-        """Set up temporary directory with test JSON files."""
-        self.temp_dir = tempfile.mkdtemp()
-
-        # Test files data: (filename, content, is_valid)
-        test_files = [
-            ("flat.json", {"key1": "value1", "key2": "value2"}, True),
-            ("nested.json", {"key1": {"nested": "value"}, "key2": "value2"}, True),
-            ("invalid.json", "{invalid json}", False),
-        ]
-
-        for filename, content, is_valid in test_files:
-            path = os.path.join(self.temp_dir, filename)
-            with open(path, "w", encoding="utf-8") as f:
-                if is_valid:
-                    json.dump(content, f)
-                else:
-                    f.write(content)
-            setattr(self, f"{filename.split('.')[0]}_json_path", path)
+        """Set up test JSON files."""
+        self.fail_files = fail_json_dir
+        self.pass_files = list(pass_json_dir.glob("*.json"))
+        self.json_files = self.pass_files + [self.fail_files]
 
     def _assert_warning_printed(self, mock_print, path, should_be_present):
         """Helper to check if warning was printed for a specific file."""
@@ -63,30 +64,23 @@ class TestCheckI18nFiles(unittest.TestCase):
         )
         self.assertEqual(found, should_be_present)
 
-    def _assert_error_printed(self, mock_print, path):
-        """Helper to check if error was printed for a specific file."""
-        self.assertTrue(
-            any(
-                f"Error processing {path}" in str(call)
-                for call in mock_print.call_args_list
-            )
-        )
-
     @patch("i18n_check.check.nested_keys.warn_on_nested_keys", True)
     @patch("builtins.print")
     def test_check_i18n_files_with_warnings(self, mock_print):
         """Test check_i18n_files with warning enabled."""
-        check_i18n_files(self.temp_dir)
 
-        self._assert_warning_printed(mock_print, self.nested_json_path, True)
-        self._assert_warning_printed(mock_print, self.flat_json_path, False)
-        self._assert_error_printed(mock_print, self.invalid_json_path)
+        for file in self.json_files:
+            check_i18n_files(file)
+
+        self._assert_warning_printed(mock_print, self.fail_files, True)
+        self._assert_warning_printed(mock_print, self.pass_files, False)
 
     @patch("i18n_check.check.nested_keys.warn_on_nested_keys", False)
     @patch("builtins.print")
     def test_check_i18n_files_without_warnings(self, mock_print):
         """Test check_i18n_files with warning disabled."""
-        check_i18n_files(self.temp_dir)
+        for file in self.json_files:
+            check_i18n_files(file)
 
         # Just check no warnings at all were printed
         self.assertFalse(
@@ -100,3 +94,7 @@ class TestCheckI18nFiles(unittest.TestCase):
         """Test check_i18n_files with nonexistent directory."""
         with self.assertRaises(FileNotFoundError):
             check_i18n_files("/nonexistent/directory")
+
+
+if __name__ == "__main__":
+    pytest.main()

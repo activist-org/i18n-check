@@ -14,19 +14,19 @@ Run the following script in terminal:
 import json
 from collections import defaultdict
 from pathlib import Path
-from typing import Any, Dict, List, Tuple
+from typing import Any, Dict, List, Tuple, Union
 
 from i18n_check.utils import get_all_json_files, i18n_directory, path_separator
 
 
-def find_duplicate_keys(json_str: str) -> Dict[str, List[str]]:
+def find_duplicate_keys(json_input: Union[str, Path]) -> Dict[str, List[str]]:
     """
     Identify duplicate keys in a JSON string using a custom JSON parser hook.
 
     Parameters
     ----------
-    json_str : str
-        The JSON string to analyze for duplicate keys.
+    json_input : Union[str, Path]
+        A JSON string or a Path to a JSON file to analyze for duplicate keys.
 
     Returns
     -------
@@ -72,6 +72,12 @@ def find_duplicate_keys(json_str: str) -> Dict[str, List[str]]:
         return dict(pairs)
 
     try:
+        if isinstance(json_input, Path):
+            if not json_input.exists():
+                raise ValueError(f"File does not exist: {json_input}")
+            json_str = Path(json_input).read_text(encoding="utf-8")
+        else:
+            json_str = json_input
         json.loads(json_str, object_pairs_hook=create_key_values_dict)
         duplicates = {
             k: values_list for k, values_list in grouped.items() if len(values_list) > 1
