@@ -34,13 +34,13 @@ files_to_check = collect_files_to_check(
     directories_to_skip=unused_keys_skip,
     files_to_skip=files_to_skip,
 )
-file_to_check_contents = read_files_to_dict(files=files_to_check)
+files_to_check_contents = read_files_to_dict(files=files_to_check)
 
 # MARK: Unused Keys
 
 
 def find_unused_keys(
-    i18n_src_dict: Dict[str, str], file_contents: Dict[str, str]
+    i18n_src_dict: Dict[str, str], files_to_check_contents: Dict[str, str]
 ) -> List[str]:
     """
     Identify unused translation keys from the i18n source dictionary.
@@ -49,7 +49,8 @@ def find_unused_keys(
     ----------
     i18n_src_dict : Dict[str, str]
         A dictionary of all translation keys and their corresponding strings.
-    file_contents : Dict[str, str]
+
+    files_to_check_contents : Dict[str, str]
         A mapping of filenames to their contents, used to search for key usage.
 
     Returns
@@ -62,13 +63,13 @@ def find_unused_keys(
 
     for k in all_keys:
         key_search_pattern = r"[\S]*\.".join(k.split("."))
-        # key_search_pattern = re.compile(r"\b" + re.escape(k) + r"\b")
-    for content in file_contents.values():
-        # if key_search_pattern.search(content):
-        if re.search(key_search_pattern, content):
-            break
-    unused_keys = list(set(all_keys) - set(used_keys))
-    return unused_keys
+
+        for file_contents in files_to_check_contents.values():
+            if re.search(key_search_pattern, file_contents):
+                used_keys.append(k)
+                break
+
+    return list(set(all_keys) - set(used_keys))
 
 
 # MARK: Error Outputs
@@ -106,6 +107,11 @@ def print_unused_keys(unused_keys: List[str]) -> None:
         )
 
 
+# MARK: Main
+
+
 if __name__ == "__main__":
-    unused_keys = find_unused_keys(i18n_src_dict, file_to_check_contents)
+    unused_keys = find_unused_keys(
+        i18n_src_dict=i18n_src_dict, files_to_check_contents=files_to_check_contents
+    )
     print_unused_keys(unused_keys)

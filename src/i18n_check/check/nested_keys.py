@@ -17,6 +17,8 @@ from typing import Dict
 
 from i18n_check.utils import i18n_directory, read_json_file, warn_on_nested_keys
 
+# MARK: Is Nested
+
 
 def is_nested_json(data: Dict[str, str]) -> bool:
     """
@@ -38,7 +40,7 @@ def is_nested_json(data: Dict[str, str]) -> bool:
     return False
 
 
-def check_i18n_files(directory: str | Path) -> None:
+def validate_nested_keys(directory: str | Path) -> None:
     """
     Check all JSON files in the given directory for nested structures.
 
@@ -52,7 +54,7 @@ def check_i18n_files(directory: str | Path) -> None:
 
     for file_path in Path(directory).rglob("*.json"):
         try:
-            data = read_json_file(file_path)
+            data = read_json_file(file_path=file_path)
             if is_nested_json(data) and warn_on_nested_keys:
                 print(f"Warning: Nested JSON structure detected in {file_path}")
                 print(
@@ -63,5 +65,8 @@ def check_i18n_files(directory: str | Path) -> None:
             print(f"Error processing {file_path}: {e}")
 
 
+# MARK: Main
+
+
 if __name__ == "__main__":
-    check_i18n_files(i18n_directory)
+    validate_nested_keys(i18n_directory)

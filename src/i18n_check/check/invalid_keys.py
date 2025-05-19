@@ -39,10 +39,10 @@ files_to_check = collect_files_to_check(
     files_to_skip=files_to_skip,
 )
 
-file_to_check_contents = {}
+files_to_check_contents = {}
 for frontend_file in files_to_check:
     with open(frontend_file, "r", encoding="utf-8") as f:
-        file_to_check_contents[frontend_file] = f.read()
+        files_to_check_contents[frontend_file] = f.read()
 
 # MARK: Key Comparisons
 
@@ -58,7 +58,7 @@ all_i18n_key_patterns = [
 ]
 
 all_used_i18n_keys: Set[Any] = set()
-for v in file_to_check_contents.values():
+for v in files_to_check_contents.values():
     all_file_i18n_keys: List[Any] = []
     all_file_i18n_keys.extend(
         re.findall(i18n_kp, v) for i18n_kp in all_i18n_key_patterns
@@ -69,6 +69,8 @@ for v in file_to_check_contents.values():
     all_used_i18n_keys.update(all_file_i18n_keys)
 
 all_used_i18n_keys = set(all_used_i18n_keys)
+
+# MARK: Error Outputs
 
 if invalid_keys := list(all_used_i18n_keys - all_keys):
     to_be = "are" if len(invalid_keys) > 1 else "is"

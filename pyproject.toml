@@ -49,12 +49,12 @@ testpaths = ["tests"]
 filterwarnings = "error"
 
 [tool.coverage.run]
-omit = ["*/tests/*"]
+omit = ["*/tests/*", "*/__init__.py"]
 
 [tool.mypy]
 mypy_path = "src"
-ignore_missing_imports = true
 strict = true
+exclude = ["setup.py", "^tests/.*\\.py$"]
 enable_incomplete_feature = ["Unpack"]
 
 [tool.numpydoc_validation]
@@ -65,4 +65,8 @@ checks = [
     "SA01",
 ]
 
-exclude = ["^__init__$"]
+exclude = [
+    "^.*\\.Meta$",    # Meta classes
+    "^.*\\.__str__$", # __str__ methods
+    "^__init__$",     # __init__ files
+]

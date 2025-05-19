@@ -3,6 +3,7 @@ import os
 
 try:
     from setuptools import find_packages, setup
+
 except ImportError:
     from distutils.core import setup
 

@@ -60,6 +60,7 @@ def analyze_and_suggest_keys(
     ----------
     i18n_src_dict : Dict[str, str]
         A dictionary of i18n keys and their corresponding translation strings.
+
     json_repeat_value_counts : Dict[str, int]
         A dictionary of repeated values and their occurrence counts.
 
@@ -90,16 +91,21 @@ def analyze_and_suggest_keys(
                 for i in range(min_key_length):
                     if len({k[i] for k in i18n_keys}) == 1:
                         common_prefix += i18n_keys[0][i]
+
                     else:
                         common_character = False
                         break
 
                 common_character = False
 
-            if common_prefix := ".".join(common_prefix.split(".")[:-1]):
+            # Replace '._global' to allow for suggestions at the same global level without repeat globals.
+            if common_prefix := ".".join(common_prefix.split(".")[:-1]).replace(
+                "._global", ""
+            ):
                 print(f"Suggested new key: {common_prefix}._global.IDENTIFIER_KEY")
+
             else:
-                print("Suggested new key: _global.IDENTIFIER_KEY")
+                print("Suggested new key: i18n._global.IDENTIFIER_KEY")
 
         else:
             # Remove the key if the repeat is caused by a lowercase word.
@@ -114,7 +120,7 @@ def analyze_and_suggest_keys(
 # MARK: Error Outputs
 
 
-def validate_repeats(json_repeat_value_counts: Dict[str, int]) -> None:
+def validate_repeat_values(json_repeat_value_counts: Dict[str, int]) -> None:
     """
     Check and report if there are repeat translation values.
 
@@ -150,7 +156,12 @@ def validate_repeats(json_repeat_value_counts: Dict[str, int]) -> None:
         )
 
 
+# MARK: Main
+
+
 if __name__ == "__main__":
     json_repeat_value_counts = get_repeat_value_counts(i18n_src_dict)
-    analyze_and_suggest_keys(i18n_src_dict, json_repeat_value_counts)
-    validate_repeats(json_repeat_value_counts)
+    analyze_and_suggest_keys(
+        i18n_src_dict=i18n_src_dict, json_repeat_value_counts=json_repeat_value_counts
+    )
+    validate_repeat_values(json_repeat_value_counts=json_repeat_value_counts)

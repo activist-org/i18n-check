@@ -1,5 +1,4 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
-
 """
 Tests for utility functions in i18n-check.
 """
@@ -24,7 +23,7 @@ from i18n_check.utils import (
 
 
 class TestUtils(unittest.TestCase):
-    def test_read_json_file(self):
+    def test_read_json_file(self) -> None:
         # Sample JSON data.
         sample_data = {"name": "Test", "value": 123}
 
@@ -36,12 +35,12 @@ class TestUtils(unittest.TestCase):
             temp_file_path = temp_file.name
 
         # Read the JSON file using the function.
-        result = read_json_file(temp_file_path)
+        result = read_json_file(file_path=temp_file_path)
 
         assert isinstance(result, dict)
         assert result == sample_data
 
-    def test_collect_files_to_check(self):
+    def test_collect_files_to_check(self) -> None:
         with tempfile.TemporaryDirectory() as temp_dir:
             skip_dir = os.path.join(temp_dir, "skip_dir")
             os.makedirs(skip_dir)
@@ -68,7 +67,7 @@ class TestUtils(unittest.TestCase):
             assert skipped_file not in result
             assert file_in_skip_dir not in result
 
-    def test_get_all_json_files(self):
+    def test_get_all_json_files(self) -> None:
         with tempfile.TemporaryDirectory() as temp_dir:
             json_file_1 = os.path.join(temp_dir, "file1.json")
             json_file_2 = os.path.join(temp_dir, "file2.json")
@@ -87,7 +86,7 @@ class TestUtils(unittest.TestCase):
             assert json_file_2 in result
             assert non_json_file not in result
 
-    def test_read_files_to_dict(self):
+    def test_read_files_to_dict(self) -> None:
         with tempfile.TemporaryDirectory() as temp_dir:
             file1 = os.path.join(temp_dir, "file1.txt")
             file2 = os.path.join(temp_dir, "file2.txt")
@@ -106,7 +105,7 @@ class TestUtils(unittest.TestCase):
             assert result[file1] == content1
             assert result[file2] == content2
 
-    def test_is_valid_key(self):
+    def test_is_valid_key(self) -> None:
         assert is_valid_key("valid.key")
         assert is_valid_key("valid_key")
         assert is_valid_key("validkey123")
@@ -128,7 +127,7 @@ class TestUtils(unittest.TestCase):
         (os.path.join("nested.[id]", "path", "File"), "nested.path.file"),
     ],
 )
-def test_path_to_valid_key(input_path, expected_key):
+def test_path_to_valid_key(input_path, expected_key) -> None:
     assert path_to_valid_key(input_path) == expected_key
 
 
@@ -142,7 +141,7 @@ def test_path_to_valid_key(input_path, expected_key):
         ([], []),
     ],
 )
-def test_filter_valid_key_parts(input_list, expected_output):
+def test_filter_valid_key_parts(input_list, expected_output) -> None:
     assert filter_valid_key_parts(input_list) == expected_output
 
 
@@ -155,7 +154,7 @@ def test_filter_valid_key_parts(input_list, expected_output):
         )
     ],
 )
-def test_lower_and_remove_punctuation(input_list, expected_output):
+def test_lower_and_remove_punctuation(input_list, expected_output) -> None:
     assert lower_and_remove_punctuation(input_list) == expected_output
 
 

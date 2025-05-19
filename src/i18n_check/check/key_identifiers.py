@@ -38,10 +38,10 @@ files_to_check = collect_files_to_check(
     files_to_skip=files_to_skip,
 )
 
-file_to_check_contents = {}
+files_to_check_contents = {}
 for frontend_file in files_to_check:
     with open(frontend_file, "r", encoding="utf-8") as f:
-        file_to_check_contents[frontend_file] = f.read()
+        files_to_check_contents[frontend_file] = f.read()
 
 # MARK: Key-Files Dict
 
@@ -49,7 +49,7 @@ all_keys = list(i18n_src_dict.keys())
 key_file_dict: Dict[str, List[str]] = defaultdict()
 for k in all_keys:
     key_file_dict[k] = []
-    for i, v in file_to_check_contents.items():
+    for i, v in files_to_check_contents.items():
         if k in v:
             filepath_from_src = i.split(str(src_directory))[1]
             filepath_from_src = filepath_from_src[1:]

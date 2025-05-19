@@ -1,5 +1,4 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
-
 """
 Tests for the repeat_values.py.
 """
@@ -13,24 +12,22 @@ from i18n_check.check.repeat_values import (
     analyze_and_suggest_keys,
     get_repeat_value_counts,
     i18n_src_dict,
-    validate_repeats,
+    validate_repeat_values,
 )
-from i18n_check.utils import (
-    read_json_file,
-)
+from i18n_check.utils import read_json_file
 
 # repeat values across the repo
 json_repeat_value_counts = get_repeat_value_counts(i18n_src_dict)
 
 fail_checks_json = read_json_file(
-    Path(__file__).parent.parent.parent
+    file_path=Path(__file__).parent.parent
     / "test_frontends"
     / "all_checks_fail"
     / "test_i18n"
     / "test_i18n_src.json"
 )
 pass_checks_json = read_json_file(
-    Path(__file__).parent.parent.parent
+    file_path=Path(__file__).parent.parent
     / "test_frontends"
     / "all_checks_pass"
     / "test_i18n"
@@ -52,13 +49,16 @@ pass_checks_json = read_json_file(
 )
 def test_get_repeat_value_counts(
     input_dict: Dict[str, str], expected_output: Dict[str, int]
-):
-    """Test get_repeat_value_counts with various scenarios."""
+) -> None:
+    """
+    Test get_repeat_value_counts with various scenarios.
+    """
     result = get_repeat_value_counts(input_dict)
     assert result == expected_output
 
 
-def test_multiple_repeats_with_common_prefix(capsys):
+# Note: capsys is a fixture for capturing system outputs.
+def test_multiple_repeats_with_common_prefix(capsys) -> None:
     fail_result = analyze_and_suggest_keys(
         fail_checks_json, get_repeat_value_counts(fail_checks_json)
     )
@@ -69,14 +69,15 @@ def test_multiple_repeats_with_common_prefix(capsys):
     captured = capsys.readouterr()
     assert "Repeat value: 'hello global!'" in captured.out
     assert "Number of instances: : 2" in captured.out
-    assert "Suggested new key: _global._global.IDENTIFIER_KEY" in captured.out
+    assert "Suggested new key: i18n._global.IDENTIFIER_KEY" in captured.out
 
     # Result remain unchanged (not removed).
     assert fail_result == {"hello global!": 2}
     assert pass_result == {}
 
 
-def test_key_with_lower_suffix_ignored(capsys):
+# Note: capsys is a fixture for capturing system outputs.
+def test_key_with_lower_suffix_ignored(capsys) -> None:
     i18n_src_dict = {
         "one.lower": "Test",
         "two.lower": "Test",
@@ -92,13 +93,14 @@ def test_key_with_lower_suffix_ignored(capsys):
     assert result == {"test": 3}
 
 
-def test_validate_repeats_behavior(capsys):
+# Note: capsys is a fixture for capturing system outputs.
+def test_validate_repeat_values_behavior(capsys) -> None:
     with pytest.raises(
         ValueError, match=r"repeat_values failure: 1 repeat i18n value is present."
     ):
-        validate_repeats(validate_repeats(get_repeat_value_counts(fail_checks_json)))
+        validate_repeat_values(get_repeat_value_counts(fail_checks_json))
 
-    validate_repeats(get_repeat_value_counts(pass_checks_json))
+    validate_repeat_values(get_repeat_value_counts(pass_checks_json))
     captured = capsys.readouterr()
     assert "repeat_values success: No repeat i18n values found" in captured.out
 
