@@ -11,6 +11,8 @@ Run the following script in terminal:
 
 from i18n_check.utils import run_check, warn_on_nested_keys
 
+# MARK: Main
+
 
 def main() -> None:
     """

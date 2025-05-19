@@ -350,7 +350,11 @@ def lower_and_remove_punctuation(text: str) -> str:
     """
     punctuation_no_exclamation = string.punctuation.replace("!", "")
 
-    return text.lower().translate(str.maketrans("", "", punctuation_no_exclamation))
+    if isinstance(text, str):
+        return text.lower().translate(str.maketrans("", "", punctuation_no_exclamation))
+
+    else:
+        return text
 
 
 # MARK: Reading to Dicts

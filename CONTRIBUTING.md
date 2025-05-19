@@ -159,6 +159,12 @@ mypy ./src --config-file ./pyproject.toml
 
 # Run tests:
 pytest
+
+# To run a specific test:
+pytest path/to/test_file.py::test_function
+
+# To run with a coverage report as is done in PRs:
+pytest . --cov=. --cov-report=term-missing --cov-config=./pyproject.toml
 ```
 
 <a id="issues-projects"></a>

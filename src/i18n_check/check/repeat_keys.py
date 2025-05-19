@@ -8,25 +8,27 @@ Examples
 --------
 Run the following script in terminal:
 
->>> python3 src/i18n_check/check/non_source_keys.py
+>>> python3 src/i18n_check/check/repeat_keys.py
 """
 
 import json
 from collections import defaultdict
 from pathlib import Path
-from typing import Any, Dict, List, Tuple
+from typing import Any, Dict, List, Tuple, Union
 
 from i18n_check.utils import get_all_json_files, i18n_directory, path_separator
 
+# MARK: Repeat Keys
 
-def find_duplicate_keys(json_str: str) -> Dict[str, List[str]]:
+
+def find_repeat_keys(json_input: Union[str, Path]) -> Dict[str, List[str]]:
     """
     Identify duplicate keys in a JSON string using a custom JSON parser hook.
 
     Parameters
     ----------
-    json_str : str
-        The JSON string to analyze for duplicate keys.
+    json_input : Union[str, Path]
+        A JSON string or a Path to a JSON file to analyze for duplicate keys.
 
     Returns
     -------
@@ -47,7 +49,7 @@ def find_duplicate_keys(json_str: str) -> Dict[str, List[str]]:
 
     Examples
     --------
-    >>> find_duplicate_keys('{"a": 1, "a": 2, "b": 3}')
+    >>> find_repeat_keys('{"a": 1, "a": 2, "b": 3}')
     {'a': ['1', '2']}
     """
     grouped = defaultdict(list)
@@ -72,6 +74,14 @@ def find_duplicate_keys(json_str: str) -> Dict[str, List[str]]:
         return dict(pairs)
 
     try:
+        if isinstance(json_input, Path):
+            if not json_input.exists():
+                raise ValueError(f"File does not exist: {json_input}")
+            json_str = Path(json_input).read_text(encoding="utf-8")
+
+        else:
+            json_str = json_input
+
         json.loads(json_str, object_pairs_hook=create_key_values_dict)
         duplicates = {
             k: values_list for k, values_list in grouped.items() if len(values_list) > 1
@@ -80,6 +90,9 @@ def find_duplicate_keys(json_str: str) -> Dict[str, List[str]]:
 
     except json.JSONDecodeError as e:
         raise ValueError(f"Invalid JSON: {e}")
+
+
+# MARK: Check File
 
 
 def check_file(file_path: str) -> Tuple[str, Dict[str, List[str]]]:
@@ -114,10 +127,13 @@ def check_file(file_path: str) -> Tuple[str, Dict[str, List[str]]]:
     with open(file_path, "r", encoding="utf-8") as f:
         content = f.read()
 
-    return (Path(file_path).name, find_duplicate_keys(content))
+    return (Path(file_path).name, find_repeat_keys(content))
 
 
-def main() -> None:
+# MARK: Error Outputs
+
+
+def validate_repeat_keys() -> None:
     """
     Main check execution.
 
@@ -146,5 +162,8 @@ def main() -> None:
     print("repeat_keys success: No duplicate keys found in i18n files.")
 
 
+# MARK: Main
+
+
 if __name__ == "__main__":
-    main()
+    validate_repeat_keys()

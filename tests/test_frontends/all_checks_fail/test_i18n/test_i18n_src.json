@@ -1,0 +1,15 @@
+{
+  "i18n._global.hello_global": "Hello, global!",
+  "i18n._global.hello_global_repeat": "This key is duplicated",
+  "i18n._global.hello_global_repeat": "hello, global!",
+  "i18n._global.incorrectly_named_key": "This key needs to be renamed",
+  "i18n._global.incorrectly-formatted-key": "This key isn't formatted correctly",
+  "i18n._global.nested_example": {
+    "nested_key": "This key should not be nested"
+  },
+  "i18n._global.unused_i18n_key": "A key that's unused in the project.",
+  "i18n.sub_dir._global.hello_sub_dir": "Hello, sub directory!",
+  "i18n.sub_dir.first_file.hello_sub_dir_first_file": "Hello, sub directory first file!",
+  "i18n.sub_dir.second_file.hello_sub_dir_second_file": "Hello, sub directory second file!",
+  "i18n.test_file.hello_test_file": "Hello, test file!"
+}
