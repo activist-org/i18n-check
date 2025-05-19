@@ -11,10 +11,10 @@ Run the following script in terminal:
 
 from i18n_check.utils import run_check, warn_on_nested_keys
 
-# MARK: Main
+# MARK: Run All
 
 
-def main() -> None:
+def run_all_checks() -> None:
     """
     Run all internationalization (i18n) checks for the project.
 
@@ -37,7 +37,7 @@ def main() -> None:
     - Unused key detection
     - Repeated key detection
     - Repeated value detection
-    - Nested key detection (conditionally enabled)
+    - Nested key detection
     """
     checks = [
         "invalid_keys.py",
@@ -61,5 +61,7 @@ def main() -> None:
     print("\nSuccess: All i18n checks have passed!")
 
 
+# MARK: Main
+
 if __name__ == "__main__":
-    main()
+    run_all_checks()

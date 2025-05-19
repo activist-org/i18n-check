@@ -164,7 +164,7 @@ pytest
 pytest path/to/test_file.py::test_function
 
 # To run with a coverage report as is done in PRs:
-pytest . --cov=. --cov-report=term-missing --cov-config=./pyproject.toml
+pytest . --cov=src --cov-report=term-missing --cov-config=./pyproject.toml
 ```
 
 <a id="issues-projects"></a>

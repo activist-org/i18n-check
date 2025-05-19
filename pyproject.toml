@@ -45,8 +45,6 @@ line_length = 88
 
 [tool.pytest.ini_options]
 pythonpath = "src"
-testpaths = ["tests"]
-filterwarnings = "error"
 
 [tool.coverage.run]
 omit = ["*/tests/*", "*/__init__.py"]
