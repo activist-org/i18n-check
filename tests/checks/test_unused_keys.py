@@ -15,14 +15,18 @@ from i18n_check.check.unused_keys import (
 from i18n_check.utils import read_json_file
 
 fail_checks_json = (
-    Path(__file__).parent.parent
+    Path(__file__).parent.parent.parent
+    / "src"
+    / "i18n_check"
     / "test_frontends"
     / "all_checks_fail"
     / "test_i18n"
     / "test_i18n_src.json"
 )
 pass_checks_json = (
-    Path(__file__).parent.parent
+    Path(__file__).parent.parent.parent
+    / "src"
+    / "i18n_check"
     / "test_frontends"
     / "all_checks_pass"
     / "test_i18n"

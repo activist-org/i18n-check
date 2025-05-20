@@ -5,6 +5,8 @@ Setup and commands for the i18n-check command line interface.
 
 import argparse
 
+from i18n_check.cli.generate_config_file import generate_config_file
+from i18n_check.cli.generate_test_frontends import generate_test_frontends
 from i18n_check.cli.upgrade import upgrade_cli
 from i18n_check.cli.version import get_version_message
 from i18n_check.utils import run_check
@@ -31,6 +33,7 @@ def main() -> None:
     The available command line arguments are:
     - --version (-v): Show the version of the i18n-check CLI
     - --upgrade (-u): Upgrade the i18n-check CLI to the latest version
+    - --generate-test-frontends (-gtf): Generate frontends to test i18n-check functionalities
     - --key-identifiers (-ki): Check i18n key usage and formatting
     - --invalid-keys (-ik): Check for invalid i18n keys in codebase
     - --unused-keys (-uk): Check for unused i18n keys
@@ -42,7 +45,7 @@ def main() -> None:
 
     Examples
     --------
-    >>> i18n-check --ki
+    >>> i18n-check -ki
     >>> i18n-check --all-checks
     >>> i18n-check --invalid-keys --unused-keys
     """
@@ -69,6 +72,20 @@ def main() -> None:
         "--upgrade",
         action="store_true",
         help="Upgrade the i18n-check CLI to the latest version.",
+    )
+
+    parser.add_argument(
+        "-gcf",
+        "--generate-config-file",
+        action="store_true",
+        help="Generate a configuration file for i18n-check.",
+    )
+
+    parser.add_argument(
+        "-gtf",
+        "--generate-test-frontends",
+        action="store_true",
+        help="Generate frontends to test i18n-check functionalities.",
     )
 
     parser.add_argument(
@@ -133,6 +150,14 @@ def main() -> None:
 
     if args.upgrade:
         upgrade_cli()
+        return
+
+    if args.generate_config_file:
+        generate_config_file()
+        return
+
+    if args.generate_test_frontends:
+        generate_test_frontends()
         return
 
     if args.key_identifiers:

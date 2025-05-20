@@ -13,10 +13,20 @@ from i18n_check.check.nested_keys import is_nested_json, validate_nested_keys
 from i18n_check.utils import read_json_file
 
 fail_json_dir = (
-    Path(__file__).parent.parent / "test_frontends" / "all_checks_fail" / "test_i18n"
+    Path(__file__).parent.parent.parent
+    / "src"
+    / "i18n_check"
+    / "test_frontends"
+    / "all_checks_fail"
+    / "test_i18n"
 )
 pass_json_dir = (
-    Path(__file__).parent.parent / "test_frontends" / "all_checks_pass" / "test_i18n"
+    Path(__file__).parent.parent.parent
+    / "src"
+    / "i18n_check"
+    / "test_frontends"
+    / "all_checks_pass"
+    / "test_i18n"
 )
 
 

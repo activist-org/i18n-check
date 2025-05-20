@@ -20,14 +20,18 @@ from i18n_check.utils import read_json_file
 json_repeat_value_counts = get_repeat_value_counts(i18n_src_dict)
 
 fail_checks_json = read_json_file(
-    file_path=Path(__file__).parent.parent
+    file_path=Path(__file__).parent.parent.parent
+    / "src"
+    / "i18n_check"
     / "test_frontends"
     / "all_checks_fail"
     / "test_i18n"
     / "test_i18n_src.json"
 )
 pass_checks_json = read_json_file(
-    file_path=Path(__file__).parent.parent
+    file_path=Path(__file__).parent.parent.parent
+    / "src"
+    / "i18n_check"
     / "test_frontends"
     / "all_checks_pass"
     / "test_i18n"
