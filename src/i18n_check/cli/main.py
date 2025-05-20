@@ -33,6 +33,7 @@ def main() -> None:
     The available command line arguments are:
     - --version (-v): Show the version of the i18n-check CLI
     - --upgrade (-u): Upgrade the i18n-check CLI to the latest version
+    - --generate-config-file (-gtf): Generate a configuration file for i18n-check
     - --generate-test-frontends (-gtf): Generate frontends to test i18n-check functionalities
     - --key-identifiers (-ki): Check i18n key usage and formatting
     - --invalid-keys (-ik): Check for invalid i18n keys in codebase
