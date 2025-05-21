@@ -21,6 +21,7 @@ If you have questions or would like to communicate with the team, please [join u
 - [Bug reports](#bug-reports-)
 - [Feature requests](#feature-requests-)
 - [Pull requests](#pull-requests-)
+- [Documentation](#documentation)
 
 <a id="first-steps-"></a>
 
@@ -272,3 +273,50 @@ When making a contribution, adhering to the [GitHub flow](https://docs.github.co
 7. [Open a Pull Request](https://help.github.com/articles/using-pull-requests/) with a clear title and description.
 
 Thank you in advance for your contributions!
+
+<a id="documentation"></a>
+
+## Documentation [`⇧`](#contents)
+
+The documentation for i18n-check can be found at [i18n-check.readthedocs.io](https://i18n-check.readthedocs.io/en/latest/). Documentation is an invaluable way to contribute to coding projects as it allows others to more easily understand the project structure and contribute. Issues related to documentation are marked with the [`documentation`](https://github.com/activist-org/i18n-check/labels/documentation) label.
+
+### Function Docstrings
+
+i18n-check generally follows [numpydoc conventions](https://numpydoc.readthedocs.io/en/latest/format.html) for documenting functions and Python code in general. Function docstrings should have the following format:
+
+```py
+def example_function(argument: argument_type) -> return_type:
+    """
+    An example docstring for a function so others understand your work.
+
+    Parameters
+    ----------
+    argument : argument_type
+        Description of your argument.
+
+    Returns
+    -------
+    return_value : return_type
+        Description of your return value.
+
+    Raises
+    ------
+    ErrorType
+        Description of the error and the condition that raises it.
+    """
+
+    ...
+
+    return return_value
+```
+
+### Building the Docs
+
+Use the following commands to build the documentation locally:
+
+```bash
+cd docs
+make html
+```
+
+You can then open `index.html` within `docs/build/html` to check the local version of the documentation.

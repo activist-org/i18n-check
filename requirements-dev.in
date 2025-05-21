@@ -12,11 +12,13 @@
 
 pyyaml
 mypy
+numpydoc
 pip-tools
 pre-commit
 pytest
 pytest-cov
 requests
 ruff
+sphinx-rtd-theme
 types-PyYAML
 types-requests

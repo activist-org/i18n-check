@@ -4,15 +4,21 @@
 #
 #    pip-compile requirements-dev.in
 #
+alabaster==1.0.0
+    # via sphinx
+babel==2.17.0
+    # via sphinx
 build==1.2.2.post1
     # via pip-tools
 certifi==2025.1.31
     # via
+    #   -r /Users/andrewtavis/coding/activist-org/i18n-check/requirements.txt
     #   requests
 cfgv==3.4.0
     # via pre-commit
 charset-normalizer==3.4.1
     # via
+    #   -r /Users/andrewtavis/coding/activist-org/i18n-check/requirements.txt
     #   requests
 click==8.1.8
     # via pip-tools
@@ -20,25 +26,39 @@ coverage[toml]==7.6.12
     # via pytest-cov
 distlib==0.3.9
     # via virtualenv
+docutils==0.21.2
+    # via
+    #   sphinx
+    #   sphinx-rtd-theme
 filelock==3.17.0
     # via virtualenv
 identify==2.6.8
     # via pre-commit
 idna==3.10
     # via
+    #   -r /Users/andrewtavis/coding/activist-org/i18n-check/requirements.txt
     #   requests
+imagesize==1.4.1
+    # via sphinx
 iniconfig==2.0.0
     # via pytest
+jinja2==3.1.6
+    # via sphinx
+markupsafe==3.0.2
+    # via jinja2
 mypy==1.15.0
     # via -r requirements-dev.in
 mypy-extensions==1.0.0
     # via mypy
 nodeenv==1.9.1
     # via pre-commit
+numpydoc==1.8.0
+    # via -r requirements-dev.in
 packaging==24.2
     # via
     #   build
     #   pytest
+    #   sphinx
 pip-tools==7.4.1
     # via -r requirements-dev.in
 platformdirs==4.3.6
@@ -47,6 +67,8 @@ pluggy==1.5.0
     # via pytest
 pre-commit==4.1.0
     # via -r requirements-dev.in
+pygments==2.19.1
+    # via sphinx
 pyproject-hooks==1.2.0
     # via
     #   build
@@ -59,13 +81,43 @@ pytest-cov==6.0.0
     # via -r requirements-dev.in
 pyyaml==6.0.2
     # via
+    #   -r /Users/andrewtavis/coding/activist-org/i18n-check/requirements.txt
     #   -r requirements-dev.in
     #   pre-commit
 requests==2.32.3
     # via
+    #   -r /Users/andrewtavis/coding/activist-org/i18n-check/requirements.txt
     #   -r requirements-dev.in
+    #   sphinx
+roman-numerals-py==3.1.0
+    # via sphinx
 ruff==0.9.7
     # via -r requirements-dev.in
+snowballstemmer==3.0.1
+    # via sphinx
+sphinx==8.2.3
+    # via
+    #   numpydoc
+    #   sphinx-rtd-theme
+    #   sphinxcontrib-jquery
+sphinx-rtd-theme==3.0.2
+    # via -r requirements-dev.in
+sphinxcontrib-applehelp==2.0.0
+    # via sphinx
+sphinxcontrib-devhelp==2.0.0
+    # via sphinx
+sphinxcontrib-htmlhelp==2.1.0
+    # via sphinx
+sphinxcontrib-jquery==4.1
+    # via sphinx-rtd-theme
+sphinxcontrib-jsmath==1.0.1
+    # via sphinx
+sphinxcontrib-qthelp==2.0.0
+    # via sphinx
+sphinxcontrib-serializinghtml==2.0.0
+    # via sphinx
+tabulate==0.9.0
+    # via numpydoc
 types-pyyaml==6.0.12.20241230
     # via -r requirements-dev.in
 types-requests==2.32.0.20250301
@@ -74,6 +126,7 @@ typing-extensions==4.12.2
     # via mypy
 urllib3==2.3.0
     # via
+    #   -r /Users/andrewtavis/coding/activist-org/i18n-check/requirements.txt
     #   requests
     #   types-requests
 virtualenv==20.29.2

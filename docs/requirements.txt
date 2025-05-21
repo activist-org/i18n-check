@@ -1,0 +1,5 @@
+m2r2
+numpydoc
+i18n-check
+sphinx
+sphinx_rtd_theme
