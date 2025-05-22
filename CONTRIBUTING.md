@@ -234,6 +234,9 @@ When making a contribution, adhering to the [GitHub flow](https://docs.github.co
    ```bash
    # In the project root:
    pre-commit install
+
+   # Then test the pre-commit hooks to see how it works:
+   pre-commit run --all-files
    ```
 
 > [!NOTE]
