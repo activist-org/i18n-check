@@ -78,7 +78,6 @@ Development environment
 The development environment for i18n-check can be installed via the following steps:
 
 - `Fork <https://docs.github.com/en/get-started/quickstart/fork-a-repo>`__ the `i18n-check repo <https://github.com/activist-org/i18n-check>`__, clone your fork, and configure the remotes:
-..
 
 .. raw:: html
 

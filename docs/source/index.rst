@@ -1,5 +1,5 @@
 .. image:: https://raw.githubusercontent.com/activist-org/i18n-check/main/.github/resources/i18nCheckGitHubBanner.png
-    :height: 150
+    :width: 100%
     :align: center
     :target: https://github.com/activist-org/i18n-check
 
@@ -28,6 +28,37 @@
 
 .. |matrix| image:: https://img.shields.io/badge/Matrix-000000.svg?logo=matrix&logoColor=ffffff
     :target: https://matrix.to/#/#activist_community:matrix.org
+
+**Check i18n/L10n keys and values**
+
+Installation
+============
+
+i18n-check is available for installation via `pip <https://pypi.org/project/i18n-check/>`_:
+
+.. code-block:: shell
+
+    pip install i18n-check
+
+The latest development version can further be installed the `source code on GitHub <https://github.com/activist-org/i18n-check>`_:
+
+.. code-block:: shell
+
+    git clone https://github.com/activist-org/i18n-check.git
+    cd i18n-check
+    pip install -e .
+
+To utilize the i18n-check CLI, you can execute variations of the following command in your terminal:
+
+.. code-block:: shell
+
+    i18n-check -h  # view the cli options
+    i18n-check [command] [arguments]
+
+Available Commands
+==================
+
+- ``command`` (``c``):
 
 Contents
 ========
