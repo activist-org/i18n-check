@@ -1,3 +1,5 @@
+.. include:: _static/CONTRIBUTING.rst
+
 License
 =======
 
