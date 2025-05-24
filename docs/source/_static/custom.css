@@ -9,7 +9,7 @@
 }
 
 /* Update the version color to match the background color. */
-.version {
+.version-switch {
   color: #000 !important;
 }
 
