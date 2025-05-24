@@ -1,8 +1,7 @@
 include README.* CONTRIBUTING.* LICENSE.*
-
 graft src
-graft tests
-
+graft docs
 prune docs/build
+graft tests
 global-exclude *.py[cod]
 global-exclude .DS_Store
