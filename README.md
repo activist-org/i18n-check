@@ -26,6 +26,7 @@ Developed by the [activist community](https://github.com/activist-org), this pro
 
 - [Conventions](#contentions-)
 - [How it works](#how-it-works-)
+  - [Commands](#commands-)
   - [Arguments](#arguments-)
   - [Checks](#checks-)
 - [Configuration](#configuration-)
@@ -59,6 +60,19 @@ Developed by the [activist community](https://github.com/activist-org), this pro
 
 # How it works [`⇧`](#contents)
 
+<a id="commands-"></a>
+
+### Commands [`⇧`](#contents)
+
+The following are example commands for `i18n-check`:
+
+```bash
+i18n-check -gtf  # generate a test frontends to see how it works
+i18n-check -a  # run all checks
+i18n-check --CHECK_ID  # run a specific check
+i18n-check -h  # view the help
+```
+
 <a id="arguments-"></a>
 
 ### Arguments [`⇧`](#contents)
@@ -75,19 +89,19 @@ You provide `i18n-check` with the following arguments:
 
 From there the following checks are ran across your codebase:
 
-- `key-identifiers`: Does the source file have keys that don't match the above format or name conventions?
+- `key-identifiers` (`ki`): Does the source file have keys that don't match the above format or name conventions?
   - Rename them so i18n key usage is consistent and their scope is communicated in their name.
-- `invalid-keys`: Does the codebase include i18n keys that are not within the source file?
+- `invalid-keys` (`ik`): Does the codebase include i18n keys that are not within the source file?
   - Check their validity and resolve if they should be added to the i18n files or replaced.
-- `unused-keys`: Does the source file have keys that are not used in the codebase?
+- `unused-keys` (`uk`): Does the source file have keys that are not used in the codebase?
   - Remove them so the localization team isn't working on strings that aren't used.
-- `non-source-keys`: Do the target locale files have keys that are not in the source file?
+- `non-source-keys` (`nsk`): Do the target locale files have keys that are not in the source file?
   - Remove them as they won't be used in the application.
-- `repeat-keys`: Do any of localization files have repeat keys?
+- `repeat-keys` (`rk`): Do any of localization files have repeat keys?
   - Separate them so that the values are not mixed when they're in production.
-- `repeat-values`: Does the source file have repeat values that can be combined into a single key?
+- `repeat-values` (`rv`): Does the source file have repeat values that can be combined into a single key?
   - Combine them so the localization team only needs to localize one of them.
-- `nested-keys`: Do the i18n files contain nested JSON structures?
+- `nested-keys` (`nk`): Do the i18n files contain nested JSON structures?
   - Flatten them to make replacing invalid keys easier and with find-and-replace.
 
 Each of the above checks is ran in parallel with directions for how to fix the i18n files being provided when errors are raised. Checks can also be disabled in the workflow via options passed in the configuration YAML file.

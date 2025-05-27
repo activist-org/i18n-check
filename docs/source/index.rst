@@ -53,12 +53,19 @@ To utilize the i18n-check CLI, you can execute variations of the following comma
 .. code-block:: shell
 
     i18n-check -h  # view the cli options
-    i18n-check [command] [arguments]
+    i18n-check [command]
 
-Available Commands
-==================
+Commands
+========
 
-- ``command`` (``c``):
+The following are example commands for `i18n-check`:
+
+.. code-block:: shell
+
+    i18n-check -gtf  # generate a test frontends to see how it works
+    i18n-check -a  # run all checks
+    # Available IDs are ki, ik, uk, nsk, rk, rv and nk.
+    i18n-check -CHECK_ID  # run a specific check
 
 Contents
 ========
