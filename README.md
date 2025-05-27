@@ -67,10 +67,11 @@ Developed by the [activist community](https://github.com/activist-org), this pro
 The following are example commands for `i18n-check`:
 
 ```bash
+i18n-check -h  # view the help
 i18n-check -gtf  # generate a test frontends to see how it works
 i18n-check -a  # run all checks
-i18n-check --CHECK_ID  # run a specific check
-i18n-check -h  # view the help
+# Available IDs are ki, ik, uk, nsk, rk, rv and nk (see below).
+i18n-check -CHECK_ID  # run a specific check
 ```
 
 <a id="arguments-"></a>
