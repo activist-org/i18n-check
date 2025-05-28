@@ -15,7 +15,7 @@ import json
 from pathlib import Path
 from typing import Dict
 
-from i18n_check.utils import i18n_directory, read_json_file, warn_on_nested_keys
+from i18n_check.utils import i18n_directory, read_json_file
 
 # MARK: Is Nested
 
@@ -55,7 +55,7 @@ def validate_nested_keys(directory: str | Path) -> None:
     for file_path in Path(directory).rglob("*.json"):
         try:
             data = read_json_file(file_path=file_path)
-            if is_nested_json(data) and warn_on_nested_keys:
+            if is_nested_json(data):
                 print(f"Warning: Nested JSON structure detected in {file_path}")
                 print(
                     "i18n-check recommends using flat JSON files to allow easy find-and-replace operations."

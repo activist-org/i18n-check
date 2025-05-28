@@ -9,7 +9,7 @@ Run the following script in terminal:
 >>> python3 src/i18n_check/checks/run_i18n_checks.py
 """
 
-from i18n_check.utils import run_check, warn_on_nested_keys
+from i18n_check.utils import run_check
 
 # MARK: Run All
 
@@ -46,10 +46,8 @@ def run_all_checks() -> None:
         "unused_keys.py",
         "repeat_keys.py",
         "repeat_values.py",
+        "nested_keys.py",
     ]
-
-    if warn_on_nested_keys:
-        checks.append("nested_keys.py")
 
     check_results: list[bool] = []
     check_results.extend(run_check(check) for check in checks)

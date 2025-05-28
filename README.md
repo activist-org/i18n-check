@@ -130,7 +130,6 @@ checks:
 file-types-to-check: [.ts, .js]
 directories-to-skip: [frontend/node_modules]
 files-to-skip: []
-warn-on-nested-keys: true
 ```
 
 Common additional arguments for using specific web frameworks can be found in the dropdowns below:

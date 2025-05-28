@@ -133,9 +133,12 @@ if "repeat-values" in config["checks"] and "skip" in config["checks"]["repeat-va
 if "unused-keys" in config["checks"] and "skip" in config["checks"]["unused-keys"]:
     invalid_keys_skip += config["checks"]["unused-keys"]["skip"]
 
+if "nested-keys" in config["checks"] and "skip" in config["checks"]["nested-keys"]:
+    invalid_keys_skip += config["checks"]["nested-keys"]["skip"]
+
 file_types_to_check = config["file-types-to-check"]
-files_to_skip = config["files-to-skip"]
-warn_on_nested_keys = config["warn-on-nested-keys"]
+config_directories_to_skip = config["directories-to-skip"]
+config_files_to_skip = config["files-to-skip"]
 
 # Check for Windows and derive directory path separator.
 path_separator = "\\" if os.name == "nt" else "/"

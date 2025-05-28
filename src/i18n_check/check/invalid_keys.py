@@ -17,8 +17,8 @@ from typing import Any, List, Set
 
 from i18n_check.utils import (
     collect_files_to_check,
+    config_files_to_skip,
     file_types_to_check,
-    files_to_skip,
     i18n_src_file,
     invalid_keys_skip,
     read_json_file,
@@ -36,7 +36,7 @@ files_to_check = collect_files_to_check(
     directory=src_directory,
     file_types=file_types_to_check,
     directories_to_skip=invalid_keys_skip,
-    files_to_skip=files_to_skip,
+    files_to_skip=config_files_to_skip,
 )
 
 files_to_check_contents = {}

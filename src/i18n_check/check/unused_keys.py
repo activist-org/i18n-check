@@ -16,8 +16,8 @@ from typing import Dict, List
 
 from i18n_check.utils import (
     collect_files_to_check,
+    config_files_to_skip,
     file_types_to_check,
-    files_to_skip,
     i18n_src_file,
     read_files_to_dict,
     read_json_file,
@@ -32,7 +32,7 @@ files_to_check = collect_files_to_check(
     directory=src_directory,
     file_types=file_types_to_check,
     directories_to_skip=unused_keys_skip,
-    files_to_skip=files_to_skip,
+    files_to_skip=config_files_to_skip,
 )
 files_to_check_contents = read_files_to_dict(files=files_to_check)
 

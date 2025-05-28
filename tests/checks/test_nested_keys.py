@@ -84,7 +84,6 @@ class TestCheckI18nFiles(unittest.TestCase):
         )
         self.assertEqual(found, should_be_present)
 
-    @patch("i18n_check.check.nested_keys.warn_on_nested_keys", True)
     @patch("builtins.print")
     def test_validate_nested_keys_with_warnings(self, mock_print) -> None:
         """
@@ -96,23 +95,6 @@ class TestCheckI18nFiles(unittest.TestCase):
 
         self._assert_warning_printed(mock_print, self.fail_files, True)
         self._assert_warning_printed(mock_print, self.pass_files, False)
-
-    @patch("i18n_check.check.nested_keys.warn_on_nested_keys", False)
-    @patch("builtins.print")
-    def test_validate_nested_keys_without_warnings(self, mock_print) -> None:
-        """
-        Test validate_nested_keys with warning disabled.
-        """
-        for file in self.json_files:
-            validate_nested_keys(file)
-
-        # Check no warnings at all were printed.
-        self.assertFalse(
-            any(
-                "Warning: Nested JSON structure detected" in str(call)
-                for call in mock_print.call_args_list
-            )
-        )
 
     def test_validate_nested_keys_with_nonexistent_directory(self) -> None:
         """

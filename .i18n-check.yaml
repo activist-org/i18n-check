@@ -11,5 +11,5 @@ checks:
     skip: []
 
 file-types-to-check: [.ts]
+directories-to-skip: []
 files-to-skip: []
-warn-on-nested-keys: true
