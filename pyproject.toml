@@ -53,7 +53,6 @@ omit = ["*/tests/*", "*/__init__.py"]
 mypy_path = "src"
 strict = true
 exclude = ["setup.py", "^tests/.*\\.py$"]
-enable_incomplete_feature = ["Unpack"]
 
 [tool.numpydoc_validation]
 checks = [

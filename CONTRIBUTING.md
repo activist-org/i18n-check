@@ -1,6 +1,6 @@
 # Contributing to i18n-check
 
-Thank you for contributing to i18n-check!
+Thank you for contributing to `i18n-check`!
 
 Please take a moment to review this document in order to make the contribution process easy and effective for everyone involved.
 
@@ -40,7 +40,7 @@ Thank you for your interest in contributing to activist community projects! We l
 
 ## Learning the tech stack [`⇧`](#contents)
 
-i18n-check is very open to contributions from people in the early stages of their coding journey! The following is a select list of documentation pages to help you understand the technologies we use.
+`i18n-check` is very open to contributions from people in the early stages of their coding journey! The following is a select list of documentation pages to help you understand the technologies we use.
 
 <details><summary>Docs for those new to programming</summary>
 <p>
@@ -114,7 +114,7 @@ git remote add upstream https://github.com/activist-org/i18n-check.git
 
 - Now, if you run `git remote -v` you should see two remote repositories named:
   - `origin` (forked repository)
-  - `upstream` (i18n-check repository)
+  - `upstream` (`i18n-check` repository)
 
 3. Create a virtual environment, activate it and install dependencies:
 
@@ -196,7 +196,7 @@ Guidelines for bug reports:
 - What actually happens
 - Notes (why this might be happening, things tried that didn't work, etc)
 
-To make the above steps easier, the i18n-check team asks that contributors report bugs using the [bug report template](https://github.com/activist-org/i18n-check/issues/new?assignees=&labels=bug&projects=activist-org%2F1&template=bug_report.yml), with these issues further being marked with the [`Bug`](https://github.com/activist-org/i18n-check/issues?q=is%3Aissue%20state%3Aopen%20type%3ABug) type.
+To make the above steps easier, the `i18n-check` team asks that contributors report bugs using the [bug report template](https://github.com/activist-org/i18n-check/issues/new?assignees=&labels=bug&projects=activist-org%2F1&template=bug_report.yml), with these issues further being marked with the [`Bug`](https://github.com/activist-org/i18n-check/issues?q=is%3Aissue%20state%3Aopen%20type%3ABug) type.
 
 Again, thank you for your time in reporting issues!
 
@@ -210,7 +210,7 @@ Feature requests are more than welcome! Please take a moment to find out whether
 
 ## Pull requests [`⇧`](#contents)
 
-Good pull requests — patches, improvements and new features — are the foundation of our community making i18n-check. They should remain focused in scope and avoid containing unrelated commits. Note that all contributions to this project will be made under [the specified license](LICENSE.txt) and should follow the coding indentation and style standards (contact us if unsure).
+Good pull requests — patches, improvements and new features — are the foundation of our community making `i18n-check`. They should remain focused in scope and avoid containing unrelated commits. Note that all contributions to this project will be made under [the specified license](LICENSE.txt) and should follow the coding indentation and style standards (contact us if unsure).
 
 **Please ask first** before embarking on any significant pull request (implementing features, refactoring code, etc), otherwise you risk spending a lot of time working on something that the developers might not want to merge into the project. With that being said, major additions are very appreciated!
 
@@ -281,11 +281,11 @@ Thank you in advance for your contributions!
 
 ## Documentation [`⇧`](#contents)
 
-The documentation for i18n-check can be found at [i18n-check.readthedocs.io](https://i18n-check.readthedocs.io/en/latest/). Documentation is an invaluable way to contribute to coding projects as it allows others to more easily understand the project structure and contribute. Issues related to documentation are marked with the [`documentation`](https://github.com/activist-org/i18n-check/labels/documentation) label.
+The documentation for `i18n-check` can be found at [i18n-check.readthedocs.io](https://i18n-check.readthedocs.io/en/latest/). Documentation is an invaluable way to contribute to coding projects as it allows others to more easily understand the project structure and contribute. Issues related to documentation are marked with the [`documentation`](https://github.com/activist-org/i18n-check/labels/documentation) label.
 
 ### Function Docstrings
 
-i18n-check generally follows [numpydoc conventions](https://numpydoc.readthedocs.io/en/latest/format.html) for documenting functions and Python code in general. Function docstrings should have the following format:
+`i18n-check` generally follows [numpydoc conventions](https://numpydoc.readthedocs.io/en/latest/format.html) for documenting functions and Python code in general. Function docstrings should have the following format:
 
 ```py
 def example_function(argument: argument_type) -> return_type:
