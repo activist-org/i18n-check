@@ -18,9 +18,6 @@
 
 Developed by the [activist community](https://github.com/activist-org), this process is meant to assure that development and i18n/L10n teams are in sync when using JSON based localization processes. The action can be expanded later to work for other file type processes as needed.
 
-> [!NOTE]
-> For the GitHub action please see [activist-org/i18n-check-action](https://github.com/activist-org/i18n-check-action).
-
 <a id="contents"></a>
 
 # **Contents**
