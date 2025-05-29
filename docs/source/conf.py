@@ -163,7 +163,7 @@ texinfo_documents = [
         "i18n-check Documentation",
         author,
         "i18n-check",
-        "Check i18n/L10n keys and values ",
+        "Check i18n/L10n keys and values",
         "Miscellaneous",
     )
 ]
