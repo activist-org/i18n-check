@@ -7,9 +7,15 @@ on:
       - opened
       - reopened
       - synchronize
+    paths:
+      - "src/**"
+      - "tests/**"
   push:
     branches:
       - main
+    paths:
+      - "src/**"
+      - "tests/**"
 
 jobs:
   ci:
