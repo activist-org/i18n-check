@@ -1,4 +1,4 @@
 // This file contains the following i18n keys:
-//   - "i18n._global.hello_global"
-//   - "i18n.sub_dir._global.hello_sub_dir"
-//   - "i18n.sub_dir.second_file.hello_sub_dir_second_file"
+//   - "._global.hello_global"
+//   - "sub_dir._global.hello_sub_dir"
+//   - "sub_dir.second_file.hello_sub_dir_second_file"
