@@ -42,7 +42,6 @@ pass_checks_json = read_json_file(
 @pytest.mark.parametrize(
     "input_dict,expected_output",
     [
-        # (i18n_src_dict, {'hello global!': 2}),
         # Empty dicts.
         ({}, {}),
         # Unicode/special characters.
