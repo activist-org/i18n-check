@@ -48,7 +48,6 @@ invalid_format_pass, invalid_name_pass = audit_i18n_keys(key_file_dict=i18n_map_
 invalid_format_fail, invalid_name_fail = audit_i18n_keys(key_file_dict=i18n_map_fail)
 
 
-# report_and_correct_keys(invalid_format_fail, invalid_name_fail)
 @pytest.mark.parametrize(
     "i18n_map, expected_output",
     [
@@ -107,8 +106,7 @@ def test_report_and_correct_keys_pass(capsys) -> None:
     """
     Test report_and_correct_keys for the pass case.
     """
-
-    # For pass case, it should not raise an error
+    # For pass case, it should not raise an error.
     report_and_correct_keys(invalid_format_pass, invalid_name_pass)
     pass_result = capsys.readouterr().out
     success_message = "key_identifiers success: All i18n keys are formatted and named correctly in the i18n-src file.\n"

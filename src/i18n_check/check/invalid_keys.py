@@ -43,6 +43,7 @@ def get_used_i18n_keys(
     ----------
     i18n_src_dict : Dict[str, str]
         The dictionary containing i18n source keys and their associated values.
+
     src_directory : Path
         The source directory where the files are located.
 
@@ -101,6 +102,7 @@ def validate_i18n_keys(
     ----------
     all_used_i18n_keys : Set[str]
         A set of all i18n keys that are used in the project.
+
     i18n_src_dict : Dict[str, str]
         The dictionary containing i18n source keys and their associated values.
 

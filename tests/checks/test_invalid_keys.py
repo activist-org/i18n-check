@@ -97,8 +97,7 @@ def test_validate_pass_i18n_keys(capsys) -> None:
     """
     Test validate_i18n_keys for the pass case.
     """
-
-    # For pass case, it should not raise an error
+    # For pass case, it should not raise an error.
     validate_i18n_keys(
         all_used_i18n_keys=i18n_used_pass, i18n_src_dict=pass_checks_json
     )

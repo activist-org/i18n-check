@@ -38,6 +38,7 @@ def get_non_source_keys(
     ----------
     i18n_src_dict : dict
         The dictionary containing i18n source keys and their associated values.
+
     i18n_directory : str, optional
         The directory containing the i18n JSON files, by default `i18n_directory`.
 

@@ -46,6 +46,7 @@ def map_keys_to_files(
     ----------
     i18n_src_dict : Dict[str, str]
         The dictionary containing i18n source keys and their associated values.
+
     src_directory : Path
         The source directory where the files are located.
 
@@ -171,6 +172,7 @@ def report_and_correct_keys(
     ----------
     invalid_keys_by_format : List[str]
         A list of i18n keys that are not formatted correctly.
+
     invalid_keys_by_name : Dict[str, str]
         A dictionary mapping i18n keys that are not named correctly to their suggested corrections.
 
