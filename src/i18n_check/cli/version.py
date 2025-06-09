@@ -3,7 +3,7 @@
 Functions for checking current version of the i18n-check CLI.
 """
 
-from importlib import metadata
+import importlib.metadata
 from typing import Any, Dict
 
 import requests
@@ -20,9 +20,9 @@ def get_local_version() -> str:
         that the package is not installed via pip.
     """
     try:
-        return metadata.version("i18n-check")
+        return importlib.metadata.version("i18n-check")
 
-    except metadata.PackageNotFoundError:
+    except importlib.metadata.PackageNotFoundError:
         return "Unknown (Not installed via pip)"
 
 

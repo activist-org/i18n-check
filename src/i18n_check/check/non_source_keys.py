@@ -11,6 +11,9 @@ Run the following script in terminal:
 >>> python3 src/i18n_check/check/non_source_keys.py
 """
 
+from pathlib import Path
+from typing import Dict
+
 from i18n_check.utils import (
     get_all_json_files,
     i18n_directory,
@@ -19,40 +22,89 @@ from i18n_check.utils import (
     read_json_file,
 )
 
-# MARK: Paths / Files
-
 i18n_src_dict = read_json_file(file_path=i18n_src_file)
-all_src_keys = i18n_src_dict.keys()
 
 # MARK: Non Source Keys
 
-non_source_keys_dict = {}
-for json_file in get_all_json_files(i18n_directory, path_separator):
-    if (
-        json_file.split(path_separator)[-1]
-        != str(i18n_src_file).split(path_separator)[-1]
-    ):
-        json_dict = read_json_file(file_path=json_file)
 
-        all_keys = json_dict.keys()
+def get_non_source_keys(
+    i18n_src_dict: Dict[str, str] = i18n_src_dict,
+    i18n_directory: Path = i18n_directory,
+) -> Dict[str, str]:
+    """
+    Get non-source keys from a JSON file compared to the source dictionary.
 
-        if len(all_keys - all_src_keys) > 0:
-            non_source_keys_dict[json_file.split(path_separator)[-1]] = (
-                all_keys - all_src_keys
-            )
+    Parameters
+    ----------
+    i18n_src_dict : dict
+        The dictionary containing i18n source keys and their associated values.
+
+    i18n_directory : str, optional
+        The directory containing the i18n JSON files, by default `i18n_directory`.
+
+    Returns
+    -------
+    dict
+        A dictionary with non-source keys found in the JSON file.
+    """
+    all_src_keys = i18n_src_dict.keys()
+    non_source_keys_dict = {}
+    for json_file in get_all_json_files(i18n_directory, path_separator):
+        if (
+            json_file.split(path_separator)[-1]
+            != str(i18n_src_file).split(path_separator)[-1]
+        ):
+            json_dict = read_json_file(file_path=json_file)
+
+            all_keys = json_dict.keys()
+
+            if len(all_keys - all_src_keys) > 0:
+                non_source_keys_dict[json_file.split(path_separator)[-1]] = (
+                    all_keys - all_src_keys
+                )
+    return non_source_keys_dict
+
 
 # MARK: Error Outputs
 
-if non_source_keys_dict:
-    non_source_keys_string = "\n\n".join(
-        f"{k}: {', '.join(non_source_keys_dict[k])}\nTotal: {len(non_source_keys_dict[k])}"
-        for k in non_source_keys_dict
-    )
-    raise ValueError(
-        f"\nnon_source_keys failure: There are some i18n target JSON files that have keys that are not in en-US.json. Please remove or rename the following keys:\n\n{non_source_keys_string}\n"
-    )
 
-else:
-    print(
-        "non_source_keys success: No i18n target file has keys that are not in the en-US.json source file."
+def report_non_source_keys(
+    non_source_keys_dict: Dict[str, str],
+) -> None:
+    """
+    Report non-source keys found in the JSON file.
+
+    Parameters
+    ----------
+    non_source_keys_dict : dict
+        A dictionary with non-source keys found in the JSON file.
+
+    Raises
+    ------
+    ValueError: If the input dictionary is not empty, indicating that
+    non-source keys were found.
+    """
+    if non_source_keys_dict:
+        non_source_keys_string = "\n\n".join(
+            f"{k}: {', '.join(non_source_keys_dict[k])}\nTotal: {len(non_source_keys_dict[k])}"
+            for k in non_source_keys_dict
+        )
+        raise ValueError(
+            f"\nnon_source_keys failure: There are some i18n target JSON files that have keys that are not in en-US.json. Please remove or rename the following keys:\n\n{non_source_keys_string}\n"
+        )
+
+    else:
+        print(
+            "non_source_keys success: No i18n target file has keys that are not in the en-US.json source file."
+        )
+
+
+# MARK: Main
+
+
+if __name__ == "__main__":
+    non_source_keys_dict = get_non_source_keys(
+        i18n_src_dict=i18n_src_dict,
+        i18n_directory=i18n_directory,
     )
+    report_non_source_keys(non_source_keys_dict=non_source_keys_dict)
