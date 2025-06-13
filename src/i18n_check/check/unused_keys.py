@@ -101,6 +101,7 @@ def print_unused_keys(unused_keys: List[str]) -> None:
         raise ValueError(
             f"\nunused_keys failure: There {to_be} {len(unused_keys)} i18n {key_to_be} unused. Please remove or assign the following {key_or_keys}:\n\n{', '.join(unused_keys)}\n"
         )
+
     else:
         print(
             "unused_keys success: All i18n keys in the i18n-src file are used in the project."
