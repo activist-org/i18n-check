@@ -16,17 +16,19 @@ import yaml
 
 # MARK: YAML Reading
 
+i18n_check_root_path = Path(__file__).parent.parent.parent.resolve()
+
 # Define the path to the YAML configuration file.
-config_path = Path(__file__).parent.parent.parent / ".i18n-check.yaml"
+config_path = i18n_check_root_path / ".i18n-check.yaml"
 
 with open(config_path, "r", encoding="utf-8") as file:
     config = yaml.safe_load(file)
 
 # MARK: Paths
 
-src_directory = Path(config["src-dir"]).resolve()
-i18n_directory = Path(config["i18n-dir"]).resolve()
-i18n_src_file = Path(config["i18n-src"]).resolve()
+src_directory = (i18n_check_root_path / Path(config["src-dir"])).resolve()
+i18n_directory = (i18n_check_root_path / Path(config["i18n-dir"])).resolve()
+i18n_src_file = (i18n_check_root_path / Path(config["i18n-src"])).resolve()
 
 # MARK: Active Checks
 
