@@ -52,7 +52,7 @@ omit = ["*/tests/*", "*/__init__.py"]
 [tool.mypy]
 mypy_path = "src"
 strict = true
-exclude = ["setup.py", "^tests/.*\\.py$"]
+exclude = ["setup.py", "^tests/.*\\.py$", "docs"]
 
 [tool.numpydoc_validation]
 checks = [
