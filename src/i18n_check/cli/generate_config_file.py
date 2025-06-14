@@ -6,7 +6,8 @@ Functionality to generate a configuration file for i18n-check.
 from pathlib import Path
 
 import yaml
-from generate_test_frontends import generate_test_frontends  # type: ignore
+
+from i18n_check.cli.generate_test_frontends import generate_test_frontends
 
 YAML_FILE_PATH = Path(__file__).parent.parent.parent.parent / ".i18n-check.yaml"
 TEST_FRONTENDS_PATH = Path(__file__).parent.parent.parent / "i18n_check_test_frontends/"
@@ -37,17 +38,21 @@ def write_to_file(
 
     Parameters
     ----------
-
     src_dir : str
         Input src dir directory.
+
     i18n_dir : str
         Input i18n-dir directory.
+
     i18n_dir_src : str
         Input i18n-dir-src directory.
+
     check_file_types : list[str]
         Input file extensions for checks.
+
     dirs_to_skip : list[src]
         Input directory to skip. Default: frontend/node_modules.
+
     files_to_skip : list[src]
         Input files to skip checking.
     """
@@ -66,7 +71,7 @@ def write_to_file(
 
 def receive_data() -> None:
     """
-    Interacting with user to configure .yml file.
+    Interact with user to configure a .yml file.
     """
     src_dir = input("Enter src dir: ").strip() or "src/i18n_check/test_frontends"
     i18n_dir = (
@@ -85,29 +90,29 @@ def receive_data() -> None:
     dirs_to_skip = input("Enter directories to skip: ").split() or [
         "frontend/node_modules"
     ]
-    files_to_skip = input("Enter files to skip: ").split() or [
-        "app.py"
-    ]  # using app.py as an example. Default value needs to be changed.
+    # Using app.py as an example. Default value needs to be changed.
+    files_to_skip = input("Enter files to skip: ").split() or ["app.py"]
 
     print("Answer using y or n to select your required checks.")
     all_check_choice = input("All checks: ").lower()
     if all_check_choice == "y":
         checks[0]["all"] = True
+
     else:
         invalid_key = input("Invalid key check: ")
-        checks[1]["invalid_keys"] = True if invalid_key.lower() == "y" else False
+        checks[1]["invalid_keys"] = invalid_key.lower() == "y"
         key_identifiers = input("Key Identifiers check: ")
-        checks[2]["key_identifiers"] = True if key_identifiers.lower() == "y" else False
+        checks[2]["key_identifiers"] = key_identifiers.lower() == "y"
         nested_key = input("Nested keys: ")
-        checks[3]["nested_keys"] = True if nested_key.lower() == "y" else False
+        checks[3]["nested_keys"] = nested_key.lower() == "y"
         non_source_keys = input("Non source keys: ")
-        checks[4]["non_source_keys"] = True if non_source_keys.lower() == "y" else False
+        checks[4]["non_source_keys"] = bool(non_source_keys.lower() == "y")
         repeat_keys = input("Repeat keys: ")
-        checks[5]["repeat_keys"] = True if repeat_keys.lower() == "y" else False
+        checks[5]["repeat_keys"] = bool(repeat_keys.lower() == "y")
         repeat_values = input("Repeat values: ")
-        checks[6]["repeat_values"] = True if repeat_values.lower() == "y" else False
+        checks[6]["repeat_values"] = bool(repeat_values.lower() == "y")
         unused_keys = input("Unused keys: ")
-        checks[7]["unused_keys"] = True if unused_keys.lower() == "y" else False
+        checks[7]["unused_keys"] = bool(unused_keys.lower() == "y")
 
     write_to_file(
         src_dir=src_dir,
@@ -121,7 +126,7 @@ def receive_data() -> None:
 
 def generate_config_file() -> None:
     """
-    Interactively generate a configuration file for i18n-check based on user inputs.
+    Generate a configuration file for i18n-check based on user inputs.
     """
     if Path(YAML_FILE_PATH).is_file():
         print(
@@ -138,13 +143,17 @@ def generate_config_file() -> None:
                 ).lower()
                 if choice2 == "y":
                     generate_test_frontends()
+
                 else:
                     print("Exiting.")
+
             else:
                 print("frontend_checks directory does not exist. Generating tests.....")
                 generate_test_frontends()
+
         else:
             print("Exiting.")
+
     else:
         print("File does not exist. Configure your .i18n-check.yaml file.....")
         receive_data()
