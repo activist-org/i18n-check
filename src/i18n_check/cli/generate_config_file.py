@@ -6,7 +6,7 @@ Functionality to generate a configuration file for i18n-check.
 from pathlib import Path
 
 import yaml
-from generate_test_frontends import generate_test_frontends
+from generate_test_frontends import generate_test_frontends  # type: ignore
 
 YAML_FILE_PATH = Path(__file__).parent.parent.parent.parent / ".i18n-check.yaml"
 TEST_FRONTENDS_PATH = Path(__file__).parent.parent.parent / "i18n_check_test_frontends/"
@@ -25,10 +25,31 @@ checks = [
 
 
 def write_to_file(
-    src_dir, i18n_dir, i18n_dir_src, check_file_types, dirs_to_skip, files_to_skip
-):
+    src_dir: str,
+    i18n_dir: str,
+    i18n_dir_src: str,
+    check_file_types: list[str],
+    dirs_to_skip: list[str],
+    files_to_skip: list[str],
+) -> None:
     """
     Writing to file .i18n-check.yaml file.
+
+    Parameters
+    ----------
+
+    src_dir : str
+        Input src dir directory.
+    i18n_dir : str
+        Input i18n-dir directory.
+    i18n_dir_src : str
+        Input i18n-dir-src directory.
+    check_file_types : list[str]
+        Input file extensions for checks.
+    dirs_to_skip : list[src]
+        Input directory to skip. Default: frontend/node_modules.
+    files_to_skip : list[src]
+        Input files to skip checking.
     """
     with open(YAML_FILE_PATH, "w") as file:
         data = {
@@ -43,7 +64,7 @@ def write_to_file(
         yaml.dump(data=data, stream=file)
 
 
-def receive_data():
+def receive_data() -> None:
     """
     Interacting with user to configure .yml file.
     """
