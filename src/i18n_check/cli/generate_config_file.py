@@ -4,6 +4,7 @@ Functionality to generate a configuration file for i18n-check.
 """
 
 from pathlib import Path
+from typing import Dict
 
 from i18n_check.cli.generate_test_frontends import generate_test_frontends
 
@@ -11,26 +12,14 @@ YAML_FILE_PATH = Path(__file__).parent.parent.parent.parent / ".i18n-check.yaml"
 TEST_FRONTENDS_PATH = Path(__file__).parent.parent.parent / "i18n_check_test_frontends/"
 
 
-checks = {
-    "global": False,
-    "invalid_keys": False,
-    "key_identifiers": False,
-    "nested_keys": False,
-    "non_source_keys": False,
-    "repeat_keys": False,
-    "repeat_values": False,
-    "unused_keys": False,
-}
-
-
 def write_to_file(
     src_dir: str,
     i18n_dir: str,
     i18n_src_file: str,
-    checks: dict,
-    file_types_to_check: list[str],
-    dirs_to_skip: list[str],
-    files_to_skip: list[str],
+    checks: Dict[str, bool],
+    file_types_to_check: list[str] | None,
+    dirs_to_skip: list[str] | None,
+    files_to_skip: list[str] | None,
 ) -> None:
     """
     Writing to file .i18n-check.yaml file.
@@ -60,8 +49,10 @@ def write_to_file(
     """
     with open(YAML_FILE_PATH, "w") as file:
         checks_str = "".join(f"  {k}:\n    active: {v}\n" for k, v in checks.items())
-        file_types_to_check_str = ", ".join(file_types_to_check)
-        dirs_to_skip_str = ", ".join(dirs_to_skip)
+        file_types_to_check_str = (
+            ", ".join(file_types_to_check) if file_types_to_check else ""
+        )
+        dirs_to_skip_str = ", ".join(dirs_to_skip) if dirs_to_skip else ""
         files_to_skip_str = files_to_skip or ""
 
         config_string = f"""# Configuration file for i18n-check validation.
@@ -101,6 +92,18 @@ def receive_data() -> None:
 
     print("Answer using y or n to select your required checks.")
     all_check_choice = input("All checks [y]: ").lower()
+
+    checks = {
+        "global": False,
+        "invalid_keys": False,
+        "key_identifiers": False,
+        "nested_keys": False,
+        "non_source_keys": False,
+        "repeat_keys": False,
+        "repeat_values": False,
+        "unused_keys": False,
+    }
+
     if all_check_choice in ["y", ""]:
         checks = {"global": True}
 
