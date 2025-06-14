@@ -5,3 +5,9 @@ cli/
 
 .. toctree::
     :maxdepth: 1
+
+    version
+    upgrade
+    main
+    generate_test_frontends
+    generate_config_file

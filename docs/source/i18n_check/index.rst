@@ -6,6 +6,8 @@ i18n-check
 .. toctree::
     :maxdepth: 1
 
+    utils
+
 .. toctree::
     :maxdepth: 2
 
