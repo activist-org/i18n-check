@@ -37,7 +37,7 @@
 Installation
 ============
 
-i18n-check is available for installation via `pip <https://pypi.org/project/i18n-check/>`_:
+``i18n-check`` is available for installation via `pip <https://pypi.org/project/i18n-check/>`_:
 
 .. code-block:: shell
 
@@ -51,7 +51,7 @@ The latest development version can further be installed the `source code on GitH
     cd i18n-check
     pip install -e .
 
-To utilize the i18n-check CLI, you can execute variations of the following command in your terminal:
+To utilize the ``i18n-check`` CLI, you can execute variations of the following command in your terminal:
 
 .. code-block:: shell
 
