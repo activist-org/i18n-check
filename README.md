@@ -23,6 +23,7 @@ Developed by the [activist community](https://github.com/activist-org), this pro
 # **Contents**
 
 - [Conventions](#contentions-)
+- [Installation](#installation-)
 - [How it works](#how-it-works-)
   - [Commands](#commands-)
   - [Arguments](#arguments-)
@@ -54,6 +55,24 @@ Developed by the [activist community](https://github.com/activist-org), this pro
 >
 > Key: `"components.component_name.CONTENT_REFERENCE"`
 
+<a id="installation-"></a>
+
+# Installation [`⇧`](#contents)
+
+`i18n-check` is available for installation via [pip](https://pypi.org/project/i18n-check/):
+
+```bash
+pip install i18n-check
+```
+
+The latest development version can further be installed via the source code in the repository:
+
+```bash
+git clone https://github.com/activist-org/i18n-check.git  # or your fork
+cd i18n-check
+pip install -e .
+```
+
 <a id="how-it-works-"></a>
 
 # How it works [`⇧`](#contents)
@@ -66,9 +85,10 @@ The following are example commands for `i18n-check`:
 
 ```bash
 i18n-check -h  # view the help
-i18n-check -gtf  # generate a test frontends to see how it works
+i18n-check -gcf  # generate a configuration file
+i18n-check -gtf  # generate test frontends to see how it works
 i18n-check -a  # run all checks
-# Available IDs are ki, ik, uk, nsk, rk, rv and nk (see below).
+# Available check IDs are ki, ik, uk, nsk, rk, rv and nk (see below).
 i18n-check -CHECK_ID  # run a specific check
 ```
 
@@ -81,12 +101,13 @@ You provide `i18n-check` with the following arguments:
 - `src-dir`: The path to the directory that has source code to check
 - `i18n-dir`: The directory path to your i18n files
 - `i18n-src`: The name of the i18n source file
+- `file-types-to-check`: The file types that the checks should be ran against
 
 <a id="checks-"></a>
 
 ### Checks [`⇧`](#contents)
 
-From there the following checks are ran across your codebase:
+There the following checks can ran across your codebase:
 
 - `key-identifiers` (`ki`): Does the source file have keys that don't match the above format or name conventions?
   - Rename them so i18n key usage is consistent and their scope is communicated in their name.
@@ -103,7 +124,7 @@ From there the following checks are ran across your codebase:
 - `nested-keys` (`nk`): Do the i18n files contain nested JSON structures?
   - Flatten them to make replacing invalid keys easier and with find-and-replace.
 
-Each of the above checks is ran in parallel with directions for how to fix the i18n files being provided when errors are raised. Checks can also be disabled in the workflow via options passed in the configuration YAML file.
+Directions for how to fix the i18n files are provided when errors are raised. Checks can also be disabled in the workflow via options passed in the configuration YAML file.
 
 <a id="configuration-"></a>
 
