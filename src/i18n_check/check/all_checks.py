@@ -9,7 +9,16 @@ Run the following script in terminal:
 >>> python3 src/i18n_check/checks/run_i18n_checks.py
 """
 
-from i18n_check.utils import run_check
+from i18n_check.utils import (
+    config_invalid_keys_active,
+    config_key_identifiers_active,
+    config_nested_keys_active,
+    config_non_source_keys_active,
+    config_repeat_keys_active,
+    config_repeat_values_active,
+    config_unused_keys_active,
+    run_check,
+)
 
 # MARK: Run All
 
@@ -39,15 +48,40 @@ def run_all_checks() -> None:
     - Repeated value detection
     - Nested key detection
     """
-    checks = [
-        "invalid_keys.py",
-        "key_identifiers.py",
-        "non_source_keys.py",
-        "unused_keys.py",
-        "repeat_keys.py",
-        "repeat_values.py",
-        "nested_keys.py",
-    ]
+    checks = []
+    if config_invalid_keys_active:
+        checks.append("invalid_keys.py")
+
+    if config_key_identifiers_active:
+        checks.append("key_identifiers.py")
+
+    if config_non_source_keys_active:
+        checks.append("non_source_keys.py")
+
+    if config_unused_keys_active:
+        checks.append("unused_keys.py")
+
+    if config_repeat_keys_active:
+        checks.append("repeat_keys.py")
+
+    if config_repeat_values_active:
+        checks.append("repeat_values.py")
+
+    if config_nested_keys_active:
+        checks.append("nested_keys.py")
+
+    if not (
+        config_invalid_keys_active
+        and config_key_identifiers_active
+        and config_nested_keys_active
+        and config_non_source_keys_active
+        and config_repeat_keys_active
+        and config_repeat_values_active
+        and config_unused_keys_active
+    ):
+        print(
+            "Note: Some checks are not enabled in the .i18n-check.yaml configuration file and will be skipped."
+        )
 
     check_results: list[bool] = []
     check_results.extend(run_check(check) for check in checks)

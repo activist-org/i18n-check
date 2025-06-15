@@ -70,6 +70,46 @@ The following are example commands for `i18n-check`:
     # Available IDs are ki, ik, uk, nsk, rk, rv and nk.
     i18n-check -CHECK_ID  # run a specific check
 
+Configuration
+=============
+
+The following details the ``.18n-check.yaml`` configuration file, with a further example being the `configuration file for the i18n-check repository <https://github.com/activist-org/i18n-check/blob/main/.i18n-check.yaml>`_ that we use in testing.
+
+.. code-block:: yaml
+
+    src-dir: frontend
+    i18n-dir: frontend/i18n
+    i18n-src: frontend/i18n/en.json
+
+    file-types-to-check: [.ts, .js]
+
+    checks:
+      # Global configurations are applied to all checks.
+      global:
+        active: true
+        directories-to-skip: [frontend/node_modules]
+        files-to-skip: []
+      key-identifiers:
+        active: true
+        directories-to-skip: []
+        files-to-skip: []
+      invalid-keys:
+        active: true
+        directories-to-skip: []
+        files-to-skip: []
+      unused-keys:
+        active: true
+        directories-to-skip: []
+        files-to-skip: []
+      non-source-keys:
+        active: true
+      repeat-keys:
+        active: true
+      repeat-values:
+        active: true
+      nested-keys:
+        active: true
+
 Contents
 ========
 

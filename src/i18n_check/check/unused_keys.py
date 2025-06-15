@@ -16,23 +16,23 @@ from typing import Dict, List
 
 from i18n_check.utils import (
     collect_files_to_check,
-    config_files_to_skip,
-    file_types_to_check,
-    i18n_src_file,
+    config_file_types_to_check,
+    config_i18n_src_file,
+    config_src_directory,
+    config_unused_keys_directories_to_skip,
+    config_unused_keys_files_to_skip,
     read_files_to_dict,
     read_json_file,
-    src_directory,
-    unused_keys_skip,
 )
 
 # MARK: Paths / Files
 
-i18n_src_dict = read_json_file(file_path=i18n_src_file)
+i18n_src_dict = read_json_file(file_path=config_i18n_src_file)
 files_to_check = collect_files_to_check(
-    directory=src_directory,
-    file_types=file_types_to_check,
-    directories_to_skip=unused_keys_skip,
-    files_to_skip=config_files_to_skip,
+    directory=config_src_directory,
+    file_types=config_file_types_to_check,
+    directories_to_skip=config_unused_keys_directories_to_skip,
+    files_to_skip=config_unused_keys_files_to_skip,
 )
 files_to_check_contents = read_files_to_dict(files=files_to_check)
 

@@ -15,12 +15,12 @@ from collections import Counter
 from typing import Dict
 
 from i18n_check.utils import (
-    i18n_src_file,
+    config_i18n_src_file,
     lower_and_remove_punctuation,
     read_json_file,
 )
 
-i18n_src_dict = read_json_file(file_path=i18n_src_file)
+i18n_src_dict = read_json_file(file_path=config_i18n_src_file)
 
 # MARK: Repeat Values
 
@@ -44,10 +44,8 @@ def get_repeat_value_counts(i18n_src_dict: Dict[str, str]) -> Dict[str, int]:
         for v in list(i18n_src_dict.values())
         if isinstance(v, (str, int, float, tuple))  # include only hashable types.
     ]
-    json_repeat_value_counts = {
-        k: v for k, v in dict(Counter(all_json_values)).items() if v > 1
-    }
-    return json_repeat_value_counts
+
+    return {k: v for k, v in dict(Counter(all_json_values)).items() if v > 1}
 
 
 def analyze_and_suggest_keys(

@@ -116,18 +116,34 @@ src-dir: frontend
 i18n-dir: frontend/i18n
 i18n-src: frontend/i18n/en.json
 
-checks:
-  - key-identifiers: true
-  - invalid-keys: true
-  - unused-keys: true
-  - non-source-keys: true
-  - repeat-keys: true
-  - repeat-values: true
-  - nested-keys: true
-
 file-types-to-check: [.ts, .js]
-directories-to-skip: [frontend/node_modules]
-files-to-skip: []
+
+checks:
+  # Global configurations are applied to all checks.
+  global:
+    active: true
+    directories-to-skip: [frontend/node_modules]
+    files-to-skip: []
+  key-identifiers:
+    active: true
+    directories-to-skip: []
+    files-to-skip: []
+  invalid-keys:
+    active: true
+    directories-to-skip: []
+    files-to-skip: []
+  unused-keys:
+    active: true
+    directories-to-skip: []
+    files-to-skip: []
+  non-source-keys:
+    active: true
+  repeat-keys:
+    active: true
+  repeat-values:
+    active: true
+  nested-keys:
+    active: true
 ```
 
 Common additional arguments for using specific web frameworks can be found in the dropdowns below:
@@ -137,7 +153,9 @@ Common additional arguments for using specific web frameworks can be found in th
 
 ```yaml
 file_types_to_check: [.vue]
-directories_to_skip: [.nuxt, .output, dist]
+
+global:
+  directories_to_skip: [.nuxt, .output, dist]
 ```
 
 </p>

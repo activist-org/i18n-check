@@ -17,27 +17,27 @@ from typing import Dict, List, Tuple
 
 from i18n_check.utils import (
     collect_files_to_check,
-    config_files_to_skip,
-    file_types_to_check,
+    config_file_types_to_check,
+    config_i18n_src_file,
+    config_key_identifiers_directories_to_skip,
+    config_key_identifiers_files_to_skip,
+    config_src_directory,
     filter_valid_key_parts,
-    i18n_src_file,
     is_valid_key,
-    key_identifiers_skip,
     path_to_valid_key,
     read_json_file,
-    src_directory,
 )
 
 # MARK: Paths / Files
 
-i18n_src_dict = read_json_file(file_path=i18n_src_file)
+i18n_src_dict = read_json_file(file_path=config_i18n_src_file)
 
 # MARK: Key-Files Dict
 
 
 def map_keys_to_files(
     i18n_src_dict: Dict[str, str] = i18n_src_dict,
-    src_directory: Path = src_directory,
+    src_directory: Path = config_src_directory,
 ) -> Dict[str, List[str]]:
     """
     Map i18n keys to the files they are used in.
@@ -57,9 +57,9 @@ def map_keys_to_files(
     """
     files_to_check = collect_files_to_check(
         directory=src_directory,
-        file_types=file_types_to_check,
-        directories_to_skip=key_identifiers_skip,
-        files_to_skip=config_files_to_skip,
+        file_types=config_file_types_to_check,
+        directories_to_skip=config_key_identifiers_directories_to_skip,
+        files_to_skip=config_key_identifiers_files_to_skip,
     )
     files_to_check_contents = {}
     for frontend_file in files_to_check:
@@ -74,7 +74,7 @@ def map_keys_to_files(
             if k in v:
                 filepath_from_src = i.split(str(src_directory))[1]
                 filepath_from_src = filepath_from_src[1:]
-                for file_type in file_types_to_check:
+                for file_type in config_file_types_to_check:
                     filepath_from_src = filepath_from_src.replace(file_type, "")
 
                 key_file_dict[k].append(filepath_from_src)
@@ -238,7 +238,7 @@ def report_and_correct_keys(
 if __name__ == "__main__":
     key_file_dict = map_keys_to_files(
         i18n_src_dict=i18n_src_dict,
-        src_directory=src_directory,
+        src_directory=config_src_directory,
     )
     invalid_keys_by_format, invalid_keys_by_name = audit_i18n_keys(
         key_file_dict=key_file_dict

@@ -14,6 +14,9 @@ from typing import Any, Dict, List
 
 import yaml
 
+# Check for Windows and derive directory path separator.
+path_separator = "\\" if os.name == "nt" else "/"
+
 # MARK: YAML Reading
 
 i18n_check_root_path = Path(__file__).parent.parent.parent.resolve()
@@ -26,124 +29,154 @@ with open(config_path, "r", encoding="utf-8") as file:
 
 # MARK: Paths
 
-src_directory = (i18n_check_root_path / Path(config["src-dir"])).resolve()
-i18n_directory = (i18n_check_root_path / Path(config["i18n-dir"])).resolve()
-i18n_src_file = (i18n_check_root_path / Path(config["i18n-src"])).resolve()
+config_src_directory = (i18n_check_root_path / Path(config["src-dir"])).resolve()
+config_i18n_directory = (i18n_check_root_path / Path(config["i18n-dir"])).resolve()
+config_i18n_src_file = (i18n_check_root_path / Path(config["i18n-src"])).resolve()
 
-# MARK: Active Checks
+# MARK: File Types
 
-if "global" in config["checks"] and "active" in config["checks"]["global"]:
-    global_active = config["checks"]["global"]["active"]
+config_file_types_to_check = config["file-types-to-check"]
 
-if global_active:
-    invalid_keys_active = global_active
-    key_identifiers_active = global_active
-    non_source_active = global_active
-    repeat_keys_active = global_active
-    repeat_values_active = global_active
-    unused_keys_active = global_active
+# MARK: Global
 
-else:
+config_global_active = False
+config_global_directories_to_skip = []
+config_global_files_to_skip = []
+
+if "global" in config["checks"]:
+    if "active" in config["checks"]["global"] and config["checks"]["global"]["active"]:
+        config_global_active = True
+
+    if "directories-to-skip" in config["checks"]["global"]:
+        config_global_directories_to_skip = config["checks"]["global"][
+            "directories-to-skip"
+        ]
+
+    if "files-to-skip" in config["checks"]["global"]:
+        config_global_files_to_skip = config["checks"]["global"]["files-to-skip"]
+
+# MARK: Invalid Keys
+
+config_invalid_keys_active = False
+config_invalid_keys_directories_to_skip = config_global_directories_to_skip
+config_invalid_keys_files_to_skip = config_global_files_to_skip
+
+if "invalid-keys" in config["checks"]:
     if (
-        "invalid-keys" in config["checks"]
-        and "active" in config["checks"]["invalid-keys"]
-    ):
-        invalid_keys_active = config["checks"]["invalid-keys"]["active"]
+        "active" in config["checks"]["invalid-keys"]
+        and config["checks"]["invalid-keys"]["active"]
+    ) or config_global_active:
+        config_invalid_keys_active = True
 
-    else:
-        invalid_keys_active = False
+    if "directories-to-skip" in config["checks"]["invalid-keys"]:
+        config_invalid_keys_directories_to_skip += config["checks"]["invalid-keys"][
+            "directories-to-skip"
+        ]
 
+    if "files-to-skip" in config["checks"]["invalid-keys"]:
+        config_invalid_keys_files_to_skip += config["checks"]["global"]["files-to-skip"]
+
+# MARK: Key Identifiers
+
+config_key_identifiers_active = False
+config_key_identifiers_directories_to_skip = config_global_directories_to_skip
+config_key_identifiers_files_to_skip = config_global_files_to_skip
+
+if "key-identifiers" in config["checks"]:
     if (
-        "key-identifiers" in config["checks"]
-        and "active" in config["checks"]["key-identifiers"]
-    ):
-        key_identifiers_active = config["checks"]["key-identifiers"]["active"]
+        "active" in config["checks"]["key-identifiers"]
+        and config["checks"]["key-identifiers"]["active"]
+    ) or config_global_active:
+        config_key_identifiers_active = True
 
-    else:
-        key_identifiers_active = False
+    if "directories-to-skip" in config["checks"]["key-identifiers"]:
+        config_key_identifiers_directories_to_skip += config["checks"][
+            "key-identifiers"
+        ]["directories-to-skip"]
 
-    if (
-        "non-source-keys" in config["checks"]
-        and "active" in config["checks"]["non-source-keys"]
-    ):
-        non_source_active = config["checks"]["non-source-keys"]["active"]
+    if "files-to-skip" in config["checks"]["key-identifiers"]:
+        config_key_identifiers_files_to_skip += config["checks"]["key-identifiers"][
+            "files-to-skip"
+        ]
 
-    else:
-        non_source_active = False
+# MARK: Non-Source Keys
 
-    if (
-        "repeat-keys" in config["checks"]
-        and "active" in config["checks"]["repeat-keys"]
-    ):
-        repeat_keys_active = config["checks"]["repeat-keys"]["active"]
+# Note: We don't have skipped files or directories for non-source-keys.
+config_non_source_keys_active = False
 
-    else:
-        repeat_keys_active = False
-
-    if (
-        "repeat-values" in config["checks"]
-        and "active" in config["checks"]["repeat-values"]
-    ):
-        repeat_values_active = config["checks"]["repeat-values"]["active"]
-
-    else:
-        repeat_values_active = False
-
-    if (
-        "unused-keys" in config["checks"]
-        and "active" in config["checks"]["unused-keys"]
-    ):
-        unused_keys_active = config["checks"]["unused-keys"]["active"]
-
-    else:
-        unused_keys_active = False
-
-# MARK: Check Skips
-
-global_skip = []
-if "global" in config["checks"] and "skip" in config["checks"]["global"]:
-    global_skip = config["checks"]["global"]["skip"]
-
-invalid_keys_skip = global_skip
-key_identifiers_skip = global_skip
-non_source_skip = global_skip
-repeat_keys_skip = global_skip
-repeat_values_skip = global_skip
-unused_keys_skip = global_skip
-
-if "invalid-keys" in config["checks"] and "skip" in config["checks"]["invalid-keys"]:
-    invalid_keys_skip += config["checks"]["invalid-keys"]["skip"]
-
-if (
-    "key-identifiers" in config["checks"]
-    and "skip" in config["checks"]["key-identifiers"]
+if "non-source-keys" in config["checks"] and (
+    (
+        "active" in config["checks"]["non-source-keys"]
+        and config["checks"]["non-source-keys"]["active"]
+    )
+    or config_global_active
 ):
-    invalid_keys_skip += config["checks"]["key-identifiers"]["skip"]
+    config_non_source_keys_active = True
 
-if (
-    "non-source-keys" in config["checks"]
-    and "skip" in config["checks"]["non-source-keys"]
+# MARK: Repeat Keys
+
+# Note: We don't have skipped files or directories for repeat-keys.
+config_repeat_keys_active = False
+
+if "repeat-keys" in config["checks"] and (
+    (
+        "active" in config["checks"]["repeat-keys"]
+        and config["checks"]["repeat-keys"]["active"]
+    )
+    or config_global_active
 ):
-    invalid_keys_skip += config["checks"]["non-source-keys"]["skip"]
+    config_repeat_keys_active = True
 
-if "repeat-keys" in config["checks"] and "skip" in config["checks"]["repeat-keys"]:
-    invalid_keys_skip += config["checks"]["repeat-keys"]["skip"]
+# MARK: Repeat Values
 
-if "repeat-values" in config["checks"] and "skip" in config["checks"]["repeat-values"]:
-    invalid_keys_skip += config["checks"]["repeat-values"]["skip"]
+# Note: We don't have skipped files or directories for repeat-values.
+config_repeat_values_active = False
 
-if "unused-keys" in config["checks"] and "skip" in config["checks"]["unused-keys"]:
-    invalid_keys_skip += config["checks"]["unused-keys"]["skip"]
+if "repeat-values" in config["checks"] and (
+    (
+        "active" in config["checks"]["repeat-values"]
+        and config["checks"]["repeat-values"]["active"]
+    )
+    or config_global_active
+):
+    config_repeat_values_active = True
 
-if "nested-keys" in config["checks"] and "skip" in config["checks"]["nested-keys"]:
-    invalid_keys_skip += config["checks"]["nested-keys"]["skip"]
+# MARK: Unused Keys
 
-file_types_to_check = config["file-types-to-check"]
-config_directories_to_skip = config["directories-to-skip"]
-config_files_to_skip = config["files-to-skip"]
+config_unused_keys_active = False
+config_unused_keys_directories_to_skip = config_global_directories_to_skip
+config_unused_keys_files_to_skip = config_global_files_to_skip
 
-# Check for Windows and derive directory path separator.
-path_separator = "\\" if os.name == "nt" else "/"
+if "unused-keys" in config["checks"]:
+    if (
+        "active" in config["checks"]["unused-keys"]
+        and config["checks"]["unused-keys"]["active"]
+    ) or config_global_active:
+        config_unused_keys_active = True
+
+    if "directories-to-skip" in config["checks"]["unused-keys"]:
+        config_unused_keys_directories_to_skip += config["checks"]["unused-keys"][
+            "directories-to-skip"
+        ]
+
+    if "files-to-skip" in config["checks"]["unused-keys"]:
+        config_unused_keys_files_to_skip += config["checks"]["unused-keys"][
+            "files-to-skip"
+        ]
+
+# MARK: Nested Keys
+
+# Note: We don't have skipped files or directories for nested-keys.
+config_nested_keys_active = False
+
+if "nested-keys" in config["checks"] and (
+    (
+        "active" in config["checks"]["nested-keys"]
+        and config["checks"]["nested-keys"]["active"]
+    )
+    or config_global_active
+):
+    config_nested_keys_active = True
 
 # MARK: File Reading
 

@@ -17,24 +17,25 @@ from typing import Any, Dict, List, Set
 
 from i18n_check.utils import (
     collect_files_to_check,
-    config_files_to_skip,
-    file_types_to_check,
-    i18n_src_file,
-    invalid_keys_skip,
+    config_file_types_to_check,
+    config_i18n_src_file,
+    config_invalid_keys_directories_to_skip,
+    config_invalid_keys_files_to_skip,
+    config_src_directory,
     read_json_file,
-    src_directory,
 )
 
 # MARK: Paths / Files
 
-i18n_src_dict = read_json_file(file_path=i18n_src_file)
+i18n_src_dict = read_json_file(file_path=config_i18n_src_file)
 
 
 # MARK: Key Comparisons
 
 
 def get_used_i18n_keys(
-    i18n_src_dict: Dict[str, str] = i18n_src_dict, src_directory: Path = src_directory
+    i18n_src_dict: Dict[str, str] = i18n_src_dict,
+    src_directory: Path = config_src_directory,
 ) -> Set[str]:
     """
     Get all i18n keys that are used in the project.
@@ -64,9 +65,9 @@ def get_used_i18n_keys(
 
     files_to_check = collect_files_to_check(
         directory=src_directory,
-        file_types=file_types_to_check,
-        directories_to_skip=invalid_keys_skip,
-        files_to_skip=config_files_to_skip,
+        file_types=config_file_types_to_check,
+        directories_to_skip=config_invalid_keys_directories_to_skip,
+        files_to_skip=config_invalid_keys_files_to_skip,
     )
     files_to_check_contents = {}
     for frontend_file in files_to_check:
@@ -84,8 +85,7 @@ def get_used_i18n_keys(
 
         all_used_i18n_keys.update(all_file_i18n_keys)
 
-    all_used_i18n_keys = set(all_used_i18n_keys)
-    return all_used_i18n_keys
+    return set(all_used_i18n_keys)
 
 
 # MARK: Error Outputs
@@ -128,7 +128,7 @@ def validate_i18n_keys(
 
 if __name__ == "__main__":
     all_used_i18n_keys = get_used_i18n_keys(
-        i18n_src_dict=i18n_src_dict, src_directory=src_directory
+        i18n_src_dict=i18n_src_dict, src_directory=config_src_directory
     )
     validate_i18n_keys(
         all_used_i18n_keys=all_used_i18n_keys, i18n_src_dict=i18n_src_dict

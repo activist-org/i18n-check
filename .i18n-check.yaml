@@ -5,11 +5,11 @@ src-dir: src/i18n_check/test_frontends
 i18n-dir: src/i18n_check/test_frontends/all_checks_fail/test_i18n
 i18n-src: src/i18n_check/test_frontends/all_checks_fail/test_i18n/test_i18n_src.json
 
+file-types-to-check: [.ts]
+
 checks:
+  # Global configurations are applied to all checks.
   global:
     active: true
-    skip: []
-
-file-types-to-check: [.ts]
-directories-to-skip: []
-files-to-skip: []
+    directories-to-skip: []
+    files-to-skip: []

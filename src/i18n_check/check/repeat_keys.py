@@ -16,7 +16,7 @@ from collections import defaultdict
 from pathlib import Path
 from typing import Any, Dict, List, Tuple, Union
 
-from i18n_check.utils import get_all_json_files, i18n_directory, path_separator
+from i18n_check.utils import config_i18n_directory, get_all_json_files, path_separator
 
 # MARK: Repeat Keys
 
@@ -142,7 +142,7 @@ def validate_repeat_keys() -> None:
     ValueError
         If any duplicate keys found.
     """
-    json_files = get_all_json_files(i18n_directory, path_separator)
+    json_files = get_all_json_files(config_i18n_directory, path_separator)
     has_errors = False
 
     for json_file in json_files:

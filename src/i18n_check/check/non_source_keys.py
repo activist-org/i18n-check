@@ -15,21 +15,21 @@ from pathlib import Path
 from typing import Dict
 
 from i18n_check.utils import (
+    config_i18n_directory,
+    config_i18n_src_file,
     get_all_json_files,
-    i18n_directory,
-    i18n_src_file,
     path_separator,
     read_json_file,
 )
 
-i18n_src_dict = read_json_file(file_path=i18n_src_file)
+i18n_src_dict = read_json_file(file_path=config_i18n_src_file)
 
 # MARK: Non Source Keys
 
 
 def get_non_source_keys(
     i18n_src_dict: Dict[str, str] = i18n_src_dict,
-    i18n_directory: Path = i18n_directory,
+    i18n_directory: Path = config_i18n_directory,
 ) -> Dict[str, str]:
     """
     Get non-source keys from a JSON file compared to the source dictionary.
@@ -52,7 +52,7 @@ def get_non_source_keys(
     for json_file in get_all_json_files(i18n_directory, path_separator):
         if (
             json_file.split(path_separator)[-1]
-            != str(i18n_src_file).split(path_separator)[-1]
+            != str(config_i18n_src_file).split(path_separator)[-1]
         ):
             json_dict = read_json_file(file_path=json_file)
 
@@ -105,6 +105,6 @@ def report_non_source_keys(
 if __name__ == "__main__":
     non_source_keys_dict = get_non_source_keys(
         i18n_src_dict=i18n_src_dict,
-        i18n_directory=i18n_directory,
+        i18n_directory=config_i18n_directory,
     )
     report_non_source_keys(non_source_keys_dict=non_source_keys_dict)

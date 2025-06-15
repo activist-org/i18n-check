@@ -62,9 +62,11 @@ src-dir: {src_dir}
 i18n-dir: {i18n_dir}
 i18n-src: {i18n_src_file}
 
-checks:
-{checks_str}
 file-types-to-check: [{file_types_to_check_str}]
+
+checks:
+  # Global configurations are applied to all checks.
+{checks_str}
 directories-to-skip: [{dirs_to_skip_str}]
 files-to-skip: [{files_to_skip_str}]
 """
@@ -105,7 +107,7 @@ def receive_data() -> None:
     }
 
     if all_check_choice in ["y", ""]:
-        checks = {"global": True}
+        checks["global"] = True
 
     else:
         invalid_key = input("Invalid key check: ")

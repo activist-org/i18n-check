@@ -15,7 +15,7 @@ import json
 from pathlib import Path
 from typing import Dict
 
-from i18n_check.utils import i18n_directory, read_json_file
+from i18n_check.utils import config_i18n_directory, read_json_file
 
 # MARK: Is Nested
 
@@ -69,4 +69,4 @@ def validate_nested_keys(directory: str | Path) -> None:
 
 
 if __name__ == "__main__":
-    validate_nested_keys(i18n_directory)
+    validate_nested_keys(config_i18n_directory)
