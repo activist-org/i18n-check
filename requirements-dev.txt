@@ -11,13 +11,11 @@ babel==2.17.0
 build==1.2.2.post1
     # via pip-tools
 certifi==2025.1.31
-    # via
-    #   requests
+    # via requests
 cfgv==3.4.0
     # via pre-commit
 charset-normalizer==3.4.1
-    # via
-    #   requests
+    # via requests
 click==8.1.8
     # via pip-tools
 coverage[toml]==7.6.12
@@ -33,8 +31,7 @@ filelock==3.17.0
 identify==2.6.8
     # via pre-commit
 idna==3.10
-    # via
-    #   requests
+    # via requests
 imagesize==1.4.1
     # via sphinx
 iniconfig==2.0.0
