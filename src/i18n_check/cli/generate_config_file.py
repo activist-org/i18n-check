@@ -16,9 +16,8 @@ def write_to_file(
     src_dir: str,
     i18n_dir: str,
     i18n_src_file: str,
-    checks: Dict[str, bool],
     file_types_to_check: list[str] | None,
-    dirs_to_skip: list[str] | None,
+    checks: Dict[str, dict],
 ) -> None:
     """
     Writing to file .i18n-check.yaml file.
@@ -34,14 +33,11 @@ def write_to_file(
     i18n_src_file : str
         Input i18n-dir-src directory.
 
-    checks : dict
-        The boolean values for checks being enabled or not.
-
     file_types_to_check : list[str]
         Input file extensions for checks.
 
-    dirs_to_skip : list[src]
-        Input directory to skip. Default: frontend/node_modules.
+    checks : dict
+        The boolean values for checks being enabled or not.
     """
     with open(YAML_FILE_PATH, "w") as file:
         checks_str = ""
@@ -88,11 +84,8 @@ def receive_data() -> None:
         or "frontend/i18n/en.json"
     )
     file_types_to_check = input(
-        "Enter the file extension type to check [.ts, .js]: "
+        "Enter the file extension types to check [.ts, .js]: "
     ).split() or [".ts", ".js"]
-    dirs_to_skip = input(
-        "Enter directories to skip [frontend/node_modules]: "
-    ).split() or ["frontend/node_modules"]
 
     print("Answer using y or n to select your required checks.")
 
@@ -127,17 +120,26 @@ def receive_data() -> None:
         "nested_keys": {"title": "nested keys", "active": False},
     }
 
-    for c in checks:
+    for c, v in checks.items():
         if not checks["global"]["active"]:
             check_prompt = input(f"{checks[c]['title'].capitalize()} [y]: ").lower()
 
         if checks["global"]["active"] or check_prompt in ["y", ""]:
             checks[c]["active"] = True
 
-        if "directories-to-skip" in checks[c]:
-            checks[c]["directories-to-skip"] = input(
-                f"Directories to skip for {checks[c]['title']} [None]: "
-            ).lower()
+        if "directories-to-skip" in v:
+            checks[c]["directories-to-skip"] = (
+                (
+                    input(
+                        f"Directories to skip for {checks[c]['title']} [frontend/node_modules]: "
+                    ).lower()
+                    or "frontend/node_modules"
+                )
+                if c == "global"
+                else input(
+                    f"Directories to skip for {checks[c]['title']} [None]: "
+                ).lower()
+            )
 
         if "files-to-skip" in checks[c]:
             checks[c]["files-to-skip"] = input(
@@ -148,9 +150,8 @@ def receive_data() -> None:
         src_dir=src_dir,
         i18n_dir=i18n_dir,
         i18n_src_file=i18n_src_file,
-        checks=checks,
         file_types_to_check=file_types_to_check,
-        dirs_to_skip=dirs_to_skip,
+        checks=checks,
     )
 
 
