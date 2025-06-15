@@ -34,6 +34,32 @@
 
 **Check i18n/L10n keys and values**
 
+``i18n-check`` is a Python package to automate the validation of keys and values of your internationalization and localization processes.
+
+Developed by the `activist community <https://github.com/activist-org/>`_, this process is meant to assure that development and i18n/L10n teams are in sync when using JSON based localization processes. The action can be expanded later to work for other file type processes as needed.
+
+Conventions
+===========
+
+`activist <https://github.com/activist-org/activist/>`_ i18n keys follow the following conventions that are enforced by `i18n-check`:
+
+- All key base paths should be the file path where the key is used prepended with ``i18n.``
+    - Starting i18n keys with a common identifier allows them to be found within checks
+- If a key is used in more than one file, then the lowest common directory followed by ``_global`` is the base path
+- Base paths should be followed by a minimally descriptive content reference
+    - Only the formatting of these content references is checked via ``i18n-check``
+- Separate base directory paths by periods (``.``)
+- Separate all directory and file name components as well as content references by underscores (``_``)
+- Repeat words in file paths for sub directory organization should not be repeated in the key
+
+    | **Note**
+
+    An example valid key is:
+
+    File: ``components/component/ComponentName.ext``
+
+    Key: ``"components.component_name.CONTENT_REFERENCE"``
+
 Installation
 ============
 
