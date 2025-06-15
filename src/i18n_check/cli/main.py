@@ -36,6 +36,7 @@ def main() -> None:
     - --upgrade (-u): Upgrade the i18n-check CLI to the latest version
     - --generate-config-file (-gcf): Generate a configuration file for i18n-check
     - --generate-test-frontends (-gtf): Generate frontends to test i18n-check functionalities
+    - --all-checks (-a): Run all available checks
     - --key-identifiers (-ki): Check i18n key usage and formatting
     - --invalid-keys (-ik): Check for invalid i18n keys in codebase
     - --unused-keys (-uk): Check for unused i18n keys
@@ -43,7 +44,6 @@ def main() -> None:
     - --repeat-keys (-rk): Check for duplicate keys in JSON files
     - --repeat-values (-rv): Check for repeated values in source file
     - --nested-keys (-nk): Check for nested i18n keys
-    - --all-checks (-a): Run all available checks
 
     Examples
     --------
@@ -88,6 +88,13 @@ def main() -> None:
         "--generate-test-frontends",
         action="store_true",
         help="Generate frontends to test i18n-check functionalities.",
+    )
+
+    parser.add_argument(
+        "-a",
+        "--all-checks",
+        action="store_true",
+        help="Run all i18n checks on the project.",
     )
 
     parser.add_argument(
@@ -139,13 +146,6 @@ def main() -> None:
         help="Check for nested i18n source and translation keys.",
     )
 
-    parser.add_argument(
-        "-a",
-        "--all-checks",
-        action="store_true",
-        help="Run all i18n checks on the project.",
-    )
-
     # MARK: Check for Config
 
     if not Path(YAML_FILE_PATH).is_file():
@@ -166,6 +166,12 @@ def main() -> None:
 
     if args.generate_test_frontends:
         generate_test_frontends()
+        return
+
+    # MARK: Run Checks
+
+    if args.all_checks:
+        run_check("all_checks.py")
         return
 
     if args.key_identifiers:
@@ -194,10 +200,6 @@ def main() -> None:
 
     if args.nested_keys:
         run_check("nested_keys.py")
-        return
-
-    if args.all_checks:
-        run_check("all_checks.py")
         return
 
     parser.print_help()

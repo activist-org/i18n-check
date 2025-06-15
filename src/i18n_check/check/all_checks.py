@@ -42,8 +42,8 @@ def run_all_checks() -> None:
     The checks performed include:
     - Invalid key detection
     - Key identifier validation
-    - Non-source key detection
     - Unused key detection
+    - Non-source key detection
     - Repeated key detection
     - Repeated value detection
     - Nested key detection
@@ -55,11 +55,11 @@ def run_all_checks() -> None:
     if config_key_identifiers_active:
         checks.append("key_identifiers.py")
 
-    if config_non_source_keys_active:
-        checks.append("non_source_keys.py")
-
     if config_unused_keys_active:
         checks.append("unused_keys.py")
+
+    if config_non_source_keys_active:
+        checks.append("non_source_keys.py")
 
     if config_repeat_keys_active:
         checks.append("repeat_keys.py")
@@ -73,11 +73,11 @@ def run_all_checks() -> None:
     if not (
         config_invalid_keys_active
         and config_key_identifiers_active
-        and config_nested_keys_active
+        and config_unused_keys_active
         and config_non_source_keys_active
         and config_repeat_keys_active
         and config_repeat_values_active
-        and config_unused_keys_active
+        and config_nested_keys_active
     ):
         print(
             "Note: Some checks are not enabled in the .i18n-check.yaml configuration file and will be skipped."

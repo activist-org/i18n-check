@@ -19,7 +19,6 @@ def write_to_file(
     checks: Dict[str, bool],
     file_types_to_check: list[str] | None,
     dirs_to_skip: list[str] | None,
-    files_to_skip: list[str] | None,
 ) -> None:
     """
     Writing to file .i18n-check.yaml file.
@@ -43,17 +42,23 @@ def write_to_file(
 
     dirs_to_skip : list[src]
         Input directory to skip. Default: frontend/node_modules.
-
-    files_to_skip : list[src]
-        Input files to skip checking.
     """
     with open(YAML_FILE_PATH, "w") as file:
-        checks_str = "".join(f"  {k}:\n    active: {v}\n" for k, v in checks.items())
+        checks_str = ""
+        for c in checks:
+            checks_str += f"  {c}:\n    active: {checks[c]['active']}\n"
+
+            if "directories-to-skip" in checks[c]:
+                checks_str += f"    directories-to-skip: [{', '.join(checks[c]['directories-to-skip'])}]\n"
+
+            if "files-to-skip" in checks[c]:
+                checks_str += (
+                    f"    files-to-skip: [{', '.join(checks[c]['files-to-skip'])}]\n"
+                )
+
         file_types_to_check_str = (
             ", ".join(file_types_to_check) if file_types_to_check else ""
         )
-        dirs_to_skip_str = ", ".join(dirs_to_skip) if dirs_to_skip else ""
-        files_to_skip_str = files_to_skip or ""
 
         config_string = f"""# Configuration file for i18n-check validation.
 # See https://github.com/activist-org/i18n-check for details.
@@ -67,8 +72,6 @@ file-types-to-check: [{file_types_to_check_str}]
 checks:
   # Global configurations are applied to all checks.
 {checks_str}
-directories-to-skip: [{dirs_to_skip_str}]
-files-to-skip: [{files_to_skip_str}]
 """
 
         file.write(config_string)
@@ -90,46 +93,56 @@ def receive_data() -> None:
     dirs_to_skip = input(
         "Enter directories to skip [frontend/node_modules]: "
     ).split() or ["frontend/node_modules"]
-    files_to_skip = input("Enter files to skip [None]: ").split() or None
 
     print("Answer using y or n to select your required checks.")
-    all_check_choice = input("All checks [y]: ").lower()
 
     checks = {
-        "global": False,
-        "invalid_keys": False,
-        "key_identifiers": False,
-        "nested_keys": False,
-        "non_source_keys": False,
-        "repeat_keys": False,
-        "repeat_values": False,
-        "unused_keys": False,
+        "global": {
+            "title": "all checks",
+            "active": False,
+            "directories-to-skip": [],
+            "files-to-skip": [],
+        },
+        "invalid_keys": {
+            "title": "invalid keys",
+            "active": False,
+            "directories-to-skip": [],
+            "files-to-skip": [],
+        },
+        "key_identifiers": {
+            "title": "key Identifiers",
+            "active": False,
+            "directories-to-skip": [],
+            "files-to-skip": [],
+        },
+        "unused_keys": {
+            "title": "unused keys",
+            "active": False,
+            "directories-to-skip": [],
+            "files-to-skip": [],
+        },
+        "non_source_keys": {"title": "non source keys", "active": False},
+        "repeat_keys": {"title": "repeat keys", "active": False},
+        "repeat_values": {"title": "repeat values", "active": False},
+        "nested_keys": {"title": "nested keys", "active": False},
     }
 
-    if all_check_choice in ["y", ""]:
-        checks["global"] = True
+    for c in checks:
+        if not checks["global"]["active"]:
+            check_prompt = input(f"{checks[c]['title'].capitalize()} [y]: ").lower()
 
-    else:
-        invalid_key = input("Invalid key check: ")
-        checks["invalid_keys"] = invalid_key.lower() == "y"
+        if checks["global"]["active"] or check_prompt in ["y", ""]:
+            checks[c]["active"] = True
 
-        key_identifiers = input("Key Identifiers check: ")
-        checks["key_identifiers"] = key_identifiers.lower() == "y"
+        if "directories-to-skip" in checks[c]:
+            checks[c]["directories-to-skip"] = input(
+                f"Directories to skip for {checks[c]['title']} [None]: "
+            ).lower()
 
-        nested_key = input("Nested keys: ")
-        checks["nested_keys"] = nested_key.lower() == "y"
-
-        non_source_keys = input("Non source keys: ")
-        checks["non_source_keys"] = bool(non_source_keys.lower() == "y")
-
-        repeat_keys = input("Repeat keys: ")
-        checks["repeat_keys"] = bool(repeat_keys.lower() == "y")
-
-        repeat_values = input("Repeat values: ")
-        checks["repeat_values"] = bool(repeat_values.lower() == "y")
-
-        unused_keys = input("Unused keys: ")
-        checks["unused_keys"] = bool(unused_keys.lower() == "y")
+        if "files-to-skip" in checks[c]:
+            checks[c]["files-to-skip"] = input(
+                f"Files to skip for {checks[c]['title']} [None]: "
+            ).lower()
 
     write_to_file(
         src_dir=src_dir,
@@ -138,7 +151,6 @@ def receive_data() -> None:
         checks=checks,
         file_types_to_check=file_types_to_check,
         dirs_to_skip=dirs_to_skip,
-        files_to_skip=files_to_skip,
     )
 
 
