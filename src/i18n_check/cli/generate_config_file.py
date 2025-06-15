@@ -17,7 +17,7 @@ def write_to_file(
     i18n_dir: str,
     i18n_src_file: str,
     file_types_to_check: list[str] | None,
-    checks: Dict[str, dict],
+    checks: Dict[str, dict],  # type: ignore [type-arg]
 ) -> None:
     """
     Writing to file .i18n-check.yaml file.
@@ -122,7 +122,7 @@ def receive_data() -> None:
 
     for c, v in checks.items():
         if not checks["global"]["active"]:
-            check_prompt = input(f"{checks[c]['title'].capitalize()} [y]: ").lower()
+            check_prompt = input(f"{checks[c]['title'].capitalize()} [y]: ").lower()  # type: ignore [attr-defined]
 
         if checks["global"]["active"] or check_prompt in ["y", ""]:
             checks[c]["active"] = True
