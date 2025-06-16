@@ -31,8 +31,14 @@ def upgrade_cli() -> None:
         If the installation of the updated version fails.
     """
     local_version = get_local_version()
-    latest_version = get_latest_version()
-    latest_version = latest_version.split("v")[-1]
+    latest_version_message = get_latest_version()
+    latest_version = latest_version_message.split("v")[-1]
+
+    if latest_version_message == "Unknown (Unable to fetch version)":
+        print(
+            "Unable to fetch the latest version from GitHub. Please check the GitHub repository or your internet connection."
+        )
+        return
 
     if local_version == latest_version:
         print("You already have the latest version of i18n-check.")
@@ -89,3 +95,7 @@ def upgrade_cli() -> None:
 
     else:
         print(f"Failed to download the update. Status code: {response.status_code}")
+
+
+if __name__ == "__main__":
+    upgrade_cli()

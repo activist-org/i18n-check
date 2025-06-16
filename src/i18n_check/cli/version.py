@@ -72,3 +72,7 @@ def get_version_message() -> str:
         return f"i18n-check v{local_version_clean}"
 
     return f"i18n-check v{local_version_clean} (Upgrade available: i18n-check v{latest_version_clean})\nTo update: pip install --upgrade i18n-check"
+
+
+if __name__ == "__main__":
+    print(get_version_message())
