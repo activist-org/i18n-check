@@ -39,13 +39,13 @@ class TestGenerateConfigFile(unittest.TestCase):
 
         # FIX 2: Call write_to_file with the correct 7 arguments in the correct order.
         write_to_file(
-            src_dir,
-            i18n_dir,
-            i18n_src_file,
-            checks,
-            file_types,
-            dirs_to_skip,
-            files_to_skip,
+            src_dir=src_dir,
+            i18n_dir=i18n_dir,
+            i18n_src_file=i18n_src_file,
+            checks=checks,
+            file_types_to_check=file_types,
+            dirs_to_skip=dirs_to_skip,
+            files_to_skip=files_to_skip,
         )
 
         mock_open_func.assert_called_with(Path("/fake/path/.i18n-check.yaml"), "w")
@@ -76,11 +76,11 @@ class TestGenerateConfigFile(unittest.TestCase):
             "n",  # All checks
             "y",  # invalid_keys
             "n",  # key_identifiers
-            "y",  # nested_keys
+            "y",  # unused_keys
             "n",  # non_source_keys
             "y",  # repeat_keys
             "n",  # repeat_values
-            "y",  # unused_keys
+            "y",  # nested_keys
         ]
 
         receive_data()
@@ -93,11 +93,11 @@ class TestGenerateConfigFile(unittest.TestCase):
             "global": False,
             "invalid_keys": True,
             "key_identifiers": False,
-            "nested_keys": True,
+            "unused_keys": True,
             "non_source_keys": False,
             "repeat_keys": True,
             "repeat_values": False,
-            "unused_keys": True,
+            "nested_keys": True,
         }
         self.assertEqual(kwargs["checks"], expected_checks)
 
