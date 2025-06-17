@@ -83,3 +83,7 @@ class TestVersionFunctions(unittest.TestCase):
         """
         expected_message = "i18n-check Unknown (Unable to fetch version)"
         self.assertEqual(get_version_message(), expected_message)
+
+
+if __name__ == "__main__":
+    unittest.main()

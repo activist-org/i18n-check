@@ -45,3 +45,7 @@ def generate_test_frontends() -> None:
         print(
             "Test frontends for i18n-check already exist in ./i18n_check_test_frontends/ and will not be regenerated."
         )
+
+
+if __name__ == "__main__":
+    generate_test_frontends()
