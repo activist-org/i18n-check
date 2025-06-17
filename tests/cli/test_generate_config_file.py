@@ -32,9 +32,10 @@ class TestGenerateConfigFile(unittest.TestCase):
         i18n_src_file = "my_app/i18n/en.json"
         checks = {"global": True, "invalid_keys": False}
         file_types = [".js", ".ts"]
-        dirs_to_skip = ["node_modules"]
-        files_to_skip = ["test.js"]
+        dirs_to_skip = ["node_modules", "dist"]
+        files_to_skip = ["test.js", "setup.py"]
 
+        # FIX 2: Call write_to_file with the correct 7 arguments in the correct order.
         write_to_file(
             src_dir,
             i18n_dir,
@@ -45,23 +46,17 @@ class TestGenerateConfigFile(unittest.TestCase):
             files_to_skip,
         )
 
-        # Check that the file was opened in write mode.
-        mock_open_func.assert_called_once_with(Path("/fake/path/.i18n-check.yaml"), "w")
-
-        # Get the file handle from the mock.
-        file_handle = mock_open_func()
-
-        # Get all the writes that were made to the file.
-        all_writes = "".join(call.args[0] for call in file_handle.write.call_args_list)
-        # Check that the content written is what we expect.
-        self.assertIn("src-dir: my_app/src", all_writes)
-        self.assertIn("i18n-dir: my_app/i18n", all_writes)
-        self.assertIn("i18n-src: my_app/i18n/en.json", all_writes)
-        self.assertIn("global:\n    active: True", all_writes)
-        self.assertIn("invalid_keys:\n    active: False", all_writes)
-        self.assertIn("file-types-to-check: [.js, .ts]", all_writes)
-        self.assertIn("directories-to-skip: [node_modules]", all_writes)
-        self.assertIn("files-to-skip: [['test.js']]", all_writes)
+        mock_open_func.assert_called_with(Path("/fake/path/.i18n-check.yaml"), "w")
+        handle = mock_open_func()
+        written_content = handle.write.call_args[0][0]
+        self.assertIn("src-dir: my_app/src", written_content)
+        self.assertIn("i18n-dir: my_app/i18n", written_content)
+        self.assertIn("i18n-src: my_app/i18n/en.json", written_content)
+        self.assertIn("file-types-to-check: [.js, .ts]", written_content)
+        self.assertIn("global:\n    active: True", written_content)
+        self.assertIn("invalid_keys:\n    active: False", written_content)
+        self.assertIn("directories-to-skip: [node_modules, dist]", written_content)
+        self.assertIn("files-to-skip: [['test.js', 'setup.py']]", written_content)
 
     @patch("i18n_check.cli.generate_config_file.write_to_file")
     @patch("builtins.input")
@@ -89,7 +84,8 @@ class TestGenerateConfigFile(unittest.TestCase):
         receive_data()
 
         mock_write_to_file.assert_called_once()
-        args, kwargs = mock_write_to_file.call_args
+        # The call in receive_data() uses keyword arguments, so they appear in 'kwargs'.
+        _args, kwargs = mock_write_to_file.call_args
 
         expected_checks = {
             "global": False,
