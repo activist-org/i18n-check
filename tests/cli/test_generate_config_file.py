@@ -32,20 +32,23 @@ class TestGenerateConfigFile(unittest.TestCase):
         src_dir = "my_app/src"
         i18n_dir = "my_app/i18n"
         i18n_src_file = "my_app/i18n/en.json"
-        checks = {"global": True, "invalid_keys": False}
+        checks = {
+            "global": {
+                "active": True,
+                "directories-to-skip": ["node_modules", "dist"],
+                "files-to-skip": ["test.js", "setup.py"],
+            },
+            "invalid_keys": {"active": False},
+        }
         file_types = [".js", ".ts"]
-        dirs_to_skip = ["node_modules", "dist"]
-        files_to_skip = ["test.js", "setup.py"]
 
         # FIX 2: Call write_to_file with the correct 7 arguments in the correct order.
         write_to_file(
             src_dir=src_dir,
             i18n_dir=i18n_dir,
             i18n_src_file=i18n_src_file,
-            checks=checks,
             file_types_to_check=file_types,
-            dirs_to_skip=dirs_to_skip,
-            files_to_skip=files_to_skip,
+            checks=checks,
         )
 
         mock_open_func.assert_called_with(Path("/fake/path/.i18n-check.yaml"), "w")
@@ -58,7 +61,7 @@ class TestGenerateConfigFile(unittest.TestCase):
         self.assertIn("global:\n    active: True", written_content)
         self.assertIn("invalid_keys:\n    active: False", written_content)
         self.assertIn("directories-to-skip: [node_modules, dist]", written_content)
-        self.assertIn("files-to-skip: [['test.js', 'setup.py']]", written_content)
+        self.assertIn("files-to-skip: [test.js, setup.py]", written_content)
 
     @patch("i18n_check.cli.generate_config_file.write_to_file")
     @patch("builtins.input")
@@ -66,21 +69,29 @@ class TestGenerateConfigFile(unittest.TestCase):
         """
         Tests the receive_data function simulating a user who selects specific checks.
         """
+        self.maxDiff = None
         mock_input.side_effect = [
             "",  # Default src_dir
             "",  # Default i18n_dir
             "",  # Default i18n_src_file
             "",  # Default file_types
-            "",  # Default dirs_to_skip
-            "",  # Default files_to_skip
             "n",  # All checks
+            "",
+            "",
             "y",  # invalid_keys
+            "",
+            "",
             "n",  # key_identifiers
+            "",
+            "",
             "y",  # unused_keys
+            "",
+            "",
             "n",  # non_source_keys
             "y",  # repeat_keys
             "n",  # repeat_values
             "y",  # nested_keys
+            "",  # Exit
         ]
 
         receive_data()
@@ -90,14 +101,34 @@ class TestGenerateConfigFile(unittest.TestCase):
         _args, kwargs = mock_write_to_file.call_args
 
         expected_checks = {
-            "global": False,
-            "invalid_keys": True,
-            "key_identifiers": False,
-            "unused_keys": True,
-            "non_source_keys": False,
-            "repeat_keys": True,
-            "repeat_values": False,
-            "nested_keys": True,
+            "global": {
+                "title": "all checks",
+                "active": False,
+                "directories-to-skip": ["frontend/node_modules"],
+                "files-to-skip": [],
+            },
+            "invalid_keys": {
+                "title": "invalid keys",
+                "active": True,
+                "directories-to-skip": [],
+                "files-to-skip": [],
+            },
+            "key_identifiers": {
+                "title": "key Identifiers",
+                "active": False,
+                "directories-to-skip": [],
+                "files-to-skip": [],
+            },
+            "unused_keys": {
+                "title": "unused keys",
+                "active": True,
+                "directories-to-skip": [],
+                "files-to-skip": [],
+            },
+            "non_source_keys": {"title": "non source keys", "active": False},
+            "repeat_keys": {"title": "repeat keys", "active": True},
+            "repeat_values": {"title": "repeat values", "active": False},
+            "nested_keys": {"title": "nested keys", "active": True},
         }
         self.assertEqual(kwargs["checks"], expected_checks)
 

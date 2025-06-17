@@ -122,29 +122,37 @@ def receive_data() -> None:
 
     for c, v in checks.items():
         if not checks["global"]["active"]:
-            check_prompt = input(f"{checks[c]['title'].capitalize()} [y]: ").lower()  # type: ignore [attr-defined]
+            check_prompt = input(
+                f"{checks[c]['title'].capitalize()} check [y]: "  # type: ignore [attr-defined]
+            ).lower()
 
         if checks["global"]["active"] or check_prompt in ["y", ""]:
             checks[c]["active"] = True
 
         if "directories-to-skip" in v:
-            checks[c]["directories-to-skip"] = (
-                (
-                    input(
-                        f"Directories to skip for {checks[c]['title']} [frontend/node_modules]: "
-                    ).lower()
-                    or "frontend/node_modules"
+            if c == "global":
+                directories_to_skip = input(
+                    f"Directories to skip for {checks[c]['title']} [frontend/node_modules]: "
+                ).lower()
+                checks[c]["directories-to-skip"] = (
+                    directories_to_skip
+                    if directories_to_skip != ""
+                    else ["frontend/node_modules"]
                 )
-                if c == "global"
-                else input(
+
+            else:
+                directories_to_skip = input(
                     f"Directories to skip for {checks[c]['title']} [None]: "
                 ).lower()
-            )
+                checks[c]["directories-to-skip"] = (
+                    directories_to_skip if directories_to_skip != "" else []
+                )
 
         if "files-to-skip" in checks[c]:
-            checks[c]["files-to-skip"] = input(
+            files_to_skip = input(
                 f"Files to skip for {checks[c]['title']} [None]: "
             ).lower()
+            checks[c]["files-to-skip"] = files_to_skip if files_to_skip != "" else []
 
     write_to_file(
         src_dir=src_dir,
