@@ -15,7 +15,9 @@ from i18n_check.cli.generate_config_file import (
 
 
 class TestGenerateConfigFile(unittest.TestCase):
-    """Test cases for the generate_config_file script."""
+    """
+    Test cases for the generate_config_file script.
+    """
 
     @patch("builtins.open", new_callable=mock_open)
     @patch(
@@ -126,7 +128,9 @@ class TestGenerateConfigFile(unittest.TestCase):
     def test_generate_config_file_exists_reconfigure(
         self, mock_generate_test_frontends, mock_receive_data, mock_input, mock_is_file
     ):
-        """Test generate_config_file when the config file exists and user wants to reconfigure."""
+        """
+        Test generate_config_file when the config file exists and user wants to reconfigure.
+        """
         generate_config_file()
         mock_receive_data.assert_called_once()
         mock_generate_test_frontends.assert_called_once()
@@ -137,7 +141,9 @@ class TestGenerateConfigFile(unittest.TestCase):
     def test_generate_config_file_exists_no_reconfigure(
         self, mock_receive_data, mock_input, mock_is_file
     ):
-        """Test generate_config_file when the config file exists and user does not want to reconfigure."""
+        """
+        Test generate_config_file when the config file exists and user does not want to reconfigure.
+        """
         generate_config_file()
         mock_receive_data.assert_not_called()
 

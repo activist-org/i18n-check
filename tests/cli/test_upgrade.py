@@ -116,7 +116,7 @@ class TestUpgradeCli(unittest.TestCase):
             ["/path/to/python", "-m", "pip", "install", "-e", "."]
         )
 
-    # This test reuses many mocks from the success test but changes the last step
+    # This test reuses many mocks from the success test but changes the last step.
     @patch("i18n_check.cli.upgrade.sys")
     @patch("i18n_check.cli.upgrade.subprocess.check_call")
     @patch("i18n_check.cli.upgrade.os.remove")
