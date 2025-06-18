@@ -24,20 +24,33 @@ Emojis for the following are chosen based on [gitmoji](https://gitmoji.dev/).
     - Whether target locale files include keys that are not in the i18n source file
     - Whether there are repeat values in the i18n source file
 - A CLI has been been written to easily run the checks based on a YAML configuration file ([#4](https://github.com/activist-org/i18n-check/issues/4)).
+  - All checks can be ran via the CLI both individually and together
+  - The CLI can be used to upgrade itself
 - The original checks were expanded with warnings for nested JSON files and that i18n keys were repeated ([#5](https://github.com/activist-org/i18n-check/issues/5), [#15](https://github.com/activist-org/i18n-check/issues/15)).
 - The user can generate test frontends for easier onboarding to the project ([#23](https://github.com/activist-org/i18n-check/issues/23)).
 - The config file is checked for and an interactive workflow is used to create one if it's missing ([#24](https://github.com/activist-org/i18n-check/issues/24)).
 - Directories to skip and files to skip are based on a global and per-check basis for those checks that do read in frontend files ([#29](https://github.com/activist-org/i18n-check/issues/29)).
 - When running all checks they are ran in parallel ([#31](https://github.com/activist-org/i18n-check/issues/31)).
 
+### 🎨 Design
+
+- A logo and icon have been designed for the package.
+
+### ⚖️ Legal
+
+- The code has been appropriately licensed and includes SPDX license identifiers in all files.
+- A security file has been added to the repo to make steps clear.
+
 ### ✅ Tests
 
 - Testing has been written for both the checks and the CLI functionalities ([#2](https://github.com/activist-org/i18n-check/issues/2), [#14](https://github.com/activist-org/i18n-check/issues/14)).
+  - The testing process uses the test frontends that the user can experiment with.
+- GitHub Actions based checks are used to validate file license headers, ruff based code formatting, mypy static type checking and pytest based tests on each pull request.
 - pre-commit hooks are used to enforce code quality before commits during development.
 
 ### 📝 Documentation
 
-- All onboarding documentation has been written including an extensive readme and contributing guide.
+- All onboarding documentation has been written including an extensive readme, a contributing guide and GitHub templates to help people contribute effectively.
 - Read the Docs documentation has been generated for the project and can be found at [i18n-check.readthedocs.io](https://i18n-check.readthedocs.io/en/latest/) ([#21](https://github.com/activist-org/i18n-check/issues/21)).
 - All docstrings for functions and classes were standardized based on numpydoc ([#19](https://github.com/activist-org/i18n-check/issues/19)).
 
