@@ -9,6 +9,8 @@ Run the following script in terminal:
 >>> python3 src/i18n_check/checks/run_i18n_checks.py
 """
 
+from concurrent.futures import ProcessPoolExecutor, as_completed
+
 from i18n_check.utils import (
     config_invalid_keys_active,
     config_key_identifiers_active,
@@ -84,7 +86,19 @@ def run_all_checks() -> None:
         )
 
     check_results: list[bool] = []
-    check_results.extend(run_check(check) for check in checks)
+    with ProcessPoolExecutor() as executor:
+        # Create a future for each check.
+        futures = {executor.submit(run_check, check): check for check in checks}
+
+        for future in as_completed(futures):
+            check_name = futures[future]
+            try:
+                result = future.result()
+                check_results.append(result)
+
+            except Exception as exc:
+                print(f"{check_name} generated an exception: {exc}")
+                check_results.append(False)
 
     assert all(check_results), (
         "\nError: Some i18n checks did not pass. Please see the error messages above."

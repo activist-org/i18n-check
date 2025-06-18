@@ -10,4 +10,29 @@ See the [releases for i18n-check](https://github.com/activist-org/i18n-check/rel
 
 Emojis for the following are chosen based on [gitmoji](https://gitmoji.dev/).
 
-## [Upcoming] i18n-check 1.0.0
+## [Upcoming] i18n-check 1.x
+
+## i18n-check 1.0.0
+
+### ✨ Features
+
+- Python files that were used to check i18n files and the frontend code have been moved from the [activist repo](https://github.com/activist-org/activist/) to their own codebase ([#1](https://github.com/activist-org/i18n-check/issues/1)).
+- A CLI has been been written to easily run the checks based on a YAML configuration file ([#4](https://github.com/activist-org/i18n-check/issues/4)).
+- The original checks were expanded with warnings for nested JSON files and that i18n keys were repeated ([#5](https://github.com/activist-org/i18n-check/issues/5), [#15](https://github.com/activist-org/i18n-check/issues/15)).
+- The user can generate test frontends for easier onboarding to the project ([#23](https://github.com/activist-org/i18n-check/issues/23)).
+- The config file is checked for and an interactive workflow is used to create one if it's missing ([#24](https://github.com/activist-org/i18n-check/issues/24)).
+- Directories to skip and files to skip are based on a global and per-check basis for those checks that do read in frontend files ([#29](https://github.com/activist-org/i18n-check/issues/29)).
+- When running all checks they are ran in parallel ([#31](https://github.com/activist-org/i18n-check/issues/31)).
+
+### ✅ Tests
+
+- Testing has been written for both the checks and the CLI functionalities ([#2](https://github.com/activist-org/i18n-check/issues/2), [#14](https://github.com/activist-org/i18n-check/issues/14)).
+
+### 📝 Documentation
+
+- Read the Docs documentation has been generated for the project and can be found at [i18n-check.readthedocs.io](https://i18n-check.readthedocs.io/en/latest/) ([#21](https://github.com/activist-org/i18n-check/issues/21)).
+- All docstrings for functions and classes were standardized based on numpydoc ([#19](https://github.com/activist-org/i18n-check/issues/19)).
+
+### ♻️ Code Refactoring
+
+- Reusable code was moved into common utility functions ([#6](https://github.com/activist-org/i18n-check/issues/6)).
