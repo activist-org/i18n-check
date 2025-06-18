@@ -17,6 +17,12 @@ Emojis for the following are chosen based on [gitmoji](https://gitmoji.dev/).
 ### ✨ Features
 
 - Python files that were used to check i18n files and the frontend code have been moved from the [activist repo](https://github.com/activist-org/activist/) to their own codebase ([#1](https://github.com/activist-org/i18n-check/issues/1)).
+  - Checks brought over include:
+    - Whether key identifiers match naming standards
+    - Whether the frontend includes keys that are not in the i18n source file
+    - Whether the i18n source file includes keys that aren't used in the frontend
+    - Whether target locale files include keys that are not in the i18n source file
+    - Whether there are repeat values in the i18n source file
 - A CLI has been been written to easily run the checks based on a YAML configuration file ([#4](https://github.com/activist-org/i18n-check/issues/4)).
 - The original checks were expanded with warnings for nested JSON files and that i18n keys were repeated ([#5](https://github.com/activist-org/i18n-check/issues/5), [#15](https://github.com/activist-org/i18n-check/issues/15)).
 - The user can generate test frontends for easier onboarding to the project ([#23](https://github.com/activist-org/i18n-check/issues/23)).
@@ -27,9 +33,11 @@ Emojis for the following are chosen based on [gitmoji](https://gitmoji.dev/).
 ### ✅ Tests
 
 - Testing has been written for both the checks and the CLI functionalities ([#2](https://github.com/activist-org/i18n-check/issues/2), [#14](https://github.com/activist-org/i18n-check/issues/14)).
+- pre-commit hooks are used to enforce code quality before commits during development.
 
 ### 📝 Documentation
 
+- All onboarding documentation has been written including an extensive readme and contributing guide.
 - Read the Docs documentation has been generated for the project and can be found at [i18n-check.readthedocs.io](https://i18n-check.readthedocs.io/en/latest/) ([#21](https://github.com/activist-org/i18n-check/issues/21)).
 - All docstrings for functions and classes were standardized based on numpydoc ([#19](https://github.com/activist-org/i18n-check/issues/19)).
 
