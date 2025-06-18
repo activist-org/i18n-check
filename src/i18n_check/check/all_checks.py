@@ -95,6 +95,7 @@ def run_all_checks() -> None:
             try:
                 result = future.result()
                 check_results.append(result)
+
             except Exception as exc:
                 print(f"{check_name} generated an exception: {exc}")
                 check_results.append(False)
