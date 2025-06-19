@@ -19,7 +19,7 @@ if on_rtd:
 
 setup_args = dict(
     name="i18n-check",
-    version="1.0.0",
+    version="1.1.0",
     package_dir={"": "src"},
     author="Andrew Tavis McAllister",
     author_email="andrew.t.mcallister@gmail.com",

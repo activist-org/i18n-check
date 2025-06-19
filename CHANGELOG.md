@@ -12,6 +12,13 @@ Emojis for the following are chosen based on [gitmoji](https://gitmoji.dev/).
 
 ## [Upcoming] i18n-check 1.x
 
+## i18n-check 1.1.0
+
+### 🐞 Bug Fixes
+
+- The the check for the configuration file is now within the utils file to assure that the generate configuration file workflow is ran.
+- The directory that the utils file is checking is the current working directory rather than the project root.
+
 ## i18n-check 1.0.0
 
 ### ✨ Features

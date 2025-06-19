@@ -4,9 +4,8 @@ Setup and commands for the i18n-check command line interface.
 """
 
 import argparse
-from pathlib import Path
 
-from i18n_check.cli.generate_config_file import YAML_FILE_PATH, generate_config_file
+from i18n_check.cli.generate_config_file import generate_config_file
 from i18n_check.cli.generate_test_frontends import generate_test_frontends
 from i18n_check.cli.upgrade import upgrade_cli
 from i18n_check.cli.version import get_version_message
@@ -145,12 +144,6 @@ def main() -> None:
         action="store_true",
         help="Check for nested i18n source and translation keys.",
     )
-
-    # MARK: Check for Config
-
-    if not Path(YAML_FILE_PATH).is_file():
-        generate_config_file()
-        return
 
     # MARK: Setup CLI
 

@@ -14,15 +14,26 @@ from typing import Any, Dict, List
 
 import yaml
 
+from i18n_check.cli.generate_config_file import YAML_FILE_PATH, generate_config_file
+
 # Check for Windows and derive directory path separator.
 path_separator = "\\" if os.name == "nt" else "/"
 
 # MARK: YAML Reading
 
-i18n_check_root_path = Path(__file__).parent.parent.parent.resolve()
+i18n_check_root_path = Path.cwd()
 
 # Define the path to the YAML configuration file.
 config_path = i18n_check_root_path / ".i18n-check.yaml"
+
+if not Path(YAML_FILE_PATH).is_file():
+    generate_config_file()
+
+if not Path(YAML_FILE_PATH).is_file():
+    print(
+        "No configuration file. Please generate an .i18n-check.yaml file with i18n-check -gcf."
+    )
+    exit(1)
 
 with open(config_path, "r", encoding="utf-8") as file:
     config = yaml.safe_load(file)
