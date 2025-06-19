@@ -153,9 +153,12 @@ def audit_i18n_keys(
 
             ideal_key_base = ".".join(valid_key_parts)
 
+        ideal_key_base = f"i18n.{ideal_key_base}"
+
         if k[: len(ideal_key_base)] != ideal_key_base:
             ideal_key = f"{ideal_key_base}{k.split('.')[-1]}"
             invalid_keys_by_name[k] = ideal_key
+
     return invalid_keys_by_format, invalid_keys_by_name
 
 

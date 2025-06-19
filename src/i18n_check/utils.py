@@ -23,9 +23,6 @@ path_separator = "\\" if os.name == "nt" else "/"
 
 i18n_check_root_path = Path.cwd()
 
-# Define the path to the YAML configuration file.
-config_path = i18n_check_root_path / ".i18n-check.yaml"
-
 if not Path(YAML_FILE_PATH).is_file():
     generate_config_file()
 
@@ -35,7 +32,7 @@ if not Path(YAML_FILE_PATH).is_file():
     )
     exit(1)
 
-with open(config_path, "r", encoding="utf-8") as file:
+with open(YAML_FILE_PATH, "r", encoding="utf-8") as file:
     config = yaml.safe_load(file)
 
 # MARK: Paths
@@ -68,7 +65,7 @@ if "global" in config["checks"]:
 
 # MARK: Invalid Keys
 
-config_invalid_keys_active = False
+config_invalid_keys_active = config_global_active
 config_invalid_keys_directories_to_skip = config_global_directories_to_skip
 config_invalid_keys_files_to_skip = config_global_files_to_skip
 
@@ -76,7 +73,7 @@ if "invalid-keys" in config["checks"]:
     if (
         "active" in config["checks"]["invalid-keys"]
         and config["checks"]["invalid-keys"]["active"]
-    ) or config_global_active:
+    ):
         config_invalid_keys_active = True
 
     if "directories-to-skip" in config["checks"]["invalid-keys"]:
@@ -89,7 +86,7 @@ if "invalid-keys" in config["checks"]:
 
 # MARK: Key Identifiers
 
-config_key_identifiers_active = False
+config_key_identifiers_active = config_global_active
 config_key_identifiers_directories_to_skip = config_global_directories_to_skip
 config_key_identifiers_files_to_skip = config_global_files_to_skip
 
@@ -97,7 +94,7 @@ if "key-identifiers" in config["checks"]:
     if (
         "active" in config["checks"]["key-identifiers"]
         and config["checks"]["key-identifiers"]["active"]
-    ) or config_global_active:
+    ):
         config_key_identifiers_active = True
 
     if "directories-to-skip" in config["checks"]["key-identifiers"]:
@@ -113,48 +110,39 @@ if "key-identifiers" in config["checks"]:
 # MARK: Non-Source Keys
 
 # Note: We don't have skipped files or directories for non-source-keys.
-config_non_source_keys_active = False
+config_non_source_keys_active = config_global_active
 
 if "non-source-keys" in config["checks"] and (
-    (
-        "active" in config["checks"]["non-source-keys"]
-        and config["checks"]["non-source-keys"]["active"]
-    )
-    or config_global_active
+    "active" in config["checks"]["non-source-keys"]
+    and config["checks"]["non-source-keys"]["active"]
 ):
     config_non_source_keys_active = True
 
 # MARK: Repeat Keys
 
 # Note: We don't have skipped files or directories for repeat-keys.
-config_repeat_keys_active = False
+config_repeat_keys_active = config_global_active
 
 if "repeat-keys" in config["checks"] and (
-    (
-        "active" in config["checks"]["repeat-keys"]
-        and config["checks"]["repeat-keys"]["active"]
-    )
-    or config_global_active
+    "active" in config["checks"]["repeat-keys"]
+    and config["checks"]["repeat-keys"]["active"]
 ):
     config_repeat_keys_active = True
 
 # MARK: Repeat Values
 
 # Note: We don't have skipped files or directories for repeat-values.
-config_repeat_values_active = False
+config_repeat_values_active = config_global_active
 
 if "repeat-values" in config["checks"] and (
-    (
-        "active" in config["checks"]["repeat-values"]
-        and config["checks"]["repeat-values"]["active"]
-    )
-    or config_global_active
+    "active" in config["checks"]["repeat-values"]
+    and config["checks"]["repeat-values"]["active"]
 ):
     config_repeat_values_active = True
 
 # MARK: Unused Keys
 
-config_unused_keys_active = False
+config_unused_keys_active = config_global_active
 config_unused_keys_directories_to_skip = config_global_directories_to_skip
 config_unused_keys_files_to_skip = config_global_files_to_skip
 
@@ -162,7 +150,7 @@ if "unused-keys" in config["checks"]:
     if (
         "active" in config["checks"]["unused-keys"]
         and config["checks"]["unused-keys"]["active"]
-    ) or config_global_active:
+    ):
         config_unused_keys_active = True
 
     if "directories-to-skip" in config["checks"]["unused-keys"]:
@@ -178,14 +166,11 @@ if "unused-keys" in config["checks"]:
 # MARK: Nested Keys
 
 # Note: We don't have skipped files or directories for nested-keys.
-config_nested_keys_active = False
+config_nested_keys_active = config_global_active
 
 if "nested-keys" in config["checks"] and (
-    (
-        "active" in config["checks"]["nested-keys"]
-        and config["checks"]["nested-keys"]["active"]
-    )
-    or config_global_active
+    "active" in config["checks"]["nested-keys"]
+    and config["checks"]["nested-keys"]["active"]
 ):
     config_nested_keys_active = True
 
@@ -455,10 +440,11 @@ def run_check(script_name: str) -> bool:
     """
     try:
         subprocess.run(
-            ["python", Path("src") / "i18n_check" / "check" / script_name], check=True
+            ["python", Path(__file__).parent / "check" / script_name],
+            check=True,
         )
         return True
 
     except subprocess.CalledProcessError as e:
-        print(f"Error running {script_name}: {e}")
+        print(f"Error running {script_name}: {e}\n")
         return False

@@ -12,6 +12,15 @@ Emojis for the following are chosen based on [gitmoji](https://gitmoji.dev/).
 
 ## [Upcoming] i18n-check 1.x
 
+## i18n-check 1.2.0
+
+### 🐞 Bug Fixes
+
+- The fixes for the configuration file path were finalized with the file being controlled by the generate configuration file process and loaded into the rest of the package.
+- The `run_check` function now correctly derives its path based on the file and not the `src` directory.
+- The way that checks were being loaded in when only the global check option was set has been fixed.
+- The naming criteria of keys was fixed so that they always start with `i18n.`.
+
 ## i18n-check 1.1.0
 
 ### 🐞 Bug Fixes
