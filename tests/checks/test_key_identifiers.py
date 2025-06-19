@@ -73,12 +73,12 @@ def test_audit_i18n_keys() -> None:
     Test audit_i18n_keys with various scenarios.
     """
     assert invalid_format_pass == []
-    assert len(invalid_name_fail) == 9
+    assert len(invalid_name_fail) == 6
     assert invalid_name_pass == {}
     assert invalid_format_fail == ["i18n._global.incorrectly-formatted-key"]
     assert (
         invalid_name_fail["i18n._global.hello_global_repeat"]
-        == "test_file.hello_global_repeat"
+        == "i18n.test_file.hello_global_repeat"
     )
 
 
@@ -91,12 +91,12 @@ def test_report_and_correct_keys_fail() -> None:
 
     msg = str(exc_info.value)
     assert (
-        "There are 9 i18n keys that are not named correctly. Please rename the following keys [current_key -> suggested_correction]:"
+        "There are 6 i18n keys that are not named correctly. Please rename the following keys [current_key -> suggested_correction]:"
         in msg
     )
     assert "There is 1 i18n key that is not formatted correctly" in msg
     assert (
-        "i18n._global.incorrectly-formatted-key -> test_file.incorrectly-formatted-key"
+        "i18n._global.incorrectly-formatted-key -> i18n.test_file.incorrectly-formatted-key"
         in msg
     )
     assert "i18n._global.hello_global_repeat" in msg
