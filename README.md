@@ -122,7 +122,7 @@ There the following checks can ran across your codebase:
 - `repeat-values` (`rv`): Does the source file have repeat values that can be combined into a single key?
   - Combine them so the localization team only needs to localize one of them.
 - `nested-keys` (`nk`): Do the i18n files contain nested JSON structures?
-  - Flatten them to make replacing invalid keys easier and with find-and-replace.
+  - Flatten them to make replacing invalid keys easier with find-and-replace all.
 
 Directions for how to fix the i18n files are provided when errors are raised. Checks can also be disabled in the workflow via options passed in the configuration YAML file.
 
