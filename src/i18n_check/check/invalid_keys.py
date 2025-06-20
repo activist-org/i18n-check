@@ -117,12 +117,12 @@ def validate_i18n_keys(
         key_to_be = "keys that are" if len(invalid_keys) > 1 else "key that is"
         key_or_keys = "keys" if len(invalid_keys) > 1 else "key"
         raise ValueError(
-            f"\ninvalid_keys failure: There {to_be} {len(invalid_keys)} i18n {key_to_be} not in the en-US source file. Please check the validity of the following {key_or_keys}:\n\n{', '.join(invalid_keys)}\n"
+            f"\ninvalid_keys failure: There {to_be} {len(invalid_keys)} i18n {key_to_be} not in the i18n source file. Please check the validity of the following {key_or_keys}:\n\n{', '.join(invalid_keys)}\n"
         )
 
     else:
         print(
-            "invalid_keys success: All i18n keys that are used in the project are in the en-US source file."
+            "invalid_keys success: All i18n keys that are used in the project are in the i18n source file."
         )
 
 

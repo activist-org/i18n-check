@@ -90,12 +90,12 @@ def report_non_source_keys(
             for k in non_source_keys_dict
         )
         raise ValueError(
-            f"\nnon_source_keys failure: There are some i18n target JSON files that have keys that are not in en-US.json. Please remove or rename the following keys:\n\n{non_source_keys_string}\n"
+            f"\nnon_source_keys failure: There are some i18n target JSON files that have keys that are not in i18n source file. Please remove or rename the following keys:\n\n{non_source_keys_string}\n"
         )
 
     else:
         print(
-            "non_source_keys success: No i18n target file has keys that are not in the en-US.json source file."
+            "non_source_keys success: No i18n target file has keys that are not in the i18n source file."
         )
 
 

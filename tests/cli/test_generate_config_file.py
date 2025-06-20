@@ -21,7 +21,7 @@ class TestGenerateConfigFile(unittest.TestCase):
 
     @patch("builtins.open", new_callable=mock_open)
     @patch(
-        "i18n_check.cli.generate_config_file.YAML_FILE_PATH",
+        "i18n_check.cli.generate_config_file.YAML_CONFIG_FILE_PATH",
         Path("/fake/path/.i18n-check.yaml"),
     )
     def test_write_to_file_all_options(self, mock_open_func):

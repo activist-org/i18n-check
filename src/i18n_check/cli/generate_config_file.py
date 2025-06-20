@@ -8,7 +8,7 @@ from typing import Dict
 
 from i18n_check.cli.generate_test_frontends import generate_test_frontends
 
-YAML_FILE_PATH = Path.cwd() / ".i18n-check.yaml"
+YAML_CONFIG_FILE_PATH = Path.cwd() / ".i18n-check.yaml"
 TEST_FRONTENDS_PATH = Path(__file__).parent.parent.parent / "i18n_check_test_frontends/"
 
 
@@ -39,7 +39,7 @@ def write_to_file(
     checks : dict
         The boolean values for checks being enabled or not.
     """
-    with open(YAML_FILE_PATH, "w") as file:
+    with open(YAML_CONFIG_FILE_PATH, "w") as file:
         checks_str = ""
         for c in checks:
             checks_str += f"  {c}:\n    active: {checks[c]['active']}\n"
@@ -167,7 +167,7 @@ def generate_config_file() -> None:
     """
     Generate a configuration file for i18n-check based on user inputs.
     """
-    if Path(YAML_FILE_PATH).is_file():
+    if Path(YAML_CONFIG_FILE_PATH).is_file():
         print(
             "An i18n-check configuration file already exists. Would you like to re-configure your .i18n-check.yaml file?"
         )

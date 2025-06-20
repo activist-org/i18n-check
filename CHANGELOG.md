@@ -12,6 +12,16 @@ Emojis for the following are chosen based on [gitmoji](https://gitmoji.dev/).
 
 ## [Upcoming] i18n-check 1.x
 
+## i18n-check 1.2.1
+
+### 🐞 Bug Fixes
+
+- The i18n-check source file is referred to generally in error outputs instead of using a specific localization for the source file.
+
+### ♻️ Code Refactoring
+
+- The name of the config file path was changed to be more explicit.
+
 ## i18n-check 1.2.0
 
 ### 🐞 Bug Fixes

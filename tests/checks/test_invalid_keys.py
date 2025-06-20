@@ -89,7 +89,7 @@ def test_validate_fail_i18n_keys() -> None:
 
     msg = str(exc_info.value)
     assert "Please check the validity of the following key:" in msg
-    assert " There is 1 i18n key that is not in the en-US source file." in msg
+    assert " There is 1 i18n key that is not in the i18n source file." in msg
     assert "i18n._global.hello_global_repeat_value" in msg
 
 
@@ -102,7 +102,7 @@ def test_validate_pass_i18n_keys(capsys) -> None:
         all_used_i18n_keys=i18n_used_pass, i18n_src_dict=pass_checks_json
     )
     pass_result = capsys.readouterr().out
-    success_message = "invalid_keys success: All i18n keys that are used in the project are in the en-US source file.\n"
+    success_message = "invalid_keys success: All i18n keys that are used in the project are in the i18n source file.\n"
     assert pass_result == success_message
 
 

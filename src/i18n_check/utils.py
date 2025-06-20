@@ -14,7 +14,10 @@ from typing import Any, Dict, List
 
 import yaml
 
-from i18n_check.cli.generate_config_file import YAML_FILE_PATH, generate_config_file
+from i18n_check.cli.generate_config_file import (
+    YAML_CONFIG_FILE_PATH,
+    generate_config_file,
+)
 
 # Check for Windows and derive directory path separator.
 path_separator = "\\" if os.name == "nt" else "/"
@@ -23,16 +26,16 @@ path_separator = "\\" if os.name == "nt" else "/"
 
 i18n_check_root_path = Path.cwd()
 
-if not Path(YAML_FILE_PATH).is_file():
+if not Path(YAML_CONFIG_FILE_PATH).is_file():
     generate_config_file()
 
-if not Path(YAML_FILE_PATH).is_file():
+if not Path(YAML_CONFIG_FILE_PATH).is_file():
     print(
         "No configuration file. Please generate an .i18n-check.yaml file with i18n-check -gcf."
     )
     exit(1)
 
-with open(YAML_FILE_PATH, "r", encoding="utf-8") as file:
+with open(YAML_CONFIG_FILE_PATH, "r", encoding="utf-8") as file:
     config = yaml.safe_load(file)
 
 # MARK: Paths
