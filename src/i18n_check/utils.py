@@ -443,7 +443,7 @@ def run_check(script_name: str) -> bool:
     """
     try:
         subprocess.run(
-            [f"python -m i18n_check.check.{script_name}"],
+            ["python", "-m", f"i18n_check.check.{script_name}"],
             check=True,
         )
         return True

@@ -12,6 +12,10 @@ Emojis for the following are chosen based on [gitmoji](https://gitmoji.dev/).
 
 ## [Upcoming] i18n-check 1.x
 
+## i18n-check 1.3.3
+
+- Fix to the subprocess call for running package modules and assuring that file names in run command arguments don't include `.py` ([#35](https://github.com/activist-org/i18n-check/issues/35)).
+
 ## i18n-check 1.3.2
 
 - The calls to checks is now done via `python -m` and the package module path rather than the path to the file itself to make it work more effectively in other environments ([#35](https://github.com/activist-org/i18n-check/issues/35)).

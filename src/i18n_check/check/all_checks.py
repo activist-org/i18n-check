@@ -52,25 +52,25 @@ def run_all_checks() -> None:
     """
     checks = []
     if config_invalid_keys_active:
-        checks.append("invalid_keys.py")
+        checks.append("invalid_keys")
 
     if config_key_identifiers_active:
-        checks.append("key_identifiers.py")
+        checks.append("key_identifiers")
 
     if config_unused_keys_active:
-        checks.append("unused_keys.py")
+        checks.append("unused_keys")
 
     if config_non_source_keys_active:
-        checks.append("non_source_keys.py")
+        checks.append("non_source_keys")
 
     if config_repeat_keys_active:
-        checks.append("repeat_keys.py")
+        checks.append("repeat_keys")
 
     if config_repeat_values_active:
-        checks.append("repeat_values.py")
+        checks.append("repeat_values")
 
     if config_nested_keys_active:
-        checks.append("nested_keys.py")
+        checks.append("nested_keys")
 
     if not (
         config_invalid_keys_active
