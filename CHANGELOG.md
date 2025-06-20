@@ -12,11 +12,13 @@ Emojis for the following are chosen based on [gitmoji](https://gitmoji.dev/).
 
 ## [Upcoming] i18n-check 1.x
 
-## i18n-check 1.2.1
+## i18n-check 1.3.0
 
 ### 🐞 Bug Fixes
 
 - The i18n-check source file is referred to generally in error outputs instead of using a specific localization for the source file.
+- The upgrade tests were removed to avoid tar balls rewriting local development files during testing ([#34](https://github.com/activist-org/i18n-check/issues/34)).
+- The path to the configuration file now no longer requires a call to `Path` to make it work more seamlessly with GitHub Actions ([#35](https://github.com/activist-org/i18n-check/issues/35)).
 
 ### ♻️ Code Refactoring
 

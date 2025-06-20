@@ -8,7 +8,7 @@ from typing import Dict
 
 from i18n_check.cli.generate_test_frontends import generate_test_frontends
 
-YAML_CONFIG_FILE_PATH = Path.cwd() / ".i18n-check.yaml"
+YAML_CONFIG_FILE_PATH = ".i18n-check.yaml"  # needs to be in pwd
 TEST_FRONTENDS_PATH = Path(__file__).parent.parent.parent / "i18n_check_test_frontends/"
 
 
