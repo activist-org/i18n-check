@@ -12,6 +12,10 @@ Emojis for the following are chosen based on [gitmoji](https://gitmoji.dev/).
 
 ## [Upcoming] i18n-check 1.x
 
+## i18n-check 1.3.1
+
+- The path to the configuration file uses `Path` to make the location of the file more explicit ([#35](https://github.com/activist-org/i18n-check/issues/35)).
+
 ## i18n-check 1.3.0
 
 ### 🐞 Bug Fixes
