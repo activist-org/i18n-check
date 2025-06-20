@@ -53,13 +53,22 @@ class TestMainCli(unittest.TestCase):
         mock_generate_test_frontends.assert_called_once()
 
     @patch("i18n_check.cli.main.run_check")
+    def test_main_all_checks(self, mock_run_check):
+        """
+        Test that `run_check` is called for the --all-checks flag.
+        """
+        with patch("sys.argv", ["i18n-check", "--all-checks"]):
+            main()
+        mock_run_check.assert_called_once_with("all_checks")
+
+    @patch("i18n_check.cli.main.run_check")
     def test_main_key_identifiers(self, mock_run_check):
         """
         Test that `run_check` is called for the --key-identifiers flag.
         """
         with patch("sys.argv", ["i18n-check", "--key-identifiers"]):
             main()
-        mock_run_check.assert_called_once_with("key_identifiers.py")
+        mock_run_check.assert_called_once_with("key_identifiers")
 
     @patch("i18n_check.cli.main.run_check")
     def test_main_invalid_keys(self, mock_run_check):
@@ -68,7 +77,7 @@ class TestMainCli(unittest.TestCase):
         """
         with patch("sys.argv", ["i18n-check", "--invalid-keys"]):
             main()
-        mock_run_check.assert_called_once_with("invalid_keys.py")
+        mock_run_check.assert_called_once_with("invalid_keys")
 
     @patch("i18n_check.cli.main.run_check")
     def test_main_unused_keys(self, mock_run_check):
@@ -77,7 +86,7 @@ class TestMainCli(unittest.TestCase):
         """
         with patch("sys.argv", ["i18n-check", "--unused-keys"]):
             main()
-        mock_run_check.assert_called_once_with("unused_keys.py")
+        mock_run_check.assert_called_once_with("unused_keys")
 
     @patch("i18n_check.cli.main.run_check")
     def test_main_non_source_keys(self, mock_run_check):
@@ -86,7 +95,7 @@ class TestMainCli(unittest.TestCase):
         """
         with patch("sys.argv", ["i18n-check", "--non-source-keys"]):
             main()
-        mock_run_check.assert_called_once_with("non_source_keys.py")
+        mock_run_check.assert_called_once_with("non_source_keys")
 
     @patch("i18n_check.cli.main.run_check")
     def test_main_repeat_keys(self, mock_run_check):
@@ -95,7 +104,7 @@ class TestMainCli(unittest.TestCase):
         """
         with patch("sys.argv", ["i18n-check", "--repeat-keys"]):
             main()
-        mock_run_check.assert_called_once_with("repeat_keys.py")
+        mock_run_check.assert_called_once_with("repeat_keys")
 
     @patch("i18n_check.cli.main.run_check")
     def test_main_repeat_values(self, mock_run_check):
@@ -104,7 +113,7 @@ class TestMainCli(unittest.TestCase):
         """
         with patch("sys.argv", ["i18n-check", "--repeat-values"]):
             main()
-        mock_run_check.assert_called_once_with("repeat_values.py")
+        mock_run_check.assert_called_once_with("repeat_values")
 
     @patch("i18n_check.cli.main.run_check")
     def test_main_nested_keys(self, mock_run_check):
@@ -113,16 +122,7 @@ class TestMainCli(unittest.TestCase):
         """
         with patch("sys.argv", ["i18n-check", "--nested-keys"]):
             main()
-        mock_run_check.assert_called_once_with("nested_keys.py")
-
-    @patch("i18n_check.cli.main.run_check")
-    def test_main_all_checks(self, mock_run_check):
-        """
-        Test that `run_check` is called for the --all-checks flag.
-        """
-        with patch("sys.argv", ["i18n-check", "--all-checks"]):
-            main()
-        mock_run_check.assert_called_once_with("all_checks.py")
+        mock_run_check.assert_called_once_with("nested_keys")
 
     @patch(
         "i18n_check.cli.main.get_version_message",

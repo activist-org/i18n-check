@@ -164,35 +164,35 @@ def main() -> None:
     # MARK: Run Checks
 
     if args.all_checks:
-        run_check("all_checks.py")
+        run_check("all_checks")
         return
 
     if args.key_identifiers:
-        run_check("key_identifiers.py")
+        run_check("key_identifiers")
         return
 
     if args.invalid_keys:
-        run_check("invalid_keys.py")
+        run_check("invalid_keys")
         return
 
     if args.unused_keys:
-        run_check("unused_keys.py")
+        run_check("unused_keys")
         return
 
     if args.non_source_keys:
-        run_check("non_source_keys.py")
+        run_check("non_source_keys")
         return
 
     if args.repeat_keys:
-        run_check("repeat_keys.py")
+        run_check("repeat_keys")
         return
 
     if args.repeat_values:
-        run_check("repeat_values.py")
+        run_check("repeat_values")
         return
 
     if args.nested_keys:
-        run_check("nested_keys.py")
+        run_check("nested_keys")
         return
 
     parser.print_help()

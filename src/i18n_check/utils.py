@@ -429,7 +429,7 @@ def run_check(script_name: str) -> bool:
     Parameters
     ----------
     script_name : str
-        The filename for the script to run.
+        The name for the script to run.
 
     Returns
     -------
@@ -443,7 +443,7 @@ def run_check(script_name: str) -> bool:
     """
     try:
         subprocess.run(
-            ["python", Path(__file__).parent / "check" / script_name],
+            [f"python -m i18n_check.check.{script_name}"],
             check=True,
         )
         return True
