@@ -12,6 +12,16 @@ Emojis for the following are chosen based on [gitmoji](https://gitmoji.dev/).
 
 ## [Upcoming] i18n-check 1.x
 
+## i18n-check 1.4.0
+
+### ✨ Features
+
+- The upgrade command now upgrades the package via pip rather than bringing down GitHub files and installing them directly.
+
+### 🐞 Bug Fixes
+
+- Dependencies were updated and unpinned in production to allow the CLI to more easily be installed in other projects.
+
 ## i18n-check 1.3.3
 
 ### 🐞 Bug Fixes

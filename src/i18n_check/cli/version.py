@@ -8,6 +8,10 @@ from typing import Any, Dict
 
 import requests
 
+UNKNOWN_VERSION = "Unknown i18n-check version"
+UNKNOWN_VERSION_NOT_PIP = f"{UNKNOWN_VERSION} (Not installed via pip)"
+UNKNOWN_VERSION_NOT_FETCHED = f"{UNKNOWN_VERSION} (Unable to fetch version)"
+
 
 def get_local_version() -> str:
     """
@@ -23,7 +27,7 @@ def get_local_version() -> str:
         return importlib.metadata.version("i18n-check")
 
     except importlib.metadata.PackageNotFoundError:
-        return "Unknown (Not installed via pip)"
+        return UNKNOWN_VERSION_NOT_PIP
 
 
 def get_latest_version() -> Any:
@@ -44,7 +48,7 @@ def get_latest_version() -> Any:
         return response_data["name"]
 
     except Exception:
-        return "Unknown (Unable to fetch version)"
+        return UNKNOWN_VERSION_NOT_FETCHED
 
 
 def get_version_message() -> str:
@@ -60,10 +64,11 @@ def get_version_message() -> str:
     local_version = get_local_version()
     latest_version = get_latest_version()
 
-    if local_version == "Unknown (Not installed via pip)":
-        return f"i18n-check {local_version}"
-    elif latest_version == "Unknown (Unable to fetch version)":
-        return f"i18n-check {latest_version}"
+    if local_version == UNKNOWN_VERSION_NOT_PIP:
+        return UNKNOWN_VERSION_NOT_PIP
+
+    elif latest_version == UNKNOWN_VERSION_NOT_FETCHED:
+        return UNKNOWN_VERSION_NOT_FETCHED
 
     local_version_clean = local_version.strip()
     latest_version_clean = latest_version.replace("i18n-check", "").strip()
@@ -71,7 +76,11 @@ def get_version_message() -> str:
     if local_version_clean == latest_version_clean:
         return f"i18n-check v{local_version_clean}"
 
-    return f"i18n-check v{local_version_clean} (Upgrade available: i18n-check v{latest_version_clean})\nTo update: pip install --upgrade i18n-check"
+    elif local_version_clean > latest_version_clean:
+        return f"i18n-check v{local_version_clean} is higher than the currently released version i18n-check v{latest_version_clean}. Hopefully this is a development build, and if so, thanks for your work on i18n-check! If not, please report this to the team at https://github.com/activist-org/i18n-check/issues."
+
+    else:
+        return f"i18n-check v{local_version_clean} (Upgrade available: i18n-check v{latest_version_clean}). To update: pip install --upgrade i18n-check"
 
 
 if __name__ == "__main__":
