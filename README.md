@@ -175,8 +175,9 @@ Common additional arguments for using specific web frameworks can be found in th
 ```yaml
 file_types_to_check: [.vue]
 
-global:
-  directories_to_skip: [.nuxt, .output, dist]
+checks:
+  global:
+    directories_to_skip: [frontend/.nuxt, frontend/.output, frontend/dist]
 ```
 
 </p>
