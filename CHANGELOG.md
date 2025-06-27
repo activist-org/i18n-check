@@ -12,6 +12,16 @@ Emojis for the following are chosen based on [gitmoji](https://gitmoji.dev/).
 
 ## [Upcoming] i18n-check 1.x
 
+## i18n-check 1.4.1
+
+### 🐞 Bug Fixes
+
+- Repeat values within directory paths are handled appropriately to assure that sub directory names that are within component names are not repeated in the resulting keys.
+
+### 📝 Documentation
+
+- Expanded the parameter and return documentation in function docstrings.
+
 ## i18n-check 1.4.0
 
 ### ✨ Features

@@ -277,41 +277,32 @@ def path_to_valid_key(p: str) -> str:
     Parameters
     ----------
     p : str
-        The string of the directory path of a file that has a key.
+        The path to the file where an i18n key is used.
 
     Returns
     -------
     str
-        The correct i18n key that would match the directory structure passed.
+        The valid base key that can be used for i18n keys in this file.
+
+    Notes
+    -----
+    - Insert underscores between words that are not abbreviations
+        - Only if the word is preceded by a lowercase letter and followed by an uppercase letter
+    - [str] values are removed in this step as [id] uuid path routes don't add anything to keys
     """
+    # Remove path segments like '[id]'.
+    p = re.sub(r"\[.*?\]", "", p)
+    # Replace path separator with a dot.
+    p = p.replace(path_separator, ".")
 
-    # Insert underscores between words that are not abbreviations.
-    # Only if the word is preceded by a lowercase letter and followed by an uppercase letter.
-    valid_key = ""
-    for i, c in enumerate(p):
-        if c.isupper():
-            if i == 0:
-                valid_key += c.lower()
+    # Convert camelCase or PascalCase to snake_case, but preserve acronyms.
+    p = re.sub(r"([A-Z]+)([A-Z][a-z])", r"\1_\2", p)  # ABCxyz -> ABC_xyz
+    p = re.sub(r"([a-z\d])([A-Z])", r"\1_\2", p)  # abcXyz -> abc_xyz
 
-            elif p[i - 1].isupper() or (i == len(p) - 1 or p[i + 1].isupper()):
-                # Middle or end of an abbreviation: append lowercase without underscore.
-                valid_key += c.lower()
+    p = p.lower()
+    p = p.replace("..", ".").replace("._", ".").replace("-", "_")
 
-            else:
-                valid_key += f"_{c.lower()}"
-
-        else:
-            valid_key += c
-
-    # Replace path segments like '[id]' that are not useful information for keys.
-    valid_key = re.sub(r"\[.*?\]", "", valid_key)
-
-    return (
-        valid_key.replace(path_separator, ".")
-        .replace("..", ".")
-        .replace("._", ".")
-        .replace("-", "_")
-    )
+    return p.strip(".")
 
 
 # MARK: Valid Parts
