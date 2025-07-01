@@ -14,6 +14,8 @@ Run the following script in terminal:
 import re
 from typing import Dict, List
 
+from rich import print as rprint
+
 from i18n_check.utils import (
     collect_files_to_check,
     config_file_types_to_check,
@@ -98,13 +100,13 @@ def print_unused_keys(unused_keys: List[str]) -> None:
         to_be = "are" if len(unused_keys) > 1 else "is"
         key_to_be = "keys that are" if len(unused_keys) > 1 else "key that is"
         key_or_keys = "keys" if len(unused_keys) > 1 else "key"
-        raise ValueError(
-            f"\nunused_keys failure: There {to_be} {len(unused_keys)} i18n {key_to_be} unused. Please remove or assign the following {key_or_keys}:\n\n{', '.join(unused_keys)}\n"
+        rprint(
+            f"[red]\nunused_keys failure: There {to_be} {len(unused_keys)} i18n {key_to_be} unused. Please remove or assign the following {key_or_keys}:\n\n{', '.join(unused_keys)}\n[/red]"
         )
-
+        raise ValueError
     else:
-        print(
-            "unused_keys success: All i18n keys in the i18n-src file are used in the project."
+        rprint(
+            "[green]unused_keys success: All i18n keys in the i18n-src file are used in the project.[/green]"
         )
 
 
@@ -115,4 +117,5 @@ if __name__ == "__main__":
     unused_keys = find_unused_keys(
         i18n_src_dict=i18n_src_dict, files_to_check_contents=files_to_check_contents
     )
+    print_unused_keys(unused_keys)
     print_unused_keys(unused_keys)
