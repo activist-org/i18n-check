@@ -12,6 +12,10 @@ Emojis for the following are chosen based on [gitmoji](https://gitmoji.dev/).
 
 ## [Upcoming] i18n-check 1.x
 
+### ✨ Features
+
+- Individual checks can now be explicitly disabled even when global.active is set to true, allowing for more concise configuration files.
+
 ## i18n-check 1.4.1
 
 ### 🐞 Bug Fixes
