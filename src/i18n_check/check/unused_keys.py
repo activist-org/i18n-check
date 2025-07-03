@@ -118,4 +118,3 @@ if __name__ == "__main__":
         i18n_src_dict=i18n_src_dict, files_to_check_contents=files_to_check_contents
     )
     print_unused_keys(unused_keys)
-    print_unused_keys(unused_keys)

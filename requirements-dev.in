@@ -21,3 +21,4 @@ ruff
 sphinx-rtd-theme
 types-PyYAML
 types-requests
+rich

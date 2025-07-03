@@ -38,8 +38,12 @@ iniconfig==2.1.0
     # via pytest
 jinja2==3.1.6
     # via sphinx
+markdown-it-py==3.0.0
+    # via rich
 markupsafe==3.0.2
     # via jinja2
+mdurl==0.1.2
+    # via markdown-it-py
 mypy==1.16.1
     # via -r requirements-dev.in
 mypy-extensions==1.1.0
@@ -68,6 +72,7 @@ pre-commit==4.2.0
 pygments==2.19.2
     # via
     #   pytest
+    #   rich
     #   sphinx
 pyproject-hooks==1.2.0
     # via
@@ -87,6 +92,8 @@ requests==2.32.4
     # via
     #   -r requirements-dev.in
     #   sphinx
+rich==14.0.0
+    # via -r requirements-dev.in
 roman-numerals-py==3.1.0
     # via sphinx
 ruff==0.12.1
