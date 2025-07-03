@@ -73,11 +73,8 @@ config_invalid_keys_directories_to_skip = config_global_directories_to_skip
 config_invalid_keys_files_to_skip = config_global_files_to_skip
 
 if "invalid-keys" in config["checks"]:
-    if (
-        "active" in config["checks"]["invalid-keys"]
-        and config["checks"]["invalid-keys"]["active"]
-    ):
-        config_invalid_keys_active = True
+    if "active" in config["checks"]["invalid-keys"]:
+        config_invalid_keys_active = config["checks"]["invalid-keys"]["active"]
 
     if "directories-to-skip" in config["checks"]["invalid-keys"]:
         config_invalid_keys_directories_to_skip += config["checks"]["invalid-keys"][
@@ -94,11 +91,8 @@ config_key_identifiers_directories_to_skip = config_global_directories_to_skip
 config_key_identifiers_files_to_skip = config_global_files_to_skip
 
 if "key-identifiers" in config["checks"]:
-    if (
-        "active" in config["checks"]["key-identifiers"]
-        and config["checks"]["key-identifiers"]["active"]
-    ):
-        config_key_identifiers_active = True
+    if "active" in config["checks"]["key-identifiers"]:
+        config_key_identifiers_active = config["checks"]["key-identifiers"]["active"]
 
     if "directories-to-skip" in config["checks"]["key-identifiers"]:
         config_key_identifiers_directories_to_skip += config["checks"][
@@ -115,33 +109,27 @@ if "key-identifiers" in config["checks"]:
 # Note: We don't have skipped files or directories for non-source-keys.
 config_non_source_keys_active = config_global_active
 
-if "non-source-keys" in config["checks"] and (
-    "active" in config["checks"]["non-source-keys"]
-    and config["checks"]["non-source-keys"]["active"]
-):
-    config_non_source_keys_active = True
+if "non-source-keys" in config["checks"]:
+    if "active" in config["checks"]["non-source-keys"]:
+        config_non_source_keys_active = config["checks"]["non-source-keys"]["active"]
 
 # MARK: Repeat Keys
 
 # Note: We don't have skipped files or directories for repeat-keys.
 config_repeat_keys_active = config_global_active
 
-if "repeat-keys" in config["checks"] and (
-    "active" in config["checks"]["repeat-keys"]
-    and config["checks"]["repeat-keys"]["active"]
-):
-    config_repeat_keys_active = True
+if "repeat-keys" in config["checks"]:
+    if "active" in config["checks"]["repeat-keys"]:
+        config_repeat_keys_active = config["checks"]["repeat-keys"]["active"]
 
 # MARK: Repeat Values
 
 # Note: We don't have skipped files or directories for repeat-values.
 config_repeat_values_active = config_global_active
 
-if "repeat-values" in config["checks"] and (
-    "active" in config["checks"]["repeat-values"]
-    and config["checks"]["repeat-values"]["active"]
-):
-    config_repeat_values_active = True
+if "repeat-values" in config["checks"]:
+    if "active" in config["checks"]["repeat-values"]:
+        config_repeat_values_active = config["checks"]["repeat-values"]["active"]
 
 # MARK: Unused Keys
 
@@ -150,11 +138,8 @@ config_unused_keys_directories_to_skip = config_global_directories_to_skip
 config_unused_keys_files_to_skip = config_global_files_to_skip
 
 if "unused-keys" in config["checks"]:
-    if (
-        "active" in config["checks"]["unused-keys"]
-        and config["checks"]["unused-keys"]["active"]
-    ):
-        config_unused_keys_active = True
+    if "active" in config["checks"]["unused-keys"]:
+        config_unused_keys_active = config["checks"]["unused-keys"]["active"]
 
     if "directories-to-skip" in config["checks"]["unused-keys"]:
         config_unused_keys_directories_to_skip += config["checks"]["unused-keys"][
@@ -171,11 +156,9 @@ if "unused-keys" in config["checks"]:
 # Note: We don't have skipped files or directories for nested-keys.
 config_nested_keys_active = config_global_active
 
-if "nested-keys" in config["checks"] and (
-    "active" in config["checks"]["nested-keys"]
-    and config["checks"]["nested-keys"]["active"]
-):
-    config_nested_keys_active = True
+if "nested-keys" in config["checks"]:
+    if "active" in config["checks"]["nested-keys"]:
+        config_nested_keys_active = config["checks"]["nested-keys"]["active"]
 
 # MARK: File Reading
 
