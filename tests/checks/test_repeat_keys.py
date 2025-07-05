@@ -98,13 +98,13 @@ def test_check_file_not_found() -> None:
 
 # Note: capsys is a fixture for capturing system outputs.
 def test_main_with_duplicates_raises(capsys) -> None:
-    with pytest.raises(ValueError) as exc_info:
+    with pytest.raises(ValueError):
         validate_repeat_keys()
 
     output = capsys.readouterr().out
     assert "Duplicate keys in" in output
     assert "appears 2 times" in output
-    assert "repeat_keys failure" in str(exc_info.value)
+    assert "repeat_keys failure" in output
 
 
 if __name__ == "__main__":
