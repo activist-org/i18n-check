@@ -10,11 +10,14 @@ See the [releases for i18n-check](https://github.com/activist-org/i18n-check/rel
 
 Emojis for the following are chosen based on [gitmoji](https://gitmoji.dev/).
 
-## [Upcoming] i18n-check 1.x
+## [Upcoming] i18n-check 1.5.0
 
 ### ✨ Features
 
 - Individual checks can now be explicitly disabled even when the global.active option in the configuration YAML is set to true, allowing for more concise configuration files ([#39](https://github.com/activist-org/i18n-check/issues/39)).
+- Rich text support has been added to CLI outputs such that error messages are red and successes are green ([#36](https://github.com/activist-org/i18n-check/issues/36)).
+- Check errors are now registered with `sys.exit(1)` rather than `ValueError` so that the output doesn't have the value error texts printed.
+  - This makes seeing the actual check errors much easier as they're the main outputs now.
 
 ## i18n-check 1.4.1
 
