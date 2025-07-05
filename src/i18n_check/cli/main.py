@@ -49,6 +49,7 @@ def main() -> None:
     # MARK: CLI Base
 
     parser = argparse.ArgumentParser(
+        prog="i18n-check",
         description="i18n-check is a CLI tool for checking i18n/L10n keys and values.",
         epilog="Visit the codebase at https://github.com/activist-org/i18n-check to learn more!",
         formatter_class=lambda prog: argparse.HelpFormatter(prog, max_help_position=60),
