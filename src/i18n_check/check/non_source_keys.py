@@ -14,6 +14,8 @@ Run the following script in terminal:
 from pathlib import Path
 from typing import Dict
 
+from rich import print as rprint
+
 from i18n_check.utils import (
     config_i18n_directory,
     config_i18n_src_file,
@@ -89,13 +91,14 @@ def report_non_source_keys(
             f"{k}: {', '.join(non_source_keys_dict[k])}\nTotal: {len(non_source_keys_dict[k])}"
             for k in non_source_keys_dict
         )
-        raise ValueError(
-            f"\nnon_source_keys failure: There are some i18n target JSON files that have keys that are not in i18n source file. Please remove or rename the following keys:\n\n{non_source_keys_string}\n"
+        rprint(
+            f"\n[red]non_source_keys failure: There are some i18n target JSON files that have keys that are not in i18n source file. Please remove or rename the following keys:\n\n{non_source_keys_string}\n[/red]"
         )
+        raise ValueError
 
     else:
-        print(
-            "non_source_keys success: No i18n target file has keys that are not in the i18n source file."
+        rprint(
+            "[green]non_source_keys success: No i18n target file has keys that are not in the i18n source file.[/green]"
         )
 
 

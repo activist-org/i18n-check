@@ -14,6 +14,8 @@ Run the following script in terminal:
 from collections import Counter
 from typing import Dict
 
+from rich import print as rprint
+
 from i18n_check.utils import (
     config_i18n_src_file,
     lower_and_remove_punctuation,
@@ -144,13 +146,14 @@ def validate_repeat_values(json_repeat_value_counts: Dict[str, int]) -> None:
         else:
             value_to_be = "values are"
 
-        raise ValueError(
-            f"\nrepeat_values failure: {len(json_repeat_value_counts)} repeat i18n {value_to_be} present. Please combine given the suggestions above.\n"
+        rprint(
+            f"\n[red]repeat_values failure: {len(json_repeat_value_counts)} repeat i18n {value_to_be} present. Please combine given the suggestions above.[/red]\n"
         )
+        raise ValueError
 
     else:
-        print(
-            "repeat_values success: No repeat i18n values found in the i18n-src file."
+        rprint(
+            "[green]repeat_values success: No repeat i18n values found in the i18n-src file.[/green]"
         )
 
 

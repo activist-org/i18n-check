@@ -15,6 +15,8 @@ from collections import defaultdict
 from pathlib import Path
 from typing import Dict, List, Tuple
 
+from rich import print as rprint
+
 from i18n_check.utils import (
     collect_files_to_check,
     config_file_types_to_check,
@@ -209,8 +211,8 @@ def report_and_correct_keys(
     error_string = ""
 
     if not invalid_keys_by_format and not invalid_keys_by_name:
-        print(
-            "key_identifiers success: All i18n keys are formatted and named correctly in the i18n-src file."
+        rprint(
+            "[green]key_identifiers success: All i18n keys are formatted and named correctly in the i18n-src file.\n[/green]"
         )
 
     elif invalid_keys_by_format and invalid_keys_by_name:
@@ -223,16 +225,16 @@ def report_and_correct_keys(
             error_string += invalid_keys_by_format_error
 
         else:
-            print(
-                "\nkey_identifiers failure: There is an error with key names, but all i18n keys are formatted correctly in the i18n-src file.\n"
+            rprint(
+                "\n[red]key_identifiers failure: There is an error with key names, but all i18n keys are formatted correctly in the i18n-src file.[/red]"
             )
 
         if invalid_keys_by_name:
             error_string += invalid_keys_by_name_error
 
         else:
-            print(
-                "\nkey_identifiers failure: There is an error with key formatting, but all i18n keys are named appropriately in the i18n-src file.\n"
+            rprint(
+                "\n[red]key_identifiers failure: There is an error with key formatting, but all i18n keys are named appropriately in the i18n-src file.[/red]\n"
             )
 
         raise ValueError(error_string)

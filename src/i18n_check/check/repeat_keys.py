@@ -16,6 +16,8 @@ from collections import defaultdict
 from pathlib import Path
 from typing import Any, Dict, List, Tuple, Union
 
+from rich import print as rprint
+
 from i18n_check.utils import config_i18n_directory, get_all_json_files, path_separator
 
 # MARK: Repeat Keys
@@ -155,11 +157,12 @@ def validate_repeat_keys() -> None:
                 print(f"  '{key}' appears {len(values)} times with values: {values}")
 
     if has_errors:
-        raise ValueError(
-            "\nrepeat_keys failure: Duplicate keys found. All i18n keys must be unique."
+        rprint(
+            "\n[red]repeat_keys failure: Duplicate keys found. All i18n keys must be unique.[/red]\n"
         )
+        raise ValueError
 
-    print("repeat_keys success: No duplicate keys found in i18n files.")
+    rprint("[green]repeat_keys success: No duplicate keys found in i18n files.[/green]")
 
 
 # MARK: Main

@@ -15,6 +15,8 @@ import re
 from pathlib import Path
 from typing import Any, Dict, List, Set
 
+from rich import print as rprint
+
 from i18n_check.utils import (
     collect_files_to_check,
     config_file_types_to_check,
@@ -116,13 +118,13 @@ def validate_i18n_keys(
         to_be = "are" if len(invalid_keys) > 1 else "is"
         key_to_be = "keys that are" if len(invalid_keys) > 1 else "key that is"
         key_or_keys = "keys" if len(invalid_keys) > 1 else "key"
-        raise ValueError(
-            f"\ninvalid_keys failure: There {to_be} {len(invalid_keys)} i18n {key_to_be} not in the i18n source file. Please check the validity of the following {key_or_keys}:\n\n{', '.join(invalid_keys)}\n"
+        rprint(
+            f"\n[red]invalid_keys failure: There {to_be} {len(invalid_keys)} i18n {key_to_be} not in the i18n source file. Please check the validity of the following {key_or_keys}:\n\n{', '.join(invalid_keys)}\n[/red]"
         )
-
+        raise ValueError
     else:
-        print(
-            "invalid_keys success: All i18n keys that are used in the project are in the i18n source file."
+        rprint(
+            "[green]invalid_keys success: All i18n keys that are used in the project are in the i18n source file.[/green]"
         )
 
 
