@@ -8,13 +8,16 @@ Examples
 --------
 Run the following script in terminal:
 
->>> python3 src/i18n_check/check/repeat_keys.py
+>>> i18n-check -rk
 """
 
 import json
+import sys
 from collections import defaultdict
 from pathlib import Path
 from typing import Any, Dict, List, Tuple, Union
+
+from rich import print as rprint
 
 from i18n_check.utils import config_i18n_directory, get_all_json_files, path_separator
 
@@ -139,8 +142,8 @@ def validate_repeat_keys() -> None:
 
     Raises
     ------
-    ValueError
-        If any duplicate keys found.
+    sys.exit(1)
+        The system exits with 1 and prints error details if any duplicate keys found.
     """
     json_files = get_all_json_files(config_i18n_directory, path_separator)
     has_errors = False
@@ -149,17 +152,21 @@ def validate_repeat_keys() -> None:
         filename, duplicates = check_file(json_file)
         if duplicates:
             has_errors = True
-            print(f"\nDuplicate keys in {filename}:")
+            rprint(f"\n[red]Duplicate keys in {filename}:[/red]")
 
             for key, values in duplicates.items():
-                print(f"  '{key}' appears {len(values)} times with values: {values}")
+                rprint(
+                    f"[red]  '{key}' appears {len(values)} times with values: {values}[/red]"
+                )
 
     if has_errors:
-        raise ValueError(
-            "\nrepeat_keys failure: Duplicate keys found. All i18n keys must be unique."
+        rprint(
+            "\n[red]repeat_keys failure: Duplicate keys found. All i18n keys must be unique.[/red]\n"
         )
 
-    print("repeat_keys success: No duplicate keys found in i18n files.")
+        sys.exit(1)
+
+    rprint("[green]repeat_keys success: No duplicate keys found in i18n files.[/green]")
 
 
 # MARK: Main

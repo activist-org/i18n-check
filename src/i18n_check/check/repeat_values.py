@@ -8,17 +8,22 @@ Examples
 --------
 Run the following script in terminal:
 
->>> python src/i18n_check/check/repeat_values.py
+>>> i18n-check -rv
 """
 
+import sys
 from collections import Counter
 from typing import Dict
+
+from rich import print as rprint
 
 from i18n_check.utils import (
     config_i18n_src_file,
     lower_and_remove_punctuation,
     read_json_file,
 )
+
+# MARK: Paths / Files
 
 i18n_src_dict = read_json_file(file_path=config_i18n_src_file)
 
@@ -130,12 +135,12 @@ def validate_repeat_values(json_repeat_value_counts: Dict[str, int]) -> None:
     Returns
     -------
     None
-        This function either raises a ValueError or prints a success message.
+        This function either exits or prints a success message.
 
     Raises
     ------
-    ValueError
-        If repeat values are found, a ValueError is raised with details.
+    sys.exit(1)
+        The system exits with 1 and prints error details if repeat values are found.
     """
     if json_repeat_value_counts:
         if len(json_repeat_value_counts) == 1:
@@ -144,13 +149,15 @@ def validate_repeat_values(json_repeat_value_counts: Dict[str, int]) -> None:
         else:
             value_to_be = "values are"
 
-        raise ValueError(
-            f"\nrepeat_values failure: {len(json_repeat_value_counts)} repeat i18n {value_to_be} present. Please combine given the suggestions above.\n"
+        rprint(
+            f"\n[red]repeat_values failure: {len(json_repeat_value_counts)} repeat i18n {value_to_be} present. Please combine the values below:[/red]\n"
         )
 
+        sys.exit(1)
+
     else:
-        print(
-            "repeat_values success: No repeat i18n values found in the i18n-src file."
+        rprint(
+            "[green]repeat_values success: No repeat i18n values found in the i18n-src file.[/green]"
         )
 
 
@@ -159,7 +166,7 @@ def validate_repeat_values(json_repeat_value_counts: Dict[str, int]) -> None:
 
 if __name__ == "__main__":
     json_repeat_value_counts = get_repeat_value_counts(i18n_src_dict)
+    validate_repeat_values(json_repeat_value_counts=json_repeat_value_counts)
     analyze_and_suggest_keys(
         i18n_src_dict=i18n_src_dict, json_repeat_value_counts=json_repeat_value_counts
     )
-    validate_repeat_values(json_repeat_value_counts=json_repeat_value_counts)

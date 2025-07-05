@@ -8,11 +8,14 @@ Examples
 --------
 Run the following script in terminal:
 
->>> python3 src/i18n_check/check/unused_keys.py
+>>> i18n-check -uk
 """
 
 import re
+import sys
 from typing import Dict, List
+
+from rich import print as rprint
 
 from i18n_check.utils import (
     collect_files_to_check,
@@ -91,20 +94,22 @@ def print_unused_keys(unused_keys: List[str]) -> None:
 
     Raises
     ------
-    ValueError
-        If there are unused keys, a ValueError is raised with a message detailing the unused keys.
+    sys.exit(1)
+        The system exits with 1 and prints error details if there are unused keys.
     """
     if unused_keys:
         to_be = "are" if len(unused_keys) > 1 else "is"
         key_to_be = "keys that are" if len(unused_keys) > 1 else "key that is"
         key_or_keys = "keys" if len(unused_keys) > 1 else "key"
-        raise ValueError(
-            f"\nunused_keys failure: There {to_be} {len(unused_keys)} i18n {key_to_be} unused. Please remove or assign the following {key_or_keys}:\n\n{', '.join(unused_keys)}\n"
+        rprint(
+            f"[red]\nunused_keys failure: There {to_be} {len(unused_keys)} i18n {key_to_be} unused. Please remove or assign the following {key_or_keys}:\n\n{', '.join(unused_keys)}\n[/red]"
         )
 
+        sys.exit(1)
+
     else:
-        print(
-            "unused_keys success: All i18n keys in the i18n-src file are used in the project."
+        rprint(
+            "[green]unused_keys success: All i18n keys in the i18n-src file are used in the project.[/green]"
         )
 
 

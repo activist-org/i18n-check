@@ -6,7 +6,7 @@ Examples
 --------
 Run the following script in terminal:
 
->>> python3 src/i18n_check/checks/run_i18n_checks.py
+>>> i18n-check -a
 """
 
 from concurrent.futures import ProcessPoolExecutor, as_completed
@@ -88,7 +88,7 @@ def run_all_checks() -> None:
     check_results: list[bool] = []
     with ProcessPoolExecutor() as executor:
         # Create a future for each check.
-        futures = {executor.submit(run_check, check): check for check in checks}
+        futures = {executor.submit(run_check, c): c for c in checks}
 
         for future in as_completed(futures):
             check_name = futures[future]

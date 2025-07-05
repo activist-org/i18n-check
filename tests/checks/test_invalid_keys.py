@@ -3,6 +3,7 @@
 Tests for the invalid_keys.py.
 """
 
+import re
 from pathlib import Path
 
 import pytest
@@ -78,16 +79,16 @@ def test_all_keys_include_fail_and_pass_sets():
     assert all_i18n_used >= i18n_used_pass
 
 
-def test_validate_fail_i18n_keys() -> None:
+def test_validate_fail_i18n_keys(capsys) -> None:
     """
     Test validate_i18n_keys for the fail case.
     """
-    with pytest.raises(ValueError) as exc_info:
+    with pytest.raises(SystemExit):
         validate_i18n_keys(
             all_used_i18n_keys=i18n_used_fail, i18n_src_dict=fail_checks_json
         )
 
-    msg = str(exc_info.value)
+    msg = capsys.readouterr().out.replace("\n", "")
     assert "Please check the validity of the following key:" in msg
     assert " There is 1 i18n key that is not in the i18n source file." in msg
     assert "i18n._global.hello_global_repeat_value" in msg
@@ -102,8 +103,10 @@ def test_validate_pass_i18n_keys(capsys) -> None:
         all_used_i18n_keys=i18n_used_pass, i18n_src_dict=pass_checks_json
     )
     pass_result = capsys.readouterr().out
-    success_message = "invalid_keys success: All i18n keys that are used in the project are in the i18n source file.\n"
-    assert pass_result == success_message
+    cleaned_pass_result = re.sub(r"\x1b\[.*?m", "", pass_result).strip()
+
+    success_message = "invalid_keys success: All i18n keys that are used in the project are in the i18n source file."
+    assert success_message in cleaned_pass_result.replace("\n", " ")
 
 
 if __name__ == "__main__":

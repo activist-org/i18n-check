@@ -5,7 +5,6 @@ Test script for nested_keys.py functionality.
 
 import unittest
 from pathlib import Path
-from unittest.mock import patch
 
 import pytest
 
@@ -61,46 +60,42 @@ class TestIsNestedJson(unittest.TestCase):
                 self.assertEqual(is_nested_json(data), expected)
 
 
-class TestCheckI18nFiles(unittest.TestCase):
+class TestCheckI18nFiles:
     """
-    Test cases for the check_i18n_files function.
+    Test cases for the validate_nested_keys function.
     """
 
-    def setUp(self) -> None:
+    def test_validate_nested_keys_with_warnings(self, capsys) -> None:
         """
-        Set up test JSON files.
+        Test that validate_nested_keys prints a warning for nested files.
         """
-        self.fail_files = fail_json_dir
-        self.pass_files = list(pass_json_dir.glob("*.json"))
-        self.json_files = self.pass_files + [self.fail_files]
+        # Test the failing case.
+        validate_nested_keys(fail_json_dir)
+        captured_fail = capsys.readouterr()
 
-    def _assert_warning_printed(self, mock_print, path, should_be_present) -> None:
-        """
-        Helper to check if warning was printed for a specific file.
-        """
-        found = any(
-            f"Warning: Nested JSON structure detected in {path}" in str(call)
-            for call in mock_print.call_args_list
+        # The output from `rich` might have extra newlines or formatting.
+        fail_file_path_str = str(fail_json_dir / "test_i18n_src.json")
+
+        assert (
+            "Warning: Nested JSON structure detected in"
+            in captured_fail.out.replace("\n", "")
         )
-        self.assertEqual(found, should_be_present)
+        assert fail_file_path_str in captured_fail.out.replace("\n", "")
+        assert (
+            "i18n-check recommends using flat JSON files"
+            in captured_fail.out.replace("\n", "")
+        )
 
-    @patch("builtins.print")
-    def test_validate_nested_keys_with_warnings(self, mock_print) -> None:
-        """
-        Test validate_nested_keys with warning enabled.
-        """
-
-        for file in self.json_files:
-            validate_nested_keys(file)
-
-        self._assert_warning_printed(mock_print, self.fail_files, True)
-        self._assert_warning_printed(mock_print, self.pass_files, False)
+        # Test the passing case.
+        validate_nested_keys(pass_json_dir)
+        captured_pass = capsys.readouterr()
+        assert captured_pass.out == ""
 
     def test_validate_nested_keys_with_nonexistent_directory(self) -> None:
         """
-        Test validate_nested_keys with nonexistent directory.
+        Test validate_nested_keys with a nonexistent directory.
         """
-        with self.assertRaises(FileNotFoundError):
+        with pytest.raises(FileNotFoundError):
             validate_nested_keys("/nonexistent/directory")
 
 

@@ -75,12 +75,12 @@ def test_report_non_source_keys_pass_output(capsys):
 
 
 def test_report_non_source_keys_fail_output(capsys):
-    with pytest.raises(ValueError) as exc_info:
+    with pytest.raises(SystemExit):
         report_non_source_keys(non_source_keys_fail)
 
-    msg = str(exc_info.value)
-    assert "non_source_keys failure:" in msg
-    assert "i18n._global.not_in_i18n_src" in msg
+    output_msg = capsys.readouterr().out
+    assert "non_source_keys failure:" in output_msg
+    assert "i18n._global.not_in_i18n_src" in output_msg
 
 
 if __name__ == "__main__":

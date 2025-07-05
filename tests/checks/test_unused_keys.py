@@ -48,21 +48,20 @@ def test_find_unused_keys_behavior() -> None:
     assert UNUSED_PASS_KEYS == []
 
 
-# Note: capsys is a fixture for capturing system outputs.
 def test_print_unused_keys_pass_output(capsys):
     print_unused_keys(UNUSED_PASS_KEYS)
     captured = capsys.readouterr()
     assert "unused_keys success" in captured.out
 
 
-def test_print_unused_keys_fail_raises_value_error() -> None:
-    with pytest.raises(ValueError) as exc_info:
+def test_print_unused_keys_fail_raises_value_error(capsys) -> None:
+    with pytest.raises(SystemExit):
         print_unused_keys(UNUSED_FAIL_KEYS)
 
-    msg = str(exc_info.value)
-    assert "There is 1 i18n key that is unused" in msg
-    assert "i18n._global.unused_i18n_key" in msg
-    assert "unused_keys failure" in msg
+    captured = capsys.readouterr()
+    assert "unused_keys failure: There is 1 i18n key that is unused" in captured.out
+    assert "i18n._global.unused_i18n_key" in captured.out
+    assert "unused_keys failure" in captured.out
 
 
 if __name__ == "__main__":
