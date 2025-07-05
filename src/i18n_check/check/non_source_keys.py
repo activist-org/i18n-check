@@ -8,9 +8,10 @@ Examples
 --------
 Run the following script in terminal:
 
->>> python3 src/i18n_check/check/non_source_keys.py
+>>> i18n-check -nsk
 """
 
+import sys
 from pathlib import Path
 from typing import Dict
 
@@ -23,6 +24,8 @@ from i18n_check.utils import (
     path_separator,
     read_json_file,
 )
+
+# MARK: Paths / Files
 
 i18n_src_dict = read_json_file(file_path=config_i18n_src_file)
 
@@ -83,8 +86,8 @@ def report_non_source_keys(
 
     Raises
     ------
-    ValueError: If the input dictionary is not empty, indicating that
-    non-source keys were found.
+    sys.exit(1)
+        The system exits with 1 and prints error details if the input dictionary is not empty.
     """
     if non_source_keys_dict:
         non_source_keys_string = "\n\n".join(
@@ -94,7 +97,8 @@ def report_non_source_keys(
         rprint(
             f"\n[red]non_source_keys failure: There are some i18n target JSON files that have keys that are not in i18n source file. Please remove or rename the following keys:\n\n{non_source_keys_string}\n[/red]"
         )
-        raise ValueError
+
+        sys.exit(1)
 
     else:
         rprint(

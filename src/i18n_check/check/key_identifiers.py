@@ -8,9 +8,10 @@ Examples
 --------
 Run the following script in terminal:
 
->>> python3 src/i18n_check/check/key_identifiers.py
+>>> i18n-check -ki
 """
 
+import sys
 from collections import defaultdict
 from pathlib import Path
 from typing import Dict, List, Tuple
@@ -183,8 +184,8 @@ def report_and_correct_keys(
 
     Raises
     ------
-    ValueError
-        If there are invalid keys by format or name, this function raises a ValueError with detailed information.
+    sys.exit(1)
+        The system exits with 1 and prints error details if there are invalid keys by format or name.
     """
     invalid_keys_by_format_string = ", ".join(invalid_keys_by_format)
     format_to_be = "are" if len(invalid_keys_by_format) > 1 else "is"
@@ -194,8 +195,8 @@ def report_and_correct_keys(
     format_key_or_keys = "keys" if len(invalid_keys_by_format) > 1 else "key"
 
     invalid_keys_by_format_error = f"""
-    There {format_to_be} {len(invalid_keys_by_format)} i18n {format_key_to_be} not formatted correctly. Please reformat the following {format_key_or_keys}:\n\n{invalid_keys_by_format_string}
-    """
+There {format_to_be} {len(invalid_keys_by_format)} i18n {format_key_to_be} not formatted correctly. Please reformat the following {format_key_or_keys}:\n\n{invalid_keys_by_format_string}
+"""
 
     invalid_keys_by_name_string = "".join(
         f"\n{k} -> {v}" for k, v in invalid_keys_by_name.items()
@@ -205,10 +206,11 @@ def report_and_correct_keys(
     name_key_or_keys = "keys" if len(invalid_keys_by_name) > 1 else "key"
 
     invalid_keys_by_name_error = f"""
-    There {name_to_be} {len(invalid_keys_by_name)} i18n {name_key_to_be} not named correctly. Please rename the following {name_key_or_keys} [current_key -> suggested_correction]:\n{invalid_keys_by_name_string}
-    """
+There {name_to_be} {len(invalid_keys_by_name)} i18n {name_key_to_be} not named correctly.
+Please rename the following {name_key_or_keys} \[current_key -> suggested_correction]:\n{invalid_keys_by_name_string}
+"""
 
-    error_string = ""
+    error_string = "[red]"
 
     if not invalid_keys_by_format and not invalid_keys_by_name:
         rprint(
@@ -218,7 +220,10 @@ def report_and_correct_keys(
     elif invalid_keys_by_format and invalid_keys_by_name:
         error_string += invalid_keys_by_format_error
         error_string += invalid_keys_by_name_error
-        raise ValueError(error_string)
+        error_string += "[/red]"
+        rprint(error_string)
+
+        sys.exit(1)
 
     else:
         if invalid_keys_by_format:
@@ -237,7 +242,10 @@ def report_and_correct_keys(
                 "\n[red]key_identifiers failure: There is an error with key formatting, but all i18n keys are named appropriately in the i18n-src file.[/red]\n"
             )
 
-        raise ValueError(error_string)
+        error_string += "[/red]"
+        rprint(error_string)
+
+        sys.exit(1)
 
 
 if __name__ == "__main__":
@@ -248,7 +256,6 @@ if __name__ == "__main__":
     invalid_keys_by_format, invalid_keys_by_name = audit_i18n_keys(
         key_file_dict=key_file_dict
     )
-
     report_and_correct_keys(
         invalid_keys_by_format=invalid_keys_by_format,
         invalid_keys_by_name=invalid_keys_by_name,

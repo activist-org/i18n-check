@@ -75,7 +75,7 @@ def test_report_non_source_keys_pass_output(capsys):
 
 
 def test_report_non_source_keys_fail_output(capsys):
-    with pytest.raises(ValueError):
+    with pytest.raises(SystemExit):
         report_non_source_keys(non_source_keys_fail)
 
     output_msg = capsys.readouterr().out

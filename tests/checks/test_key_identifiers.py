@@ -82,24 +82,26 @@ def test_audit_i18n_keys() -> None:
     )
 
 
-def test_report_and_correct_keys_fail() -> None:
+def test_report_and_correct_keys_fail(capsys) -> None:
     """
     Test report_and_correct_keys for the fail case.
     """
-    with pytest.raises(ValueError) as exc_info:
+    with pytest.raises(SystemExit):
         report_and_correct_keys(invalid_format_fail, invalid_name_fail)
 
-    msg = str(exc_info.value)
+    output_msg = capsys.readouterr().out
+    print(output_msg)
+    assert "There is 1 i18n key that is not formatted correctly" in output_msg
+    assert "There are 6 i18n keys that are not named correctly." in output_msg
     assert (
-        "There are 6 i18n keys that are not named correctly. Please rename the following keys [current_key -> suggested_correction]:"
-        in msg
+        "Please rename the following keys [current_key -> suggested_correction]:"
+        in output_msg
     )
-    assert "There is 1 i18n key that is not formatted correctly" in msg
     assert (
-        "i18n._global.incorrectly-formatted-key -> i18n.test_file.incorrectly-formatted-key"
-        in msg
+        "i18n._global.hello_global_repeat -> i18n.test_file.hello_global_repeat"
+        in output_msg
     )
-    assert "i18n._global.hello_global_repeat" in msg
+    assert "i18n._global.hello_global_repeat" in output_msg
 
 
 def test_report_and_correct_keys_pass(capsys) -> None:

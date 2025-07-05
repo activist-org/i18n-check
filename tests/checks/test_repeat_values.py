@@ -60,7 +60,6 @@ def test_get_repeat_value_counts(
     assert result == expected_output
 
 
-# Note: capsys is a fixture for capturing system outputs.
 def test_multiple_repeats_with_common_prefix(capsys) -> None:
     fail_result = analyze_and_suggest_keys(
         fail_checks_json, get_repeat_value_counts(fail_checks_json)
@@ -96,7 +95,7 @@ def test_key_with_lower_suffix_ignored(capsys) -> None:
 
 
 def test_validate_repeat_values_behavior(capsys) -> None:
-    with pytest.raises(ValueError):
+    with pytest.raises(SystemExit):
         validate_repeat_values(get_repeat_value_counts(fail_checks_json))
         assert (
             "repeat_values failure: 1 repeat i18n value is present."

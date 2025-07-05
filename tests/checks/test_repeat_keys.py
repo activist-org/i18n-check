@@ -96,9 +96,8 @@ def test_check_file_not_found() -> None:
         check_file("nonexistent_file.json")
 
 
-# Note: capsys is a fixture for capturing system outputs.
 def test_main_with_duplicates_raises(capsys) -> None:
-    with pytest.raises(ValueError):
+    with pytest.raises(SystemExit):
         validate_repeat_keys()
 
     output = capsys.readouterr().out

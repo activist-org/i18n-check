@@ -83,7 +83,7 @@ def test_validate_fail_i18n_keys(capsys) -> None:
     """
     Test validate_i18n_keys for the fail case.
     """
-    with pytest.raises(ValueError):
+    with pytest.raises(SystemExit):
         validate_i18n_keys(
             all_used_i18n_keys=i18n_used_fail, i18n_src_dict=fail_checks_json
         )

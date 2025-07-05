@@ -8,7 +8,7 @@ Examples
 --------
 Run the following script in terminal:
 
->>> python3 src/i18n_check/check/nested_keys.py
+>>> i18n-check -nk
 """
 
 import json
@@ -62,7 +62,7 @@ def validate_nested_keys(directory: str | Path) -> None:
                     f"[red]Warning: Nested JSON structure detected in[/red] [bold red]{file_path}[/bold red]"
                 )
                 rprint(
-                    "[red]i18n-check recommends using flat JSON files to allow easy find-and-replace operations.[/red]"
+                    "[red]i18n-check recommends using flat JSON files to allow easy find-and-replace operations. You can disable this check in your i18n-check.yaml configuration file.[/red]"
                 )
 
         except (json.JSONDecodeError, IOError) as e:

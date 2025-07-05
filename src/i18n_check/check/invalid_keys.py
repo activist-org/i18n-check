@@ -8,10 +8,11 @@ Examples
 --------
 Run the following script in terminal:
 
->>> python3 src/i18n_check/check/invalid_keys.py
+>>> i18n-check -ik
 """
 
 import re
+import sys
 from pathlib import Path
 from typing import Any, Dict, List, Set
 
@@ -110,8 +111,8 @@ def validate_i18n_keys(
 
     Raises
     ------
-    ValueError
-        If there are any i18n keys that are used in the project but not defined in the source file.
+    sys.exit(1)
+        The system exits with 1 and prints error details if there are any i18n keys that are used in the project but not defined in the source file.
     """
     all_keys = i18n_src_dict.keys()
     if invalid_keys := list(all_used_i18n_keys - all_keys):
@@ -121,7 +122,9 @@ def validate_i18n_keys(
         rprint(
             f"\n[red]invalid_keys failure: There {to_be} {len(invalid_keys)} i18n {key_to_be} not in the i18n source file. Please check the validity of the following {key_or_keys}:\n\n{', '.join(invalid_keys)}\n[/red]"
         )
-        raise ValueError
+
+        sys.exit(1)
+
     else:
         rprint(
             "[green]invalid_keys success: All i18n keys that are used in the project are in the i18n source file.[/green]"
