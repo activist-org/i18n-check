@@ -11,10 +11,6 @@ from i18n_check.cli.upgrade import upgrade_cli
 from i18n_check.cli.version import get_version_message
 from i18n_check.utils import run_check
 
-CLI_EPILOG = (
-    "Visit the codebase at https://github.com/activist-org/i18n-check to learn more!"
-)
-
 
 def main() -> None:
     """
@@ -54,7 +50,7 @@ def main() -> None:
 
     parser = argparse.ArgumentParser(
         description="i18n-check is a CLI tool for checking i18n/L10n keys and values.",
-        epilog=CLI_EPILOG,
+        epilog="Visit the codebase at https://github.com/activist-org/i18n-check to learn more!",
         formatter_class=lambda prog: argparse.HelpFormatter(prog, max_help_position=60),
     )
 
