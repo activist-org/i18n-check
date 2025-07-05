@@ -139,11 +139,11 @@ The following details the ``.18n-check.yaml`` configuration file, with a further
     checks:
       # Global configurations are applied to all checks.
       global:
-        active: true
+        active: true # enables all checks by default
         directories-to-skip: [frontend/node_modules]
         files-to-skip: []
       key-identifiers:
-        active: true
+        active: true # can be used to override individual checks
         directories-to-skip: []
         files-to-skip: []
       invalid-keys:

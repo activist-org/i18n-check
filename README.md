@@ -142,15 +142,15 @@ file-types-to-check: [.ts, .js]
 checks:
   # Global configurations are applied to all checks.
   global:
-    active: true # Enables all checks by default
+    active: true # enables all checks by default
     directories-to-skip: [frontend/node_modules]
     files-to-skip: []
   key-identifiers:
-    active: false  # Overrides global setting, therefore won't run despite global being active
+    active: true # can be used to override individual checks
     directories-to-skip: []
     files-to-skip: []
   invalid-keys:
-    active: true # Redundant because of global is also active
+    active: true
     directories-to-skip: []
     files-to-skip: []
   unused-keys:
@@ -158,7 +158,7 @@ checks:
     directories-to-skip: []
     files-to-skip: []
   non-source-keys:
-    active: false  # Won't run despite global being active
+    active: true
   repeat-keys:
     active: true
   repeat-values:
@@ -169,12 +169,13 @@ checks:
 
 > [!NOTE]
 > When `global.active` is set to `true`, all checks are enabled by default. You can then explicitly disable specific checks by setting their `active` value to `false`. This allows for more concise configuration files. For example:
+>
 > ```yaml
 > checks:
 >   global:
 >     active: true
 >   repeat-values:
->     active: false  # This check will be disabled even though global is active
+>     active: false # disabled even though global is active
 > ```
 
 Common additional arguments for using specific web frameworks can be found in the dropdowns below:
