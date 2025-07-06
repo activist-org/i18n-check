@@ -163,6 +163,20 @@ The following details the ``.18n-check.yaml`` configuration file, with a further
       nested-keys:
         active: true
 
+pre-commit
+==========
+
+The following is an example `pre-commit <https://github.com/pre-commit/pre-commit>`_ hook:
+
+.. code-block:: yaml
+    - repo: local
+      hooks:
+        - id: run-i18n-check
+        name: run i18n-check key-value checks
+        files: ^src-dir/
+        entry: i18n-check -a
+        language: python
+
 Contents
 ========
 

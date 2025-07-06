@@ -29,6 +29,9 @@ Developed by the [activist community](https://github.com/activist-org), this pro
   - [Arguments](#arguments-)
   - [Checks](#checks-)
 - [Configuration](#configuration-)
+  - [YAML File](#yaml-file-)
+  - [Additional Arguments](#additional-arguments-)
+  - [pre-commit](#pre-commit-)
 - [Contributing](#contributing)
 - [Environment setup](#environment-setup)
 - [Contributors](#contributors-)
@@ -130,6 +133,10 @@ Directions for how to fix the i18n files are provided when errors are raised. Ch
 
 # Configuration [`⇧`](#contents)
 
+<a id="yaml-file-"></a>
+
+### YAML File [`⇧`](#contents)
+
 The following details the `.18n-check.yaml` configuration file, with a further example being the [configuration file for this repository](/.i18n-check.yaml) that we use in testing.
 
 ```yaml
@@ -178,6 +185,10 @@ checks:
 >     active: false # disabled even though global is active
 > ```
 
+<a id="additional-arguments-"></a>
+
+### Additional Arguments [`⇧`](#contents)
+
 Common additional arguments for using specific web frameworks can be found in the dropdowns below:
 
 <details><summary>Vue.js</summary>
@@ -193,6 +204,22 @@ checks:
 
 </p>
 </details>
+
+<a id="pre-commit-"></a>
+
+### pre-commit [`⇧`](#contents)
+
+The following is an example [pre-commit](https://github.com/pre-commit/pre-commit) hook:
+
+```yaml
+- repo: local
+  hooks:
+    - id: run-i18n-check
+      name: run i18n-check key-value checks
+      files: ^src-dir/
+      entry: i18n-check -a
+      language: python
+```
 
 <a id="contributing"></a>
 
