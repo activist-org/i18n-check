@@ -12,6 +12,12 @@ Emojis for the following are chosen based on [gitmoji](https://gitmoji.dev/).
 
 ## [Upcoming] i18n-check 1.x
 
+## i18n-check 1.5.1
+
+### 🐞 Bug Fixes
+
+- mypy errors were fixed for an invalid use of backslashes within f-strings.
+
 ## i18n-check 1.5.0
 
 ### ✨ Features

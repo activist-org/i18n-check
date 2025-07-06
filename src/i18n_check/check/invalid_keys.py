@@ -119,9 +119,12 @@ def validate_i18n_keys(
         to_be = "are" if len(invalid_keys) > 1 else "is"
         key_to_be = "keys that are" if len(invalid_keys) > 1 else "key that is"
         key_or_keys = "keys" if len(invalid_keys) > 1 else "key"
-        rprint(
-            f"\n[red]❌ invalid_keys error: There {to_be} {len(invalid_keys)} i18n {key_to_be} not in the i18n source file. Please check the validity of the following {key_or_keys}:\n\n{'\n'.join(invalid_keys)}[/red]"
-        )
+
+        error_message = f"[red]❌ invalid_keys error: There {to_be} {len(invalid_keys)} i18n {key_to_be} not in the i18n source file. Please check the validity of the following {key_or_keys}:\n\n"
+        error_message += "\n".join(invalid_keys)
+        error_message += "[/red]"
+
+        rprint(error_message)
 
         sys.exit(1)
 
