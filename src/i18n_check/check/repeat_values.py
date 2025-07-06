@@ -56,7 +56,7 @@ def get_repeat_value_counts(i18n_src_dict: Dict[str, str]) -> Dict[str, int]:
 
 def analyze_and_generate_repeat_value_report(
     i18n_src_dict: Dict[str, str], json_repeat_value_counts: Dict[str, int]
-) -> Dict[str, int]:
+) -> tuple[Dict[str, int], str]:
     """
     Analyze repeated values and generates a report of repeat values with changes that should be made.
 
