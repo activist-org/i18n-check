@@ -91,7 +91,11 @@ def report_non_source_keys(
     """
     if non_source_keys_dict:
         non_source_keys_string = "\n\n".join(
-            f"Non-source keys in {k}: \n  {'\n  '.join(non_source_keys_dict[k])}"
+            (
+                f"Non-source keys in {k}:"
+                + " \n  "
+                + "\n  ".join(non_source_keys_dict[k])
+            )
             for k in non_source_keys_dict
         )
         error_message = (
