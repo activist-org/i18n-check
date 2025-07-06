@@ -107,11 +107,11 @@ def audit_i18n_keys(
         - A list of keys that are not formatted correctly.
         - A dictionary mapping keys that are not named correctly to their suggested corrections.
     """
-    invalid_keys_by_format = []
-    invalid_keys_by_name = {}
+    invalid_key_identifiers_by_format = []
+    invalid_key_identifiers_by_name = {}
     for k in key_file_dict:
         if not is_valid_key(k):
-            invalid_keys_by_format.append(k)
+            invalid_key_identifiers_by_format.append(k)
 
         # Key is used in one file.
         if len(key_file_dict[k]) == 1:
@@ -160,26 +160,27 @@ def audit_i18n_keys(
 
         if k[: len(ideal_key_base)] != ideal_key_base:
             ideal_key = f"{ideal_key_base}{k.split('.')[-1]}"
-            invalid_keys_by_name[k] = ideal_key
+            invalid_key_identifiers_by_name[k] = ideal_key
 
-    return invalid_keys_by_format, invalid_keys_by_name
+    return invalid_key_identifiers_by_format, invalid_key_identifiers_by_name
 
 
 # MARK: Error Outputs
 
 
 def report_and_correct_keys(
-    invalid_keys_by_format: List[str], invalid_keys_by_name: Dict[str, str]
+    invalid_key_identifiers_by_format: List[str],
+    invalid_key_identifiers_by_name: Dict[str, str],
 ) -> None:
     """
     Report and correct invalid i18n keys based on their formatting and naming conventions.
 
     Parameters
     ----------
-    invalid_keys_by_format : List[str]
+    invalid_key_identifiers_by_format : List[str]
         A list of i18n keys that are not formatted correctly.
 
-    invalid_keys_by_name : Dict[str, str]
+    invalid_key_identifiers_by_name : Dict[str, str]
         A dictionary mapping i18n keys that are not named correctly to their suggested corrections.
 
     Raises
@@ -187,59 +188,60 @@ def report_and_correct_keys(
     sys.exit(1)
         The system exits with 1 and prints error details if there are invalid keys by format or name.
     """
-    invalid_keys_by_format_string = ", ".join(invalid_keys_by_format)
-    format_to_be = "are" if len(invalid_keys_by_format) > 1 else "is"
+    invalid_key_identifiers_by_format_string = ", ".join(
+        invalid_key_identifiers_by_format
+    )
+    format_to_be = "are" if len(invalid_key_identifiers_by_format) > 1 else "is"
     format_key_to_be = (
-        "keys that are" if len(invalid_keys_by_format) > 1 else "key that is"
+        "keys that are" if len(invalid_key_identifiers_by_format) > 1 else "key that is"
     )
-    format_key_or_keys = "keys" if len(invalid_keys_by_format) > 1 else "key"
+    format_key_or_keys = "keys" if len(invalid_key_identifiers_by_format) > 1 else "key"
 
-    invalid_keys_by_format_error = f"""
-There {format_to_be} {len(invalid_keys_by_format)} i18n {format_key_to_be} not formatted correctly. Please reformat the following {format_key_or_keys}:\n\n{invalid_keys_by_format_string}
-"""
+    invalid_key_identifiers_by_format_error = f"""❌ key_identifiers error: There {format_to_be} {len(invalid_key_identifiers_by_format)} i18n {format_key_to_be} not formatted correctly. Please reformat the following {format_key_or_keys}:\n\n{invalid_key_identifiers_by_format_string}"""
 
-    invalid_keys_by_name_string = "".join(
-        f"\n{k} -> {v}" for k, v in invalid_keys_by_name.items()
+    invalid_key_identifiers_by_name_string = "".join(
+        f"\n{k} -> {v}" for k, v in invalid_key_identifiers_by_name.items()
     )
-    name_to_be = "are" if len(invalid_keys_by_name) > 1 else "is"
-    name_key_to_be = "keys that are" if len(invalid_keys_by_name) > 1 else "key that is"
-    name_key_or_keys = "keys" if len(invalid_keys_by_name) > 1 else "key"
+    name_to_be = "are" if len(invalid_key_identifiers_by_name) > 1 else "is"
+    name_key_to_be = (
+        "keys that are" if len(invalid_key_identifiers_by_name) > 1 else "key that is"
+    )
+    name_key_or_keys = "keys" if len(invalid_key_identifiers_by_name) > 1 else "key"
 
-    invalid_keys_by_name_error = f"""
-There {name_to_be} {len(invalid_keys_by_name)} i18n {name_key_to_be} not named correctly.
-Please rename the following {name_key_or_keys} \[current_key -> suggested_correction]:\n{invalid_keys_by_name_string}
-"""
+    invalid_key_identifiers_by_name_error = f"""❌ key_identifiers error: There {name_to_be} {len(invalid_key_identifiers_by_name)} i18n {name_key_to_be} not named correctly.
+Please rename the following {name_key_or_keys} \\[current_key -> suggested_correction]:\n{invalid_key_identifiers_by_name_string}"""
 
-    error_string = "[red]"
+    error_string = "\n[red]"
 
-    if not invalid_keys_by_format and not invalid_keys_by_name:
+    if not invalid_key_identifiers_by_format and not invalid_key_identifiers_by_name:
         rprint(
-            "[green]key_identifiers success: All i18n keys are formatted and named correctly in the i18n-src file.\n[/green]"
+            "[green]✅ key_identifiers success: All i18n keys are formatted and named correctly in the i18n-src file.[/green]"
         )
 
-    elif invalid_keys_by_format and invalid_keys_by_name:
-        error_string += invalid_keys_by_format_error
-        error_string += invalid_keys_by_name_error
+    elif invalid_key_identifiers_by_format and invalid_key_identifiers_by_name:
+        error_string += invalid_key_identifiers_by_format_error
+        error_string += "\n\n"
+        error_string += invalid_key_identifiers_by_name_error
         error_string += "[/red]"
         rprint(error_string)
 
         sys.exit(1)
 
     else:
-        if invalid_keys_by_format:
-            error_string += invalid_keys_by_format_error
+        if invalid_key_identifiers_by_format:
+            error_string += invalid_key_identifiers_by_format_error
 
         else:
             rprint(
-                "\n[red]key_identifiers failure: There is an error with key names, but all i18n keys are formatted correctly in the i18n-src file.[/red]"
+                "\n[red]❌ key_identifiers error: There is an error with key names, but all i18n keys are formatted correctly in the i18n-src file.[/red]"
             )
 
-        if invalid_keys_by_name:
-            error_string += invalid_keys_by_name_error
+        if invalid_key_identifiers_by_name:
+            error_string += invalid_key_identifiers_by_name_error
 
         else:
             rprint(
-                "\n[red]key_identifiers failure: There is an error with key formatting, but all i18n keys are named appropriately in the i18n-src file.[/red]\n"
+                "\n[red]❌ key_identifiers error: There is an error with key formatting, but all i18n keys are named appropriately in the i18n-src file.[/red]\n"
             )
 
         error_string += "[/red]"
@@ -253,10 +255,10 @@ if __name__ == "__main__":
         i18n_src_dict=i18n_src_dict,
         src_directory=config_src_directory,
     )
-    invalid_keys_by_format, invalid_keys_by_name = audit_i18n_keys(
-        key_file_dict=key_file_dict
+    invalid_key_identifiers_by_format, invalid_key_identifiers_by_name = (
+        audit_i18n_keys(key_file_dict=key_file_dict)
     )
     report_and_correct_keys(
-        invalid_keys_by_format=invalid_keys_by_format,
-        invalid_keys_by_name=invalid_keys_by_name,
+        invalid_key_identifiers_by_format=invalid_key_identifiers_by_format,
+        invalid_key_identifiers_by_name=invalid_key_identifiers_by_name,
     )

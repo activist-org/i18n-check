@@ -143,21 +143,26 @@ def validate_repeat_values(json_repeat_value_counts: Dict[str, int]) -> None:
         The system exits with 1 and prints error details if repeat values are found.
     """
     if json_repeat_value_counts:
+        value_or_values = "value"
         if len(json_repeat_value_counts) == 1:
             value_to_be = "value is"
 
         else:
+            value_or_values = "values"
             value_to_be = "values are"
 
-        rprint(
-            f"\n[red]repeat_values failure: {len(json_repeat_value_counts)} repeat i18n {value_to_be} present. Please combine the values below:[/red]\n"
-        )
+        error_message = "\n[red]"
+        error_message += f"❌ repeat_values error: {len(json_repeat_value_counts)} repeat i18n {value_to_be} present in the i18n source file. Please combine the {value_or_values} below into one key:\n\n"
+        error_message += f"{'\n'.join(json_repeat_value_counts.keys())}"
+        error_message += "[/red]"
+
+        rprint(error_message)
 
         sys.exit(1)
 
     else:
         rprint(
-            "[green]repeat_values success: No repeat i18n values found in the i18n-src file.[/green]"
+            "[green]✅ repeat_values success: No repeat i18n values found in the i18n-src file.[/green]"
         )
 
 

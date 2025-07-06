@@ -98,13 +98,13 @@ def test_validate_repeat_values_behavior(capsys) -> None:
     with pytest.raises(SystemExit):
         validate_repeat_values(get_repeat_value_counts(fail_checks_json))
         assert (
-            "repeat_values failure: 1 repeat i18n value is present."
+            "❌ repeat_values error: 1 repeat i18n value is present."
             in capsys.readouterr().out
         )
 
     validate_repeat_values(get_repeat_value_counts(pass_checks_json))
     captured = capsys.readouterr()
-    assert "repeat_values success: No repeat i18n values found" in captured.out
+    assert "✅ repeat_values success: No repeat i18n values found" in captured.out
 
 
 if __name__ == "__main__":

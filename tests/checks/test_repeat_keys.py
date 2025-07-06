@@ -101,9 +101,9 @@ def test_main_with_duplicates_raises(capsys) -> None:
         validate_repeat_keys()
 
     output = capsys.readouterr().out
-    assert "Duplicate keys in" in output
+    assert "Repeat keys in" in output
     assert "appears 2 times" in output
-    assert "repeat_keys failure" in output
+    assert "repeat_keys error" in output
 
 
 if __name__ == "__main__":

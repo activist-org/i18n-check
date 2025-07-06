@@ -91,18 +91,18 @@ def report_non_source_keys(
     """
     if non_source_keys_dict:
         non_source_keys_string = "\n\n".join(
-            f"{k}: {', '.join(non_source_keys_dict[k])}\nTotal: {len(non_source_keys_dict[k])}"
+            f"Non-source keys in {k}: \n  {'\n  '.join(non_source_keys_dict[k])}"
             for k in non_source_keys_dict
         )
         rprint(
-            f"\n[red]non_source_keys failure: There are some i18n target JSON files that have keys that are not in i18n source file. Please remove or rename the following keys:\n\n{non_source_keys_string}\n[/red]"
+            f"\n[red]❌ non_source_keys error: There are some i18n target JSON files that have keys that are not in i18n source file. Please remove or rename the following keys:\n\n{non_source_keys_string}[/red]"
         )
 
         sys.exit(1)
 
     else:
         rprint(
-            "[green]non_source_keys success: No i18n target file has keys that are not in the i18n source file.[/green]"
+            "[green]✅ non_source_keys success: No i18n target file has keys that are not in the i18n source file.[/green]"
         )
 
 

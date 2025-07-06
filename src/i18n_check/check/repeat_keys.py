@@ -148,25 +148,27 @@ def validate_repeat_keys() -> None:
     json_files = get_all_json_files(config_i18n_directory, path_separator)
     has_errors = False
 
+    error_message = ""
+    file_duplicate_keys_messages = ""
     for json_file in json_files:
         filename, duplicates = check_file(json_file)
         if duplicates:
             has_errors = True
-            rprint(f"\n[red]Duplicate keys in {filename}:[/red]")
+            file_duplicate_keys_messages += f"\n[red]Repeat keys in {filename}:[/red]"
 
             for key, values in duplicates.items():
-                rprint(
-                    f"[red]  '{key}' appears {len(values)} times with values: {values}[/red]"
-                )
+                file_duplicate_keys_messages += f"[red]\n  {key} appears {len(values)} times with values: {values}[/red]"
 
     if has_errors:
-        rprint(
-            "\n[red]repeat_keys failure: Duplicate keys found. All i18n keys must be unique.[/red]\n"
-        )
+        error_message += "\n[red]❌ repeat_keys error: Repeat i18n keys found. All i18n keys must be unique.[/red]\n"
+        error_message += file_duplicate_keys_messages
+        rprint(error_message)
 
         sys.exit(1)
 
-    rprint("[green]repeat_keys success: No duplicate keys found in i18n files.[/green]")
+    rprint(
+        "[green]✅ repeat_keys success: No duplicate keys found in i18n files.[/green]"
+    )
 
 
 # MARK: Main

@@ -102,14 +102,14 @@ def print_unused_keys(unused_keys: List[str]) -> None:
         key_to_be = "keys that are" if len(unused_keys) > 1 else "key that is"
         key_or_keys = "keys" if len(unused_keys) > 1 else "key"
         rprint(
-            f"[red]\nunused_keys failure: There {to_be} {len(unused_keys)} i18n {key_to_be} unused. Please remove or assign the following {key_or_keys}:\n\n{', '.join(unused_keys)}\n[/red]"
+            f"[red]\n❌ unused_keys error: There {to_be} {len(unused_keys)} i18n {key_to_be} unused. Please remove or assign the following {key_or_keys}:\n\n{', '.join(unused_keys)}[/red]"
         )
 
         sys.exit(1)
 
     else:
         rprint(
-            "[green]unused_keys success: All i18n keys in the i18n-src file are used in the project.[/green]"
+            "[green]✅ unused_keys success: All i18n keys in the i18n-src file are used in the project.[/green]"
         )
 
 

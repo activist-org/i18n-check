@@ -9,7 +9,10 @@ Run the following script in terminal:
 >>> i18n-check -a
 """
 
+import sys
 from concurrent.futures import ProcessPoolExecutor, as_completed
+
+from rich import print as rprint
 
 from i18n_check.utils import (
     config_invalid_keys_active,
@@ -100,11 +103,13 @@ def run_all_checks() -> None:
                 print(f"{check_name} generated an exception: {exc}")
                 check_results.append(False)
 
-    assert all(check_results), (
-        "\nError: Some i18n checks did not pass. Please see the error messages above."
-    )
+    if not all(check_results):
+        rprint(
+            "\n[red]❌ i18n-check error: Some i18n checks did not pass. Please see the error messages above.[/red]"
+        )
+        sys.exit(1)
 
-    print("\nSuccess: All i18n checks have passed!")
+    rprint("\n[green]✅ Success: All i18n checks have passed![/green]")
 
 
 # MARK: Main

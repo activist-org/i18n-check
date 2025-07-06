@@ -12,12 +12,17 @@ Run the following script in terminal:
 """
 
 import json
+import os
 from pathlib import Path
 from typing import Dict
 
 from rich import print as rprint
 
 from i18n_check.utils import config_i18n_directory, read_json_file
+
+path_separator = "/"
+if os.name == "nt":
+    path_separator = "\\"
 
 # MARK: Is Nested
 
@@ -59,10 +64,7 @@ def validate_nested_keys(directory: str | Path) -> None:
             data = read_json_file(file_path=file_path)
             if is_nested_json(data):
                 rprint(
-                    f"[red]Warning: Nested JSON structure detected in[/red] [bold red]{file_path}[/bold red]"
-                )
-                rprint(
-                    "[red]i18n-check recommends using flat JSON files to allow easy find-and-replace operations. You can disable this check in your i18n-check.yaml configuration file.[/red]"
+                    f"[red]\n❌ nested_keys error: Nested JSON structure detected in {str(file_path).split(path_separator)[-1]}. i18n-check recommends using flat JSON files to allow easy find-and-replace operations. You can disable this check in your i18n-check.yaml configuration file.[/red]"
                 )
 
         except (json.JSONDecodeError, IOError) as e:

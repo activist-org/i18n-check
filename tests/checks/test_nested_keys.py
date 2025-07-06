@@ -74,13 +74,11 @@ class TestCheckI18nFiles:
         captured_fail = capsys.readouterr()
 
         # The output from `rich` might have extra newlines or formatting.
-        fail_file_path_str = str(fail_json_dir / "test_i18n_src.json")
-
         assert (
-            "Warning: Nested JSON structure detected in"
+            "nested_keys error: Nested JSON structure detected in"
             in captured_fail.out.replace("\n", "")
         )
-        assert fail_file_path_str in captured_fail.out.replace("\n", "")
+        assert "test_i18n_src.json" in captured_fail.out.replace("\n", "")
         assert (
             "i18n-check recommends using flat JSON files"
             in captured_fail.out.replace("\n", "")

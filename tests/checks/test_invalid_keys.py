@@ -21,6 +21,12 @@ fail_dir = (
     / "test_frontends"
     / "all_checks_fail"
 )
+fail_checks_json = read_json_file(
+    file_path=fail_dir / "test_i18n" / "test_i18n_src.json"
+)
+i18n_used_fail = get_used_i18n_keys(
+    i18n_src_dict=fail_checks_json, src_directory=fail_dir
+)
 
 pass_dir = (
     Path(__file__).parent.parent.parent
@@ -29,40 +35,34 @@ pass_dir = (
     / "test_frontends"
     / "all_checks_pass"
 )
-fail_checks_json = read_json_file(
-    file_path=fail_dir / "test_i18n" / "test_i18n_src.json"
-)
 pass_checks_json = read_json_file(
     file_path=pass_dir / "test_i18n" / "test_i18n_src.json"
-)
-
-
-i18n_used_fail = get_used_i18n_keys(
-    i18n_src_dict=fail_checks_json, src_directory=fail_dir
 )
 i18n_used_pass = get_used_i18n_keys(
     i18n_src_dict=pass_checks_json, src_directory=pass_dir
 )
+
 all_i18n_used = get_used_i18n_keys()
 
 
 @pytest.mark.parametrize(
     "used_keys, expected_output",
     [
-        (len(i18n_used_pass), 0),
-        (len(i18n_used_fail), 8),
-        (len(all_i18n_used), 8),
+        (len(i18n_used_pass), 5),
+        (len(i18n_used_fail), 9),
+        (len(all_i18n_used), 9),
         (
             i18n_used_fail,
             {
-                "i18n.sub_dir._global.hello_sub_dir",
                 "i18n._global.hello_global",
-                "i18n.sub_dir.second_file.hello_sub_dir_second_file",
-                "i18n._global.nested_example",
-                "i18n.test_file.hello_test_file",
-                "i18n._global.hello_global_repeat_value",
-                "i18n._global.incorrectly_named_key",
-                "i18n._global.incorrectly-formatted-key",
+                "i18n._global.hello_global_repeat",
+                "i18n.sub_dir._global.hello_sub_dir",
+                "i18n.sub_dir_first_file.hello_sub_dir_first_file",
+                "i18n.sub_dir_second_file.hello_sub_dir_second_file",
+                "i18n.test_file.incorrectly-formatted-key",
+                "i18n.test_file.nested_example",
+                "i18n.test_file.not_in_i18n_source_file",
+                "i18n.wrong_identifier_path.incorrectly_named_key",
             },
         ),
     ],
@@ -75,8 +75,13 @@ def test_get_used_i18n_keys(used_keys, expected_output) -> None:
 
 
 def test_all_keys_include_fail_and_pass_sets():
+    """
+    Test that all the i18n keys used in testing contain the fail and pass keys.
+    """
     assert all_i18n_used >= i18n_used_fail
-    assert all_i18n_used >= i18n_used_pass
+    assert (
+        not all_i18n_used >= i18n_used_pass
+    )  # i18n.test_file.hello_test_file is correct in pass
 
 
 def test_validate_fail_i18n_keys(capsys) -> None:
@@ -91,7 +96,7 @@ def test_validate_fail_i18n_keys(capsys) -> None:
     msg = capsys.readouterr().out.replace("\n", "")
     assert "Please check the validity of the following key:" in msg
     assert " There is 1 i18n key that is not in the i18n source file." in msg
-    assert "i18n._global.hello_global_repeat_value" in msg
+    assert "i18n.test_file.not_in_i18n_source_file" in msg
 
 
 def test_validate_pass_i18n_keys(capsys) -> None:
@@ -105,8 +110,8 @@ def test_validate_pass_i18n_keys(capsys) -> None:
     pass_result = capsys.readouterr().out
     cleaned_pass_result = re.sub(r"\x1b\[.*?m", "", pass_result).strip()
 
-    success_message = "invalid_keys success: All i18n keys that are used in the project are in the i18n source file."
-    assert success_message in cleaned_pass_result.replace("\n", " ")
+    success_message = "✅ invalid_keys success: All i18n keys that are used in the project are in the i18n source file."
+    assert success_message in cleaned_pass_result.replace("\n", "")
 
 
 if __name__ == "__main__":

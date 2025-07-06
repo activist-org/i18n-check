@@ -18,6 +18,18 @@ Emojis for the following are chosen based on [gitmoji](https://gitmoji.dev/).
 - Rich text support has been added to CLI outputs such that error messages are red and successes are green ([#36](https://github.com/activist-org/i18n-check/issues/36)).
 - Check errors are now registered with `sys.exit(1)` rather than `ValueError` so that the output doesn't have the value error texts printed.
   - This makes seeing the actual check errors much easier as they're the main outputs now.
+- The error messages are for checks are now standardized and list the check name at the start.
+- Emojis have been added to error and success messages to make the sections more clear.
+
+### 🐞 Bug Fixes
+
+- All checks now raises a `sys.exit(1)` as with individual checks so that GitHub workflows, pre-commit and other systems running i18n-check will fail.
+- The error messages are now combined into one message to assure that they're not mixed together with other parallel error outputs ([#44](https://github.com/activist-org/i18n-check/issues/44)).
+- The pseudo code in the test frontends has been fixed so that the `all_checks_pass` frontend passes all checks.
+
+### ✅ Tests
+
+- Tests have been refactored to account for the new changes in this version.
 
 ## i18n-check 1.4.1
 
