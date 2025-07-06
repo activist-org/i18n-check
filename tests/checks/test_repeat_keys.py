@@ -39,9 +39,9 @@ pass_checks_json = (
         (
             fail_checks_json,
             {
-                "i18n._global.hello_global_repeat": [
+                "i18n._global.repeat_key": [
                     "This key is duplicated",
-                    "hello, global!",
+                    "This key is duplicated, but the value is not",
                 ]
             },
         ),
@@ -51,7 +51,7 @@ pass_checks_json = (
             {"a": ["1", "3"], "b": ["2", "4"]},
         ),
         ("{}", {}),
-        ('{"a": null, "a": 42}', {"a": ["None", "42"]}),
+        ('{"a": null, "a": 42}', {"a": ["42", "None"]}),
     ],
 )
 def test_find_repeat_keys(json_str, expected) -> None:
@@ -77,9 +77,9 @@ def test_invalid_json(json_str) -> None:
         (
             fail_checks_json,
             {
-                "i18n._global.hello_global_repeat": [
+                "i18n._global.repeat_key": [
                     "This key is duplicated",
-                    "hello, global!",
+                    "This key is duplicated, but the value is not",
                 ]
             },
         ),

@@ -12,6 +12,21 @@ Emojis for the following are chosen based on [gitmoji](https://gitmoji.dev/).
 
 ## [Upcoming] i18n-check 1.x
 
+## i18n-check 1.6.0
+
+### ✨ Features
+
+- Repeat key values are now sorted, which further helps with test determinism.
+- Repeat value error messages have been expanded with more information about the values.
+
+### 🐞 Bug Fixes
+
+- The repeat values check has been fixed to allow for `_lower` to be used in keys where the lower case version of another value should be ignored.
+
+### ✅ Tests
+
+- Tests have been refactored to account for the new changes in this version.
+
 ## i18n-check 1.5.1
 
 ### 🐞 Bug Fixes

@@ -9,7 +9,7 @@ from typing import Dict
 import pytest
 
 from i18n_check.check.repeat_values import (
-    analyze_and_suggest_keys,
+    analyze_and_generate_repeat_value_report,
     get_repeat_value_counts,
     i18n_src_dict,
     validate_repeat_values,
@@ -47,7 +47,11 @@ pass_checks_json = read_json_file(
         # Unicode/special characters.
         ({"key1": "café", "key2": "CAFÉ", "key3": "café"}, {"café": 3}),
         (pass_checks_json, {}),
-        (fail_checks_json, {"hello global!": 2}),
+        # The second value will be filtered out by analyze_and_generate_repeat_value_report.
+        (
+            fail_checks_json,
+            {"hello global!": 2, "this key is duplicated but the value is not": 2},
+        ),
     ],
 )
 def test_get_repeat_value_counts(
@@ -61,17 +65,16 @@ def test_get_repeat_value_counts(
 
 
 def test_multiple_repeats_with_common_prefix(capsys) -> None:
-    fail_result = analyze_and_suggest_keys(
+    fail_result, fail_report = analyze_and_generate_repeat_value_report(
         fail_checks_json, get_repeat_value_counts(fail_checks_json)
     )
-    pass_result = analyze_and_suggest_keys(
+    pass_result, pass_report = analyze_and_generate_repeat_value_report(
         pass_checks_json, get_repeat_value_counts(pass_checks_json)
     )
 
-    captured = capsys.readouterr()
-    assert "Repeat value: 'hello global!'" in captured.out
-    assert "Number of instances: : 2" in captured.out
-    assert "Suggested new key: i18n._global.IDENTIFIER_KEY" in captured.out
+    assert "Repeat value: 'hello global!'" in fail_report
+    assert "Number of instances: : 2" in fail_report
+    assert "Suggested new key: i18n._global.CONTENT_REFERENCE" in fail_report
 
     # Result remain unchanged (not removed).
     assert fail_result == {"hello global!": 2}
@@ -86,23 +89,30 @@ def test_key_with_lower_suffix_ignored(capsys) -> None:
     }
     json_repeat_value_counts = {"test": 3}
 
-    result = analyze_and_suggest_keys(i18n_src_dict, json_repeat_value_counts.copy())
+    result, report = analyze_and_generate_repeat_value_report(
+        i18n_src_dict, json_repeat_value_counts.copy()
+    )
 
-    captured = capsys.readouterr()
-    assert "three_lower" not in captured.out
-    assert "Suggested new key" in captured.out
+    assert "three_lower" not in report
+    assert "Suggested new key" in report
     assert result == {"test": 3}
 
 
 def test_validate_repeat_values_behavior(capsys) -> None:
     with pytest.raises(SystemExit):
-        validate_repeat_values(get_repeat_value_counts(fail_checks_json))
+        validate_repeat_values(
+            json_repeat_value_counts=get_repeat_value_counts(fail_checks_json),
+            repeat_value_error_report="",
+        )
         assert (
             "❌ repeat_values error: 1 repeat i18n value is present."
             in capsys.readouterr().out
         )
 
-    validate_repeat_values(get_repeat_value_counts(pass_checks_json))
+    validate_repeat_values(
+        json_repeat_value_counts=get_repeat_value_counts(pass_checks_json),
+        repeat_value_error_report="",
+    )
     captured = capsys.readouterr()
     assert "✅ repeat_values success: No repeat i18n values found" in captured.out
 

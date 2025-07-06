@@ -87,7 +87,9 @@ def find_repeat_keys(json_input: Union[str, Path]) -> Dict[str, List[str]]:
 
         json.loads(json_str, object_pairs_hook=create_key_values_dict)
         duplicates = {
-            k: values_list for k, values_list in grouped.items() if len(values_list) > 1
+            k: sorted(values_list)
+            for k, values_list in grouped.items()
+            if len(values_list) > 1
         }
         return duplicates
 

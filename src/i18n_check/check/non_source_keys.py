@@ -98,8 +98,16 @@ def report_non_source_keys(
             )
             for k in non_source_keys_dict
         )
+        is_an_or_are = "is an"
+        has_or_have = "has"
+        if len(non_source_keys_dict) > 1:
+            is_an_or_are = "are"
+            has_or_have = "have"
+
         error_message = (
-            "\n[red]❌ non_source_keys error: There are some i18n target JSON files that have keys that are not in i18n source file. Please remove or rename the following keys:\n\n"
+            "\n"
+            + f"[red]❌ non_source_keys error: There {is_an_or_are} i18n target JSON files that {has_or_have} keys that are not in the i18n source file. Please remove or rename the following keys:"
+            + "\n\n"
             + non_source_keys_string
             + "[/red]"
         )

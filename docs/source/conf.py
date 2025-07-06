@@ -27,7 +27,7 @@ copyright = "2024, i18n-check developers (GPL 3.0 License)"
 author = "i18n-check developers"
 
 # The full version, including alpha/beta/rc tags
-release = "1.5.1"
+release = "1.6.0"
 
 
 # -- General configuration ---------------------------------------------------

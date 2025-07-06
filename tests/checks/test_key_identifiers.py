@@ -50,10 +50,10 @@ invalid_format_pass, invalid_name_pass = audit_i18n_keys(key_file_dict=i18n_map_
 @pytest.mark.parametrize(
     "i18n_map, expected_output",
     [
-        (len(i18n_map_fail), 9),
-        (len(map_keys_to_files()), 9),
+        (len(i18n_map_fail), 11),
+        (len(map_keys_to_files()), 11),
         (
-            set(i18n_map_fail["i18n._global.hello_global_repeat"]),
+            set(i18n_map_fail["i18n._global.hello_global_repeat_value"]),
             {"test_file", "sub_dir/sub_dir_first_file", "sub_dir/sub_dir_second_file"},
         ),
         (
@@ -78,7 +78,7 @@ invalid_format_pass, invalid_name_pass = audit_i18n_keys(key_file_dict=i18n_map_
             },
         ),
         (
-            map_keys_to_files()["i18n.wrong_identifier_path.incorrectly_named_key"],
+            map_keys_to_files()["i18n.wrong_identifier_path.content_reference"],
             ["test_file"],
         ),
     ],
@@ -99,8 +99,8 @@ def test_audit_i18n_keys() -> None:
     assert invalid_name_pass == {}
     assert invalid_format_fail == ["i18n.test_file.incorrectly-formatted-key"]
     assert (
-        invalid_name_fail["i18n.wrong_identifier_path.incorrectly_named_key"]
-        == "i18n.test_file.incorrectly_named_key"
+        invalid_name_fail["i18n.wrong_identifier_path.content_reference"]
+        == "i18n.test_file.content_reference"
     )
 
 
@@ -119,8 +119,8 @@ def test_report_and_correct_keys_fail(capsys) -> None:
         "Please rename the following key [current_key -> suggested_correction]:"
         in output_msg
     )
-    assert "i18n.wrong_identifier_path.incorrectly_named_key" in output_msg
-    assert "i18n.test_file.incorrectly_named_key" in output_msg
+    assert "i18n.wrong_identifier_path.content_reference" in output_msg
+    assert "i18n.test_file.content_reference" in output_msg
 
 
 def test_report_and_correct_keys_pass(capsys) -> None:
