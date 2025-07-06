@@ -101,9 +101,15 @@ def print_unused_keys(unused_keys: List[str]) -> None:
         to_be = "are" if len(unused_keys) > 1 else "is"
         key_to_be = "keys that are" if len(unused_keys) > 1 else "key that is"
         key_or_keys = "keys" if len(unused_keys) > 1 else "key"
-        rprint(
-            f"[red]\n❌ unused_keys error: There {to_be} {len(unused_keys)} i18n {key_to_be} unused. Please remove or assign the following {key_or_keys}:\n\n{', '.join(unused_keys)}[/red]"
+
+        error_message = (
+            "[red]\n❌ unused_keys error: There "
+            + f"{to_be} {len(unused_keys)} i18n {key_to_be} unused. Please remove or assign the following {key_or_keys}:"
+            + "\n\n"
+            + ", ".join(unused_keys)
+            + "[/red]"
         )
+        rprint(error_message)
 
         sys.exit(1)
 

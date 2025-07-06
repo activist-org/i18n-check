@@ -153,7 +153,7 @@ def validate_repeat_values(json_repeat_value_counts: Dict[str, int]) -> None:
 
         error_message = "\n[red]"
         error_message += f"❌ repeat_values error: {len(json_repeat_value_counts)} repeat i18n {value_to_be} present in the i18n source file. Please combine the {value_or_values} below into one key:\n\n"
-        error_message += f"{'\n'.join(json_repeat_value_counts.keys())}"
+        error_message += "\n".join(json_repeat_value_counts.keys())
         error_message += "[/red]"
 
         rprint(error_message)

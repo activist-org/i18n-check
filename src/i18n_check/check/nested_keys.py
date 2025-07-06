@@ -63,9 +63,12 @@ def validate_nested_keys(directory: str | Path) -> None:
         try:
             data = read_json_file(file_path=file_path)
             if is_nested_json(data):
-                rprint(
-                    f"[red]\n❌ nested_keys error: Nested JSON structure detected in {str(file_path).split(path_separator)[-1]}. i18n-check recommends using flat JSON files to allow easy find-and-replace operations. You can disable this check in your i18n-check.yaml configuration file.[/red]"
+                error_message = (
+                    "[red]\n❌ nested_keys error: Nested JSON structure detected in "
+                    + str(file_path).split(path_separator)[-1]
+                    + ". i18n-check recommends using flat JSON files to allow easy find-and-replace operations. You can disable this check in your i18n-check.yaml configuration file.[/red]"
                 )
+                rprint(error_message)
 
         except (json.JSONDecodeError, IOError) as e:
             print(f"Error processing {file_path}: {e}")
