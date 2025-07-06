@@ -17,7 +17,7 @@ Emojis for the following are chosen based on [gitmoji](https://gitmoji.dev/).
 ### ✨ Features
 
 - Repeat key values are now sorted, which further helps with test determinism.
-- Repeat value error messages have been expanded with more information about the values.
+- Repeat value error messages have been expanded with more information about the values and how to fix them.
 
 ### 🐞 Bug Fixes
 
