@@ -16,7 +16,7 @@ Emojis for the following are chosen based on [gitmoji](https://gitmoji.dev/).
 
 ### 🐞 Bug Fixes
 
-- mypy errors were fixed for an invalid use of backslashes within f-strings.
+- mypy errors were fixed for an invalid use of backslashes within f-strings in check error messages.
 
 ## i18n-check 1.5.0
 
