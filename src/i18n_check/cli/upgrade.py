@@ -6,6 +6,9 @@ Functions to update the i18n-check CLI based on install method.
 import subprocess
 import sys
 
+from packaging import version
+from packaging.version import InvalidVersion
+
 from i18n_check.cli.version import (
     UNKNOWN_VERSION_NOT_FETCHED,
     get_latest_version,
@@ -35,10 +38,29 @@ def upgrade_cli() -> None:
     local_version_clean = local_version.strip()
     latest_version_clean = latest_version.replace("i18n-check", "").strip()
 
-    if local_version_clean == latest_version_clean:
+    # Handle empty or invalid version strings.
+    try:
+        local_ver = (
+            version.parse(local_version_clean)
+            if local_version_clean
+            else version.parse("0.0.0")
+        )
+
+    except InvalidVersion:
+        # If local version is invalid, treat it as 0.0.0 to force upgrade.
+        local_ver = version.parse("0.0.0")
+
+    try:
+        latest_ver = version.parse(latest_version_clean)
+
+    except InvalidVersion:
+        print("Unable to parse the latest version. Please check the GitHub repository.")
+        return
+
+    if local_ver == latest_ver:
         print("You already have the latest version of i18n-check.")
 
-    elif local_version_clean > latest_version_clean:
+    elif local_ver > latest_ver:
         print(
             f"i18n-check v{local_version_clean} is higher than the currently released version i18n-check v{latest_version_clean}. Hopefully this is a development build, and if so, thanks for your work on i18n-check! If not, please report this to the team at https://github.com/activist-org/i18n-check/issues."
         )
