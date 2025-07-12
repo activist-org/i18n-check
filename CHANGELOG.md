@@ -16,6 +16,10 @@ Emojis for the following are chosen based on [gitmoji](https://gitmoji.dev/).
 
 - The upgrade functionality of the CLI is now comprehensively tested.
 
+### ♻️ Code Refactoring
+
+- Check variable assignments were cleaned up the the utility file.
+
 ## i18n-check 1.6.0
 
 ### ✨ Features
