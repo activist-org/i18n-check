@@ -21,6 +21,10 @@ Emojis for the following are chosen based on [gitmoji](https://gitmoji.dev/).
 - Check variable assignments were cleaned up the the utility file.
 - The upgrade message instructs the user to use the built in upgrade functionality.
 
+### ⬆️ Dependencies
+
+- Dependencies were updated due to detected vulnerabilities.
+
 ## i18n-check 1.6.0
 
 ### ✨ Features
