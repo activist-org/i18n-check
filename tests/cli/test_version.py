@@ -56,7 +56,7 @@ class TestVersionFunctions(unittest.TestCase):
         """
         Test case where a newer version is available.
         """
-        expected_message = "i18n-check vX.Y.Y (Upgrade available: i18n-check vX.Y.Z). To update: pip install --upgrade i18n-check"
+        expected_message = "i18n-check vX.Y.Y (Upgrade available: i18n-check vX.Y.Z). To upgrade: i18n-check -u"
         self.assertEqual(get_version_message(), expected_message)
 
     @patch(

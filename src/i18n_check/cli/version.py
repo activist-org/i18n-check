@@ -80,7 +80,7 @@ def get_version_message() -> str:
         return f"i18n-check v{local_version_clean} is higher than the currently released version i18n-check v{latest_version_clean}. Hopefully this is a development build, and if so, thanks for your work on i18n-check! If not, please report this to the team at https://github.com/activist-org/i18n-check/issues."
 
     else:
-        return f"i18n-check v{local_version_clean} (Upgrade available: i18n-check v{latest_version_clean}). To update: pip install --upgrade i18n-check"
+        return f"i18n-check v{local_version_clean} (Upgrade available: i18n-check v{latest_version_clean}). To upgrade: i18n-check -u"
 
 
 if __name__ == "__main__":

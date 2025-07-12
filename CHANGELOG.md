@@ -19,6 +19,7 @@ Emojis for the following are chosen based on [gitmoji](https://gitmoji.dev/).
 ### ♻️ Code Refactoring
 
 - Check variable assignments were cleaned up the the utility file.
+- The upgrade message instructs the user to use the built in upgrade functionality.
 
 ## i18n-check 1.6.0
 
