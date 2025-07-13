@@ -31,7 +31,7 @@ Thank you for your interest in contributing to activist community projects! We l
 
 - Please join the [public Matrix chat](https://matrix.to/#/#activist_community:matrix.org) to connect with the community
   - [Matrix](https://matrix.org/) is a network for secure, decentralized communication
-  - activist would suggest that you use the [Element](https://element.io/) client
+  - We'd suggest that you use the [Element](https://element.io/) client and [Element X](https://element.io/app) for a mobile app
   - The [General](https://matrix.to/#/!uIGQUxlCnEzrPiRsRw:matrix.org?via=matrix.org&via=effektio.org&via=acter.global) and [Development](https://matrix.to/#/!CRgLpGeOBNwxYCtqmK:matrix.org?via=matrix.org&via=acter.global&via=chat.0x7cd.xyz) channels would be great places to start!
   - Feel free to introduce yourself and tell us what your interests are if you're comfortable :)
 - Consider joining our [bi-weekly developer sync](https://etherpad.wikimedia.org/p/activist-dev-sync)!
