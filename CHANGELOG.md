@@ -14,7 +14,7 @@ Emojis for the following are chosen based on [gitmoji](https://gitmoji.dev/).
 
 ### 🐞 Bug Fixes
 
-- Improved CLI output for `i18n-check -a` (all checks) by suppressing redundant subprocess error messages while preserving actual check error details.
+- Improved CLI output for `i18n-check -a` (all checks) by suppressing redundant subprocess error messages while preserving actual check error details ([#45](https://github.com/activist-org/i18n-check/issues/45)).
 
 ### ✅ Tests
 

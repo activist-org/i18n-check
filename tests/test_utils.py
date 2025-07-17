@@ -162,7 +162,9 @@ def test_lower_and_remove_punctuation(input_list, expected_output) -> None:
 class TestRunCheck(unittest.TestCase):
     @patch("i18n_check.utils.subprocess.run")
     def test_run_check_success(self, mock_subprocess_run):
-        """Test run_check returns True on successful subprocess run."""
+        """
+        Test run_check returns True on successful subprocess run.
+        """
         mock_subprocess_run.return_value = None
         from i18n_check.utils import run_check
 
@@ -176,7 +178,9 @@ class TestRunCheck(unittest.TestCase):
     @patch("i18n_check.utils.subprocess.run")
     @patch("builtins.print")
     def test_run_check_failure_with_error_output(self, mock_print, mock_subprocess_run):
-        """Test run_check shows error message by default when subprocess fails."""
+        """
+        Test run_check shows error message by default when subprocess fails.
+        """
         from subprocess import CalledProcessError
 
         from i18n_check.utils import run_check
@@ -193,7 +197,9 @@ class TestRunCheck(unittest.TestCase):
     @patch("i18n_check.utils.subprocess.run")
     @patch("builtins.print")
     def test_run_check_failure_suppress_errors(self, mock_print, mock_subprocess_run):
-        """Test run_check suppresses error message when suppress_errors=True."""
+        """
+        Test run_check suppresses error message when suppress_errors=True.
+        """
         from subprocess import CalledProcessError
 
         from i18n_check.utils import run_check
