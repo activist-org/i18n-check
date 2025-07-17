@@ -12,14 +12,20 @@ Emojis for the following are chosen based on [gitmoji](https://gitmoji.dev/).
 
 ## [Upcoming] i18n-check 1.x
 
+### 🐞 Bug Fixes
+
+- Improved CLI output for `i18n-check -a` (all checks) by suppressing redundant subprocess error messages while preserving actual check error details.
+
 ### ✅ Tests
 
 - The upgrade functionality of the CLI is now comprehensively tested.
+- Added comprehensive unit tests for the `run_check()` function's error suppression functionality.
 
 ### ♻️ Code Refactoring
 
 - Check variable assignments were cleaned up the the utility file.
 - The upgrade message instructs the user to use the built in upgrade functionality.
+- Enhanced `run_check()` utility function with optional `suppress_errors` parameter for cleaner CLI output.
 
 ### ⬆️ Dependencies
 
