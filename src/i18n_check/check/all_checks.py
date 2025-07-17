@@ -91,7 +91,7 @@ def run_all_checks() -> None:
     check_results: list[bool] = []
     with ProcessPoolExecutor() as executor:
         # Create a future for each check.
-        futures = {executor.submit(run_check, c): c for c in checks}
+        futures = {executor.submit(run_check, c, True): c for c in checks}
 
         for future in as_completed(futures):
             check_name = futures[future]
