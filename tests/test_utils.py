@@ -7,6 +7,7 @@ import json
 import os
 import tempfile
 import unittest
+from unittest.mock import patch
 
 import pytest
 
@@ -156,6 +157,54 @@ def test_filter_valid_key_parts(input_list, expected_output) -> None:
 )
 def test_lower_and_remove_punctuation(input_list, expected_output) -> None:
     assert lower_and_remove_punctuation(input_list) == expected_output
+
+
+class TestRunCheck(unittest.TestCase):
+    @patch("i18n_check.utils.subprocess.run")
+    def test_run_check_success(self, mock_subprocess_run):
+        """Test run_check returns True on successful subprocess run."""
+        mock_subprocess_run.return_value = None
+        from i18n_check.utils import run_check
+
+        result = run_check("test_script")
+        self.assertTrue(result)
+        mock_subprocess_run.assert_called_once_with(
+            ["python", "-m", "i18n_check.check.test_script"],
+            check=True,
+        )
+
+    @patch("i18n_check.utils.subprocess.run")
+    @patch("builtins.print")
+    def test_run_check_failure_with_error_output(self, mock_print, mock_subprocess_run):
+        """Test run_check shows error message by default when subprocess fails."""
+        from subprocess import CalledProcessError
+
+        from i18n_check.utils import run_check
+
+        mock_subprocess_run.side_effect = CalledProcessError(
+            1, ["python", "-m", "test"]
+        )
+
+        result = run_check("test_script")
+        self.assertFalse(result)
+        mock_print.assert_called_once()
+        self.assertIn("Error running test_script:", mock_print.call_args[0][0])
+
+    @patch("i18n_check.utils.subprocess.run")
+    @patch("builtins.print")
+    def test_run_check_failure_suppress_errors(self, mock_print, mock_subprocess_run):
+        """Test run_check suppresses error message when suppress_errors=True."""
+        from subprocess import CalledProcessError
+
+        from i18n_check.utils import run_check
+
+        mock_subprocess_run.side_effect = CalledProcessError(
+            1, ["python", "-m", "test"]
+        )
+
+        result = run_check("test_script", suppress_errors=True)
+        self.assertFalse(result)
+        mock_print.assert_not_called()
 
 
 if __name__ == "__main__":
