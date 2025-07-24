@@ -9,6 +9,7 @@ import os
 import re
 import string
 import subprocess
+import sys
 from pathlib import Path
 from typing import Any, Dict, List
 
@@ -398,7 +399,7 @@ def read_files_to_dict(files: list[str]) -> Dict[str, str]:
 # MARK: Run Check
 
 
-def run_check(script_name: str, suppress_errors: bool = False) -> bool:
+def run_check(script_name: str, include_suppress_errors: bool = False) -> bool:
     """
     Run a check script and report the results via the terminal.
 
@@ -407,7 +408,7 @@ def run_check(script_name: str, suppress_errors: bool = False) -> bool:
     script_name : str
         The name for the script to run.
 
-    suppress_errors : bool, optional
+    include_suppress_errors : bool, optional
         Whether to suppress subprocess error output, by default False.
 
     Returns
@@ -428,6 +429,8 @@ def run_check(script_name: str, suppress_errors: bool = False) -> bool:
         return True
 
     except subprocess.CalledProcessError as e:
-        if not suppress_errors:
+        if not include_suppress_errors:
             print(f"Error running {script_name}: {e}\n")
+            sys.exit(1)
+
         return False

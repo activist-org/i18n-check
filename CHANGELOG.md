@@ -12,6 +12,12 @@ Emojis for the following are chosen based on [gitmoji](https://gitmoji.dev/).
 
 ## [Upcoming] i18n-check 1.x
 
+## i18n-check 1.7.1
+
+### 🐞 Bug Fixes
+
+- Assure that the CLI exits with exit code 1 on check errors when running all checks.
+
 ## i18n-check 1.7.0
 
 ### 🐞 Bug Fixes
