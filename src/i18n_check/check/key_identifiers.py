@@ -21,14 +21,18 @@ from rich import print as rprint
 from i18n_check.utils import (
     collect_files_to_check,
     config_file_types_to_check,
+    config_i18n_directory,
     config_i18n_src_file,
     config_key_identifiers_directories_to_skip,
     config_key_identifiers_files_to_skip,
     config_src_directory,
     filter_valid_key_parts,
+    get_all_json_files,
     is_valid_key,
+    path_separator,
     path_to_valid_key,
     read_json_file,
+    replace_text_in_file,
 )
 
 # MARK: Paths / Files
@@ -171,6 +175,7 @@ def audit_i18n_keys(
 def report_and_correct_keys(
     invalid_key_identifiers_by_format: List[str],
     invalid_key_identifiers_by_name: Dict[str, str],
+    fix: bool = False,
 ) -> None:
     """
     Report and correct invalid i18n keys based on their formatting and naming conventions.
@@ -182,6 +187,9 @@ def report_and_correct_keys(
 
     invalid_key_identifiers_by_name : Dict[str, str]
         A dictionary mapping i18n keys that are not named correctly to their suggested corrections.
+
+    fix : bool, optional
+        If True, automatically corrects the invalid key names in the source files. Default is False.
 
     Raises
     ------
@@ -225,7 +233,11 @@ Please rename the following {name_key_or_keys} \\[current_key -> suggested_corre
         error_string += "[/red]"
         rprint(error_string)
 
-        sys.exit(1)
+        if not fix:
+            rprint(
+                "\n[yellow]💡 Tip: You can automatically fix invalid key names by running this check with the --fix flag.[/yellow]\n"
+            )
+            sys.exit(1)
 
     else:
         if invalid_key_identifiers_by_format:
@@ -246,19 +258,40 @@ Please rename the following {name_key_or_keys} \\[current_key -> suggested_corre
 
         error_string += "[/red]"
         rprint(error_string)
+        if invalid_key_identifiers_by_name and not fix:
+            rprint(
+                "\n[yellow]💡 Tip: You can automatically fix invalid key names by running this check with the --fix flag.[/yellow]\n"
+            )
+            sys.exit(1)
+
+    files_to_check = collect_files_to_check(
+        directory=config_src_directory,
+        file_types=config_file_types_to_check,
+        directories_to_skip=config_key_identifiers_directories_to_skip,
+        files_to_skip=config_key_identifiers_files_to_skip,
+    )
+    json_files = get_all_json_files(config_i18n_directory, path_separator)
+    all_files_to_check = json_files + files_to_check
+    if fix and invalid_key_identifiers_by_name:
+        # If incorrect key, replace it with the suggested key and give feedback with the replacement.
+        for current, correct in invalid_key_identifiers_by_name.items():
+            for f in all_files_to_check:
+                replace_text_in_file(f, current, correct)
 
         sys.exit(1)
 
 
+key_file_dict = map_keys_to_files(
+    i18n_src_dict=i18n_src_dict,
+    src_directory=config_src_directory,
+)
+invalid_key_identifiers_by_format, invalid_key_identifiers_by_name = audit_i18n_keys(
+    key_file_dict=key_file_dict
+)
+
 if __name__ == "__main__":
-    key_file_dict = map_keys_to_files(
-        i18n_src_dict=i18n_src_dict,
-        src_directory=config_src_directory,
-    )
-    invalid_key_identifiers_by_format, invalid_key_identifiers_by_name = (
-        audit_i18n_keys(key_file_dict=key_file_dict)
-    )
     report_and_correct_keys(
         invalid_key_identifiers_by_format=invalid_key_identifiers_by_format,
         invalid_key_identifiers_by_name=invalid_key_identifiers_by_name,
+        fix=False,
     )

@@ -434,3 +434,31 @@ def run_check(script_name: str, include_suppress_errors: bool = False) -> bool:
             sys.exit(1)
 
         return False
+
+
+# MARK: Replace Keys
+
+
+def replace_text_in_file(path: str | Path, old: str, new: str) -> None:
+    """
+    Replace all occurrences of a substring with a new string in a file.
+
+    Parameters
+    ----------
+    path : str or Path
+        The path to the file in which to perform the replacement.
+
+    old : str
+        The substring to be replaced.
+
+    new : str
+        The string to replace the old substring with.
+    """
+    with open(path, "r", encoding="utf-8") as file:
+        content = file.read()
+
+    if old in content:
+        content = content.replace(old, new)
+        with open(path, "w", encoding="utf-8") as file:
+            file.write(content)
+        print(f"\n✅ Replaced '{old}' with '{new}' in: {path}\n")
