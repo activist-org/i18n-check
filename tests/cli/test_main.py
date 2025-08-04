@@ -70,6 +70,17 @@ class TestMainCli(unittest.TestCase):
             main()
         mock_run_check.assert_called_once_with("key_identifiers")
 
+    @patch("i18n_check.cli.main.report_and_correct_keys")
+    def test_main_key_identifiers_with_fix(self, mock_report_and_correct_keys):
+        """
+        Test that `report_and_correct_keys` is called with fix=True for --key-identifiers and --fix.
+        """
+        with patch("sys.argv", ["i18n-check", "--key-identifiers", "--fix"]):
+            main()
+        mock_report_and_correct_keys.assert_called_once()
+        args, kwargs = mock_report_and_correct_keys.call_args
+        assert kwargs.get("fix") is True
+
     @patch("i18n_check.cli.main.run_check")
     def test_main_invalid_keys(self, mock_run_check):
         """

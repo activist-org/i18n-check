@@ -20,6 +20,7 @@ from i18n_check.utils import (
     path_to_valid_key,
     read_files_to_dict,
     read_json_file,
+    replace_text_in_file,
 )
 
 
@@ -113,6 +114,55 @@ class TestUtils(unittest.TestCase):
         assert not is_valid_key("Invalid-Key")
         assert not is_valid_key("invalid key")
         assert not is_valid_key("invalid/key")
+
+
+def test_successful_replacement(tmp_path):
+    file_path = tmp_path / "sample.txt"
+    file_path.write_text("Hello World!", encoding="utf-8")
+
+    replace_text_in_file(file_path, "World", "Universe")
+
+    assert file_path.read_text(encoding="utf-8") == "Hello Universe!"
+
+
+def test_no_replacement_when_old_not_found(tmp_path):
+    file_path = tmp_path / "sample.txt"
+    file_path.write_text("Hello World!", encoding="utf-8")
+
+    replace_text_in_file(file_path, "Galaxy", "Universe")
+
+    # Content should remain unchanged.
+    assert file_path.read_text(encoding="utf-8") == "Hello World!"
+
+
+def test_replacement_with_multiple_occurrences(tmp_path):
+    file_path = tmp_path / "sample.txt"
+    file_path.write_text("abc abc abc", encoding="utf-8")
+
+    replace_text_in_file(file_path, "abc", "xyz")
+
+    assert file_path.read_text(encoding="utf-8") == "xyz xyz xyz"
+
+
+def test_print_output_on_successful_replacement(tmp_path, capsys):
+    file_path = tmp_path / "sample.txt"
+    file_path.write_text("Replace this text", encoding="utf-8")
+
+    replace_text_in_file(file_path, "Replace this text", "New text")
+
+    captured = capsys.readouterr()
+    assert "✅ Replaced 'Replace this text' with 'New text'" in captured.out
+    assert str(file_path) in captured.out
+
+
+def test_print_output_on_no_replacement(tmp_path, capsys):
+    file_path = tmp_path / "sample.txt"
+    file_path.write_text("nothing to change here", encoding="utf-8")
+
+    replace_text_in_file(file_path, "old", "new")
+
+    captured = capsys.readouterr()
+    assert captured.out == ""
 
 
 @pytest.mark.parametrize(

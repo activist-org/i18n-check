@@ -134,5 +134,28 @@ def test_report_and_correct_keys_pass(capsys) -> None:
     assert pass_result.replace("\n", "").strip() == success_message
 
 
+def test_report_and_correct_keys_fail_with_tip(capsys):
+    with pytest.raises(SystemExit):
+        report_and_correct_keys(invalid_format_fail, invalid_name_fail)
+
+    output = capsys.readouterr().out
+    assert "not formatted correctly" in output
+    assert "not named correctly" in output
+    assert "i18n.wrong_identifier_path.content_reference" in output
+    assert "i18n.test_file.content_reference" in output
+    assert "--fix flag" in output
+
+
+def test_report_and_correct_keys_fail_fix_mode(capsys):
+    with pytest.raises(SystemExit):
+        report_and_correct_keys(invalid_format_fail, invalid_name_fail, fix=True)
+
+    output = capsys.readouterr().out
+    assert "--fix flag" not in output
+    assert "✅ Replaced 'i18n.wrong_identifier_path.content_reference'" in output
+    assert "✅ Replaced 'i18n.wrong_identifier_path.content_reference'" in output
+    assert "'i18n.test_file.content_reference'" in output
+
+
 if __name__ == "__main__":
     pytest.main()
