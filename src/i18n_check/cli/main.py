@@ -5,6 +5,11 @@ Setup and commands for the i18n-check command line interface.
 
 import argparse
 
+from i18n_check.check.key_identifiers import (
+    invalid_key_identifiers_by_format,
+    invalid_key_identifiers_by_name,
+    report_and_correct_keys,
+)
 from i18n_check.cli.generate_config_file import generate_config_file
 from i18n_check.cli.generate_test_frontends import generate_test_frontends
 from i18n_check.cli.upgrade import upgrade_cli
@@ -101,6 +106,13 @@ def main() -> None:
     )
 
     parser.add_argument(
+        "--fix",
+        "-f",
+        action="store_true",
+        help="(with --key-identifiers) Automatically fix key formatting issues.",
+    )
+
+    parser.add_argument(
         "-ik",
         "--invalid-keys",
         action="store_true",
@@ -165,7 +177,14 @@ def main() -> None:
         return
 
     if args.key_identifiers:
-        run_check("key_identifiers")
+        if args.fix:
+            report_and_correct_keys(
+                invalid_key_identifiers_by_format=invalid_key_identifiers_by_format,
+                invalid_key_identifiers_by_name=invalid_key_identifiers_by_name,
+                fix=True,
+            )
+        else:
+            run_check("key_identifiers")
         return
 
     if args.invalid_keys:
