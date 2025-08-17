@@ -1,4 +1,4 @@
-.. image:: https://raw.githubusercontent.com/activist-org/i18n-check/main/.github/resources/i18nCheckGitHubBanner.png
+.. image:: https://raw.githubusercontent.com/activist-org/i18n-check/main/.github/resources/images/i18nCheckGitHubBanner.png
     :width: 100%
     :align: center
     :target: https://github.com/activist-org/i18n-check
