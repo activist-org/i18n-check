@@ -12,6 +12,20 @@ Emojis for the following are chosen based on [gitmoji](https://gitmoji.dev/).
 
 ## [Upcoming] i18n-check 1.x
 
+## i18n-check 1.8.0
+
+### ✨ Features
+
+- The user can now fix invalid key names via a `--fix` (`-f`) option on the `invalid-keys` check ([#37](https://github.com/activist-org/i18n-check/issues/37)).
+
+### ♻️ Code Refactoring
+
+- The `key-identifiers` check was renamed `invalid-keys` and the `invalid-keys` check was renamed `non-existent-keys` ([#53](https://github.com/activist-org/i18n-check/issues/53)).
+
+### 📝 Documentation
+
+- The docs were updated to reflect the name changes of the checks ([#53](https://github.com/activist-org/i18n-check/issues/53)).
+
 ## i18n-check 1.7.1
 
 ### 🐞 Bug Fixes

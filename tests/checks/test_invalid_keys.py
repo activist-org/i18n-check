@@ -3,16 +3,16 @@
 Tests for the invalid_keys.py.
 """
 
-import re
 from pathlib import Path
 
 import pytest
 
 from i18n_check.check.invalid_keys import (
-    get_used_i18n_keys,
-    validate_i18n_keys,
+    audit_i18n_keys,
+    map_keys_to_files,
+    report_and_correct_keys,
 )
-from i18n_check.utils import read_json_file
+from i18n_check.utils import read_json_file, replace_text_in_file
 
 fail_dir = (
     Path(__file__).parent.parent.parent
@@ -24,9 +24,13 @@ fail_dir = (
 fail_checks_json = read_json_file(
     file_path=fail_dir / "test_i18n" / "test_i18n_src.json"
 )
-i18n_used_fail = get_used_i18n_keys(
+i18n_map_fail = map_keys_to_files(
     i18n_src_dict=fail_checks_json, src_directory=fail_dir
 )
+fail_checks_json_path = fail_dir / "test_i18n" / "test_i18n_src.json"
+fail_checks_test_file_path = fail_dir / "test_file.ts"
+
+invalid_format_fail, invalid_name_fail = audit_i18n_keys(key_file_dict=i18n_map_fail)
 
 pass_dir = (
     Path(__file__).parent.parent.parent
@@ -38,82 +42,132 @@ pass_dir = (
 pass_checks_json = read_json_file(
     file_path=pass_dir / "test_i18n" / "test_i18n_src.json"
 )
-i18n_used_pass = get_used_i18n_keys(
+i18n_map_pass = map_keys_to_files(
     i18n_src_dict=pass_checks_json, src_directory=pass_dir
 )
 
-all_i18n_used = get_used_i18n_keys()
+invalid_format_pass, invalid_name_pass = audit_i18n_keys(key_file_dict=i18n_map_pass)
 
 
 @pytest.mark.parametrize(
-    "used_keys, expected_output",
+    "i18n_map, expected_output",
     [
-        (len(i18n_used_pass), 5),
-        (len(i18n_used_fail), 11),
-        (len(all_i18n_used), 11),
+        (len(i18n_map_fail), 11),
+        (len(map_keys_to_files()), 11),
         (
-            i18n_used_fail,
+            set(i18n_map_fail["i18n._global.hello_global_repeat_value"]),
+            {"test_file", "sub_dir/sub_dir_first_file", "sub_dir/sub_dir_second_file"},
+        ),
+        (
+            {k: sorted(v) for k, v in i18n_map_pass.items()},
             {
-                "i18n._global.hello_global",
-                "i18n._global.hello_global_repeat_value",
-                "i18n._global.repeat_key",
-                "i18n.sub_dir._global.hello_sub_dir",
-                "i18n.sub_dir_first_file.hello_sub_dir_first_file",
-                "i18n.sub_dir_second_file.hello_sub_dir_second_file",
-                "i18n.test_file.incorrectly-formatted-key",
-                "i18n.test_file.nested_example",
-                "i18n.test_file.not_in_i18n_source_file",
-                "i18n.test_file.repeat_key_lower",
-                "i18n.wrong_identifier_path.content_reference",
+                "i18n._global.hello_global": [
+                    "sub_dir/sub_dir_first_file",
+                    "sub_dir/sub_dir_second_file",
+                    "test_file",
+                ],
+                "i18n.sub_dir._global.hello_sub_dir": [
+                    "sub_dir/sub_dir_first_file",
+                    "sub_dir/sub_dir_second_file",
+                ],
+                "i18n.sub_dir_first_file.hello_sub_dir_first_file": [
+                    "sub_dir/sub_dir_first_file"
+                ],
+                "i18n.sub_dir_second_file.hello_sub_dir_second_file": [
+                    "sub_dir/sub_dir_second_file"
+                ],
+                "i18n.test_file.hello_test_file": ["test_file"],
             },
+        ),
+        (
+            map_keys_to_files()["i18n.wrong_identifier_path.content_reference"],
+            ["test_file"],
         ),
     ],
 )
-def test_get_used_i18n_keys(used_keys, expected_output) -> None:
+def test_map_keys_to_files(i18n_map, expected_output) -> None:
     """
-    Test get_used_i18n_keys with various scenarios.
+    Test get_non_source_keys with various scenarios.
     """
-    assert used_keys == expected_output
+    assert i18n_map == expected_output
 
 
-def test_all_keys_include_fail_and_pass_sets():
+def test_audit_i18n_keys() -> None:
     """
-    Test that all the i18n keys used in testing contain the fail and pass keys.
+    Test audit_i18n_keys with various scenarios.
     """
-    assert all_i18n_used >= i18n_used_fail
+    assert invalid_format_pass == []
+    assert len(invalid_name_fail) == 1
+    assert invalid_name_pass == {}
+    assert invalid_format_fail == ["i18n.test_file.incorrectly-formatted-key"]
     assert (
-        not all_i18n_used >= i18n_used_pass
-    )  # i18n.test_file.hello_test_file is correct in pass
+        invalid_name_fail["i18n.wrong_identifier_path.content_reference"]
+        == "i18n.test_file.content_reference"
+    )
 
 
-def test_validate_fail_i18n_keys(capsys) -> None:
+def test_report_and_correct_keys_fail(capsys) -> None:
     """
-    Test validate_i18n_keys for the fail case.
+    Test report_and_correct_keys for the fail case.
     """
     with pytest.raises(SystemExit):
-        validate_i18n_keys(
-            all_used_i18n_keys=i18n_used_fail, i18n_src_dict=fail_checks_json
-        )
+        report_and_correct_keys(invalid_format_fail, invalid_name_fail)
 
-    msg = capsys.readouterr().out.replace("\n", "")
-    assert "Please check the validity of the following key:" in msg
-    assert " There is 1 i18n key that is not in the i18n source file." in msg
-    assert "i18n.test_file.not_in_i18n_source_file" in msg
+    output_msg = capsys.readouterr().out
+
+    assert "There is 1 i18n key that is not formatted correctly" in output_msg
+    assert "There is 1 i18n key that is not named correctly." in output_msg
+    assert (
+        "Please rename the following key [current_key -> suggested_correction]:"
+        in output_msg
+    )
+    assert "i18n.wrong_identifier_path.content_reference" in output_msg
+    assert "i18n.test_file.content_reference" in output_msg
 
 
-def test_validate_pass_i18n_keys(capsys) -> None:
+def test_report_and_correct_keys_pass(capsys) -> None:
     """
-    Test validate_i18n_keys for the pass case.
+    Test report_and_correct_keys for the pass case.
     """
     # For pass case, it should not raise an error.
-    validate_i18n_keys(
-        all_used_i18n_keys=i18n_used_pass, i18n_src_dict=pass_checks_json
-    )
+    report_and_correct_keys(invalid_format_pass, invalid_name_pass)
     pass_result = capsys.readouterr().out
-    cleaned_pass_result = re.sub(r"\x1b\[.*?m", "", pass_result).strip()
+    success_message = "✅ invalid_keys success: All i18n keys are formatted and named correctly in the i18n-src file."
+    assert pass_result.replace("\n", "").strip() == success_message
 
-    success_message = "✅ invalid_keys success: All i18n keys that are used in the project are in the i18n source file."
-    assert success_message in cleaned_pass_result.replace("\n", "")
+
+def test_report_and_correct_keys_fail_with_tip(capsys):
+    with pytest.raises(SystemExit):
+        report_and_correct_keys(invalid_format_fail, invalid_name_fail)
+
+    output = capsys.readouterr().out
+    assert "not formatted correctly" in output
+    assert "not named correctly" in output
+    assert "i18n.wrong_identifier_path.content_reference" in output
+    assert "i18n.test_file.content_reference" in output
+    assert "--fix (-f) flag" in output
+
+
+def test_report_and_correct_keys_fail_fix_mode(capsys):
+    with pytest.raises(SystemExit):
+        report_and_correct_keys(invalid_format_fail, invalid_name_fail, fix=True)
+
+    output = capsys.readouterr().out
+    assert "--fix (-f) flag" not in output
+    assert "✅ Replaced 'i18n.wrong_identifier_path.content_reference'" in output
+    assert "'i18n.test_file.content_reference'" in output
+
+    # Return to old state before string replacement:
+    replace_text_in_file(
+        path=fail_checks_json_path,
+        old="i18n.test_file.content_reference",
+        new="i18n.wrong_identifier_path.content_reference",
+    )
+    replace_text_in_file(
+        path=fail_checks_test_file_path,
+        old="i18n.test_file.content_reference",
+        new="i18n.wrong_identifier_path.content_reference",
+    )
 
 
 if __name__ == "__main__":

@@ -106,9 +106,9 @@ Checks
 
 There the following checks can ran across your codebase:
 
-- ``key-identifiers`` (``ki``): Does the source file have keys that don't match the above format or name conventions?
+- ``invalid-keys`` (``ik``): Does the source file have keys that don't match the above format or name conventions?
     - Rename them so i18n key usage is consistent and their scope is communicated in their name.
-- ``invalid-keys`` (``ik``): Does the codebase include i18n keys that are not within the source file?
+- ``non-existent-keys`` (``nek``): Does the codebase include i18n keys that are not within the source file?
     - Check their validity and resolve if they should be added to the i18n files or replaced.
 - ``unused-keys`` (``uk``): Does the source file have keys that are not used in the codebase?
     - Remove them so the localization team isn't working on strings that aren't used.
@@ -142,11 +142,11 @@ The following details the ``.18n-check.yaml`` configuration file, with a further
         active: true # enables all checks by default
         directories-to-skip: [frontend/node_modules]
         files-to-skip: []
-      key-identifiers:
+      invalid-keys:
         active: true # can be used to override individual checks
         directories-to-skip: []
         files-to-skip: []
-      invalid-keys:
+      non-existent-keys:
         active: true
         directories-to-skip: []
         files-to-skip: []

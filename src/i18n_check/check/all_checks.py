@@ -16,8 +16,8 @@ from rich import print as rprint
 
 from i18n_check.utils import (
     config_invalid_keys_active,
-    config_key_identifiers_active,
     config_nested_keys_active,
+    config_non_existent_keys_active,
     config_non_source_keys_active,
     config_repeat_keys_active,
     config_repeat_values_active,
@@ -46,7 +46,7 @@ def run_all_checks() -> None:
     -----
     The checks performed include:
     - Invalid key detection
-    - Key identifier validation
+    - Non-existent key validation
     - Unused key detection
     - Non-source key detection
     - Repeated key detection
@@ -57,8 +57,8 @@ def run_all_checks() -> None:
     if config_invalid_keys_active:
         checks.append("invalid_keys")
 
-    if config_key_identifiers_active:
-        checks.append("key_identifiers")
+    if config_non_existent_keys_active:
+        checks.append("non_existent_keys")
 
     if config_unused_keys_active:
         checks.append("unused_keys")
@@ -77,7 +77,7 @@ def run_all_checks() -> None:
 
     if not (
         config_invalid_keys_active
-        and config_key_identifiers_active
+        and config_non_existent_keys_active
         and config_unused_keys_active
         and config_non_source_keys_active
         and config_repeat_keys_active
