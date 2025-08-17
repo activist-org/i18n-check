@@ -14,6 +14,7 @@ from pathlib import Path
 from typing import Any, Dict, List
 
 import yaml
+from rich import print as rprint
 
 from i18n_check.cli.generate_config_file import (
     YAML_CONFIG_FILE_PATH,
@@ -466,4 +467,4 @@ def replace_text_in_file(path: str | Path, old: str, new: str) -> None:
         with open(path, "w", encoding="utf-8") as file:
             file.write(content)
 
-        print(f"\n✨ Replaced '{old}' with '{new}' in: {path}")
+        rprint(f"[yellow]\n✨ Replaced '{old}' with '{new}' in {path}[/yellow]")
