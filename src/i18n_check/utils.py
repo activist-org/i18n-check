@@ -83,25 +83,29 @@ if "invalid-keys" in config["checks"]:
         ]
 
     if "files-to-skip" in config["checks"]["invalid-keys"]:
-        config_invalid_keys_files_to_skip += config["checks"]["global"]["files-to-skip"]
+        config_invalid_keys_files_to_skip += config["checks"]["invalid-keys"][
+            "files-to-skip"
+        ]
 
-# MARK: Key Identifiers
+# MARK: Non-Existent Keys
 
-config_key_identifiers_active = config_global_active
-config_key_identifiers_directories_to_skip = config_global_directories_to_skip
-config_key_identifiers_files_to_skip = config_global_files_to_skip
+config_non_existent_keys_active = config_global_active
+config_non_existent_keys_directories_to_skip = config_global_directories_to_skip
+config_non_existent_keys_files_to_skip = config_global_files_to_skip
 
-if "key-identifiers" in config["checks"]:
-    if "active" in config["checks"]["key-identifiers"]:
-        config_key_identifiers_active = config["checks"]["key-identifiers"]["active"]
+if "non-existent-keys" in config["checks"]:
+    if "active" in config["checks"]["non-existent-keys"]:
+        config_non_existent_keys_active = config["checks"]["non-existent-keys"][
+            "active"
+        ]
 
-    if "directories-to-skip" in config["checks"]["key-identifiers"]:
-        config_key_identifiers_directories_to_skip += config["checks"][
-            "key-identifiers"
+    if "directories-to-skip" in config["checks"]["non-existent-keys"]:
+        config_non_existent_keys_directories_to_skip += config["checks"][
+            "non-existent-keys"
         ]["directories-to-skip"]
 
-    if "files-to-skip" in config["checks"]["key-identifiers"]:
-        config_key_identifiers_files_to_skip += config["checks"]["key-identifiers"][
+    if "files-to-skip" in config["checks"]["non-existent-keys"]:
+        config_non_existent_keys_files_to_skip += config["checks"]["global"][
             "files-to-skip"
         ]
 
@@ -408,8 +412,8 @@ def run_check(script_name: str, include_suppress_errors: bool = False) -> bool:
     script_name : str
         The name for the script to run.
 
-    include_suppress_errors : bool, optional
-        Whether to suppress subprocess error output, by default False.
+    include_suppress_errors : bool, optional, default=False
+        Whether to suppress subprocess error output.
 
     Returns
     -------
@@ -434,3 +438,32 @@ def run_check(script_name: str, include_suppress_errors: bool = False) -> bool:
             sys.exit(1)
 
         return False
+
+
+# MARK: Replace Keys
+
+
+def replace_text_in_file(path: str | Path, old: str, new: str) -> None:
+    """
+    Replace all occurrences of a substring with a new string in a file.
+
+    Parameters
+    ----------
+    path : str or Path
+        The path to the file in which to perform the replacement.
+
+    old : str
+        The substring to be replaced.
+
+    new : str
+        The string to replace the old substring with.
+    """
+    with open(path, "r", encoding="utf-8") as file:
+        content = file.read()
+
+    if old in content:
+        content = content.replace(old, new)
+        with open(path, "w", encoding="utf-8") as file:
+            file.write(content)
+
+        print(f"\n✅ Replaced '{old}' with '{new}' in: {path}\n")

@@ -5,6 +5,11 @@ Setup and commands for the i18n-check command line interface.
 
 import argparse
 
+from i18n_check.check.invalid_keys import (
+    invalid_keys_by_format,
+    invalid_keys_by_name,
+    report_and_correct_keys,
+)
 from i18n_check.cli.generate_config_file import generate_config_file
 from i18n_check.cli.generate_test_frontends import generate_test_frontends
 from i18n_check.cli.upgrade import upgrade_cli
@@ -32,8 +37,8 @@ def main() -> None:
     - --generate-config-file (-gcf): Generate a configuration file for i18n-check
     - --generate-test-frontends (-gtf): Generate frontends to test i18n-check functionalities
     - --all-checks (-a): Run all available checks
-    - --key-identifiers (-ki): Check i18n key usage and formatting
     - --invalid-keys (-ik): Check for invalid i18n keys in codebase
+    - --non-existent-keys (-nek): Check i18n key usage and formatting
     - --unused-keys (-uk): Check for unused i18n keys
     - --non-source-keys (-nsk): Check for keys in translations not in source
     - --repeat-keys (-rk): Check for duplicate keys in JSON files
@@ -43,7 +48,7 @@ def main() -> None:
     Examples
     --------
     >>> i18n-check --generate-config-file  # -gcf
-    >>> i18n-check --key-identifiers  # -ki
+    >>> i18n-check --invalid-keys  # -ik
     >>> i18n-check --all-checks  # -a
     """
     # MARK: CLI Base
@@ -94,15 +99,22 @@ def main() -> None:
     )
 
     parser.add_argument(
-        "-ki",
-        "--key-identifiers",
+        "-ik",
+        "--invalid-keys",
         action="store_true",
         help="Check for usage and formatting of i18n keys in the i18n-src file.",
     )
 
     parser.add_argument(
-        "-ik",
-        "--invalid-keys",
+        "-f",
+        "--fix",
+        action="store_true",
+        help="(with --invalid-keys) Automatically fix key naming issues.",
+    )
+
+    parser.add_argument(
+        "-nek",
+        "--non-existent-keys",
         action="store_true",
         help="Check if the codebase includes i18n keys that are not within the source file.",
     )
@@ -164,12 +176,21 @@ def main() -> None:
         run_check("all_checks")
         return
 
-    if args.key_identifiers:
-        run_check("key_identifiers")
+    if args.invalid_keys:
+        if args.fix:
+            report_and_correct_keys(
+                invalid_keys_by_format=invalid_keys_by_format,
+                invalid_keys_by_name=invalid_keys_by_name,
+                fix=True,
+            )
+
+        else:
+            run_check("invalid_keys")
+
         return
 
-    if args.invalid_keys:
-        run_check("invalid_keys")
+    if args.non_existent_keys:
+        run_check("non_existent_keys")
         return
 
     if args.unused_keys:

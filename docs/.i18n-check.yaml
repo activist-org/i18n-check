@@ -1,0 +1,15 @@
+# Configuration file for i18n-check validation.
+# See https://github.com/activist-org/i18n-check for details.
+
+src-dir: ../src/i18n_check/test_frontends/all_checks_fail
+i18n-dir: ../src/i18n_check/test_frontends/all_checks_fail/test_i18n
+i18n-src: ../src/i18n_check/test_frontends/all_checks_fail/test_i18n/test_i18n_src.json
+
+file-types-to-check: []
+
+checks:
+  # Global configurations are applied to all checks.
+  global:
+    active: true
+    directories-to-skip: []
+    files-to-skip: []

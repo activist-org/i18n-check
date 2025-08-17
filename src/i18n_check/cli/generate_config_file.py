@@ -102,8 +102,8 @@ def receive_data() -> None:
             "directories-to-skip": [],
             "files-to-skip": [],
         },
-        "key_identifiers": {
-            "title": "key Identifiers",
+        "non_existent_keys": {
+            "title": "non existent keys",
             "active": False,
             "directories-to-skip": [],
             "files-to-skip": [],

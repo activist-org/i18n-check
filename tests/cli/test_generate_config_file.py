@@ -38,7 +38,7 @@ class TestGenerateConfigFile(unittest.TestCase):
                 "directories-to-skip": ["node_modules", "dist"],
                 "files-to-skip": ["test.js", "setup.py"],
             },
-            "invalid_keys": {"active": False},
+            "non_existent_keys": {"active": False},
         }
         file_types = [".js", ".ts"]
 
@@ -59,7 +59,7 @@ class TestGenerateConfigFile(unittest.TestCase):
         self.assertIn("i18n-src: my_app/i18n/en.json", written_content)
         self.assertIn("file-types-to-check: [.js, .ts]", written_content)
         self.assertIn("global:\n    active: True", written_content)
-        self.assertIn("invalid_keys:\n    active: False", written_content)
+        self.assertIn("non_existent_keys:\n    active: False", written_content)
         self.assertIn("directories-to-skip: [node_modules, dist]", written_content)
         self.assertIn("files-to-skip: [test.js, setup.py]", written_content)
 
@@ -71,17 +71,17 @@ class TestGenerateConfigFile(unittest.TestCase):
         """
         self.maxDiff = None
         mock_input.side_effect = [
-            "",  # Default src_dir
-            "",  # Default i18n_dir
-            "",  # Default i18n_src_file
-            "",  # Default file_types
-            "n",  # All checks
+            "",  # default src_dir
+            "",  # default i18n_dir
+            "",  # default i18n_src_file
+            "",  # default file_types
+            "n",  # all checks
             "",
             "",
             "y",  # invalid_keys
             "",
             "",
-            "n",  # key_identifiers
+            "n",  # non_existent_keys
             "",
             "",
             "y",  # unused_keys
@@ -91,7 +91,7 @@ class TestGenerateConfigFile(unittest.TestCase):
             "y",  # repeat_keys
             "n",  # repeat_values
             "y",  # nested_keys
-            "",  # Exit
+            "",  # exit
         ]
 
         receive_data()
@@ -113,8 +113,8 @@ class TestGenerateConfigFile(unittest.TestCase):
                 "directories-to-skip": [],
                 "files-to-skip": [],
             },
-            "key_identifiers": {
-                "title": "key Identifiers",
+            "non_existent_keys": {
+                "title": "non existent keys",
                 "active": False,
                 "directories-to-skip": [],
                 "files-to-skip": [],

@@ -6,11 +6,11 @@ check/
 .. toctree::
     :maxdepth: 1
 
+    invalid_keys
+    non_existent_keys
     unused_keys
+    non_source_keys
     repeat_values
     repeat_keys
-    non_source_keys
     nested_keys
-    key_identifiers
-    invalid_keys
     all_checks
