@@ -26,6 +26,7 @@ Developed by the [activist community](https://github.com/activist-org), this pro
 - [Installation](#installation-)
 - [How it works](#how-it-works-)
   - [Commands](#commands-)
+  - [Previews](#previews-)
   - [Arguments](#arguments-)
   - [Checks](#checks-)
 - [Configuration](#configuration-)
@@ -94,11 +95,15 @@ i18n-check -a  # run all checks
 i18n-check -CHECK_ID  # run a specific check (see options below)
 ```
 
+<a id="previews-"></a>
+
+### Previews [`⇧`](#contents)
+
+The following GIFs show the response to the command `i18n-check -a` when all checks fail and when all checks pass:
+
 ![i18n_check_all_fail](https://github.com/user-attachments/assets/757a9f6f-7bde-40db-941d-c4e82855a453)
 
-
 ![i18n_check_all_pass](https://github.com/user-attachments/assets/c024c368-7691-4489-b8b8-a9844d386177)
-
 
 <a id="arguments-"></a>
 
