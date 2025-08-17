@@ -94,6 +94,12 @@ i18n-check -a  # run all checks
 i18n-check -CHECK_ID  # run a specific check (see options below)
 ```
 
+![i18n_check_all_fail](https://github.com/user-attachments/assets/757a9f6f-7bde-40db-941d-c4e82855a453)
+
+
+![i18n_check_all_pass](https://github.com/user-attachments/assets/c024c368-7691-4489-b8b8-a9844d386177)
+
+
 <a id="arguments-"></a>
 
 ### Arguments [`⇧`](#contents)
