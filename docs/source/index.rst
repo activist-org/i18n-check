@@ -88,8 +88,7 @@ The following are example commands for `i18n-check`:
     i18n-check -gcf  # generate a configuration file
     i18n-check -gtf  # generate test frontends to experiment with
     i18n-check -a  # run all checks
-    # Available check IDs are ki, ik, uk, nsk, rk, rv and nk (see below).
-    i18n-check -CHECK_ID  # run a specific check
+    i18n-check -CHECK_ID  # run a specific check (see options below)
 
 Arguments
 =========
