@@ -231,7 +231,7 @@ Please rename the following {name_key_or_keys} \\[current_key -> suggested_corre
 
         if not fix:
             rprint(
-                "\n[yellow]💡 Tip: You can automatically fix invalid key names by running this check with the --fix (-f) flag.[/yellow]\n"
+                "\n[yellow]💡 Tip: You can automatically fix invalid key names by running the --invalid-keys (-ik) check with the --fix (-f) flag.[/yellow]\n"
             )
             sys.exit(1)
 
@@ -256,7 +256,7 @@ Please rename the following {name_key_or_keys} \\[current_key -> suggested_corre
         rprint(error_string)
         if invalid_keys_by_name and not fix:
             rprint(
-                "\n[yellow]💡 Tip: You can automatically fix invalid key names by running this check with the --fix (-f) flag.[/yellow]\n"
+                "\n[yellow]💡 Tip: You can automatically fix invalid key names by running the --invalid-keys (-ik) check with the --fix (-f) flag.[/yellow]\n"
             )
             sys.exit(1)
 
