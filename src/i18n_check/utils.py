@@ -466,4 +466,4 @@ def replace_text_in_file(path: str | Path, old: str, new: str) -> None:
         with open(path, "w", encoding="utf-8") as file:
             file.write(content)
 
-        print(f"\n✅ Replaced '{old}' with '{new}' in: {path}\n")
+        print(f"\n✨ Replaced '{old}' with '{new}' in: {path}")

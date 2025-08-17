@@ -151,7 +151,7 @@ def test_print_output_on_successful_replacement(tmp_path, capsys):
     replace_text_in_file(file_path, "Replace this text", "New text")
 
     captured = capsys.readouterr()
-    assert "✅ Replaced 'Replace this text' with 'New text'" in captured.out
+    assert "✨ Replaced 'Replace this text' with 'New text'" in captured.out
     assert str(file_path) in captured.out
 
 

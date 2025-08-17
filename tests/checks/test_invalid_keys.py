@@ -154,7 +154,7 @@ def test_report_and_correct_keys_fail_fix_mode(capsys):
 
     output = capsys.readouterr().out
     assert "--fix (-f) flag" not in output
-    assert "✅ Replaced 'i18n.wrong_identifier_path.content_reference'" in output
+    assert "✨ Replaced 'i18n.wrong_identifier_path.content_reference'" in output
     assert "'i18n.test_file.content_reference'" in output
 
     # Return to old state before string replacement:
