@@ -70,8 +70,8 @@ def test_get_non_source_keys(
 
 def test_report_non_source_keys_pass_output(capsys):
     report_non_source_keys(non_source_keys_pass)
-    captured = capsys.readouterr()
-    assert "non_source_keys success" in captured.out
+    output = capsys.readouterr().out
+    assert "non_source_keys success" in output
 
 
 def test_report_non_source_keys_fail_output(capsys):

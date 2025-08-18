@@ -107,6 +107,9 @@ def run_all_checks() -> None:
         rprint(
             "\n[red]❌ i18n-check error: Some i18n checks did not pass. Please see the error messages above.[/red]"
         )
+        rprint(
+            "[yellow]💡 Tip: You can bypass these checks within Git commit hooks by adding `--no-verify` to your commit command.[/yellow]"
+        )
         sys.exit(1)
 
     rprint("\n[green]✅ Success: All i18n checks have passed![/green]")

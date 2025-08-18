@@ -113,8 +113,8 @@ def test_validate_repeat_values_behavior(capsys) -> None:
         json_repeat_value_counts=get_repeat_value_counts(pass_checks_json),
         repeat_value_error_report="",
     )
-    captured = capsys.readouterr()
-    assert "✅ repeat_values success: No repeat i18n values found" in captured.out
+    output = capsys.readouterr().out
+    assert "✅ repeat_values success: No repeat i18n values found" in output
 
 
 if __name__ == "__main__":

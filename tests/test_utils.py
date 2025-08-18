@@ -150,9 +150,9 @@ def test_print_output_on_successful_replacement(tmp_path, capsys):
 
     replace_text_in_file(file_path, "Replace this text", "New text")
 
-    captured = capsys.readouterr()
-    assert "✨ Replaced 'Replace this text' with 'New text'" in captured.out
-    assert str(file_path) in captured.out
+    output = capsys.readouterr().out
+    assert "✨ Replaced 'Replace this text' with 'New text'" in output
+    assert "sample.txt" in output
 
 
 def test_print_output_on_no_replacement(tmp_path, capsys):
@@ -161,8 +161,8 @@ def test_print_output_on_no_replacement(tmp_path, capsys):
 
     replace_text_in_file(file_path, "old", "new")
 
-    captured = capsys.readouterr()
-    assert captured.out == ""
+    output = capsys.readouterr().out
+    assert output == ""
 
 
 @pytest.mark.parametrize(

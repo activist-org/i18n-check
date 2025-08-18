@@ -12,6 +12,16 @@ Emojis for the following are chosen based on [gitmoji](https://gitmoji.dev/).
 
 ## [Upcoming] i18n-check 1.x
 
+## i18n-check 1.8.1
+
+### ✨ Features
+
+- The user is made aware of how to skip the i18n-check errors within Git commit hooks via the `--no-verify` option ([#55](https://github.com/activist-org/i18n-check/issues/55)).
+
+### ♻️ Code Refactoring
+
+- Variable names in tests were standardized.
+
 ## i18n-check 1.8.0
 
 ### ✨ Features
