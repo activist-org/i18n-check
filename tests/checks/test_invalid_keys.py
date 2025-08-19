@@ -30,7 +30,9 @@ i18n_map_fail = map_keys_to_files(
 fail_checks_json_path = fail_dir / "test_i18n" / "test_i18n_src.json"
 fail_checks_test_file_path = fail_dir / "test_file.ts"
 
-invalid_format_fail, invalid_name_fail = audit_i18n_keys(key_file_dict=i18n_map_fail, keys_to_ignore_pattern="")
+invalid_format_fail, invalid_name_fail = audit_i18n_keys(
+    key_file_dict=i18n_map_fail, keys_to_ignore_regex=""
+)
 
 pass_dir = (
     Path(__file__).parent.parent.parent
@@ -46,7 +48,9 @@ i18n_map_pass = map_keys_to_files(
     i18n_src_dict=pass_checks_json, src_directory=pass_dir
 )
 
-invalid_format_pass, invalid_name_pass = audit_i18n_keys(key_file_dict=i18n_map_pass, keys_to_ignore_pattern="")
+invalid_format_pass, invalid_name_pass = audit_i18n_keys(
+    key_file_dict=i18n_map_pass, keys_to_ignore_regex=""
+)
 
 
 @pytest.mark.parametrize(
@@ -182,36 +186,39 @@ def test_audit_i18n_keys_regex_ignore() -> None:
         "i18n.legacy.deprecated.button": ["legacy/deprecated.ts"],
         "i18n.current.modern_component.title": ["src/modern_component.ts"],
     }
-    
+
     invalid_format_all, invalid_name_all = audit_i18n_keys(
-        key_file_dict=test_key_file_dict,
-        keys_to_ignore_pattern=""
+        key_file_dict=test_key_file_dict, keys_to_ignore_regex=""
     )
-    
+
     invalid_format_filtered, invalid_name_filtered = audit_i18n_keys(
         key_file_dict=test_key_file_dict,
-        keys_to_ignore_pattern=r"i18n\.(legacy|temp)\."
+        keys_to_ignore_regex=r"i18n\.(legacy|temp)\.",
     )
-    
+
     assert len(invalid_name_filtered) < len(invalid_name_all)
-    
-    ignored_keys = [k for k in test_key_file_dict.keys() if "legacy" in k or "temp" in k]
+
+    ignored_keys = [k for k in test_key_file_dict if "legacy" in k or "temp" in k]
     for ignored_key in ignored_keys:
-        assert ignored_key not in invalid_name_filtered, f"Ignored key {ignored_key} should not appear in results"
-    
+        assert ignored_key not in invalid_name_filtered, (
+            f"Ignored key {ignored_key} should not appear in results"
+        )
+
     invalid_format_legacy_only, invalid_name_legacy_only = audit_i18n_keys(
-        key_file_dict=test_key_file_dict,
-        keys_to_ignore_pattern=r"i18n\.legacy\."
+        key_file_dict=test_key_file_dict, keys_to_ignore_regex=r"i18n\.legacy\."
     )
-    
-    legacy_keys = [k for k in test_key_file_dict.keys() if "legacy" in k]
-    temp_keys = [k for k in test_key_file_dict.keys() if "temp" in k]
-    
+
+    legacy_keys = [k for k in test_key_file_dict if "legacy" in k]
+    temp_keys = [k for k in test_key_file_dict if "temp" in k]
     for legacy_key in legacy_keys:
-        assert legacy_key not in invalid_name_legacy_only, f"Legacy key {legacy_key} should be ignored"
-    
+        assert legacy_key not in invalid_name_legacy_only, (
+            f"Legacy key {legacy_key} should be ignored"
+        )
+
     temp_key_found = any(temp_key in invalid_name_legacy_only for temp_key in temp_keys)
-    assert temp_key_found, "At least one temp key should still be processed when only legacy keys are ignored"
+    assert temp_key_found, (
+        "At least one temp key should still be processed when only legacy keys are ignored"
+    )
 
 
 if __name__ == "__main__":

@@ -12,6 +12,10 @@ Emojis for the following are chosen based on [gitmoji](https://gitmoji.dev/).
 
 ## [Upcoming] i18n-check 1.x
 
+### ✨ Features
+
+- The user can now ignore certain regex patterns in their i18n keys within the invalid keys check ([#52](https://github.com/activist-org/i18n-check/issues/52)).
+
 ## i18n-check 1.8.1
 
 ### ✨ Features

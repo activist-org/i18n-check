@@ -73,7 +73,7 @@ if "global" in config["checks"]:
 config_invalid_keys_active = config_global_active
 config_invalid_keys_directories_to_skip = config_global_directories_to_skip
 config_invalid_keys_files_to_skip = config_global_files_to_skip
-config_invalid_keys_keys_to_ignore = ""
+config_invalid_keys_regex_to_ignore = ""
 
 if "invalid-keys" in config["checks"]:
     if "active" in config["checks"]["invalid-keys"]:
@@ -90,7 +90,7 @@ if "invalid-keys" in config["checks"]:
         ]
 
     if "keys-to-ignore" in config["checks"]["invalid-keys"]:
-        config_invalid_keys_keys_to_ignore = config["checks"]["invalid-keys"][
+        config_invalid_keys_regex_to_ignore = config["checks"]["invalid-keys"][
             "keys-to-ignore"
         ]
 
