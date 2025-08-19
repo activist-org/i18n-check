@@ -76,22 +76,22 @@ class TestGenerateConfigFile(unittest.TestCase):
             "",  # default i18n_src_file
             "",  # default file_types
             "n",  # all checks
-            "",
-            "",
+            "",  # global directories_to_skip
+            "",  # global files_to_skip
             "y",  # invalid_keys
-            "",
-            "",
+            "",  # invalid_keys directories_to_skip
+            "",  # invalid_keys files_to_skip
+            "",  # invalid_keys keys_to_ignore
             "n",  # non_existent_keys
-            "",
-            "",
+            "",  # non_existent_keys directories_to_skip
+            "",  # non_existent_keys files_to_skip
             "y",  # unused_keys
-            "",
-            "",
+            "",  # unused_keys directories_to_skip
+            "",  # unused_keys files_to_skip
             "n",  # non_source_keys
             "y",  # repeat_keys
             "n",  # repeat_values
             "y",  # nested_keys
-            "",  # exit
         ]
 
         receive_data()
@@ -112,6 +112,7 @@ class TestGenerateConfigFile(unittest.TestCase):
                 "active": True,
                 "directories-to-skip": [],
                 "files-to-skip": [],
+                "keys-to-ignore": "",
             },
             "non_existent_keys": {
                 "title": "non existent keys",

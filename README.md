@@ -166,6 +166,7 @@ checks:
     active: true # can be used to override individual checks
     directories-to-skip: []
     files-to-skip: []
+    keys-to-ignore: "" # regex for ignoring keys
   non-existent-keys:
     active: true
     directories-to-skip: []
