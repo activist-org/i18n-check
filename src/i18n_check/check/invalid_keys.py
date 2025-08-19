@@ -121,12 +121,13 @@ def audit_i18n_keys(
     # Filter out keys matching the ignore pattern
     if keys_to_ignore_pattern:
         filtered_key_file_dict = {
-            k: v for k, v in key_file_dict.items() 
+            k: v
+            for k, v in key_file_dict.items()
             if not re.search(keys_to_ignore_pattern, k)
         }
     else:
         filtered_key_file_dict = key_file_dict
-    
+
     invalid_keys_by_format = []
     invalid_keys_by_name = {}
     for k in filtered_key_file_dict:
@@ -149,7 +150,9 @@ def audit_i18n_keys(
 
         # Key is used in multiple files.
         else:
-            formatted_potential_keys = [path_to_valid_key(p) for p in filtered_key_file_dict[k]]
+            formatted_potential_keys = [
+                path_to_valid_key(p) for p in filtered_key_file_dict[k]
+            ]
             potential_key_parts = [
                 part for k in formatted_potential_keys for part in k.split(".")
             ]

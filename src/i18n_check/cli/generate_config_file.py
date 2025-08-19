@@ -53,7 +53,7 @@ def write_to_file(
                 )
 
             if "keys-to-ignore" in checks[c]:
-                checks_str += f"    keys-to-ignore: \"{checks[c]['keys-to-ignore']}\"\n"
+                checks_str += f'    keys-to-ignore: "{checks[c]["keys-to-ignore"]}"\n'
 
         file_types_to_check_str = (
             ", ".join(file_types_to_check) if file_types_to_check else ""
