@@ -52,6 +52,9 @@ def write_to_file(
                     f"    files-to-skip: [{', '.join(checks[c]['files-to-skip'])}]\n"
                 )
 
+            if "keys-to-ignore" in checks[c]:
+                checks_str += f"    keys-to-ignore: \"{checks[c]['keys-to-ignore']}\"\n"
+
         file_types_to_check_str = (
             ", ".join(file_types_to_check) if file_types_to_check else ""
         )
@@ -101,6 +104,7 @@ def receive_data() -> None:
             "active": False,
             "directories-to-skip": [],
             "files-to-skip": [],
+            "keys-to-ignore": "",
         },
         "non_existent_keys": {
             "title": "non existent keys",
@@ -153,6 +157,12 @@ def receive_data() -> None:
                 f"Files to skip for {checks[c]['title']} [None]: "
             ).lower()
             checks[c]["files-to-skip"] = files_to_skip if files_to_skip != "" else []
+
+        if "keys-to-ignore" in checks[c]:
+            keys_to_ignore = input(
+                f"Keys to ignore for {checks[c]['title']} (regex pattern) [None]: "
+            )
+            checks[c]["keys-to-ignore"] = keys_to_ignore if keys_to_ignore != "" else ""
 
     write_to_file(
         src_dir=src_dir,
