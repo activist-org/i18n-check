@@ -9,15 +9,14 @@
 # - pip-compile --upgrade requirements.in && sed -i "" "s/==/>=/g" requirements.txt
 # - pip-compile --upgrade requirements-dev.in
 
+-r requirements.txt
+
 mypy
 numpydoc
 pip-tools
 pre-commit
 pytest
 pytest-cov
-pyyaml
-requests
-rich
 ruff
 sphinx-rtd-theme
 types-PyYAML
