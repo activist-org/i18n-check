@@ -1,0 +1,39 @@
+# Configuration file for i18n-check validation.
+# See https://github.com/activist-org/i18n-check for details.
+
+src-dir: .
+i18n-dir: test_i18n
+i18n-src: test_i18n/test_i18n_src.json
+
+file-types-to-check: [.ts, .js]
+
+checks:
+  # Global configurations are applied to all checks.
+  global:
+    active: True
+    directories-to-skip: [frontend/node_modules]
+    files-to-skip: []
+  invalid_keys:
+    active: True
+    directories-to-skip: []
+    files-to-skip: []
+    keys-to-ignore: ""
+  non_existent_keys:
+    active: True
+    directories-to-skip: []
+    files-to-skip: []
+  unused_keys:
+    active: True
+    directories-to-skip: []
+    files-to-skip: []
+  non_source_keys:
+    active: True
+  repeat_keys:
+    active: True
+  repeat_values:
+    active: True
+  nested_keys:
+    active: True
+  aria_labels:
+    active: True
+

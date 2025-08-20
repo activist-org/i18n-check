@@ -13,5 +13,6 @@
     "nested_key": "This key should not be nested"
   },
   "i18n.test_file.repeat_key_lower": "this key is duplicated, but the value is not",
+  "i18n.test_file.button_aria_label": "Click here to submit the form.",
   "i18n.wrong_identifier_path.content_reference": "This key needs to be renamed"
 }

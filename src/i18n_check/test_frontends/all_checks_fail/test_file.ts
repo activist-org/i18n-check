@@ -7,4 +7,5 @@
 //   - "i18n.test_file.nested_example"
 //   - "i18n.test_file.not_in_i18n_source_file"
 //   - "i18n.test_file.repeat_key_lower"  // lower cancels the repeat value check
+//   - "i18n.test_file.button_aria_label"
 //   - "i18n.wrong_identifier_path.content_reference"

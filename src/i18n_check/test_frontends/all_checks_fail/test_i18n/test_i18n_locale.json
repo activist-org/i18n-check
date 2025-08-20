@@ -1,4 +1,5 @@
 {
   "i18n._global.hello_global": "Hello, global in another language!",
-  "i18n._global.not_in_i18n_src": "A reference that can't be used."
+  "i18n._global.not_in_i18n_src": "A reference that can't be used.",
+  "i18n.test_file.button_aria_label": "Click here to submit the form."
 }
