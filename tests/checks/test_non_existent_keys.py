@@ -48,9 +48,9 @@ all_i18n_used = get_used_i18n_keys()
 @pytest.mark.parametrize(
     "used_keys, expected_output",
     [
-        (len(i18n_used_pass), 5),
-        (len(i18n_used_fail), 11),
-        (len(all_i18n_used), 11),
+        (len(i18n_used_pass), 6),
+        (len(i18n_used_fail), 12),
+        (len(all_i18n_used), 12),
         (
             i18n_used_fail,
             {
@@ -60,6 +60,7 @@ all_i18n_used = get_used_i18n_keys()
                 "i18n.sub_dir._global.hello_sub_dir",
                 "i18n.sub_dir_first_file.hello_sub_dir_first_file",
                 "i18n.sub_dir_second_file.hello_sub_dir_second_file",
+                "i18n.test_file.button_aria_label",
                 "i18n.test_file.incorrectly-formatted-key",
                 "i18n.test_file.nested_example",
                 "i18n.test_file.not_in_i18n_source_file",
