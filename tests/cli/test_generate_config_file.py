@@ -112,7 +112,7 @@ class TestGenerateConfigFile(unittest.TestCase):
                 "active": True,
                 "directories-to-skip": [],
                 "files-to-skip": [],
-                "keys-to-ignore": "",
+                "keys-to-ignore": [],
             },
             "non_existent_keys": {
                 "title": "non existent keys",
