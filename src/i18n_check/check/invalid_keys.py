@@ -22,6 +22,8 @@ from rich import print as rprint
 from i18n_check.utils import (
     collect_files_to_check,
     config_file_types_to_check,
+    config_global_directories_to_skip,
+    config_global_files_to_skip,
     config_i18n_directory,
     config_i18n_src_file,
     config_invalid_keys_directories_to_skip,
@@ -308,19 +310,20 @@ Please rename the following {name_key_or_keys} \\[current_key -> suggested_corre
             )
             sys.exit(1)
 
-    files_to_check = collect_files_to_check(
-        directory=config_src_directory,
-        file_types=config_file_types_to_check,
-        directories_to_skip=config_invalid_keys_directories_to_skip,
-        files_to_skip=config_invalid_keys_files_to_skip,
-    )
-
-    json_files = get_all_json_files(config_i18n_directory, path_separator)
-    all_files_to_check = json_files + files_to_check
     if fix and invalid_keys_by_name:
+        files_to_fix = collect_files_to_check(
+            directory=config_src_directory,
+            file_types=config_file_types_to_check,
+            directories_to_skip=config_global_directories_to_skip,
+            files_to_skip=config_global_files_to_skip,
+        )
+
+        json_files = get_all_json_files(config_i18n_directory, path_separator)
+        all_files_to_fix = json_files + files_to_fix
+
         # If incorrect key, replace it with the suggested key and give feedback with the replacement.
         for current, correct in invalid_keys_by_name.items():
-            for f in all_files_to_check:
+            for f in all_files_to_fix:
                 replace_text_in_file(path=f, old=current, new=correct)
 
         sys.exit(1)
