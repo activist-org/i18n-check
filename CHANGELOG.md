@@ -15,6 +15,7 @@ Emojis for the following are chosen based on [gitmoji](https://gitmoji.dev/).
 ### ✨ Features
 
 - The user can now ignore certain regex patterns in their i18n keys within the invalid keys check ([#52](https://github.com/activist-org/i18n-check/issues/52)).
+- A new aria label check has been added to make sure that i18n keys that end in `_aria_label` do not end in punctuation ([#48](https://github.com/activist-org/i18n-check/issues/48)).
 
 ## i18n-check 1.8.1
 
