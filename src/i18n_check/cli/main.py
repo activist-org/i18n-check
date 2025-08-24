@@ -10,6 +10,7 @@ from i18n_check.check.invalid_keys import (
     invalid_keys_by_name,
     report_and_correct_keys,
 )
+from i18n_check.check.ordered_keys import check_ordered_keys
 from i18n_check.cli.generate_config_file import generate_config_file
 from i18n_check.cli.generate_test_frontends import generate_test_frontends
 from i18n_check.cli.upgrade import upgrade_cli
@@ -23,35 +24,7 @@ def main() -> None:
 
     This function serves as the entry point for the i18n-check command line interface.
     It parses command line arguments and executes the appropriate checks or actions.
-
-    Returns
-    -------
-    None
-        This function returns nothing; it executes checks and outputs results directly.
-
-    Notes
-    -----
-    The available command line arguments are:
-    - --version (-v): Show the version of the i18n-check CLI
-    - --upgrade (-u): Upgrade the i18n-check CLI to the latest version
-    - --generate-config-file (-gcf): Generate a configuration file for i18n-check
-    - --generate-test-frontends (-gtf): Generate frontends to test i18n-check functionalities
-    - --all-checks (-a): Run all available checks
-    - --invalid-keys (-ik): Check for invalid i18n keys in codebase
-    - --non-existent-keys (-nek): Check i18n key usage and formatting
-    - --unused-keys (-uk): Check for unused i18n keys
-    - --non-source-keys (-nsk): Check for keys in translations not in source
-    - --repeat-keys (-rk): Check for duplicate keys in JSON files
-    - --repeat-values (-rv): Check for repeated values in source file
-    - --nested-keys (-nk): Check for nested i18n keys
-
-    Examples
-    --------
-    >>> i18n-check --generate-config-file  # -gcf
-    >>> i18n-check --invalid-keys  # -ik
-    >>> i18n-check --all-checks  # -a
     """
-    # MARK: CLI Base
 
     parser = argparse.ArgumentParser(
         prog="i18n-check",
@@ -109,7 +82,7 @@ def main() -> None:
         "-f",
         "--fix",
         action="store_true",
-        help="(with --invalid-keys) Automatically fix key naming issues.",
+        help="(with --invalid-keys or --ordered-keys) Automatically fix key naming or ordering issues.",
     )
 
     parser.add_argument(
@@ -154,10 +127,16 @@ def main() -> None:
         help="Check for nested i18n source and translation keys.",
     )
 
-    # MARK: Setup CLI
+    parser.add_argument(
+        "-ok",
+        "--ordered-keys",
+        action="store_true",
+        help="Check that JSON keys are ordered alphabetically.",
+    )
 
     args = parser.parse_args()
 
+    # Process flags with early returns to avoid running multiple commands in one call
     if args.upgrade:
         upgrade_cli()
         return
@@ -170,8 +149,6 @@ def main() -> None:
         generate_test_frontends()
         return
 
-    # MARK: Run Checks
-
     if args.all_checks:
         run_check("all_checks")
         return
@@ -183,10 +160,8 @@ def main() -> None:
                 invalid_keys_by_name=invalid_keys_by_name,
                 fix=True,
             )
-
         else:
             run_check("invalid_keys")
-
         return
 
     if args.non_existent_keys:
@@ -213,6 +188,11 @@ def main() -> None:
         run_check("nested_keys")
         return
 
+    if args.ordered_keys:
+        check_ordered_keys(fix=args.fix)
+        return
+
+    # If no recognized flags, print help
     parser.print_help()
 
 
