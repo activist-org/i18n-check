@@ -289,10 +289,10 @@ Please rename the following {name_key_or_keys} \\[current_key -> suggested_corre
             directories_to_skip=config_global_directories_to_skip,
             files_to_skip=config_global_files_to_skip,
         )
-        
+
         json_files = get_all_json_files(config_i18n_directory, path_separator)
         all_files_to_fix = json_files + files_to_fix
-        
+
         # If incorrect key, replace it with the suggested key and give feedback with the replacement.
         for current, correct in invalid_keys_by_name.items():
             for f in all_files_to_fix:
