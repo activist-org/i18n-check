@@ -148,7 +148,11 @@ def audit_i18n_keys(
         keys_to_ignore_regex = [keys_to_ignore_regex] if keys_to_ignore_regex else []
 
     filtered_key_file_dict = (
-        {k: v for k, v in key_file_dict.items() if not ignore_key(k)}
+        {
+            k: v
+            for k, v in key_file_dict.items()
+            if not ignore_key(key=k, keys_to_ignore_regex=keys_to_ignore_regex)
+        }
         if keys_to_ignore_regex
         else key_file_dict
     )
