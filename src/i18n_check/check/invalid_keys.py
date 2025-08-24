@@ -95,6 +95,28 @@ def map_keys_to_files(
 # MARK: Reduce Keys
 
 
+def ignore_key(key: str, keys_to_ignore_regex: List[str]) -> bool:
+    """
+    Derive whether the key being checked is within the patterns to ignore.
+
+    Parameters
+    ----------
+    key : str
+        The key to that might be ignored if it matches the patterns to skip.
+
+    keys_to_ignore_regex : List[str]
+        A list of regex patterns to match with keys that should be ignored during validation.
+        Keys matching any of these patterns will be skipped during the audit.
+        For backward compatibility, a single string is also accepted and will be converted to a list.
+
+    Returns
+    -------
+    bool
+        Whether the key should be ignored or not in the invalid keys check.
+    """
+    return any(pattern and re.search(pattern, key) for pattern in keys_to_ignore_regex)
+
+
 def audit_i18n_keys(
     key_file_dict: Dict[str, List[str]],
     keys_to_ignore_regex: Optional[List[str]] = None,
@@ -122,18 +144,11 @@ def audit_i18n_keys(
     if keys_to_ignore_regex is None:
         keys_to_ignore_regex = []
 
-    # Convert str to list
     if isinstance(keys_to_ignore_regex, str):
         keys_to_ignore_regex = [keys_to_ignore_regex] if keys_to_ignore_regex else []
 
-    def to_ignore(key: str) -> bool:
-        for pattern in keys_to_ignore_regex:
-            if pattern and re.search(pattern, key):
-                return True
-        return False
-
     filtered_key_file_dict = (
-        {k: v for k, v in key_file_dict.items() if not to_ignore(k)}
+        {k: v for k, v in key_file_dict.items() if not ignore_key(k)}
         if keys_to_ignore_regex
         else key_file_dict
     )

@@ -58,8 +58,11 @@ def write_to_file(
                         f'"{key}"' for key in checks[c]["keys-to-ignore"]
                     )
                     checks_str += f"    keys-to-ignore: [{keys_list}]\n"
+
                 else:
-                    checks_str += f'    keys-to-ignore: "{checks[c]["keys-to-ignore"]}"\n'  # backward compatibility for str format
+                    checks_str += (
+                        f'    keys-to-ignore: "{checks[c]["keys-to-ignore"]}"\n'
+                    )
 
         file_types_to_check_str = (
             ", ".join(file_types_to_check) if file_types_to_check else ""
@@ -172,9 +175,9 @@ def receive_data() -> None:
                 patterns = [
                     pattern.strip() for pattern in keys_to_ignore_input.split(",")
                 ]
-                checks[c]["keys-to-ignore"] = [
-                    p for p in patterns if p
-                ]  # filter out empty patterns
+                # Filter out empty patterns.
+                checks[c]["keys-to-ignore"] = [p for p in patterns if p]
+
             else:
                 checks[c]["keys-to-ignore"] = []
 

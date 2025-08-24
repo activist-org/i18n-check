@@ -92,12 +92,14 @@ if "invalid-keys" in config["checks"]:
     if "keys-to-ignore" in config["checks"]["invalid-keys"]:
         keys_to_ignore = config["checks"]["invalid-keys"]["keys-to-ignore"]
 
-        if isinstance(keys_to_ignore, str):  # supports both str & list
+        if isinstance(keys_to_ignore, str):
             config_invalid_keys_regex_to_ignore = (
                 [keys_to_ignore] if keys_to_ignore else []
             )
+
         elif isinstance(keys_to_ignore, list):
             config_invalid_keys_regex_to_ignore = keys_to_ignore
+
         else:
             config_invalid_keys_regex_to_ignore = []
 
