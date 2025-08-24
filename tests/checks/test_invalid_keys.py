@@ -221,5 +221,115 @@ def test_audit_i18n_keys_regex_ignore() -> None:
     )
 
 
+def test_audit_i18n_keys_regex_ignore_list() -> None:
+    """
+    Test that keys matching any regex pattern in a list are ignored during validation.
+    """
+    test_key_file_dict = {
+        "i18n.legacy.old_component.title": ["legacy/old_component.ts"],
+        "i18n.temp.test_component.label": ["temp/test_component.ts"],
+        "i18n.valid.component.title": ["src/component.ts"],
+        "i18n.temp.another_test.message": ["temp/another_test.ts"],
+        "i18n.legacy.deprecated.button": ["legacy/deprecated.ts"],
+        "i18n.deprecated.old_feature.text": ["deprecated/old_feature.ts"],
+        "i18n.current.modern_component.title": ["src/modern_component.ts"],
+    }
+
+    invalid_format_empty, invalid_name_empty = audit_i18n_keys(
+        key_file_dict=test_key_file_dict, keys_to_ignore_regex=[]
+    )
+
+    invalid_format_filtered, invalid_name_filtered = audit_i18n_keys(
+        key_file_dict=test_key_file_dict,
+        keys_to_ignore_regex=[
+            r"i18n\.legacy\.",
+            r"i18n\.temp\.",
+            r"i18n\.deprecated\.",
+        ],
+    )
+
+    assert len(invalid_name_filtered) < len(invalid_name_empty)
+
+    ignored_keys = [
+        k
+        for k in test_key_file_dict
+        if any(pattern in k for pattern in ["legacy", "temp", "deprecated"])
+    ]
+    for ignored_key in ignored_keys:
+        assert ignored_key not in invalid_name_filtered, (
+            f"Ignored key {ignored_key} should not appear in results"
+        )
+
+    invalid_format_single, invalid_name_single = audit_i18n_keys(
+        key_file_dict=test_key_file_dict, keys_to_ignore_regex=[r"i18n\.legacy\."]
+    )
+
+    legacy_keys = [k for k in test_key_file_dict if "legacy" in k]
+    for legacy_key in legacy_keys:
+        assert legacy_key not in invalid_name_single, (
+            f"Legacy key {legacy_key} should be ignored"
+        )
+
+    temp_keys = [k for k in test_key_file_dict if "temp" in k]
+    deprecated_keys = [
+        k for k in test_key_file_dict if "deprecated" in k and "legacy" not in k
+    ]
+
+    temp_or_deprecated_found = any(
+        key in invalid_name_single for key in temp_keys + deprecated_keys
+    )
+    assert temp_or_deprecated_found, (
+        "At least one temp or deprecated key should still be processed when only legacy keys are ignored"
+    )
+
+
+def test_audit_i18n_keys_regex_ignore_backward_compatibility() -> None:
+    """
+    Test that the function still accepts string input for backward compatibility.
+    """
+    test_key_file_dict = {
+        "i18n.legacy.old_component.title": ["legacy/old_component.ts"],
+        "i18n.temp.test_component.label": ["temp/test_component.ts"],
+        "i18n.valid.component.title": ["src/component.ts"],
+    }
+
+    invalid_format_string, invalid_name_string = audit_i18n_keys(
+        key_file_dict=test_key_file_dict,
+        keys_to_ignore_regex=r"i18n\.(legacy|temp)\.",
+    )
+
+    invalid_format_list, invalid_name_list = audit_i18n_keys(
+        key_file_dict=test_key_file_dict,
+        keys_to_ignore_regex=[r"i18n\.(legacy|temp)\."],
+    )
+
+    assert invalid_format_string == invalid_format_list
+    assert invalid_name_string == invalid_name_list
+
+
+def test_audit_i18n_keys_regex_ignore_empty_patterns() -> None:
+    """
+    Test that empty patterns in the list are handled correctly.
+    """
+    test_key_file_dict = {
+        "i18n.legacy.old_component.title": ["legacy/old_component.ts"],
+        "i18n.temp.test_component.label": ["temp/test_component.ts"],
+        "i18n.valid.component.title": ["src/component.ts"],
+    }
+
+    invalid_format_mixed, invalid_name_mixed = audit_i18n_keys(
+        key_file_dict=test_key_file_dict,
+        keys_to_ignore_regex=["", r"i18n\.legacy\.", "", r"i18n\.temp\.", ""],
+    )
+
+    invalid_format_clean, invalid_name_clean = audit_i18n_keys(
+        key_file_dict=test_key_file_dict,
+        keys_to_ignore_regex=[r"i18n\.legacy\.", r"i18n\.temp\."],
+    )
+
+    assert invalid_format_mixed == invalid_format_clean
+    assert invalid_name_mixed == invalid_name_clean
+
+
 if __name__ == "__main__":
     pytest.main()
