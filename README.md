@@ -136,6 +136,8 @@ There the following checks can ran across your codebase:
   - Combine them so the localization team only needs to localize one of them.
 - `nested-keys` (`nk`): Do the i18n files contain nested JSON structures?
   - Flatten them to make replacing invalid keys easier with find-and-replace all.
+- `aria-labels` (`al`): Do keys that end in `_aria_label` end in punctuation?
+  - Remove the punctuation as it negatively affects screen reader experience.
 
 Directions for how to fix the i18n files are provided when errors are raised. Checks can also be disabled in the workflow via options passed in the configuration YAML file.
 
@@ -182,6 +184,8 @@ checks:
   repeat-values:
     active: true
   nested-keys:
+    active: true
+  aria-labels:
     active: true
 ```
 

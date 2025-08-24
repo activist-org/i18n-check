@@ -13,4 +13,5 @@ check/
     repeat_values
     repeat_keys
     nested_keys
+    aria_labels
     all_checks
