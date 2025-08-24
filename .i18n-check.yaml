@@ -5,6 +5,7 @@ src-dir: src/i18n_check/test_frontends/all_checks_fail
 i18n-dir: src/i18n_check/test_frontends/all_checks_fail/test_i18n
 i18n-src: src/i18n_check/test_frontends/all_checks_fail/test_i18n/test_i18n_src.json
 
+# Note: Comment out the above lines and uncomment these to check functionality with passing frontend.
 # src-dir: src/i18n_check/test_frontends/all_checks_pass
 # i18n-dir: src/i18n_check/test_frontends/all_checks_pass/test_i18n
 # i18n-src: src/i18n_check/test_frontends/all_checks_pass/test_i18n/test_i18n_src.json

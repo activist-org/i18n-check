@@ -47,12 +47,14 @@ def find_aria_label_punctuation_issues(i18n_src_dict: Dict[str, str]) -> Dict[st
     """
     aria_label_issues = {}
 
+    punctuation_to_check = f"{string.punctuation}؟"
+
     for key, value in i18n_src_dict.items():
         if isinstance(value, str) and key.endswith("_aria_label"):
             stripped_value = value.rstrip()
-            if stripped_value and stripped_value[-1] in string.punctuation:
+            if stripped_value and stripped_value[-1] in punctuation_to_check:
                 # Remove the trailing punctuation.
-                corrected_value = stripped_value.rstrip(string.punctuation)
+                corrected_value = stripped_value.rstrip(punctuation_to_check)
                 # Preserve any trailing whitespace from original.
                 if value.endswith(" "):
                     corrected_value += " "
@@ -102,8 +104,7 @@ def report_and_fix_aria_labels(
         )
         sys.exit(1)
 
-    # Fix issues if requested.
-    if fix:
+    else:
         json_files = get_all_json_files(config_i18n_directory, path_separator)
 
         for key, corrected_value in aria_label_issues.items():
