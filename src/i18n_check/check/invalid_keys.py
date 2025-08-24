@@ -15,7 +15,7 @@ import re
 import sys
 from collections import defaultdict
 from pathlib import Path
-from typing import Dict, List, Tuple
+from typing import Dict, List, Optional, Tuple
 
 from rich import print as rprint
 
@@ -97,7 +97,7 @@ def map_keys_to_files(
 
 def audit_i18n_keys(
     key_file_dict: Dict[str, List[str]],
-    keys_to_ignore_regex: List[str] = None,
+    keys_to_ignore_regex: Optional[List[str]] = None,
 ) -> Tuple[List[str], Dict[str, str]]:
     """
     Audit i18n keys for formatting and naming conventions.
