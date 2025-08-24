@@ -241,14 +241,20 @@ def test_audit_i18n_keys_regex_ignore_list() -> None:
 
     invalid_format_filtered, invalid_name_filtered = audit_i18n_keys(
         key_file_dict=test_key_file_dict,
-        keys_to_ignore_regex=[r"i18n\.legacy\.", r"i18n\.temp\.", r"i18n\.deprecated\."],
+        keys_to_ignore_regex=[
+            r"i18n\.legacy\.",
+            r"i18n\.temp\.",
+            r"i18n\.deprecated\.",
+        ],
     )
 
     assert len(invalid_name_filtered) < len(invalid_name_empty)
 
-    ignored_keys = [k for k in test_key_file_dict if any(
-        pattern in k for pattern in ["legacy", "temp", "deprecated"]
-    )]
+    ignored_keys = [
+        k
+        for k in test_key_file_dict
+        if any(pattern in k for pattern in ["legacy", "temp", "deprecated"])
+    ]
     for ignored_key in ignored_keys:
         assert ignored_key not in invalid_name_filtered, (
             f"Ignored key {ignored_key} should not appear in results"
@@ -265,8 +271,10 @@ def test_audit_i18n_keys_regex_ignore_list() -> None:
         )
 
     temp_keys = [k for k in test_key_file_dict if "temp" in k]
-    deprecated_keys = [k for k in test_key_file_dict if "deprecated" in k and "legacy" not in k]
-    
+    deprecated_keys = [
+        k for k in test_key_file_dict if "deprecated" in k and "legacy" not in k
+    ]
+
     temp_or_deprecated_found = any(
         key in invalid_name_single for key in temp_keys + deprecated_keys
     )

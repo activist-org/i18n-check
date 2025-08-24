@@ -54,10 +54,12 @@ def write_to_file(
 
             if "keys-to-ignore" in checks[c]:
                 if isinstance(checks[c]["keys-to-ignore"], list):
-                    keys_list = ", ".join(f'"{key}"' for key in checks[c]["keys-to-ignore"])
+                    keys_list = ", ".join(
+                        f'"{key}"' for key in checks[c]["keys-to-ignore"]
+                    )
                     checks_str += f"    keys-to-ignore: [{keys_list}]\n"
                 else:
-                    checks_str += f'    keys-to-ignore: "{checks[c]["keys-to-ignore"]}"\n' # backward compatibility for str format
+                    checks_str += f'    keys-to-ignore: "{checks[c]["keys-to-ignore"]}"\n'  # backward compatibility for str format
 
         file_types_to_check_str = (
             ", ".join(file_types_to_check) if file_types_to_check else ""
@@ -167,8 +169,12 @@ def receive_data() -> None:
                 f"Keys to ignore for {checks[c]['title']} (comma-separated regex patterns) [None]: "
             )
             if keys_to_ignore_input.strip():
-                patterns = [pattern.strip() for pattern in keys_to_ignore_input.split(",")]
-                checks[c]["keys-to-ignore"] = [p for p in patterns if p]  # filter out empty patterns
+                patterns = [
+                    pattern.strip() for pattern in keys_to_ignore_input.split(",")
+                ]
+                checks[c]["keys-to-ignore"] = [
+                    p for p in patterns if p
+                ]  # filter out empty patterns
             else:
                 checks[c]["keys-to-ignore"] = []
 

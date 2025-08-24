@@ -121,23 +121,19 @@ def audit_i18n_keys(
     """
     if keys_to_ignore_regex is None:
         keys_to_ignore_regex = []
-    
+
     # Convert str to list
     if isinstance(keys_to_ignore_regex, str):
         keys_to_ignore_regex = [keys_to_ignore_regex] if keys_to_ignore_regex else []
-    
+
     def to_ignore(key: str) -> bool:
         for pattern in keys_to_ignore_regex:
             if pattern and re.search(pattern, key):
                 return True
         return False
-    
+
     filtered_key_file_dict = (
-        {
-            k: v
-            for k, v in key_file_dict.items()
-            if not to_ignore(k)
-        }
+        {k: v for k, v in key_file_dict.items() if not to_ignore(k)}
         if keys_to_ignore_regex
         else key_file_dict
     )
