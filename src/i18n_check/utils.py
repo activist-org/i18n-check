@@ -73,7 +73,7 @@ if "global" in config["checks"]:
 config_invalid_keys_active = config_global_active
 config_invalid_keys_directories_to_skip = config_global_directories_to_skip
 config_invalid_keys_files_to_skip = config_global_files_to_skip
-config_invalid_keys_regex_to_ignore = ""
+config_invalid_keys_regex_to_ignore = []
 
 if "invalid-keys" in config["checks"]:
     if "active" in config["checks"]["invalid-keys"]:
@@ -90,9 +90,14 @@ if "invalid-keys" in config["checks"]:
         ]
 
     if "keys-to-ignore" in config["checks"]["invalid-keys"]:
-        config_invalid_keys_regex_to_ignore = config["checks"]["invalid-keys"][
-            "keys-to-ignore"
-        ]
+        keys_to_ignore = config["checks"]["invalid-keys"]["keys-to-ignore"]
+        
+        if isinstance(keys_to_ignore, str): # supports both str & list
+            config_invalid_keys_regex_to_ignore = [keys_to_ignore] if keys_to_ignore else []
+        elif isinstance(keys_to_ignore, list):
+            config_invalid_keys_regex_to_ignore = keys_to_ignore
+        else:
+            config_invalid_keys_regex_to_ignore = []
 
 # MARK: Non-Existent Keys
 
