@@ -3,6 +3,6 @@
   "i18n.sub_dir_first_file.hello_sub_dir_first_file": "Hello, sub directory first file!",
   "i18n.sub_dir_second_file.hello_sub_dir_second_file": "Hello, sub directory second file!",
   "i18n.sub_dir._global.hello_sub_dir": "Hello, sub directory!",
-  "i18n.test_file.hello_test_file": "Hello, test file!",
-  "i18n.test_file.button_aria_label": "Click here to submit the form"
+  "i18n.test_file.form_button_aria_label": "Click here to submit the form",
+  "i18n.test_file.hello_test_file": "Hello, test file!"
 }

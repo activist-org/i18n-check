@@ -80,7 +80,7 @@ invalid_format_pass, invalid_name_pass = audit_i18n_keys(
                 "i18n.sub_dir_second_file.hello_sub_dir_second_file": [
                     "sub_dir/sub_dir_second_file"
                 ],
-                "i18n.test_file.button_aria_label": ["test_file"],
+                "i18n.test_file.form_button_aria_label": ["test_file"],
                 "i18n.test_file.hello_test_file": ["test_file"],
             },
         ),

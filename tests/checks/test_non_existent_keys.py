@@ -60,7 +60,7 @@ all_i18n_used = get_used_i18n_keys()
                 "i18n.sub_dir._global.hello_sub_dir",
                 "i18n.sub_dir_first_file.hello_sub_dir_first_file",
                 "i18n.sub_dir_second_file.hello_sub_dir_second_file",
-                "i18n.test_file.button_aria_label",
+                "i18n.test_file.form_button_aria_label",
                 "i18n.test_file.incorrectly-formatted-key",
                 "i18n.test_file.nested_example",
                 "i18n.test_file.not_in_i18n_source_file",

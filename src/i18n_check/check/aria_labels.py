@@ -13,6 +13,7 @@ Run the following script in terminal:
 >>> i18n-check -al -f  # to fix issues automatically
 """
 
+import string
 import sys
 from typing import Dict
 
@@ -27,7 +28,7 @@ from i18n_check.utils import (
     replace_text_in_file,
 )
 
-# MARK: Core Functions
+# MARK: Find Issues
 
 
 def find_aria_label_punctuation_issues(i18n_src_dict: Dict[str, str]) -> Dict[str, str]:
@@ -47,26 +48,21 @@ def find_aria_label_punctuation_issues(i18n_src_dict: Dict[str, str]) -> Dict[st
     aria_label_issues = {}
 
     for key, value in i18n_src_dict.items():
-        if key.endswith("_aria_label"):
-            # Check if value ends with period, exclamation mark, or question mark
-            # We need to be careful with RTL languages too
-            if isinstance(value, str):
-                # Remove common ending punctuation for both LTR and RTL languages
-                # Common RTL punctuation: Arabic (؟ ؛), Hebrew (? ;)
-                rtl_punctuation = "؟؛"
-                ltr_punctuation = ".!?;:"
-                all_punctuation = ltr_punctuation + rtl_punctuation
+        if isinstance(value, str) and key.endswith("_aria_label"):
+            stripped_value = value.rstrip()
+            if stripped_value and stripped_value[-1] in string.punctuation:
+                # Remove the trailing punctuation.
+                corrected_value = stripped_value.rstrip(string.punctuation)
+                # Preserve any trailing whitespace from original.
+                if value.endswith(" "):
+                    corrected_value += " "
 
-                stripped_value = value.rstrip()
-                if stripped_value and stripped_value[-1] in all_punctuation:
-                    # Remove the trailing punctuation
-                    corrected_value = stripped_value.rstrip(all_punctuation)
-                    # Preserve any trailing whitespace from original
-                    if value.endswith(" "):
-                        corrected_value += " "
-                    aria_label_issues[key] = corrected_value
+                aria_label_issues[key] = corrected_value
 
     return aria_label_issues
+
+
+# MARK: Report Issues
 
 
 def report_and_fix_aria_labels(
@@ -79,6 +75,7 @@ def report_and_fix_aria_labels(
     ----------
     aria_label_issues : Dict[str, str]
         Dictionary mapping keys with issues to their corrected values.
+
     fix : bool, optional
         Whether to automatically fix the issues, by default False.
     """
@@ -88,7 +85,6 @@ def report_and_fix_aria_labels(
         )
         return
 
-    # Report issues
     error_string = "\n[red]❌ aria_labels errors:\n\n"
     for key, corrected_value in aria_label_issues.items():
         current_value = read_json_file(config_i18n_src_file)[key]
@@ -96,8 +92,7 @@ def report_and_fix_aria_labels(
         error_string += f"  Current:   '{current_value}'\n"
         error_string += f"  Suggested: '{corrected_value}'\n\n"
 
-    error_string += "Aria labels should not end with punctuation as it affects screen reader experience."
-    error_string += "[/red]"
+    error_string += "Aria labels should not end with punctuation as it affects screen reader experience.[/red]"
 
     rprint(error_string)
 
@@ -107,16 +102,15 @@ def report_and_fix_aria_labels(
         )
         sys.exit(1)
 
-    # Fix issues if requested
+    # Fix issues if requested.
     if fix:
         json_files = get_all_json_files(config_i18n_directory, path_separator)
 
         for key, corrected_value in aria_label_issues.items():
             current_value = read_json_file(config_i18n_src_file)[key]
 
-            # Replace in all JSON files
             for json_file in json_files:
-                # Replace the full key-value pair in JSON format
+                # Replace the full key-value pair in JSON format.
                 old_pattern = f'"{key}": "{current_value}"'
                 new_pattern = f'"{key}": "{corrected_value}"'
                 replace_text_in_file(path=json_file, old=old_pattern, new=new_pattern)
@@ -127,7 +121,7 @@ def report_and_fix_aria_labels(
         sys.exit(0)
 
 
-# MARK: Main Check Function
+# MARK: Check Function
 
 
 def check_aria_labels(fix: bool = False) -> None:

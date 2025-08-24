@@ -160,7 +160,7 @@ def main() -> None:
         "-al",
         "--aria-labels",
         action="store_true",
-        help="Check for appropriate punctuation in aria label keys.",
+        help="Check for appropriate punctuation in keys that end with '_aria_label'.",
     )
 
     # MARK: Setup CLI
@@ -225,8 +225,10 @@ def main() -> None:
     if args.aria_labels:
         if args.fix:
             check_aria_labels(fix=True)
+
         else:
             run_check("aria_labels")
+
         return
 
     parser.print_help()
