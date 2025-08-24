@@ -95,7 +95,7 @@ def map_keys_to_files(
 # MARK: Reduce Keys
 
 
-def ignore_key(key: str, keys_to_ignore_regex: List[str]) -> bool:
+def _ignore_key(key: str, keys_to_ignore_regex: List[str]) -> bool:
     """
     Derive whether the key being checked is within the patterns to ignore.
 
@@ -151,7 +151,7 @@ def audit_i18n_keys(
         {
             k: v
             for k, v in key_file_dict.items()
-            if not ignore_key(key=k, keys_to_ignore_regex=keys_to_ignore_regex)
+            if not _ignore_key(key=k, keys_to_ignore_regex=keys_to_ignore_regex)
         }
         if keys_to_ignore_regex
         else key_file_dict
