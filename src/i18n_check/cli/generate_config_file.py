@@ -53,7 +53,11 @@ def write_to_file(
                 )
 
             if "keys-to-ignore" in checks[c]:
-                checks_str += f'    keys-to-ignore: "{checks[c]["keys-to-ignore"]}"\n'
+                if isinstance(checks[c]["keys-to-ignore"], list):
+                    keys_list = ", ".join(f'"{key}"' for key in checks[c]["keys-to-ignore"])
+                    checks_str += f"    keys-to-ignore: [{keys_list}]\n"
+                else:
+                    checks_str += f'    keys-to-ignore: "{checks[c]["keys-to-ignore"]}"\n' # backward compatibility for str format
 
         file_types_to_check_str = (
             ", ".join(file_types_to_check) if file_types_to_check else ""
@@ -104,7 +108,7 @@ def receive_data() -> None:
             "active": False,
             "directories-to-skip": [],
             "files-to-skip": [],
-            "keys-to-ignore": "",
+            "keys-to-ignore": [],
         },
         "non_existent_keys": {
             "title": "non existent keys",
@@ -159,10 +163,14 @@ def receive_data() -> None:
             checks[c]["files-to-skip"] = files_to_skip if files_to_skip != "" else []
 
         if "keys-to-ignore" in checks[c]:
-            keys_to_ignore = input(
-                f"Keys to ignore for {checks[c]['title']} (regex pattern) [None]: "
+            keys_to_ignore_input = input(
+                f"Keys to ignore for {checks[c]['title']} (comma-separated regex patterns) [None]: "
             )
-            checks[c]["keys-to-ignore"] = keys_to_ignore if keys_to_ignore != "" else ""
+            if keys_to_ignore_input.strip():
+                patterns = [pattern.strip() for pattern in keys_to_ignore_input.split(",")]
+                checks[c]["keys-to-ignore"] = [p for p in patterns if p]  # filter out empty patterns
+            else:
+                checks[c]["keys-to-ignore"] = []
 
     write_to_file(
         src_dir=src_dir,
