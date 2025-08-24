@@ -5,6 +5,7 @@ Setup and commands for the i18n-check command line interface.
 
 import argparse
 
+from i18n_check.check.aria_labels import check_aria_labels
 from i18n_check.check.invalid_keys import (
     invalid_keys_by_format,
     invalid_keys_by_name,
@@ -44,6 +45,7 @@ def main() -> None:
     - --repeat-keys (-rk): Check for duplicate keys in JSON files
     - --repeat-values (-rv): Check for repeated values in source file
     - --nested-keys (-nk): Check for nested i18n keys
+    - --aria-labels (-al): Check for appropriate punctuation in aria label keys
 
     Examples
     --------
@@ -154,6 +156,13 @@ def main() -> None:
         help="Check for nested i18n source and translation keys.",
     )
 
+    parser.add_argument(
+        "-al",
+        "--aria-labels",
+        action="store_true",
+        help="Check for appropriate punctuation in keys that end with '_aria_label'.",
+    )
+
     # MARK: Setup CLI
 
     args = parser.parse_args()
@@ -211,6 +220,15 @@ def main() -> None:
 
     if args.nested_keys:
         run_check("nested_keys")
+        return
+
+    if args.aria_labels:
+        if args.fix:
+            check_aria_labels(fix=True)
+
+        else:
+            run_check("aria_labels")
+
         return
 
     parser.print_help()

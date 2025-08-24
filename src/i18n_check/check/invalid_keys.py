@@ -9,6 +9,7 @@ Examples
 Run the following script in terminal:
 
 >>> i18n-check -ik
+>>> i18n-check -ik -f  # to fix issues automatically
 """
 
 import re

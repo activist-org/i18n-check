@@ -183,6 +183,14 @@ config_nested_keys_active = config_global_active
 if "nested-keys" in config["checks"] and "active" in config["checks"]["nested-keys"]:
     config_nested_keys_active = config["checks"]["nested-keys"]["active"]
 
+# MARK: Aria Labels
+
+# Note: We don't have skipped files or directories for aria-labels.
+config_aria_labels_active = config_global_active
+
+if "aria-labels" in config["checks"] and "active" in config["checks"]["aria-labels"]:
+    config_aria_labels_active = config["checks"]["aria-labels"]["active"]
+
 # MARK: File Reading
 
 

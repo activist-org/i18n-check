@@ -1,3 +1,4 @@
 {
-  "i18n._global.hello_global": "Hello, global in another language!"
+  "i18n._global.hello_global": "Hello, global in another language!",
+  "i18n.test_file.form_button_aria_label": "Click here to submit the form in another language"
 }

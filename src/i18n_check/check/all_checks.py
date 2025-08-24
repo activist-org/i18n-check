@@ -15,6 +15,7 @@ from concurrent.futures import ProcessPoolExecutor, as_completed
 from rich import print as rprint
 
 from i18n_check.utils import (
+    config_aria_labels_active,
     config_invalid_keys_active,
     config_nested_keys_active,
     config_non_existent_keys_active,
@@ -52,6 +53,7 @@ def run_all_checks() -> None:
     - Repeated key detection
     - Repeated value detection
     - Nested key detection
+    - Aria label punctuation validation
     """
     checks = []
     if config_invalid_keys_active:
@@ -75,6 +77,9 @@ def run_all_checks() -> None:
     if config_nested_keys_active:
         checks.append("nested_keys")
 
+    if config_aria_labels_active:
+        checks.append("aria_labels")
+
     if not (
         config_invalid_keys_active
         and config_non_existent_keys_active
@@ -83,6 +88,7 @@ def run_all_checks() -> None:
         and config_repeat_keys_active
         and config_repeat_values_active
         and config_nested_keys_active
+        and config_aria_labels_active
     ):
         print(
             "Note: Some checks are not enabled in the .i18n-check.yaml configuration file and will be skipped."
