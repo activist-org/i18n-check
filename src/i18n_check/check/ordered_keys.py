@@ -18,7 +18,7 @@ def check_ordered_keys(fix: bool = False, src_dir: str = "i18n-src") -> None:
         Directory path containing JSON files (default is "i18n-src").
     """
     if not os.path.exists(src_dir):
-        print(f"❌ Directory not found: {src_dir}")
+        print(f"  Directory not found: {src_dir}")
         return
 
     for root, _, files in os.walk(src_dir):
@@ -31,12 +31,12 @@ def check_ordered_keys(fix: bool = False, src_dir: str = "i18n-src") -> None:
                     with open(path, encoding="utf-8") as f:
                         data = json.load(f)
                 except Exception as e:
-                    print(f"❌ Failed to read {path}: {e}")
+                    print(f"  Failed to read {path}: {e}")
                     continue
 
                 # Check ordering
                 if not is_ordered(data):
-                    print(f"🔶 Unordered keys found in: {path}")
+                    print(f"  Unordered keys found in: {path}")
 
                     if fix:
                         # Create new ordered dict and overwrite file
@@ -44,8 +44,8 @@ def check_ordered_keys(fix: bool = False, src_dir: str = "i18n-src") -> None:
                         try:
                             with open(path, "w", encoding="utf-8") as f:
                                 json.dump(ordered_data, f, ensure_ascii=False, indent=2)
-                            print(f"✅ Fixed ordering in: {path}")
+                            print(f"  Fixed ordering in: {path}")
                         except Exception as e:
-                            print(f"❌ Failed to write {path}: {e}")
+                            print(f" Failed to write {path}: {e}")
                 else:
-                    print(f"✅ Keys ordered in: {path}")
+                    print(f"Keys ordered in: {path}")
