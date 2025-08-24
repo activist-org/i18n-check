@@ -71,9 +71,9 @@ if "global" in config["checks"]:
 # MARK: Invalid Keys
 
 config_invalid_keys_active = config_global_active
-config_invalid_keys_directories_to_skip = config_global_directories_to_skip
-config_invalid_keys_files_to_skip = config_global_files_to_skip
-config_invalid_keys_regex_to_ignore = ""
+config_invalid_keys_directories_to_skip = config_global_directories_to_skip.copy()
+config_invalid_keys_files_to_skip = config_global_files_to_skip.copy()
+config_invalid_keys_regex_to_ignore = []
 
 if "invalid-keys" in config["checks"]:
     if "active" in config["checks"]["invalid-keys"]:
@@ -90,15 +90,24 @@ if "invalid-keys" in config["checks"]:
         ]
 
     if "keys-to-ignore" in config["checks"]["invalid-keys"]:
-        config_invalid_keys_regex_to_ignore = config["checks"]["invalid-keys"][
-            "keys-to-ignore"
-        ]
+        keys_to_ignore = config["checks"]["invalid-keys"]["keys-to-ignore"]
+
+        if isinstance(keys_to_ignore, str):
+            config_invalid_keys_regex_to_ignore = (
+                [keys_to_ignore] if keys_to_ignore else []
+            )
+
+        elif isinstance(keys_to_ignore, list):
+            config_invalid_keys_regex_to_ignore = keys_to_ignore
+
+        else:
+            config_invalid_keys_regex_to_ignore = []
 
 # MARK: Non-Existent Keys
 
 config_non_existent_keys_active = config_global_active
-config_non_existent_keys_directories_to_skip = config_global_directories_to_skip
-config_non_existent_keys_files_to_skip = config_global_files_to_skip
+config_non_existent_keys_directories_to_skip = config_global_directories_to_skip.copy()
+config_non_existent_keys_files_to_skip = config_global_files_to_skip.copy()
 
 if "non-existent-keys" in config["checks"]:
     if "active" in config["checks"]["non-existent-keys"]:
@@ -149,8 +158,8 @@ if (
 # MARK: Unused Keys
 
 config_unused_keys_active = config_global_active
-config_unused_keys_directories_to_skip = config_global_directories_to_skip
-config_unused_keys_files_to_skip = config_global_files_to_skip
+config_unused_keys_directories_to_skip = config_global_directories_to_skip.copy()
+config_unused_keys_files_to_skip = config_global_files_to_skip.copy()
 
 if "unused-keys" in config["checks"]:
     if "active" in config["checks"]["unused-keys"]:

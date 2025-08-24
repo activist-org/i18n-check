@@ -15,13 +15,15 @@ import re
 import sys
 from collections import defaultdict
 from pathlib import Path
-from typing import Dict, List, Tuple
+from typing import Dict, List, Optional, Tuple
 
 from rich import print as rprint
 
 from i18n_check.utils import (
     collect_files_to_check,
     config_file_types_to_check,
+    config_global_directories_to_skip,
+    config_global_files_to_skip,
     config_i18n_directory,
     config_i18n_src_file,
     config_invalid_keys_directories_to_skip,
@@ -95,9 +97,31 @@ def map_keys_to_files(
 # MARK: Reduce Keys
 
 
+def _ignore_key(key: str, keys_to_ignore_regex: List[str]) -> bool:
+    """
+    Derive whether the key being checked is within the patterns to ignore.
+
+    Parameters
+    ----------
+    key : str
+        The key to that might be ignored if it matches the patterns to skip.
+
+    keys_to_ignore_regex : List[str]
+        A list of regex patterns to match with keys that should be ignored during validation.
+        Keys matching any of these patterns will be skipped during the audit.
+        For backward compatibility, a single string is also accepted and will be converted to a list.
+
+    Returns
+    -------
+    bool
+        Whether the key should be ignored or not in the invalid keys check.
+    """
+    return any(pattern and re.search(pattern, key) for pattern in keys_to_ignore_regex)
+
+
 def audit_i18n_keys(
     key_file_dict: Dict[str, List[str]],
-    keys_to_ignore_regex: str = "",
+    keys_to_ignore_regex: Optional[List[str]] = None,
 ) -> Tuple[List[str], Dict[str, str]]:
     """
     Audit i18n keys for formatting and naming conventions.
@@ -107,9 +131,10 @@ def audit_i18n_keys(
     key_file_dict : Dict[str, List[str]]
         A dictionary where keys are i18n keys and values are lists of file paths where those keys are used.
 
-    keys_to_ignore_regex : str, optional, default=""
-        A regex pattern to match with keys that should be ignored during validation.
-        Keys matching this pattern will be skipped during the audit.
+    keys_to_ignore_regex : List[str], optional, default=None
+        A list of regex patterns to match with keys that should be ignored during validation.
+        Keys matching any of these patterns will be skipped during the audit.
+        For backward compatibility, a single string is also accepted and will be converted to a list.
 
     Returns
     -------
@@ -118,12 +143,17 @@ def audit_i18n_keys(
         - A list of keys that are not formatted correctly.
         - A dictionary mapping keys that are not named correctly to their suggested corrections.
     """
-    # Filter out keys matching the ignore pattern.
+    if keys_to_ignore_regex is None:
+        keys_to_ignore_regex = []
+
+    if isinstance(keys_to_ignore_regex, str):
+        keys_to_ignore_regex = [keys_to_ignore_regex] if keys_to_ignore_regex else []
+
     filtered_key_file_dict = (
         {
             k: v
             for k, v in key_file_dict.items()
-            if not re.search(keys_to_ignore_regex, k)
+            if not _ignore_key(key=k, keys_to_ignore_regex=keys_to_ignore_regex)
         }
         if keys_to_ignore_regex
         else key_file_dict
@@ -280,19 +310,20 @@ Please rename the following {name_key_or_keys} \\[current_key -> suggested_corre
             )
             sys.exit(1)
 
-    files_to_check = collect_files_to_check(
-        directory=config_src_directory,
-        file_types=config_file_types_to_check,
-        directories_to_skip=config_invalid_keys_directories_to_skip,
-        files_to_skip=config_invalid_keys_files_to_skip,
-    )
-
-    json_files = get_all_json_files(config_i18n_directory, path_separator)
-    all_files_to_check = json_files + files_to_check
     if fix and invalid_keys_by_name:
+        files_to_fix = collect_files_to_check(
+            directory=config_src_directory,
+            file_types=config_file_types_to_check,
+            directories_to_skip=config_global_directories_to_skip,
+            files_to_skip=config_global_files_to_skip,
+        )
+
+        json_files = get_all_json_files(config_i18n_directory, path_separator)
+        all_files_to_fix = json_files + files_to_fix
+
         # If incorrect key, replace it with the suggested key and give feedback with the replacement.
         for current, correct in invalid_keys_by_name.items():
-            for f in all_files_to_check:
+            for f in all_files_to_fix:
                 replace_text_in_file(path=f, old=current, new=correct)
 
         sys.exit(1)
