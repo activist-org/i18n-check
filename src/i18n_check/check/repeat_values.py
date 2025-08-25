@@ -13,13 +13,19 @@ Run the following script in terminal:
 
 import sys
 from collections import Counter
-from typing import Dict
+from typing import Dict, List
 
 from rich import print as rprint
 
+from i18n_check.check.invalid_keys import (
+    map_keys_to_files,
+)
 from i18n_check.utils import (
     config_i18n_src_file,
+    config_src_directory,
+    filter_valid_key_parts,
     lower_and_remove_punctuation,
+    path_to_valid_key,
     read_json_file,
 )
 
@@ -74,8 +80,11 @@ def analyze_and_generate_repeat_value_report(
         The updated dictionary of repeat value counts after suggested changes and a report to be added to the error.
     """
     repeat_value_error_report = ""
-
     keys_to_remove = []
+    key_file_dict = map_keys_to_files(
+        i18n_src_dict=i18n_src_dict,
+        src_directory=config_src_directory,
+    )
     for repeat_value in json_repeat_value_counts:
         i18n_keys = [
             k
@@ -87,41 +96,65 @@ def analyze_and_generate_repeat_value_report(
         # Needed as we're removing keys that are set to lowercase above.
         if len(i18n_keys) > 1:
             repeat_value_error_report += (
-                f"\nRepeat value: '{repeat_value}'"
+                f"\n\nRepeat value: '{repeat_value}'"
                 f"\nNumber of instances: : {json_repeat_value_counts[repeat_value]}"
                 f"\nKeys: {', '.join(i18n_keys)}"
             )
 
-            common_prefix = ""
-            min_key_length = min(len(k) for k in i18n_keys)
-            common_character = True
-            while common_character:
-                for i in range(min_key_length):
-                    if len({k[i] for k in i18n_keys}) == 1:
-                        common_prefix += i18n_keys[0][i]
-
-                    else:
-                        common_character = False
-                        break
-
-                common_character = False
-
-            # Replace '._global' to allow for suggestions at the same global level without repeat globals.
-            if common_prefix := ".".join(common_prefix.split(".")[:-1]).replace(
-                "._global", ""
-            ):
-                repeat_value_error_report += (
-                    f"\nSuggested new key: {common_prefix}._global.CONTENT_REFERENCE"
-                )
-
-            else:
-                repeat_value_error_report += (
-                    "\nSuggested new key: i18n._global.CONTENT_REFERENCE"
-                )
-
         else:
             # Remove the key if the repeat is caused by a lowercase word.
             keys_to_remove.append(repeat_value)
+
+        for k in i18n_keys:
+            if k in key_file_dict:
+                # Key is used in one file.
+                if len(key_file_dict[k]) == 1:
+                    formatted_potential_key = path_to_valid_key(key_file_dict[k][0])
+                    potential_key_parts: List[str] = formatted_potential_key.split(".")
+                    # Is the part in the last key part such that it's a parent directory that's included in the file name.
+                    valid_key_parts = filter_valid_key_parts(potential_key_parts)
+
+                    # Get rid of repeat key parts for files that are the same name as their directory.
+                    valid_key_parts = [
+                        p for p in valid_key_parts if valid_key_parts.count(p) == 1
+                    ]
+
+                    ideal_key_base = ".".join(valid_key_parts) + "."
+
+                # Key is used in multiple files.
+                else:
+                    formatted_potential_keys = [
+                        path_to_valid_key(p) for p in key_file_dict[k]
+                    ]
+                    potential_key_parts = [
+                        part for k in formatted_potential_keys for part in k.split(".")
+                    ]
+                    # Match all entries with their counterparts from other valid key parts.
+                    corresponding_valid_key_parts = list(
+                        zip(*(k.split(".") for k in formatted_potential_keys))
+                    )
+                    # Append all parts in order so long as all valid keys share the same part.
+                    extended_key_base = ""
+                    global_added = False
+                    for current_parts in corresponding_valid_key_parts:
+                        if len(set(current_parts)) != 1 and not global_added:
+                            extended_key_base += "_global."
+                            global_added = True
+
+                        if len(set(current_parts)) == 1:
+                            extended_key_base += f"{(current_parts)[0]}."
+                    # Don't include a key part if it's included in the final one (i.e. organizational sub dir).
+                    extended_key_base_split = extended_key_base.split()
+                    valid_key_parts = filter_valid_key_parts(extended_key_base_split)
+
+                    ideal_key_base = ".".join(valid_key_parts)
+
+                ideal_key_base = f"i18n.{ideal_key_base}"
+                if k[: len(ideal_key_base)] != ideal_key_base:
+                    ideal_key = f"{ideal_key_base}{k.split('.')[-1]}"
+                    repeat_value_error_report += (
+                        f"\nSuggested key change: {k} -> {ideal_key}"
+                    )
 
     for k in keys_to_remove:
         json_repeat_value_counts.pop(k, None)
