@@ -1,6 +1,10 @@
 {
   "i18n._global.hello_global": "Hello, global!",
   "i18n._global.hello_global_repeat_value": "hello, global!",
+  "i18n.hello_global_in_single_file": "hello, global single file!",
+  "i18n.hello_global_in_single_file_repeat_value": "hello, global single file!",
+  "i18n.hello_global_in_multiple_files": "hello, global multiple files!",
+  "i18n.hello_global_in_multiple_files_repeat_value": "hello, global multiple files!",
   "i18n._global.repeat_key": "This key is duplicated",
   "i18n._global.repeat_key": "This key is duplicated, but the value is not",
   "i18n._global.unused_i18n_key": "A key that's unused in the project.",
@@ -15,4 +19,5 @@
   },
   "i18n.test_file.repeat_key_lower": "this key is duplicated, but the value is not",
   "i18n.wrong_identifier_path.content_reference": "This key needs to be renamed"
+
 }
