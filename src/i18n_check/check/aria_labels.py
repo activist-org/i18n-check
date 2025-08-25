@@ -1,6 +1,6 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 """
-Checks if aria label keys (ending with _aria_label) have appropriate punctuation.
+Checks if aria label keys (ending with '_aria_label') have appropriate punctuation.
 
 Aria labels should not end with periods as they are read aloud by screen readers
 and ending punctuation can affect the reading experience.
@@ -94,13 +94,13 @@ def report_and_fix_aria_labels(
         error_string += f"  Current:   '{current_value}'\n"
         error_string += f"  Suggested: '{corrected_value}'\n\n"
 
-    error_string += "Aria labels should not end with punctuation as it affects screen reader experience.[/red]"
+    error_string += "[/red][yellow]⚠️ Note: Aria labels should not end with punctuation as it affects screen reader experience.[/yellow]"
 
     rprint(error_string)
 
     if not fix:
         rprint(
-            "\n[yellow]💡 Tip: You can automatically fix aria label punctuation by running the --aria-labels (-al) check with the --fix (-f) flag.[/yellow]\n"
+            "[yellow]💡 Tip: You can automatically fix aria label punctuation by running the --aria-labels (-al) check with the --fix (-f) flag.[/yellow]\n"
         )
         sys.exit(1)
 
@@ -131,7 +131,7 @@ def check_aria_labels(fix: bool = False) -> None:
 
     Parameters
     ----------
-    fix : bool, optional
+    fix : bool, optional, default=False
         Whether to automatically fix issues, by default False.
     """
     i18n_src_dict = read_json_file(file_path=config_i18n_src_file)

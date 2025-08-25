@@ -5,6 +5,7 @@ Setup and commands for the i18n-check command line interface.
 
 import argparse
 
+from i18n_check.check.alt_texts import check_alt_texts
 from i18n_check.check.aria_labels import check_aria_labels
 from i18n_check.check.invalid_keys import (
     invalid_keys_by_format,
@@ -46,6 +47,7 @@ def main() -> None:
     - --repeat-values (-rv): Check for repeated values in source file
     - --nested-keys (-nk): Check for nested i18n keys
     - --aria-labels (-al): Check for appropriate punctuation in aria label keys
+    - --alt-texts (-at): Check for appropriate punctuation in alt text keys
 
     Examples
     --------
@@ -163,6 +165,13 @@ def main() -> None:
         help="Check for appropriate punctuation in keys that end with '_aria_label'.",
     )
 
+    parser.add_argument(
+        "-at",
+        "--alt-texts",
+        action="store_true",
+        help="Check for appropriate punctuation in keys that end with '_alt_text'.",
+    )
+
     # MARK: Setup CLI
 
     args = parser.parse_args()
@@ -228,6 +237,15 @@ def main() -> None:
 
         else:
             run_check("aria_labels")
+
+        return
+
+    if args.alt_texts:
+        if args.fix:
+            check_alt_texts(fix=True)
+
+        else:
+            run_check("alt_texts")
 
         return
 
