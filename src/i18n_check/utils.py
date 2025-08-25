@@ -191,6 +191,14 @@ config_aria_labels_active = config_global_active
 if "aria-labels" in config["checks"] and "active" in config["checks"]["aria-labels"]:
     config_aria_labels_active = config["checks"]["aria-labels"]["active"]
 
+# MARK: Alt Texts
+
+# Note: We don't have skipped files or directories for alt-texts.
+config_alt_texts_active = config_global_active
+
+if "alt-texts" in config["checks"] and "active" in config["checks"]["alt-texts"]:
+    config_alt_texts_active = config["checks"]["alt-texts"]["active"]
+
 # MARK: File Reading
 
 
