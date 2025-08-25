@@ -48,10 +48,9 @@ all_i18n_used = get_used_i18n_keys()
 @pytest.mark.parametrize(
     "used_keys, expected_output",
     [
-        (len(i18n_used_pass), 6),
-        (len(i18n_used_fail), 14),
-        (len(all_i18n_used), 14),
-
+        (len(i18n_used_pass), 7),
+        (len(i18n_used_fail), 15),
+        (len(all_i18n_used), 15),
         (
             i18n_used_fail,
             {
