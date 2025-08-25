@@ -56,8 +56,8 @@ invalid_format_pass, invalid_name_pass = audit_i18n_keys(
 @pytest.mark.parametrize(
     "i18n_map, expected_output",
     [
-        (len(i18n_map_fail), 14),
-        (len(map_keys_to_files()), 14),
+        (len(i18n_map_fail), 13),
+        (len(map_keys_to_files()), 13),
         (
             set(i18n_map_fail["i18n._global.hello_global_repeat_value"]),
             {"test_file", "sub_dir/sub_dir_first_file", "sub_dir/sub_dir_second_file"},
@@ -82,8 +82,7 @@ invalid_format_pass, invalid_name_pass = audit_i18n_keys(
                 ],
                 "i18n.test_file.form_button_aria_label": ["test_file"],
                 "i18n.test_file.hello_test_file": ["test_file"],
-                "i18n.test_file.hero_image_alt_text": ["test_file"],
-                "i18n.test_file.logo_alt_text": ["test_file"],
+                "i18n.test_file.fox_image_alt_text": ["test_file"],
             },
         ),
         (

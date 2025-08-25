@@ -23,7 +23,7 @@ class TestAltTexts(unittest.TestCase):
         """
         self.test_data_with_issues = {
             "i18n.test.image_alt_text": "A beautiful sunset over the mountains",
-            "i18n.test.logo_alt_text": "Company logo for navigation",
+            "i18n.test.fox_image_alt_text": "The quick brown fox jumps over the lazy dog",
             "i18n.test.photo_alt_text": "Team photo from 2024",
             "i18n.test.normal_key": "This is not an alt text.",
             "i18n.test.another_alt_text": "Chart showing sales data.",  # already has period - correct
@@ -32,7 +32,7 @@ class TestAltTexts(unittest.TestCase):
 
         self.test_data_without_issues = {
             "i18n.test.image_alt_text": "A beautiful sunset over the mountains.",
-            "i18n.test.logo_alt_text": "Company logo for navigation.",
+            "i18n.test.fox_image_alt_text": "The quick brown fox jumps over the lazy dog.",
             "i18n.test.photo_alt_text": "Team photo from 2024.",
             "i18n.test.normal_key": "This is not an alt text.",
             "i18n.test.another_alt_text": "Chart showing sales data.",
@@ -46,7 +46,7 @@ class TestAltTexts(unittest.TestCase):
 
         expected_issues = {
             "i18n.test.image_alt_text": "A beautiful sunset over the mountains.",
-            "i18n.test.logo_alt_text": "Company logo for navigation.",
+            "i18n.test.fox_image_alt_text": "The quick brown fox jumps over the lazy dog.",
             "i18n.test.photo_alt_text": "Team photo from 2024.",
             "i18n.test.banner_alt_text": "Welcome banner image.",
         }
@@ -115,7 +115,7 @@ class TestAltTexts(unittest.TestCase):
 
         issues = find_alt_text_punctuation_issues(test_data)
 
-        # Only the text without punctuation should be flagged
+        # Only the text without punctuation should be flagged.
         expected_issues = {
             "i18n.test.no_punctuation_alt_text": "No punctuation.",
         }
@@ -147,7 +147,7 @@ class TestAltTexts(unittest.TestCase):
 
         report_and_fix_alt_texts(issues, fix=False)
 
-        # Check that appropriate error messages were printed
+        # Check that appropriate error messages were printed.
         self.assertEqual(mock_rprint.call_count, 2)
         mock_exit.assert_called_once_with(1)
 
@@ -169,7 +169,7 @@ class TestAltTexts(unittest.TestCase):
 
         report_and_fix_alt_texts(issues, fix=True)
 
-        # Check that the fix was applied
+        # Check that the fix was applied.
         mock_replace.assert_called_once_with(
             path="test_file.json",
             old='"i18n.test.image_alt_text": "A beautiful sunset"',

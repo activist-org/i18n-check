@@ -1,6 +1,6 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 """
-Checks if alt text keys (ending with _alt_text) have appropriate punctuation.
+Checks if alt text keys (ending with '_alt_text') have appropriate punctuation.
 
 Alt texts should end with periods as they provide descriptive content
 that forms complete sentences for screen readers and accessibility tools.
@@ -53,7 +53,7 @@ def find_alt_text_punctuation_issues(i18n_src_dict: Dict[str, str]) -> Dict[str,
         if isinstance(value, str) and key.endswith("_alt_text"):
             stripped_value = value.rstrip()
             if stripped_value and stripped_value[-1] not in punctuation_to_check:
-                corrected_value = stripped_value + "."
+                corrected_value = f"{stripped_value}."
 
                 alt_text_issues[key] = corrected_value
 
@@ -90,13 +90,13 @@ def report_and_fix_alt_texts(
         error_string += f"  Current:   '{current_value}'\n"
         error_string += f"  Suggested: '{corrected_value}'\n\n"
 
-    error_string += "Alt texts should end with periods for proper sentence structure and accessibility.[/red]"
+    error_string += "[/red][yellow]⚠️ Note: Alt texts should end with periods for proper sentence structure and accessibility.[/yellow]"
 
     rprint(error_string)
 
     if not fix:
         rprint(
-            "\n[yellow]💡 Tip: You can automatically fix alt text punctuation by running the --alt-texts (-at) check with the --fix (-f) flag.[/yellow]\n"
+            "[yellow]💡 Tip: You can automatically fix alt text punctuation by running the --alt-texts (-at) check with the --fix (-f) flag.[/yellow]\n"
         )
         sys.exit(1)
 
@@ -127,7 +127,7 @@ def check_alt_texts(fix: bool = False) -> None:
 
     Parameters
     ----------
-    fix : bool, optional
+    fix : bool, optional, default=False
         Whether to automatically fix issues, by default False.
     """
     i18n_src_dict = read_json_file(file_path=config_i18n_src_file)

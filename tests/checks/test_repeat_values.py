@@ -73,7 +73,7 @@ def test_multiple_repeats_with_common_prefix(capsys) -> None:
     )
 
     assert "Repeat value: 'hello global!'" in fail_report
-    assert "Number of instances: : 2" in fail_report
+    assert "Number of instances: 2" in fail_report
     assert "Suggested new key: i18n._global.CONTENT_REFERENCE" in fail_report
 
     # Result remain unchanged (not removed).
