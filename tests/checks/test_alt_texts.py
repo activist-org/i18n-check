@@ -114,7 +114,7 @@ class TestAltTexts(unittest.TestCase):
         }
 
         issues = find_alt_text_punctuation_issues(test_data)
-        
+
         # Only the text without punctuation should be flagged
         expected_issues = {
             "i18n.test.no_punctuation_alt_text": "No punctuation.",
@@ -141,13 +141,9 @@ class TestAltTexts(unittest.TestCase):
         """
         Test reporting issues without fixing them.
         """
-        mock_read_json.return_value = {
-            "i18n.test.image_alt_text": "A beautiful sunset"
-        }
+        mock_read_json.return_value = {"i18n.test.image_alt_text": "A beautiful sunset"}
 
-        issues = {
-            "i18n.test.image_alt_text": "A beautiful sunset."
-        }
+        issues = {"i18n.test.image_alt_text": "A beautiful sunset."}
 
         report_and_fix_alt_texts(issues, fix=False)
 
@@ -160,18 +156,16 @@ class TestAltTexts(unittest.TestCase):
     @patch("i18n_check.check.alt_texts.replace_text_in_file")
     @patch("i18n_check.check.alt_texts.rprint")
     @patch("sys.exit")
-    def test_report_and_fix_issues(self, mock_exit, mock_rprint, mock_replace, mock_read_json, mock_get_files):
+    def test_report_and_fix_issues(
+        self, mock_exit, mock_rprint, mock_replace, mock_read_json, mock_get_files
+    ):
         """
         Test reporting and fixing issues.
         """
-        mock_read_json.return_value = {
-            "i18n.test.image_alt_text": "A beautiful sunset"
-        }
+        mock_read_json.return_value = {"i18n.test.image_alt_text": "A beautiful sunset"}
         mock_get_files.return_value = ["test_file.json"]
 
-        issues = {
-            "i18n.test.image_alt_text": "A beautiful sunset."
-        }
+        issues = {"i18n.test.image_alt_text": "A beautiful sunset."}
 
         report_and_fix_alt_texts(issues, fix=True)
 
@@ -179,7 +173,7 @@ class TestAltTexts(unittest.TestCase):
         mock_replace.assert_called_once_with(
             path="test_file.json",
             old='"i18n.test.image_alt_text": "A beautiful sunset"',
-            new='"i18n.test.image_alt_text": "A beautiful sunset."'
+            new='"i18n.test.image_alt_text": "A beautiful sunset."',
         )
         mock_exit.assert_called_once_with(0)
 
