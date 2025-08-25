@@ -138,6 +138,8 @@ There the following checks can ran across your codebase:
   - Flatten them to make replacing invalid keys easier with find-and-replace all.
 - `aria-labels` (`al`): Do keys that end in `_aria_label` end in punctuation?
   - Remove the punctuation as it negatively affects screen reader experience.
+- `alt-texts` (`at`): Do keys that end in `_alt_text` lack proper punctuation?
+  - Add periods to the end to comply with alt text guidelines.
 
 Directions for how to fix the i18n files are provided when errors are raised. Checks can also be disabled in the workflow via options passed in the configuration YAML file.
 
@@ -186,6 +188,8 @@ checks:
   nested-keys:
     active: true
   aria-labels:
+    active: true
+  alt-texts:
     active: true
 ```
 
