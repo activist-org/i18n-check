@@ -49,8 +49,8 @@ all_i18n_used = get_used_i18n_keys()
     "used_keys, expected_output",
     [
         (len(i18n_used_pass), 6),
-        (len(i18n_used_fail), 12),
-        (len(all_i18n_used), 12),
+        (len(i18n_used_fail), 14),
+        (len(all_i18n_used), 14),
         (
             i18n_used_fail,
             {
@@ -66,6 +66,8 @@ all_i18n_used = get_used_i18n_keys()
                 "i18n.test_file.not_in_i18n_source_file",
                 "i18n.test_file.repeat_key_lower",
                 "i18n.wrong_identifier_path.content_reference",
+                "i18n.hello_global_in_single_file_repeat_value",
+                "i18n.hello_global_in_multiple_files",
             },
         ),
     ],

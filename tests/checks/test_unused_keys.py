@@ -44,7 +44,10 @@ UNUSED_PASS_KEYS = find_unused_keys(
 
 
 def test_find_unused_keys_behavior() -> None:
-    assert UNUSED_FAIL_KEYS == ["i18n._global.unused_i18n_key"]
+    assert UNUSED_FAIL_KEYS == [
+        "i18n.hello_global_in_multiple_files_repeat_value",
+        "i18n._global.unused_i18n_key",
+    ]
     assert UNUSED_PASS_KEYS == []
 
 
@@ -59,7 +62,7 @@ def test_print_unused_keys_fail_raises_value_error(capsys) -> None:
         print_unused_keys(UNUSED_FAIL_KEYS)
 
     output = capsys.readouterr().out
-    assert "❌ unused_keys error: There is 1 i18n key that is unused" in output
+    assert "❌ unused_keys error: There are 2 i18n keys that are unused" in output
     assert "i18n._global.unused_i18n_key" in output
 
 

@@ -56,8 +56,8 @@ invalid_format_pass, invalid_name_pass = audit_i18n_keys(
 @pytest.mark.parametrize(
     "i18n_map, expected_output",
     [
-        (len(i18n_map_fail), 12),
-        (len(map_keys_to_files()), 12),
+        (len(i18n_map_fail), 15),
+        (len(map_keys_to_files()), 15),
         (
             set(i18n_map_fail["i18n._global.hello_global_repeat_value"]),
             {"test_file", "sub_dir/sub_dir_first_file", "sub_dir/sub_dir_second_file"},
@@ -102,7 +102,7 @@ def test_audit_i18n_keys() -> None:
     Test audit_i18n_keys with various scenarios.
     """
     assert invalid_format_pass == []
-    assert len(invalid_name_fail) == 1
+    assert len(invalid_name_fail) == 4
     assert invalid_name_pass == {}
     assert invalid_format_fail == ["i18n.test_file.incorrectly-formatted-key"]
     assert (
@@ -121,9 +121,9 @@ def test_report_and_correct_keys_fail(capsys) -> None:
     output_msg = capsys.readouterr().out
 
     assert "There is 1 i18n key that is not formatted correctly" in output_msg
-    assert "There is 1 i18n key that is not named correctly." in output_msg
+    assert "There are 4 i18n keys that are not named correctly." in output_msg
     assert (
-        "Please rename the following key [current_key -> suggested_correction]:"
+        "Please rename the following keys [current_key -> suggested_correction]:"
         in output_msg
     )
     assert "i18n.wrong_identifier_path.content_reference" in output_msg

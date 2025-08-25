@@ -50,7 +50,12 @@ pass_checks_json = read_json_file(
         # The second value will be filtered out by analyze_and_generate_repeat_value_report.
         (
             fail_checks_json,
-            {"hello global!": 2, "this key is duplicated but the value is not": 2},
+            {
+                "hello global!": 2,
+                "hello global single file!": 2,
+                "hello global multiple files!": 2,
+                "this key is duplicated but the value is not": 2,
+            },
         ),
     ],
 )
@@ -74,10 +79,18 @@ def test_multiple_repeats_with_common_prefix(capsys) -> None:
 
     assert "Repeat value: 'hello global!'" in fail_report
     assert "Number of instances: : 2" in fail_report
-    assert "Suggested new key: i18n._global.CONTENT_REFERENCE" in fail_report
+    assert (
+        "Suggested key change: i18n.hello_global_in_single_file -> i18n.test_file.hello_global_in_single_file"
+        in fail_report
+    )
+    assert "-> i18n.test_file.hello_global_in_single_file_repeat_value" in fail_report
 
     # Result remain unchanged (not removed).
-    assert fail_result == {"hello global!": 2}
+    assert fail_result == {
+        "hello global!": 2,
+        "hello global single file!": 2,
+        "hello global multiple files!": 2,
+    }
     assert pass_result == {}
 
 
@@ -94,7 +107,6 @@ def test_key_with_lower_suffix_ignored(capsys) -> None:
     )
 
     assert "three_lower" not in report
-    assert "Suggested new key" in report
     assert result == {"test": 3}
 
 
