@@ -18,6 +18,7 @@ from i18n_check.utils import (
     config_alt_texts_active,
     config_aria_labels_active,
     config_invalid_keys_active,
+    config_missing_keys_active,
     config_nested_keys_active,
     config_non_existent_keys_active,
     config_non_source_keys_active,
@@ -55,6 +56,7 @@ def run_all_checks() -> None:
     - Repeated value detection
     - Nested key detection
     - Aria label punctuation validation
+    - Missing key detection
     """
     checks = []
     if config_invalid_keys_active:
@@ -84,6 +86,9 @@ def run_all_checks() -> None:
     if config_alt_texts_active:
         checks.append("alt_texts")
 
+    if config_missing_keys_active:
+        checks.append("missing_keys")
+
     if not (
         config_invalid_keys_active
         and config_non_existent_keys_active
@@ -94,6 +99,7 @@ def run_all_checks() -> None:
         and config_nested_keys_active
         and config_aria_labels_active
         and config_alt_texts_active
+        and config_missing_keys_active
     ):
         print(
             "Note: Some checks are not enabled in the .i18n-check.yaml configuration file and will be skipped."

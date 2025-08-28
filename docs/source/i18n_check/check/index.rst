@@ -15,4 +15,5 @@ check/
     nested_keys
     aria_labels
     alt_texts
+    missing_keys
     all_checks

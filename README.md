@@ -1,5 +1,5 @@
 <div align="center">
-  <a href="https://github.com/activist-org/i18n-check"><img src="https://raw.githubusercontent.com/activist-org/i18n-check/main/.github/resources/images/i18nCheckGitHubBanner.png" width=1024 alt="i18n check logo"></a>
+  <a href="https://github.com/activist-org/i18n-check"><img src="https://raw.githubusercontent.com/activist-org/i18n-check/main/.github/resources/i18nCheckGitHubBanner.png" width=1024 alt="i18n check logo"></a>
 </div>
 
 [![rtd](https://img.shields.io/readthedocs/i18n-check.svg?label=%20&logo=read-the-docs&logoColor=ffffff)](http://i18n-check.readthedocs.io/en/latest/)
@@ -140,6 +140,8 @@ There the following checks can ran across your codebase:
   - Remove the punctuation as it negatively affects screen reader experience.
 - `alt-texts` (`at`): Do keys that end in `_alt_text` lack proper punctuation?
   - Add periods to the end to comply with alt text guidelines.
+- `missing-keys` (`mk`): Are any keys from the source file missing in the locale files?
+  - Add the missing keys to ensure all translations are complete. Keys with empty string values are also considered missing.
 
 Directions for how to fix the i18n files are provided when errors are raised. Checks can also be disabled in the workflow via options passed in the configuration YAML file.
 
@@ -191,6 +193,9 @@ checks:
     active: true
   alt-texts:
     active: true
+  missing-keys:
+    active: true
+    locales-to-check: []  # Leave empty to check all locale files, or specify: [fr.json, de.json]
 ```
 
 > [!NOTE]
@@ -238,10 +243,6 @@ The following is an example [pre-commit](https://github.com/pre-commit/pre-commi
       files: ^src-dir/
       entry: i18n-check -a
       language: python
-      pass_filenames: false
-      additional_dependencies:
-        - i18n-check
-        - packaging
 ```
 
 <a id="contributing"></a>

@@ -123,6 +123,8 @@ There the following checks can ran across your codebase:
     - Remove the punctuation as it negatively affects screen reader experience.
 - ``alt-texts`` (``at``): Do keys that end in ``_alt_text`` lack proper punctuation?
     - Add periods to the end to comply with alt text guidelines.
+- ``missing-keys`` (``mk``): Are any keys from the source file missing in the locale files?
+    - Add the missing keys to ensure all translations are complete. Keys with empty string values are also considered missing.
 
 Directions for how to fix the i18n files are provided when errors are raised. Checks can also be disabled in the workflow via options passed in the configuration YAML file.
 
