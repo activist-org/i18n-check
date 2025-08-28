@@ -243,6 +243,10 @@ The following is an example [pre-commit](https://github.com/pre-commit/pre-commi
       files: ^src-dir/
       entry: i18n-check -a
       language: python
+      pass_filenames: false
+      additional_dependencies:
+        - i18n-check
+        - packaging
 ```
 
 <a id="contributing"></a>
