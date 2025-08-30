@@ -136,6 +136,7 @@ There the following checks can ran across your codebase:
   - Combine them so the localization team only needs to localize one of them.
 - `nested-keys` (`nk`): Do the i18n files contain nested JSON structures?
   - Flatten them to make replacing invalid keys easier with find-and-replace all.
+- Conflict
 - `aria-labels` (`al`): Do keys that end in `_aria_label` end in punctuation?
   - Remove the punctuation as it negatively affects screen reader experience.
 - `alt-texts` (`at`): Do keys that end in `_alt_text` lack proper punctuation?
