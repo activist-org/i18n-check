@@ -136,12 +136,13 @@ There the following checks can ran across your codebase:
   - Combine them so the localization team only needs to localize one of them.
 - `nested-keys` (`nk`): Do the i18n files contain nested JSON structures?
   - Flatten them to make replacing invalid keys easier with find-and-replace all.
+- `missing-keys` (`mk`): Are any keys from the source file missing in the locale files?
+  - Add the missing keys to ensure all translations are complete.
+  - Keys with empty string values are also considered missing.
 - `aria-labels` (`al`): Do keys that end in `_aria_label` end in punctuation?
   - Remove the punctuation as it negatively affects screen reader experience.
 - `alt-texts` (`at`): Do keys that end in `_alt_text` lack proper punctuation?
   - Add periods to the end to comply with alt text guidelines.
-- `missing-keys` (`mk`): Are any keys from the source file missing in the locale files?
-  - Add the missing keys to ensure all translations are complete. Keys with empty string values are also considered missing.
 
 Directions for how to fix the i18n files are provided when errors are raised. Checks can also be disabled in the workflow via options passed in the configuration YAML file.
 
@@ -189,13 +190,13 @@ checks:
     active: true
   nested-keys:
     active: true
+  missing-keys:
+    active: true
+    locales-to-check: [] # iso codes, or leave empty to check all
   aria-labels:
     active: true
   alt-texts:
     active: true
-  missing-keys:
-    active: true
-    locales-to-check: []  # Leave empty to check all locale files, or specify: [fr.json, de.json]
 ```
 
 > [!NOTE]

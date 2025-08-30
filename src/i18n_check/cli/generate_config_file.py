@@ -191,12 +191,13 @@ def receive_data() -> None:
 
         if "locales-to-check" in checks[c]:
             locales_to_check = input(
-                f"Locale files to check for {checks[c]['title']} (comma-separated, e.g., fr.json,de.json) [All]: "
+                f"Locales to check for {checks[c]['title']} (comma-separated, e.g., fr, de) [All]: "
             )
             if locales_to_check.strip():
                 checks[c]["locales-to-check"] = [
                     locale.strip() for locale in locales_to_check.split(",")
                 ]
+
             else:
                 checks[c]["locales-to-check"] = []
 

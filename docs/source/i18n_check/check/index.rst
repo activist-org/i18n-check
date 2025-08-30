@@ -13,7 +13,7 @@ check/
     repeat_values
     repeat_keys
     nested_keys
+    missing_keys
     aria_labels
     alt_texts
-    missing_keys
     all_checks

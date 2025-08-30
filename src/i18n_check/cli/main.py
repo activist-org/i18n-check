@@ -46,9 +46,9 @@ def main() -> None:
     - --repeat-keys (-rk): Check for duplicate keys in JSON files
     - --repeat-values (-rv): Check for repeated values in source file
     - --nested-keys (-nk): Check for nested i18n keys
+    - --missing-keys (-mk): Check for missing keys in locale files
     - --aria-labels (-al): Check for appropriate punctuation in aria label keys
     - --alt-texts (-at): Check for appropriate punctuation in alt text keys
-    - --missing-keys (-mk): Check for missing keys in locale files
 
     Examples
     --------
@@ -239,6 +239,10 @@ def main() -> None:
         run_check("nested_keys")
         return
 
+    if args.missing_keys:
+        run_check("missing_keys")
+        return
+
     if args.aria_labels:
         if args.fix:
             check_aria_labels(fix=True)
@@ -255,10 +259,6 @@ def main() -> None:
         else:
             run_check("alt_texts")
 
-        return
-
-    if args.missing_keys:
-        run_check("missing_keys")
         return
 
     parser.print_help()

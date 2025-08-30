@@ -92,8 +92,8 @@ class TestGenerateConfigFile(unittest.TestCase):
             "y",  # repeat_keys
             "n",  # repeat_values
             "y",  # nested_keys
-            "y", # missing_keys
-            "",   # locales-to-check
+            "y",  # missing_keys
+            "",  # locales-to-check
         ]
 
         receive_data()
@@ -135,8 +135,8 @@ class TestGenerateConfigFile(unittest.TestCase):
             "missing_keys": {
                 "title": "missing keys",
                 "active": True,
-                "locales-to-check": []
-            }
+                "locales-to-check": [],
+            },
         }
         self.assertEqual(kwargs["checks"], expected_checks)
 

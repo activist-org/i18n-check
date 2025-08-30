@@ -65,24 +65,26 @@ def get_missing_keys_by_locale(
     for json_file in get_all_json_files(i18n_directory, path_separator):
         filename = json_file.split(path_separator)[-1]
 
-        # Skip the source file itself
+        # Skip the source file itself.
         if filename == str(config_i18n_src_file).split(path_separator)[-1]:
             continue
 
-        # Skip if locales_to_check is specified and this file isn't in the list
+        # Skip if locales_to_check is specified and this file isn't in the list.
         if locales_to_check and filename not in locales_to_check:
             continue
 
         locale_dict = read_json_file(file_path=json_file)
         locale_keys = set(locale_dict.keys())
 
-        # Find keys that are missing or have empty string values
+        # Find keys that are missing or have empty string values.
         missing_keys = []
-        for key in all_src_keys:
-            if key not in locale_keys or locale_dict.get(key) == "":
-                missing_keys.append(key)
+        missing_keys.extend(
+            key
+            for key in all_src_keys
+            if key not in locale_keys or locale_dict.get(key) == ""
+        )
 
-        # Calculate the percentage of missing keys
+        # Calculate the percentage of missing keys.
         if all_src_keys:
             missing_percentage = (len(missing_keys) / len(all_src_keys)) * 100
         else:
@@ -119,20 +121,19 @@ def report_missing_keys(
     if missing_keys_by_locale:
         error_message = (
             "\n[red]❌ missing_keys error: There are locale files with missing keys. "
+            "Keys are considered missing if they don't exist or have empty string values.\n\n"
         )
-        error_message += "Keys are considered missing if they don't exist or have empty string values.\n\n"
 
-        # Report missing keys for each locale
+        # Report missing keys for each locale.
         for locale_file, (missing_keys, percentage) in missing_keys_by_locale.items():
             error_message += f"Missing keys in {locale_file} ({len(missing_keys)} keys, {percentage:.1f}% missing):\n"
             for key in missing_keys:
                 error_message += f"  - {key}\n"
             error_message += "\n"
 
-        # Summary at the bottom
         error_message += "Summary of missing keys by locale:\n"
         for locale_file, (missing_keys, percentage) in missing_keys_by_locale.items():
-            error_message += f"  {locale_file}: {percentage:.1f}% missing ({len(missing_keys)} of {len(i18n_src_dict)} keys)\n"
+            error_message += f"  {locale_file}: {percentage:.1f}% missing\n"
 
         error_message += "[/red]"
         rprint(error_message)
