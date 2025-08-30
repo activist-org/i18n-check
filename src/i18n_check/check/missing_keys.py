@@ -63,7 +63,8 @@ def get_missing_keys_by_locale(
     missing_keys_by_locale = {}
 
     for json_file in get_all_json_files(i18n_directory, path_separator):
-        filename = json_file.split(path_separator)[-1]
+        # Get just the filename without the extension.
+        filename = json_file.split(path_separator)[-1].split(".")[0]
 
         # Skip the source file itself.
         if filename == str(config_i18n_src_file).split(path_separator)[-1]:
@@ -87,6 +88,7 @@ def get_missing_keys_by_locale(
         # Calculate the percentage of missing keys.
         if all_src_keys:
             missing_percentage = (len(missing_keys) / len(all_src_keys)) * 100
+
         else:
             missing_percentage = 0.0
 
@@ -129,6 +131,7 @@ def report_missing_keys(
             error_message += f"Missing keys in {locale_file} ({len(missing_keys)} keys, {percentage:.1f}% missing):\n"
             for key in missing_keys:
                 error_message += f"  - {key}\n"
+
             error_message += "\n"
 
         error_message += "Summary of missing keys by locale:\n"

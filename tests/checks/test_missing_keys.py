@@ -50,9 +50,9 @@ def test_get_missing_keys_by_locale_fail() -> None:
     """
     Test get_missing_keys_by_locale for the failing test case.
     """
-    assert "test_i18n_locale.json" in missing_keys_fail
+    assert "test_i18n_locale" in missing_keys_fail
 
-    missing_keys, percentage = missing_keys_fail["test_i18n_locale.json"]
+    missing_keys, percentage = missing_keys_fail["test_i18n_locale"]
 
     # The failing locale file has some keys missing and some with empty values.
     expected_missing = [
@@ -98,7 +98,7 @@ def test_get_missing_keys_by_locale_with_specific_locales() -> None:
     result = get_missing_keys_by_locale(
         i18n_src_dict=pass_checks_json,
         i18n_directory=pass_dir,
-        locales_to_check=["test_i18n_locale.json"],
+        locales_to_check=["test_i18n_locale"],
     )
     assert result == {}
 
@@ -122,7 +122,7 @@ def test_report_missing_keys_fail(capsys) -> None:
 
     output_msg = capsys.readouterr().out
     assert "missing_keys error:" in output_msg
-    assert "test_i18n_locale.json" in output_msg
+    assert "test_i18n_locale" in output_msg
     assert "Summary of missing keys by locale:" in output_msg
     assert "%" in output_msg
 
@@ -132,7 +132,7 @@ def test_empty_string_values_detected() -> None:
     Test that keys with empty string values are detected as missing.
     """
     # In the failing test frontend, these keys have empty values.
-    missing_keys, _ = missing_keys_fail["test_i18n_locale.json"]
+    missing_keys, _ = missing_keys_fail["test_i18n_locale"]
 
     assert "i18n.sub_dir_first_file.hello_sub_dir_first_file" in missing_keys
     assert "i18n.test_file.hello_test_file" in missing_keys
