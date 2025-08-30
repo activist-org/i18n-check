@@ -131,7 +131,7 @@ class TestAltTexts(unittest.TestCase):
         report_and_fix_alt_texts({}, fix=False)
 
         mock_rprint.assert_called_once_with(
-            "\n[green]✅ alt_texts: All alt text keys have appropriate punctuation.[/green]\n"
+            "[green]✅ alt_texts: All alt text keys have appropriate punctuation.[/green]"
         )
 
     @patch("i18n_check.check.alt_texts.read_json_file")

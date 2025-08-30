@@ -93,7 +93,7 @@ class TestAriaLabels(unittest.TestCase):
         report_and_fix_aria_labels({}, fix=False)
 
         mock_rprint.assert_called_once_with(
-            "\n[green]✅ aria_labels: All aria label keys have appropriate punctuation.[/green]\n"
+            "[green]✅ aria_labels: All aria label keys have appropriate punctuation.[/green]"
         )
 
     @patch("i18n_check.check.aria_labels.read_json_file")

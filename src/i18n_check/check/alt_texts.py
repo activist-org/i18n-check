@@ -79,7 +79,7 @@ def report_and_fix_alt_texts(
     """
     if not alt_text_issues:
         rprint(
-            "\n[green]✅ alt_texts: All alt text keys have appropriate punctuation.[/green]\n"
+            "[green]✅ alt_texts: All alt text keys have appropriate punctuation.[/green]"
         )
         return
 

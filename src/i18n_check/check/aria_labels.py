@@ -83,7 +83,7 @@ def report_and_fix_aria_labels(
     """
     if not aria_label_issues:
         rprint(
-            "\n[green]✅ aria_labels: All aria label keys have appropriate punctuation.[/green]\n"
+            "[green]✅ aria_labels: All aria label keys have appropriate punctuation.[/green]"
         )
         return
 

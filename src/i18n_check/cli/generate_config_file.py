@@ -64,6 +64,9 @@ def write_to_file(
                         f'    keys-to-ignore: "{checks[c]["keys-to-ignore"]}"\n'
                     )
 
+            if "locales-to-check" in checks[c]:
+                checks_str += f"    locales-to-check: [{', '.join(checks[c]['locales-to-check'])}]\n"
+
         file_types_to_check_str = (
             ", ".join(file_types_to_check) if file_types_to_check else ""
         )
@@ -131,6 +134,11 @@ def receive_data() -> None:
         "repeat_keys": {"title": "repeat keys", "active": False},
         "repeat_values": {"title": "repeat values", "active": False},
         "nested_keys": {"title": "nested keys", "active": False},
+        "missing_keys": {
+            "title": "missing keys",
+            "active": False,
+            "locales-to-check": [],
+        },
     }
 
     for c, v in checks.items():
@@ -180,6 +188,18 @@ def receive_data() -> None:
 
             else:
                 checks[c]["keys-to-ignore"] = []
+
+        if "locales-to-check" in checks[c]:
+            locales_to_check = input(
+                f"Locales to check for {checks[c]['title']} (comma-separated, e.g., fr, de) [All]: "
+            )
+            if locales_to_check.strip():
+                checks[c]["locales-to-check"] = [
+                    locale.strip() for locale in locales_to_check.split(",")
+                ]
+
+            else:
+                checks[c]["locales-to-check"] = []
 
     write_to_file(
         src_dir=src_dir,
