@@ -17,8 +17,11 @@ from typing import Dict
 
 from rich import print as rprint
 
+from i18n_check.check.invalid_keys import audit_i18n_keys, map_keys_to_files
 from i18n_check.utils import (
     config_i18n_src_file,
+    config_invalid_key_regexes_to_ignore,
+    config_src_directory,
     lower_and_remove_punctuation,
     read_json_file,
 )
@@ -87,37 +90,32 @@ def analyze_and_generate_repeat_value_report(
         # Needed as we're removing keys that are set to lowercase above.
         if len(i18n_keys) > 1:
             repeat_value_error_report += (
-                f"\nRepeat value: '{repeat_value}'"
-                f"\nNumber of instances: {json_repeat_value_counts[repeat_value]}"
+                f"\n\nRepeat value: '{repeat_value}'"
+                f"\nNumber of instances: {len(i18n_keys)}"
                 f"\nKeys: {', '.join(i18n_keys)}"
             )
 
-            common_prefix = ""
-            min_key_length = min(len(k) for k in i18n_keys)
-            common_character = True
-            while common_character:
-                for i in range(min_key_length):
-                    if len({k[i] for k in i18n_keys}) == 1:
-                        common_prefix += i18n_keys[0][i]
+            # Use the methods from the invalid keys check to assure that results are consistent.
+            repeat_value_key_file_dict = map_keys_to_files(
+                i18n_src_dict={
+                    k: v for k, v in i18n_src_dict.items() if k in i18n_keys
+                },
+                src_directory=config_src_directory,
+            )
 
-                    else:
-                        common_character = False
-                        break
+            # Replace with 'repeat_key' as a dummy for if this was the key in all files.
+            _, invalid_keys_by_name = audit_i18n_keys(
+                key_file_dict={
+                    "repeat_key": v for k, v in repeat_value_key_file_dict.items()
+                },
+                keys_to_ignore_regex=config_invalid_key_regexes_to_ignore,
+            )
 
-                common_character = False
-
-            # Replace '._global' to allow for suggestions at the same global level without repeat globals.
-            if common_prefix := ".".join(common_prefix.split(".")[:-1]).replace(
-                "._global", ""
-            ):
-                repeat_value_error_report += (
-                    f"\nSuggested new key: {common_prefix}._global.CONTENT_REFERENCE"
-                )
-
-            else:
-                repeat_value_error_report += (
-                    "\nSuggested new key: i18n._global.CONTENT_REFERENCE"
-                )
+            # Remove dummy value and add 'CONTENT_REFERENCE' for user to replace.
+            valid_key_stub_based_on_files = invalid_keys_by_name["repeat_key"].replace(
+                ".repeat_key", ""
+            )
+            repeat_value_error_report += f"\nSuggested new key: {valid_key_stub_based_on_files}.CONTENT_REFERENCE"
 
         else:
             # Remove the key if the repeat is caused by a lowercase word.
@@ -166,7 +164,7 @@ def validate_repeat_values(
             value_or_values = "values"
 
         error_message = "\n[red]"
-        error_message += f"❌ repeat_values error: There {is_or_are} {len(json_repeat_value_counts)} repeat i18n {value_or_values} present in the i18n source file. Please follow the directions below to combine {it_or_them} into one key:\n"
+        error_message += f"❌ repeat_values error: There {is_or_are} {len(json_repeat_value_counts)} repeat i18n {value_or_values} present in the i18n source file. Please follow the directions below to combine {it_or_them} into one key:"
         error_message += repeat_value_error_report
         error_message += "[/red]"
 

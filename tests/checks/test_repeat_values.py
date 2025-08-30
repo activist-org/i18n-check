@@ -50,7 +50,12 @@ pass_checks_json = read_json_file(
         # The second value will be filtered out by analyze_and_generate_repeat_value_report.
         (
             fail_checks_json,
-            {"hello global!": 2, "this key is duplicated but the value is not": 2},
+            {
+                "hello global!": 2,
+                "hello single file!": 2,
+                "hello multiple files!": 2,
+                "this key is duplicated but the value is not": 2,
+            },
         ),
     ],
 )
@@ -74,18 +79,26 @@ def test_multiple_repeats_with_common_prefix(capsys) -> None:
 
     assert "Repeat value: 'hello global!'" in fail_report
     assert "Number of instances: 2" in fail_report
+    assert (
+        "Keys: i18n._global.hello_global, i18n._global.repeat_value_hello_global"
+        in fail_report
+    )
     assert "Suggested new key: i18n._global.CONTENT_REFERENCE" in fail_report
 
     # Result remain unchanged (not removed).
-    assert fail_result == {"hello global!": 2}
+    assert fail_result == {
+        "hello global!": 2,
+        "hello single file!": 2,
+        "hello multiple files!": 2,
+    }
     assert pass_result == {}
 
 
 def test_key_with_lower_suffix_ignored(capsys) -> None:
     i18n_src_dict = {
-        "one.lower": "Test",
-        "two.lower": "Test",
-        "three_lower": "Test",
+        "i18n.repeat_value_multiple_files": "Test",
+        "i18n.repeat_value_single_file": "Test",
+        "i18n.test_file.repeat_key_lower": "Test",
     }
     json_repeat_value_counts = {"test": 3}
 
@@ -93,9 +106,13 @@ def test_key_with_lower_suffix_ignored(capsys) -> None:
         i18n_src_dict, json_repeat_value_counts.copy()
     )
 
-    assert "three_lower" not in report
-    assert "Suggested new key" in report
-    assert result == {"test": 3}
+    assert "i18n.test_file.repeat_key_lower" not in report
+    assert "Number of instances: 2" in report
+    assert (
+        "Keys: i18n.repeat_value_multiple_files, i18n.repeat_value_single_file"
+        in report
+    )
+    assert "Suggested new key: i18n.test_file.CONTENT_REFERENCE" in report
 
 
 def test_validate_repeat_values_behavior(capsys) -> None:

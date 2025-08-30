@@ -27,8 +27,11 @@ fail_checks_json = read_json_file(
 i18n_map_fail = map_keys_to_files(
     i18n_src_dict=fail_checks_json, src_directory=fail_dir
 )
+
 fail_checks_json_path = fail_dir / "test_i18n" / "test_i18n_src.json"
 fail_checks_test_file_path = fail_dir / "test_file.ts"
+fail_checks_sub_dir_first_file_path = fail_dir / "sub_dir" / "sub_dir_first_file.ts"
+fail_checks_sub_dir_second_file_path = fail_dir / "sub_dir" / "sub_dir_second_file.ts"
 
 invalid_format_fail, invalid_name_fail = audit_i18n_keys(
     key_file_dict=i18n_map_fail, keys_to_ignore_regex=""
@@ -56,10 +59,10 @@ invalid_format_pass, invalid_name_pass = audit_i18n_keys(
 @pytest.mark.parametrize(
     "i18n_map, expected_output",
     [
-        (len(i18n_map_fail), 13),
-        (len(map_keys_to_files()), 13),
+        (len(i18n_map_fail), 15),
+        (len(map_keys_to_files()), 15),
         (
-            set(i18n_map_fail["i18n._global.hello_global_repeat_value"]),
+            set(i18n_map_fail["i18n._global.repeat_value_hello_global"]),
             {"test_file", "sub_dir/sub_dir_first_file", "sub_dir/sub_dir_second_file"},
         ),
         (
@@ -103,7 +106,7 @@ def test_audit_i18n_keys() -> None:
     Test audit_i18n_keys with various scenarios.
     """
     assert invalid_format_pass == []
-    assert len(invalid_name_fail) == 1
+    assert len(invalid_name_fail) == 3
     assert invalid_name_pass == {}
     assert invalid_format_fail == ["i18n.test_file.incorrectly-formatted-key"]
     assert (
@@ -122,9 +125,9 @@ def test_report_and_correct_keys_fail(capsys) -> None:
     output_msg = capsys.readouterr().out
 
     assert "There is 1 i18n key that is not formatted correctly" in output_msg
-    assert "There is 1 i18n key that is not named correctly." in output_msg
+    assert "There are 3 i18n keys that are not named correctly." in output_msg
     assert (
-        "Please rename the following key [current_key -> suggested_correction]:"
+        "Please rename the following keys [current_key -> suggested_correction]:"
         in output_msg
     )
     assert "i18n.wrong_identifier_path.content_reference" in output_msg
@@ -173,6 +176,40 @@ def test_report_and_correct_keys_fail_fix_mode(capsys):
         path=fail_checks_test_file_path,
         old="i18n.test_file.content_reference",
         new="i18n.wrong_identifier_path.content_reference",
+    )
+
+    # Repeat value keys as well:
+    replace_text_in_file(
+        path=fail_checks_json_path,
+        old="i18n._global.repeat_value_multiple_files",
+        new="i18n.repeat_value_multiple_files",
+    )
+    replace_text_in_file(
+        path=fail_checks_json_path,
+        old="i18n.test_file.repeat_value_single_file",
+        new="i18n.repeat_value_single_file",
+    )
+
+    replace_text_in_file(
+        path=fail_checks_test_file_path,
+        old="i18n._global.repeat_value_multiple_files",
+        new="i18n.repeat_value_multiple_files",
+    )
+    replace_text_in_file(
+        path=fail_checks_sub_dir_first_file_path,
+        old="i18n._global.repeat_value_multiple_files",
+        new="i18n.repeat_value_multiple_files",
+    )
+    replace_text_in_file(
+        path=fail_checks_sub_dir_second_file_path,
+        old="i18n._global.repeat_value_multiple_files",
+        new="i18n.repeat_value_multiple_files",
+    )
+
+    replace_text_in_file(
+        path=fail_checks_test_file_path,
+        old="i18n.test_file.repeat_value_single_file",
+        new="i18n.repeat_value_single_file",
     )
 
 

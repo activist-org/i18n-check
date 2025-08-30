@@ -18,6 +18,11 @@ Emojis for the following are chosen based on [gitmoji](https://gitmoji.dev/).
 - The user can now ignore certain regex patterns in their i18n keys within the invalid keys check ([#52](https://github.com/activist-org/i18n-check/issues/52), [#58](https://github.com/activist-org/i18n-check/issues/58)).
 - In the invalid keys check the `--fix` option now uses just the global directories and files to skip to assure that all instances of keys are replaced even if their locations should not be factored into the names of the key ([#59](https://github.com/activist-org/i18n-check/issues/59)).
 
+### 🐞 Bug Fixes
+
+- Fixed an issue where the repeat values check was providing a suggestion for the new key that was sometimes invalid when checked against the invalid keys check when the key was used in multiple files ([#50](https://github.com/activist-org/i18n-check/issues/50)).
+- Fixed a bug where repeat values with `_lower` at the end of their keys were not being removed from the count of repeats for value.
+
 ## i18n-check 1.8.1
 
 ### ✨ Features

@@ -56,9 +56,13 @@ def test_get_missing_keys_by_locale_fail() -> None:
 
     # The failing locale file has some keys missing and some with empty values.
     expected_missing = [
-        "i18n._global.hello_global_repeat_value",
         "i18n._global.repeat_key",
+        "i18n._global.repeat_value_hello_global",
         "i18n._global.unused_i18n_key",
+        "i18n.repeat_value_multiple_files",
+        "i18n.repeat_value_multiple_files_repeat",
+        "i18n.repeat_value_single_file",
+        "i18n.repeat_value_single_file_repeat",
         "i18n.sub_dir._global.hello_sub_dir",
         "i18n.sub_dir_first_file.hello_sub_dir_first_file",  # has empty value
         "i18n.sub_dir_second_file.hello_sub_dir_second_file",

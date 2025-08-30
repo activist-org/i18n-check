@@ -27,9 +27,9 @@ from i18n_check.utils import (
     config_global_files_to_skip,
     config_i18n_directory,
     config_i18n_src_file,
+    config_invalid_key_regexes_to_ignore,
     config_invalid_keys_directories_to_skip,
     config_invalid_keys_files_to_skip,
-    config_invalid_keys_regex_to_ignore,
     config_src_directory,
     filter_valid_key_parts,
     get_all_json_files,
@@ -336,7 +336,7 @@ key_file_dict = map_keys_to_files(
 )
 invalid_keys_by_format, invalid_keys_by_name = audit_i18n_keys(
     key_file_dict=key_file_dict,
-    keys_to_ignore_regex=config_invalid_keys_regex_to_ignore,
+    keys_to_ignore_regex=config_invalid_key_regexes_to_ignore,
 )
 
 if __name__ == "__main__":
