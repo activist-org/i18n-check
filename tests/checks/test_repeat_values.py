@@ -83,7 +83,7 @@ def test_multiple_repeats_with_common_prefix(capsys) -> None:
         "Suggested key change: i18n.hello_global_in_single_file -> i18n.test_file.hello_global_in_single_file"
         in fail_report
     )
-    assert "-> i18n.test_file.hello_global_in_single_file_repeat_value" in fail_report
+    assert "-> i18n.test_file._repeat_value_single_file_value" in fail_report
 
     # Result remain unchanged (not removed).
     assert fail_result == {

@@ -45,7 +45,7 @@ UNUSED_PASS_KEYS = find_unused_keys(
 
 def test_find_unused_keys_behavior() -> None:
     assert UNUSED_FAIL_KEYS == [
-        "i18n.hello_global_in_multiple_files_repeat_value",
+        "i18n.repeat_value_multiple_files_repeat",
         "i18n._global.unused_i18n_key",
     ]
     assert UNUSED_PASS_KEYS == []
