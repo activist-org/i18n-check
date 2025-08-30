@@ -78,12 +78,11 @@ def get_missing_keys_by_locale(
         locale_keys = set(locale_dict.keys())
 
         # Find keys that are missing or have empty string values.
-        missing_keys = []
-        missing_keys.extend(
+        missing_keys = [
             key
             for key in all_src_keys
             if key not in locale_keys or locale_dict.get(key) == ""
-        )
+        ]
 
         # Calculate the percentage of missing keys.
         if all_src_keys:
