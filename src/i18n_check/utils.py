@@ -183,6 +183,20 @@ config_nested_keys_active = config_global_active
 if "nested-keys" in config["checks"] and "active" in config["checks"]["nested-keys"]:
     config_nested_keys_active = config["checks"]["nested-keys"]["active"]
 
+# MARK: Missing Keys
+
+config_missing_keys_active = config_global_active
+config_missing_keys_locales_to_check = []
+
+if "missing-keys" in config["checks"]:
+    if "active" in config["checks"]["missing-keys"]:
+        config_missing_keys_active = config["checks"]["missing-keys"]["active"]
+
+    if "locales-to-check" in config["checks"]["missing-keys"]:
+        config_missing_keys_locales_to_check = config["checks"]["missing-keys"][
+            "locales-to-check"
+        ]
+
 # MARK: Aria Labels
 
 # Note: We don't have skipped files or directories for aria-labels.

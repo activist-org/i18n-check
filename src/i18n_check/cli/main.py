@@ -46,6 +46,7 @@ def main() -> None:
     - --repeat-keys (-rk): Check for duplicate keys in JSON files
     - --repeat-values (-rv): Check for repeated values in source file
     - --nested-keys (-nk): Check for nested i18n keys
+    - --missing-keys (-mk): Check for missing keys in locale files
     - --aria-labels (-al): Check for appropriate punctuation in aria label keys
     - --alt-texts (-at): Check for appropriate punctuation in alt text keys
 
@@ -172,6 +173,13 @@ def main() -> None:
         help="Check for appropriate punctuation in keys that end with '_alt_text'.",
     )
 
+    parser.add_argument(
+        "-mk",
+        "--missing-keys",
+        action="store_true",
+        help="Check for missing keys in locale files compared to the source file.",
+    )
+
     # MARK: Setup CLI
 
     args = parser.parse_args()
@@ -229,6 +237,10 @@ def main() -> None:
 
     if args.nested_keys:
         run_check("nested_keys")
+        return
+
+    if args.missing_keys:
+        run_check("missing_keys")
         return
 
     if args.aria_labels:

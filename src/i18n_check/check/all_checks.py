@@ -18,6 +18,7 @@ from i18n_check.utils import (
     config_alt_texts_active,
     config_aria_labels_active,
     config_invalid_keys_active,
+    config_missing_keys_active,
     config_nested_keys_active,
     config_non_existent_keys_active,
     config_non_source_keys_active,
@@ -54,7 +55,9 @@ def run_all_checks() -> None:
     - Repeated key detection
     - Repeated value detection
     - Nested key detection
+    - Missing key detection
     - Aria label punctuation validation
+    - Alt text punctuation validation
     """
     checks = []
     if config_invalid_keys_active:
@@ -78,6 +81,9 @@ def run_all_checks() -> None:
     if config_nested_keys_active:
         checks.append("nested_keys")
 
+    if config_missing_keys_active:
+        checks.append("missing_keys")
+
     if config_aria_labels_active:
         checks.append("aria_labels")
 
@@ -92,6 +98,7 @@ def run_all_checks() -> None:
         and config_repeat_keys_active
         and config_repeat_values_active
         and config_nested_keys_active
+        and config_missing_keys_active
         and config_aria_labels_active
         and config_alt_texts_active
     ):
