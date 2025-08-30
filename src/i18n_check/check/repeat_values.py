@@ -91,7 +91,7 @@ def analyze_and_generate_repeat_value_report(
         if len(i18n_keys) > 1:
             repeat_value_error_report += (
                 f"\n\nRepeat value: '{repeat_value}'"
-                f"\nNumber of instances: {json_repeat_value_counts[repeat_value]}"
+                f"\nNumber of instances: {len(i18n_keys)}"
                 f"\nKeys: {', '.join(i18n_keys)}"
             )
 
