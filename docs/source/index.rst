@@ -129,6 +129,18 @@ There the following checks can ran across your codebase:
 
 Directions for how to fix the i18n files are provided when errors are raised. Checks can also be disabled in the workflow via options passed in the configuration YAML file.
 
+    | **Note**
+
+    When ``global.active`` is set to ``true``, all checks are enabled by default. You can then explicitly disable specific checks by setting their ``active`` value to ``false``. This allows for more concise configuration files. For example:
+
+    .. code-block:: yaml
+
+        checks:
+          global:
+            active: true
+          missing-keys:
+            active: false # disabled even though global is active
+
 Configuration
 =============
 
@@ -183,6 +195,7 @@ pre-commit
 The following is an example `pre-commit <https://github.com/pre-commit/pre-commit>`_ hook:
 
 .. code-block:: yaml
+
     - repo: local
       hooks:
         - id: run-i18n-check

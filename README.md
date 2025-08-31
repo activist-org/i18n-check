@@ -206,7 +206,7 @@ checks:
 > checks:
 >   global:
 >     active: true
->   repeat-values:
+>   missing-keys:
 >     active: false # disabled even though global is active
 > ```
 
