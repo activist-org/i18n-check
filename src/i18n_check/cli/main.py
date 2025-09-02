@@ -12,6 +12,7 @@ from i18n_check.check.invalid_keys import (
     invalid_keys_by_name,
     report_and_correct_keys,
 )
+from i18n_check.check.ordered_keys import check_ordered_keys
 from i18n_check.cli.generate_config_file import generate_config_file
 from i18n_check.cli.generate_test_frontends import generate_test_frontends
 from i18n_check.cli.upgrade import upgrade_cli
@@ -47,6 +48,7 @@ def main() -> None:
     - --repeat-values (-rv): Check for repeated values in source file
     - --nested-keys (-nk): Check for nested i18n keys
     - --missing-keys (-mk): Check for missing keys in locale files
+    - --ordered-keys (-ok): Check if all i18n JSON files have keys ordered alphabetically
     - --aria-labels (-al): Check for appropriate punctuation in aria label keys
     - --alt-texts (-at): Check for appropriate punctuation in alt text keys
 
@@ -174,6 +176,13 @@ def main() -> None:
     )
 
     parser.add_argument(
+        "-ok",
+        "--ordered-keys",
+        action="store_true",
+        help="Check if all i18n JSON files have keys ordered alphabetically.",
+    )
+
+    parser.add_argument(
         "-mk",
         "--missing-keys",
         action="store_true",
@@ -258,6 +267,15 @@ def main() -> None:
 
         else:
             run_check("alt_texts")
+
+        return
+
+    if args.ordered_keys:
+        if args.fix:
+            check_ordered_keys(fix=True)
+
+        else:
+            run_check("ordered_keys")
 
         return
 

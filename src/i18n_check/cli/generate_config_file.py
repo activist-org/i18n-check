@@ -139,6 +139,7 @@ def receive_data() -> None:
             "active": False,
             "locales-to-check": [],
         },
+        "ordered_keys": {"title": "ordered keys", "active": False},
     }
 
     for c, v in checks.items():
