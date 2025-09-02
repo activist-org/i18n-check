@@ -91,6 +91,7 @@ class TestGenerateConfigFile(unittest.TestCase):
             "n",  # non_source_keys
             "y",  # repeat_keys
             "n",  # repeat_values
+            "n",  # sorted_keys
             "y",  # nested_keys
             "y",  # missing_keys
             "",  # locales-to-check
@@ -131,6 +132,7 @@ class TestGenerateConfigFile(unittest.TestCase):
             "non_source_keys": {"title": "non source keys", "active": False},
             "repeat_keys": {"title": "repeat keys", "active": True},
             "repeat_values": {"title": "repeat values", "active": False},
+            "sorted_keys": {"title": "sorted keys", "active": False},
             "nested_keys": {"title": "nested keys", "active": True},
             "missing_keys": {
                 "title": "missing keys",

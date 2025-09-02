@@ -117,6 +117,8 @@ There the following checks can ran across your codebase:
     - Separate them so that the values are not mixed when they're in production.
 - ``repeat-values`` (``rv``): Does the source file have repeat values that can be combined into a single key?
     - Combine them so the localization team only needs to localize one of them.
+- ``sorted-keys`` (``sk``): Are the i18n source and target locale files sorted alphabetically?
+    - Sort them alphabetically to reduce merge conflicts from the files changing.
 - ``nested-keys`` (``nk``): Do the i18n files contain nested JSON structures?
     - Flatten them to make replacing invalid keys easier with find-and-replace all.
 - ``missing-keys`` (``mk``): Are any keys from the source file missing in the locale files?
@@ -178,6 +180,8 @@ The following details the ``.18n-check.yaml`` configuration file, with a further
       repeat-keys:
         active: true
       repeat-values:
+        active: true
+      sorted-keys:
         active: true
       nested-keys:
         active: true

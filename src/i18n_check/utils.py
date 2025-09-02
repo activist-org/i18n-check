@@ -175,6 +175,14 @@ if "unused-keys" in config["checks"]:
             "files-to-skip"
         ]
 
+# MARK: Sorted Keys
+
+# Note: We don't have skipped files or directories for sorted-keys.
+config_sorted_keys_active = config_global_active
+
+if "sorted-keys" in config["checks"] and "active" in config["checks"]["sorted-keys"]:
+    config_sorted_keys_active = config["checks"]["sorted-keys"]["active"]
+
 # MARK: Nested Keys
 
 # Note: We don't have skipped files or directories for nested-keys.
