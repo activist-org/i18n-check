@@ -47,7 +47,7 @@ def check_keys_are_ordered(json_data: Dict[str, any]) -> Tuple[bool, List[str]]:
     """
     keys = list(json_data.keys())
     sorted_keys = sorted(keys)
-    
+
     return keys == sorted_keys, sorted_keys
 
 
@@ -91,14 +91,14 @@ def fix_ordered_keys(file_path: str | Path) -> bool:
     """
     try:
         json_data = read_json_file(file_path)
-        
+
         # Create a new dictionary with sorted keys
         sorted_data = dict(sorted(json_data.items()))
-        
-        with open(file_path, 'w', encoding='utf-8') as f:
+
+        with open(file_path, "w", encoding="utf-8") as f:
             json.dump(sorted_data, f, indent=2, ensure_ascii=False)
-            f.write('\n')
-        
+            f.write("\n")
+
         return True
     except Exception as e:
         rprint(f"[red]Error fixing {file_path}: {e}[/red]")
@@ -122,19 +122,19 @@ def check_ordered_keys(fix: bool = False) -> None:
     json_files = get_all_json_files(
         directory=config_i18n_directory, path_separator=path_separator
     )
-    
+
     if not json_files:
         rprint("[yellow]No JSON files found in the i18n directory.[/yellow]")
         return
-    
+
     unordered_files = []
-    
+
     for file_path in json_files:
         is_ordered, sorted_keys = check_file_ordered_keys(file_path)
-        
+
         if not is_ordered:
             unordered_files.append(file_path)
-            
+
             if fix:
                 rprint(f"[yellow]Fixing key order in: {file_path}[/yellow]")
                 if fix_ordered_keys(file_path):
@@ -143,20 +143,28 @@ def check_ordered_keys(fix: bool = False) -> None:
                     rprint(f"[red]❌ Failed to fix key order in: {file_path}[/red]")
             else:
                 rprint(f"[red]❌ Keys not ordered alphabetically in: {file_path}[/red]")
-    
+
     if unordered_files and not fix:
         files_count = len(unordered_files)
         file_word = "file" if files_count == 1 else "files"
-        
-        rprint(f"\n[red]❌ ordered_keys error: {files_count} i18n JSON {file_word} have keys that are not ordered alphabetically.[/red]")
-        rprint("[yellow]💡 Tip: Use the --fix (-f) flag to automatically order the keys alphabetically.[/yellow]")
+
+        rprint(
+            f"\n[red]❌ ordered_keys error: {files_count} i18n JSON {file_word} have keys that are not ordered alphabetically.[/red]"
+        )
+        rprint(
+            "[yellow]💡 Tip: Use the --fix (-f) flag to automatically order the keys alphabetically.[/yellow]"
+        )
         sys.exit(1)
-    
+
     elif unordered_files and fix:
-        rprint(f"\n[green]✅ Fixed key ordering in {len(unordered_files)} file(s).[/green]")
-    
+        rprint(
+            f"\n[green]✅ Fixed key ordering in {len(unordered_files)} file(s).[/green]"
+        )
+
     else:
-        rprint("[green]✅ ordered_keys success: All i18n JSON files have keys ordered alphabetically.[/green]")
+        rprint(
+            "[green]✅ ordered_keys success: All i18n JSON files have keys ordered alphabetically.[/green]"
+        )
 
 
 # MARK: Main
