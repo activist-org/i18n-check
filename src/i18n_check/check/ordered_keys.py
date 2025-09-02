@@ -15,7 +15,7 @@ Run the following script in terminal:
 import json
 import sys
 from pathlib import Path
-from typing import Dict, List, Tuple
+from typing import Any, Dict, List, Tuple
 
 from rich import print as rprint
 
@@ -29,7 +29,7 @@ from i18n_check.utils import (
 # MARK: Check Ordered Keys
 
 
-def check_keys_are_ordered(json_data: Dict[str, any]) -> Tuple[bool, List[str]]:
+def check_keys_are_ordered(json_data: Dict[str, Any]) -> Tuple[bool, List[str]]:
     """
     Check if the keys in a JSON dictionary are ordered alphabetically.
 
