@@ -175,6 +175,14 @@ if "unused-keys" in config["checks"]:
             "files-to-skip"
         ]
 
+# MARK: Sorted Keys
+
+# Note: We don't have skipped files or directories for sorted-keys.
+config_sorted_keys_active = config_global_active
+
+if "sorted-keys" in config["checks"] and "active" in config["checks"]["sorted-keys"]:
+    config_sorted_keys_active = config["checks"]["sorted-keys"]["active"]
+
 # MARK: Nested Keys
 
 # Note: We don't have skipped files or directories for nested-keys.
@@ -212,14 +220,6 @@ config_alt_texts_active = config_global_active
 
 if "alt-texts" in config["checks"] and "active" in config["checks"]["alt-texts"]:
     config_alt_texts_active = config["checks"]["alt-texts"]["active"]
-
-# MARK: Ordered Keys
-
-# Note: We don't have skipped files or directories for ordered-keys.
-config_ordered_keys_active = config_global_active
-
-if "ordered-keys" in config["checks"] and "active" in config["checks"]["ordered-keys"]:
-    config_ordered_keys_active = config["checks"]["ordered-keys"]["active"]
 
 # MARK: File Reading
 

@@ -12,7 +12,7 @@ from i18n_check.check.invalid_keys import (
     invalid_keys_by_name,
     report_and_correct_keys,
 )
-from i18n_check.check.ordered_keys import check_ordered_keys
+from i18n_check.check.sorted_keys import check_all_files_sorted
 from i18n_check.cli.generate_config_file import generate_config_file
 from i18n_check.cli.generate_test_frontends import generate_test_frontends
 from i18n_check.cli.upgrade import upgrade_cli
@@ -46,9 +46,9 @@ def main() -> None:
     - --non-source-keys (-nsk): Check for keys in translations not in source
     - --repeat-keys (-rk): Check for duplicate keys in JSON files
     - --repeat-values (-rv): Check for repeated values in source file
+    - --sorted-keys (-sk): Check if all i18n JSON files have keys sorted alphabetically
     - --nested-keys (-nk): Check for nested i18n keys
     - --missing-keys (-mk): Check for missing keys in locale files
-    - --ordered-keys (-ok): Check if all i18n JSON files have keys ordered alphabetically
     - --aria-labels (-al): Check for appropriate punctuation in aria label keys
     - --alt-texts (-at): Check for appropriate punctuation in alt text keys
 
@@ -155,10 +155,24 @@ def main() -> None:
     )
 
     parser.add_argument(
+        "-sk",
+        "--sorted-keys",
+        action="store_true",
+        help="Check if all i18n JSON files have keys sorted alphabetically.",
+    )
+
+    parser.add_argument(
         "-nk",
         "--nested-keys",
         action="store_true",
         help="Check for nested i18n source and translation keys.",
+    )
+
+    parser.add_argument(
+        "-mk",
+        "--missing-keys",
+        action="store_true",
+        help="Check for missing keys in locale files compared to the source file.",
     )
 
     parser.add_argument(
@@ -173,20 +187,6 @@ def main() -> None:
         "--alt-texts",
         action="store_true",
         help="Check for appropriate punctuation in keys that end with '_alt_text'.",
-    )
-
-    parser.add_argument(
-        "-ok",
-        "--ordered-keys",
-        action="store_true",
-        help="Check if all i18n JSON files have keys ordered alphabetically.",
-    )
-
-    parser.add_argument(
-        "-mk",
-        "--missing-keys",
-        action="store_true",
-        help="Check for missing keys in locale files compared to the source file.",
     )
 
     # MARK: Setup CLI
@@ -244,6 +244,15 @@ def main() -> None:
         run_check("repeat_values")
         return
 
+    if args.sorted_keys:
+        if args.fix:
+            check_all_files_sorted(fix=True)
+
+        else:
+            run_check("sorted_keys")
+
+        return
+
     if args.nested_keys:
         run_check("nested_keys")
         return
@@ -267,15 +276,6 @@ def main() -> None:
 
         else:
             run_check("alt_texts")
-
-        return
-
-    if args.ordered_keys:
-        if args.fix:
-            check_ordered_keys(fix=True)
-
-        else:
-            run_check("ordered_keys")
 
         return
 

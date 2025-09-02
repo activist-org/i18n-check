@@ -12,6 +12,7 @@ check/
     non_source_keys
     repeat_values
     repeat_keys
+    sorted_keys
     nested_keys
     missing_keys
     aria_labels

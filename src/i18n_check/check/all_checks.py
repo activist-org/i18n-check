@@ -22,9 +22,9 @@ from i18n_check.utils import (
     config_nested_keys_active,
     config_non_existent_keys_active,
     config_non_source_keys_active,
-    config_ordered_keys_active,
     config_repeat_keys_active,
     config_repeat_values_active,
+    config_sorted_keys_active,
     config_unused_keys_active,
     run_check,
 )
@@ -55,11 +55,11 @@ def run_all_checks() -> None:
     - Non-source key detection
     - Repeated key detection
     - Repeated value detection
+    - Sorted keys validation
     - Nested key detection
     - Missing key detection
     - Aria label punctuation validation
     - Alt text punctuation validation
-    - Ordered keys validation
     """
     checks = []
     if config_invalid_keys_active:
@@ -80,6 +80,9 @@ def run_all_checks() -> None:
     if config_repeat_values_active:
         checks.append("repeat_values")
 
+    if config_sorted_keys_active:
+        checks.append("sorted_keys")
+
     if config_nested_keys_active:
         checks.append("nested_keys")
 
@@ -92,9 +95,6 @@ def run_all_checks() -> None:
     if config_alt_texts_active:
         checks.append("alt_texts")
 
-    if config_ordered_keys_active:
-        checks.append("ordered_keys")
-
     if not (
         config_invalid_keys_active
         and config_non_existent_keys_active
@@ -102,11 +102,11 @@ def run_all_checks() -> None:
         and config_non_source_keys_active
         and config_repeat_keys_active
         and config_repeat_values_active
+        and config_sorted_keys_active
         and config_nested_keys_active
         and config_missing_keys_active
         and config_aria_labels_active
         and config_alt_texts_active
-        and config_ordered_keys_active
     ):
         print(
             "Note: Some checks are not enabled in the .i18n-check.yaml configuration file and will be skipped."

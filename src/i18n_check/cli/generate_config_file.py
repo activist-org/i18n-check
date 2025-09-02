@@ -133,13 +133,13 @@ def receive_data() -> None:
         "non_source_keys": {"title": "non source keys", "active": False},
         "repeat_keys": {"title": "repeat keys", "active": False},
         "repeat_values": {"title": "repeat values", "active": False},
+        "sorted_keys": {"title": "sorted keys", "active": False},
         "nested_keys": {"title": "nested keys", "active": False},
         "missing_keys": {
             "title": "missing keys",
             "active": False,
             "locales-to-check": [],
         },
-        "ordered_keys": {"title": "ordered keys", "active": False},
     }
 
     for c, v in checks.items():
