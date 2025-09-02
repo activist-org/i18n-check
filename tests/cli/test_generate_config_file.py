@@ -94,6 +94,7 @@ class TestGenerateConfigFile(unittest.TestCase):
             "y",  # nested_keys
             "y",  # missing_keys
             "",  # locales-to-check
+            "n",  # ordered_keys
         ]
 
         receive_data()
@@ -137,6 +138,7 @@ class TestGenerateConfigFile(unittest.TestCase):
                 "active": True,
                 "locales-to-check": [],
             },
+            "ordered_keys": {"title": "ordered keys", "active": False},
         }
         self.assertEqual(kwargs["checks"], expected_checks)
 
