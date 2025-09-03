@@ -15,7 +15,7 @@ Run the following script in terminal:
 import json
 import sys
 from pathlib import Path
-from typing import Dict, List, Tuple
+from typing import Dict, List, Optional, Tuple
 
 from rich import print as rprint
 from rich.prompt import Prompt
@@ -285,7 +285,7 @@ def add_missing_keys_interactively(
 
 
 def check_missing_keys_with_fix(
-    fix_locale: str = None,
+    fix_locale: Optional[str] = None,
     i18n_src_dict: Dict[str, str] = i18n_src_dict,
     i18n_directory: Path = config_i18n_directory,
     locales_to_check: List[str] = config_missing_keys_locales_to_check,
