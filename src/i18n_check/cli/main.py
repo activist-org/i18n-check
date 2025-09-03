@@ -272,9 +272,12 @@ def main() -> None:
     if args.missing_keys:
         if args.fix and args.locale:
             from i18n_check.check.missing_keys import check_missing_keys_with_fix
+
             check_missing_keys_with_fix(fix_locale=args.locale)
         elif args.fix and not args.locale:
-            rprint("[red]❌ Error: --locale (-l) is required when using --fix (-f) with --missing-keys (-mk)[/red]")
+            rprint(
+                "[red]❌ Error: --locale (-l) is required when using --fix (-f) with --missing-keys (-mk)[/red]"
+            )
             rprint("[yellow]💡 Example: i18n-check -mk -f -l de[/yellow]")
             sys.exit(1)
         else:

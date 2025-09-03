@@ -178,7 +178,6 @@ def add_missing_keys_interactively(
     sys.exit(1)
         If the locale file doesn't exist or can't be processed.
     """
-    # Find the locale file
     locale_file_path = None
     for json_file in get_all_json_files(i18n_directory, path_separator):
         filename = json_file.split(path_separator)[-1].split(".")[0]
@@ -187,7 +186,9 @@ def add_missing_keys_interactively(
             break
 
     if not locale_file_path:
-        rprint(f"[red]❌ Error: Locale file '{locale}.json' not found in {i18n_directory}[/red]")
+        rprint(
+            f"[red]❌ Error: Locale file '{locale}.json' not found in {i18n_directory}[/red]"
+        )
         sys.exit(1)
 
     # Get missing keys for this locale
@@ -202,46 +203,46 @@ def add_missing_keys_interactively(
         return
 
     missing_keys, percentage = missing_keys_by_locale[locale]
-    
+
     rprint(f"\n[yellow]📝 Interactive mode for locale: {locale}[/yellow]")
-    rprint(f"[yellow]Missing keys: {len(missing_keys)} ({percentage:.1f}% missing)[/yellow]")
+    rprint(
+        f"[yellow]Missing keys: {len(missing_keys)} ({percentage:.1f}% missing)[/yellow]"
+    )
     rprint("[yellow]💡 Press Ctrl+C at any time to cancel[/yellow]\n")
 
-    # Load the current locale dictionary
     locale_dict = read_json_file(locale_file_path)
-    
+
     try:
         # Sort missing keys by the length of their source values (shortest first)
         def get_source_value_length(key: str) -> int:
             return len(i18n_src_dict.get(key, ""))
-        
+
         sorted_missing_keys = sorted(missing_keys, key=get_source_value_length)
-        
+
         for key in sorted_missing_keys:
             source_value = i18n_src_dict.get(key, "")
-            
-            # Display key information
+
             rprint(f"[cyan]Key:[/cyan] {key}")
             rprint(f"[cyan]Source value:[/cyan] '{source_value}'")
-            
+
             # Find source files where this key is used (this is a simplified approach)
             rprint(f"[cyan]Source file:[/cyan] {config_i18n_src_file}")
-            
+
             # Get translation from user
             translation = Prompt.ask(
                 f"[green]Enter translation for '{key}'[/green]",
                 default="",
-                show_default=False
+                show_default=False,
             )
-            
+
             if translation:
                 # Add the translation to the locale dictionary
                 locale_dict[key] = translation
-                
-                # Save the updated dictionary to file
+
                 # Check if sorted keys are required (from config or import sorted_keys functionality)
                 try:
                     from i18n_check.check.sorted_keys import check_file_keys_sorted
+
                     is_sorted, sorted_keys = check_file_keys_sorted(locale_dict)
                     if not is_sorted:
                         # Sort the dictionary if keys should be ordered
@@ -249,32 +250,35 @@ def add_missing_keys_interactively(
                 except ImportError:
                     # If sorted_keys module is not available, just keep original order
                     pass
-                
-                # Write the updated dictionary back to the file
+
                 with open(locale_file_path, "w", encoding="utf-8") as f:
                     json.dump(locale_dict, f, indent=2, ensure_ascii=False)
                     f.write("\n")
-                
-                rprint(f"[green]✅ Added translation for '{key}': '{translation}'[/green]\n")
+
+                rprint(
+                    f"[green]✅ Added translation for '{key}': '{translation}'[/green]\n"
+                )
             else:
                 rprint(f"[yellow]⏭️  Skipped '{key}' (empty translation)[/yellow]\n")
-    
+
     except KeyboardInterrupt:
         rprint("\n[yellow]🚪 Cancelled by user[/yellow]")
         sys.exit(0)
-    
+
     # Show final status
     remaining_missing = get_missing_keys_by_locale(
         i18n_src_dict=i18n_src_dict,
         i18n_directory=i18n_directory,
         locales_to_check=[locale],
     )
-    
+
     if locale not in remaining_missing:
         rprint(f"[green]🎉 All keys have been added to {locale}.json![/green]")
     else:
         remaining_count = len(remaining_missing[locale][0])
-        rprint(f"[yellow]📊 {remaining_count} keys still missing in {locale}.json[/yellow]")
+        rprint(
+            f"[yellow]📊 {remaining_count} keys still missing in {locale}.json[/yellow]"
+        )
 
 
 # MARK: Main Check with Fix Option

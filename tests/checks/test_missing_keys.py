@@ -176,10 +176,10 @@ def test_add_missing_keys_interactively_nonexistent_locale(tmp_path: Path) -> No
     """
     i18n_dir = tmp_path / "i18n"
     i18n_dir.mkdir(parents=True)
-    
+
     src_file = i18n_dir / "src.json"
     src_file.write_text('{"key1": "value1"}', encoding="utf-8")
-    
+
     with pytest.raises(SystemExit):
         add_missing_keys_interactively(
             locale="nonexistent",
@@ -194,64 +194,68 @@ def test_add_missing_keys_interactively_no_missing_keys(tmp_path: Path, capsys) 
     """
     i18n_dir = tmp_path / "i18n"
     i18n_dir.mkdir(parents=True)
-    
+
     locale_file = i18n_dir / "de.json"
     locale_file.write_text('{"key1": "wert1", "key2": "wert2"}', encoding="utf-8")
-    
+
     add_missing_keys_interactively(
         locale="de",
         i18n_src_dict={"key1": "value1", "key2": "value2"},
         i18n_directory=i18n_dir,
     )
-    
+
     captured = capsys.readouterr()
     assert "All keys are present" in captured.out
 
 
-@patch('i18n_check.check.missing_keys.Prompt.ask')
-def test_add_missing_keys_interactively_with_translations(mock_prompt, tmp_path: Path) -> None:
+@patch("i18n_check.check.missing_keys.Prompt.ask")
+def test_add_missing_keys_interactively_with_translations(
+    mock_prompt, tmp_path: Path
+) -> None:
     """
     Test that add_missing_keys_interactively adds translations and sorts keys.
     """
     i18n_dir = tmp_path / "i18n"
     i18n_dir.mkdir(parents=True)
-    
+
     locale_file = i18n_dir / "de.json"
     locale_file.write_text('{"key2": "wert2"}', encoding="utf-8")
-    
+
     # Mock user input: first translation, skip second
     mock_prompt.side_effect = ["german translation", ""]
-    
+
     add_missing_keys_interactively(
         locale="de",
         i18n_src_dict={"key1": "value1", "key2": "value2", "key3": "value3"},
         i18n_directory=i18n_dir,
     )
-    
+
     updated_content = json.loads(locale_file.read_text(encoding="utf-8"))
     expected_content = {
         "key1": "german translation",
         "key2": "wert2",
         # key3 should not be present since it was skipped
     }
-    
+
     assert updated_content == expected_content
 
 
-@patch('i18n_check.check.missing_keys.Prompt.ask')  
-def test_add_missing_keys_interactively_keyboard_interrupt(mock_prompt, tmp_path: Path) -> None:
+@patch("i18n_check.check.missing_keys.Prompt.ask")
+def test_add_missing_keys_interactively_keyboard_interrupt(
+    mock_prompt, tmp_path: Path
+) -> None:
     """
     Test that add_missing_keys_interactively handles KeyboardInterrupt gracefully.
     """
     i18n_dir = tmp_path / "i18n"
     i18n_dir.mkdir(parents=True)
-    
+
     locale_file = i18n_dir / "de.json"
     locale_file.write_text('{"key2": "wert2"}', encoding="utf-8")
-    
+
     # Mock KeyboardInterrupt
     mock_prompt.side_effect = KeyboardInterrupt()
-    
+
     with pytest.raises(SystemExit):
         add_missing_keys_interactively(
             locale="de",
@@ -270,12 +274,12 @@ def test_check_missing_keys_with_fix_no_locale(capsys) -> None:
         i18n_directory=pass_dir,
         locales_to_check=[],
     )
-    
+
     captured = capsys.readouterr()
     assert "missing_keys success" in captured.out
 
 
-@patch('i18n_check.check.missing_keys.add_missing_keys_interactively')
+@patch("i18n_check.check.missing_keys.add_missing_keys_interactively")
 def test_check_missing_keys_with_fix_with_locale(mock_add_function) -> None:
     """
     Test that check_missing_keys_with_fix calls interactive function when locale is provided.
@@ -286,7 +290,7 @@ def test_check_missing_keys_with_fix_with_locale(mock_add_function) -> None:
         i18n_directory=Path("/tmp"),
         locales_to_check=[],
     )
-    
+
     # Verify the interactive function was called with correct parameters
     mock_add_function.assert_called_once_with(
         locale="de",
