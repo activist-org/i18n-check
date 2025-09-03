@@ -93,6 +93,7 @@ i18n-check -gcf  # generate a configuration file
 i18n-check -gtf  # generate test frontends to experiment with
 i18n-check -a  # run all checks
 i18n-check -CHECK_ID  # run a specific check (see options below)
+i18n-check -mk -f -l de  # interactively add missing keys for German locale
 ```
 
 <a id="previews-"></a>

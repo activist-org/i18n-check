@@ -4,6 +4,9 @@ Setup and commands for the i18n-check command line interface.
 """
 
 import argparse
+import sys
+
+from rich import print as rprint
 
 from i18n_check.check.alt_texts import check_alt_texts
 from i18n_check.check.aria_labels import check_aria_labels
@@ -49,6 +52,7 @@ def main() -> None:
     - --sorted-keys (-sk): Check if all i18n JSON files have keys sorted alphabetically
     - --nested-keys (-nk): Check for nested i18n keys
     - --missing-keys (-mk): Check for missing keys in locale files
+    - --locale (-l): Specify locale for interactive key addition
     - --aria-labels (-al): Check for appropriate punctuation in aria label keys
     - --alt-texts (-at): Check for appropriate punctuation in alt text keys
 
@@ -57,6 +61,7 @@ def main() -> None:
     >>> i18n-check --generate-config-file  # -gcf
     >>> i18n-check --invalid-keys  # -ik
     >>> i18n-check --all-checks  # -a
+    >>> i18n-check --missing-keys --fix --locale de  # Interactive mode to add missing keys for German
     """
     # MARK: CLI Base
 
@@ -176,6 +181,13 @@ def main() -> None:
     )
 
     parser.add_argument(
+        "-l",
+        "--locale",
+        type=str,
+        help="(with --missing-keys --fix) Specify the locale to interactively add missing keys to.",
+    )
+
+    parser.add_argument(
         "-al",
         "--aria-labels",
         action="store_true",
@@ -258,7 +270,15 @@ def main() -> None:
         return
 
     if args.missing_keys:
-        run_check("missing_keys")
+        if args.fix and args.locale:
+            from i18n_check.check.missing_keys import check_missing_keys_with_fix
+            check_missing_keys_with_fix(fix_locale=args.locale)
+        elif args.fix and not args.locale:
+            rprint("[red]❌ Error: --locale (-l) is required when using --fix (-f) with --missing-keys (-mk)[/red]")
+            rprint("[yellow]💡 Example: i18n-check -mk -f -l de[/yellow]")
+            sys.exit(1)
+        else:
+            run_check("missing_keys")
         return
 
     if args.aria_labels:

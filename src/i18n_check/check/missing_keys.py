@@ -9,13 +9,16 @@ Examples
 Run the following script in terminal:
 
 >>> i18n-check -mk
+>>> i18n-check -mk -f ja  # Interactive mode to add missing keys for Japanese locale
 """
 
+import json
 import sys
 from pathlib import Path
 from typing import Dict, List, Tuple
 
 from rich import print as rprint
+from rich.prompt import Prompt
 
 from i18n_check.utils import (
     config_i18n_directory,
@@ -148,13 +151,179 @@ def report_missing_keys(
         )
 
 
+# MARK: Interactive Missing Keys Addition
+
+
+def add_missing_keys_interactively(
+    locale: str,
+    i18n_src_dict: Dict[str, str] = i18n_src_dict,
+    i18n_directory: Path = config_i18n_directory,
+) -> None:
+    """
+    Interactively add missing keys for a specific locale.
+
+    Parameters
+    ----------
+    locale : str
+        The locale to add missing keys for (e.g., 'de', 'fr', 'es').
+
+    i18n_src_dict : dict
+        The dictionary containing i18n source keys and their associated values.
+
+    i18n_directory : Path
+        The directory containing the i18n JSON files.
+
+    Raises
+    ------
+    sys.exit(1)
+        If the locale file doesn't exist or can't be processed.
+    """
+    # Find the locale file
+    locale_file_path = None
+    for json_file in get_all_json_files(i18n_directory, path_separator):
+        filename = json_file.split(path_separator)[-1].split(".")[0]
+        if filename == locale:
+            locale_file_path = json_file
+            break
+
+    if not locale_file_path:
+        rprint(f"[red]❌ Error: Locale file '{locale}.json' not found in {i18n_directory}[/red]")
+        sys.exit(1)
+
+    # Get missing keys for this locale
+    missing_keys_by_locale = get_missing_keys_by_locale(
+        i18n_src_dict=i18n_src_dict,
+        i18n_directory=i18n_directory,
+        locales_to_check=[locale],
+    )
+
+    if locale not in missing_keys_by_locale:
+        rprint(f"[green]✅ All keys are present in {locale}.json[/green]")
+        return
+
+    missing_keys, percentage = missing_keys_by_locale[locale]
+    
+    rprint(f"\n[yellow]📝 Interactive mode for locale: {locale}[/yellow]")
+    rprint(f"[yellow]Missing keys: {len(missing_keys)} ({percentage:.1f}% missing)[/yellow]")
+    rprint("[yellow]💡 Press Ctrl+C at any time to cancel[/yellow]\n")
+
+    # Load the current locale dictionary
+    locale_dict = read_json_file(locale_file_path)
+    
+    try:
+        # Sort missing keys by the length of their source values (shortest first)
+        def get_source_value_length(key: str) -> int:
+            return len(i18n_src_dict.get(key, ""))
+        
+        sorted_missing_keys = sorted(missing_keys, key=get_source_value_length)
+        
+        for key in sorted_missing_keys:
+            source_value = i18n_src_dict.get(key, "")
+            
+            # Display key information
+            rprint(f"[cyan]Key:[/cyan] {key}")
+            rprint(f"[cyan]Source value:[/cyan] '{source_value}'")
+            
+            # Find source files where this key is used (this is a simplified approach)
+            rprint(f"[cyan]Source file:[/cyan] {config_i18n_src_file}")
+            
+            # Get translation from user
+            translation = Prompt.ask(
+                f"[green]Enter translation for '{key}'[/green]",
+                default="",
+                show_default=False
+            )
+            
+            if translation:
+                # Add the translation to the locale dictionary
+                locale_dict[key] = translation
+                
+                # Save the updated dictionary to file
+                # Check if sorted keys are required (from config or import sorted_keys functionality)
+                try:
+                    from i18n_check.check.sorted_keys import check_file_keys_sorted
+                    is_sorted, sorted_keys = check_file_keys_sorted(locale_dict)
+                    if not is_sorted:
+                        # Sort the dictionary if keys should be ordered
+                        locale_dict = dict(sorted(locale_dict.items()))
+                except ImportError:
+                    # If sorted_keys module is not available, just keep original order
+                    pass
+                
+                # Write the updated dictionary back to the file
+                with open(locale_file_path, "w", encoding="utf-8") as f:
+                    json.dump(locale_dict, f, indent=2, ensure_ascii=False)
+                    f.write("\n")
+                
+                rprint(f"[green]✅ Added translation for '{key}': '{translation}'[/green]\n")
+            else:
+                rprint(f"[yellow]⏭️  Skipped '{key}' (empty translation)[/yellow]\n")
+    
+    except KeyboardInterrupt:
+        rprint("\n[yellow]🚪 Cancelled by user[/yellow]")
+        sys.exit(0)
+    
+    # Show final status
+    remaining_missing = get_missing_keys_by_locale(
+        i18n_src_dict=i18n_src_dict,
+        i18n_directory=i18n_directory,
+        locales_to_check=[locale],
+    )
+    
+    if locale not in remaining_missing:
+        rprint(f"[green]🎉 All keys have been added to {locale}.json![/green]")
+    else:
+        remaining_count = len(remaining_missing[locale][0])
+        rprint(f"[yellow]📊 {remaining_count} keys still missing in {locale}.json[/yellow]")
+
+
+# MARK: Main Check with Fix Option
+
+
+def check_missing_keys_with_fix(
+    fix_locale: str = None,
+    i18n_src_dict: Dict[str, str] = i18n_src_dict,
+    i18n_directory: Path = config_i18n_directory,
+    locales_to_check: List[str] = config_missing_keys_locales_to_check,
+) -> None:
+    """
+    Check missing keys and optionally enter interactive mode to fix them.
+
+    Parameters
+    ----------
+    fix_locale : str, optional
+        If provided, enter interactive mode to add missing keys for this locale.
+
+    i18n_src_dict : dict
+        The dictionary containing i18n source keys and their associated values.
+
+    i18n_directory : Path
+        The directory containing the i18n JSON files.
+
+    locales_to_check : list
+        List of locale files to check. If empty, all locale files are checked.
+    """
+    if fix_locale:
+        add_missing_keys_interactively(
+            locale=fix_locale,
+            i18n_src_dict=i18n_src_dict,
+            i18n_directory=i18n_directory,
+        )
+    else:
+        missing_keys_by_locale = get_missing_keys_by_locale(
+            i18n_src_dict=i18n_src_dict,
+            i18n_directory=i18n_directory,
+            locales_to_check=locales_to_check,
+        )
+        report_missing_keys(missing_keys_by_locale=missing_keys_by_locale)
+
+
 # MARK: Main
 
 
 if __name__ == "__main__":
-    missing_keys_by_locale = get_missing_keys_by_locale(
+    check_missing_keys_with_fix(
         i18n_src_dict=i18n_src_dict,
         i18n_directory=config_i18n_directory,
         locales_to_check=config_missing_keys_locales_to_check,
     )
-    report_missing_keys(missing_keys_by_locale=missing_keys_by_locale)
