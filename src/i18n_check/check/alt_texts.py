@@ -33,7 +33,7 @@ from i18n_check.utils import (
 
 def find_alt_text_punctuation_issues(
     i18n_directory: Path = config_i18n_directory,
-) -> Dict[str, Dict[str, str]]:
+) -> Dict[str, Dict[str, Dict[str, str]]]:
     """
     Find alt text keys that don't end with appropriate punctuation.
 
@@ -44,14 +44,14 @@ def find_alt_text_punctuation_issues(
 
     Returns
     -------
-    Dict[str, Dict[str, str]]
+    Dict[str, Dict[str, Dict[str, str]]]
         A dictionary mapping incorrect alt text values to their corrected versions.
     """
     json_files = get_all_json_files(directory=i18n_directory)
 
     punctuation_to_check = f"{string.punctuation}؟"
 
-    alt_text_issues = {}
+    alt_text_issues: Dict[str, Dict[str, Dict[str, str]]] = {}
     for json_file in json_files:
         json_file_dict = read_json_file(file_path=json_file)
 
@@ -77,14 +77,14 @@ def find_alt_text_punctuation_issues(
 
 
 def report_and_fix_alt_texts(
-    alt_text_issues: Dict[str, str], fix: bool = False
+    alt_text_issues: Dict[str, Dict[str, Dict[str, str]]], fix: bool = False
 ) -> None:
     """
     Report alt text punctuation issues and optionally fix them.
 
     Parameters
     ----------
-    alt_text_issues : Dict[str, str]
+    alt_text_issues : Dict[str, Dict[str, Dict[str, str]]]
         Dictionary mapping keys with issues to their corrected values.
 
     fix : bool, optional

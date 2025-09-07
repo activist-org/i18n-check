@@ -33,7 +33,7 @@ from i18n_check.utils import (
 
 def find_aria_label_punctuation_issues(
     i18n_directory: Path = config_i18n_directory,
-) -> Dict[str, Dict[str, str]]:
+) -> Dict[str, Dict[str, Dict[str, str]]]:
     """
     Find aria label keys that end with inappropriate punctuation.
 
@@ -44,14 +44,14 @@ def find_aria_label_punctuation_issues(
 
     Returns
     -------
-    Dict[str, Dict[str, str]]
+    Dict[str, Dict[str, Dict[str, str]]]
         A dictionary mapping incorrect aria label values to their corrected versions.
     """
     json_files = get_all_json_files(directory=i18n_directory)
 
     punctuation_to_check = f"{string.punctuation}؟"
 
-    aria_label_issues = {}
+    aria_label_issues: Dict[str, Dict[str, Dict[str, str]]] = {}
     for json_file in json_files:
         json_file_dict = read_json_file(file_path=json_file)
 
@@ -81,14 +81,14 @@ def find_aria_label_punctuation_issues(
 
 
 def report_and_fix_aria_labels(
-    aria_label_issues: Dict[str, str], fix: bool = False
+    aria_label_issues: Dict[str, Dict[str, Dict[str, str]]], fix: bool = False
 ) -> None:
     """
     Report aria label punctuation issues and optionally fix them.
 
     Parameters
     ----------
-    aria_label_issues : Dict[str, str]
+    aria_label_issues : Dict[str, Dict[str, Dict[str, str]]]
         Dictionary mapping keys with issues to their corrected values.
 
     fix : bool, optional
