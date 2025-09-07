@@ -29,7 +29,7 @@ Emojis for the following are chosen based on [gitmoji](https://gitmoji.dev/).
 
 ### ♻️ Code Refactoring
 
-- The name of the path separator variable was changed to `PATH_SEPARATOR`.
+- Various code improvements to assure that files are sharing variables and that arguments are named appropriately.
 
 ## i18n-check 1.9.0
 

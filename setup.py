@@ -19,7 +19,7 @@ if on_rtd:
 
 setup_args = dict(
     name="i18n-check",
-    version="1.9.0",
+    version="1.10.0",
     package_dir={"": "src"},
     author="i18n-check developers",
     author_email="team@activist.org",
