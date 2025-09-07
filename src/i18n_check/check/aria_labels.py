@@ -15,15 +15,16 @@ Run the following script in terminal:
 
 import string
 import sys
+from pathlib import Path
 from typing import Dict
 
 from rich import print as rprint
 
 from i18n_check.utils import (
+    PATH_SEPARATOR,
     config_i18n_directory,
     config_i18n_src_file,
     get_all_json_files,
-    path_separator,
     read_json_file,
     replace_text_in_file,
 )
@@ -31,35 +32,48 @@ from i18n_check.utils import (
 # MARK: Find Issues
 
 
-def find_aria_label_punctuation_issues(i18n_src_dict: Dict[str, str]) -> Dict[str, str]:
+def find_aria_label_punctuation_issues(
+    i18n_directory: Path = config_i18n_directory,
+) -> Dict[str, Dict[str, str]]:
     """
     Find aria label keys that end with inappropriate punctuation.
 
     Parameters
     ----------
-    i18n_src_dict : Dict[str, str]
-        The dictionary containing i18n source keys and their associated values.
+    i18n_directory : Path
+        The directory containing the i18n JSON files.
 
     Returns
     -------
-    Dict[str, str]
+    Dict[str, Dict[str, str]]
         A dictionary mapping incorrect aria label values to their corrected versions.
     """
-    aria_label_issues = {}
+    json_files = get_all_json_files(directory=i18n_directory)
 
     punctuation_to_check = f"{string.punctuation}؟"
 
-    for key, value in i18n_src_dict.items():
-        if isinstance(value, str) and key.endswith("_aria_label"):
-            stripped_value = value.rstrip()
-            if stripped_value and stripped_value[-1] in punctuation_to_check:
-                # Remove the trailing punctuation.
-                corrected_value = stripped_value.rstrip(punctuation_to_check)
-                # Preserve any trailing whitespace from original.
-                if value.endswith(" "):
-                    corrected_value += " "
+    aria_label_issues = {}
+    for json_file in json_files:
+        json_file_dict = read_json_file(file_path=json_file)
 
-                aria_label_issues[key] = corrected_value
+        for key, value in json_file_dict.items():
+            if isinstance(value, str) and key.endswith("_aria_label"):
+                stripped_value = value.rstrip()
+                if stripped_value and stripped_value[-1] in punctuation_to_check:
+                    # Remove the trailing punctuation.
+                    corrected_value = stripped_value.rstrip(punctuation_to_check)
+                    # Preserve any trailing whitespace from original.
+                    if value.endswith(" "):
+                        corrected_value += " "
+
+                    if key not in aria_label_issues:
+                        aria_label_issues[key] = {}
+
+                    if json_file not in aria_label_issues[key]:
+                        aria_label_issues[key][json_file] = {}
+
+                    aria_label_issues[key][json_file]["current_value"] = value
+                    aria_label_issues[key][json_file]["correct_value"] = corrected_value
 
     return aria_label_issues
 
@@ -88,11 +102,15 @@ def report_and_fix_aria_labels(
         return
 
     error_string = "\n[red]❌ aria_labels errors:\n\n"
-    for key, corrected_value in aria_label_issues.items():
-        current_value = read_json_file(config_i18n_src_file)[key]
-        error_string += f"Key: {key}\n"
-        error_string += f"  Current:   '{current_value}'\n"
-        error_string += f"  Suggested: '{corrected_value}'\n\n"
+    for k in aria_label_issues:
+        error_string += f"Key: {k}\n"
+        for json_file in aria_label_issues[k]:
+            error_string += f"  File: '{json_file.split(PATH_SEPARATOR)[-1]}'\n"
+
+            current_value = aria_label_issues[k][json_file]["current_value"]
+            corrected_value = aria_label_issues[k][json_file]["correct_value"]
+            error_string += f"  Current:   '{current_value}'\n"
+            error_string += f"  Suggested: '{corrected_value}'\n\n"
 
     error_string += "[/red][yellow]⚠️ Note: Aria labels should not end with punctuation as it affects screen reader experience.[/yellow]"
 
@@ -105,19 +123,21 @@ def report_and_fix_aria_labels(
         sys.exit(1)
 
     else:
-        json_files = get_all_json_files(config_i18n_directory, path_separator)
+        total_aria_label_issues = 0
+        for k in aria_label_issues:
+            for json_file in aria_label_issues[k]:
+                current_value = aria_label_issues[k][json_file]["current_value"]
+                corrected_value = aria_label_issues[k][json_file]["corrected_value"]
 
-        for key, corrected_value in aria_label_issues.items():
-            current_value = read_json_file(config_i18n_src_file)[key]
-
-            for json_file in json_files:
                 # Replace the full key-value pair in JSON format.
-                old_pattern = f'"{key}": "{current_value}"'
-                new_pattern = f'"{key}": "{corrected_value}"'
+                old_pattern = f'"{k}": "{current_value}"'
+                new_pattern = f'"{k}": "{corrected_value}"'
                 replace_text_in_file(path=json_file, old=old_pattern, new=new_pattern)
 
+                total_aria_label_issues += 1
+
         rprint(
-            f"\n[green]✅ Fixed {len(aria_label_issues)} aria label punctuation issues.[/green]\n"
+            f"\n[green]✅ Fixed {len(total_aria_label_issues)} aria label punctuation issues.[/green]\n"
         )
         sys.exit(0)
 
@@ -135,8 +155,8 @@ def check_aria_labels(fix: bool = False) -> None:
         Whether to automatically fix issues, by default False.
     """
     i18n_src_dict = read_json_file(file_path=config_i18n_src_file)
-    aria_label_issues = find_aria_label_punctuation_issues(i18n_src_dict)
-    report_and_fix_aria_labels(aria_label_issues, fix)
+    aria_label_issues = find_aria_label_punctuation_issues(i18n_src_dict=i18n_src_dict)
+    report_and_fix_aria_labels(aria_label_issues=aria_label_issues, fix=fix)
 
 
 if __name__ == "__main__":

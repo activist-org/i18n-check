@@ -22,7 +22,6 @@ from rich import print as rprint
 from i18n_check.utils import (
     config_i18n_directory,
     get_all_json_files,
-    path_separator,
     read_json_file,
 )
 
@@ -121,9 +120,7 @@ def check_all_files_sorted(fix: bool = False) -> None:
     sys.exit(1)
         If any files have unsorted keys and fix is False.
     """
-    json_files = get_all_json_files(
-        directory=config_i18n_directory, path_separator=path_separator
-    )
+    json_files = get_all_json_files(directory=config_i18n_directory)
 
     if not json_files:
         rprint("[yellow]No JSON files found in the i18n directory.[/yellow]")
@@ -144,7 +141,7 @@ def check_all_files_sorted(fix: bool = False) -> None:
             f"\n[red]❌ sorted_keys error: {files_count} i18n JSON {file_or_files} have keys that are not sorted alphabetically.[/red]"
         )
         rprint(
-            "[yellow]💡 Tip: Use the --fix (-f) flag to automatically order the keys alphabetically.[/yellow\n"
+            "[yellow]💡 Tip: Use the --fix (-f) flag to automatically order the keys alphabetically.[/yellow]\n"
         )
 
         for f in unsorted_files:

@@ -19,7 +19,7 @@ from typing import Any, Dict, List, Tuple, Union
 
 from rich import print as rprint
 
-from i18n_check.utils import config_i18n_directory, get_all_json_files, path_separator
+from i18n_check.utils import config_i18n_directory, get_all_json_files
 
 # MARK: Repeat Keys
 
@@ -147,7 +147,7 @@ def validate_repeat_keys() -> None:
     sys.exit(1)
         The system exits with 1 and prints error details if any duplicate keys found.
     """
-    json_files = get_all_json_files(config_i18n_directory, path_separator)
+    json_files = get_all_json_files(directory=config_i18n_directory)
     has_errors = False
 
     error_message = ""

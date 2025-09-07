@@ -3,8 +3,6 @@
 Tests for the unused_keys.py.
 """
 
-from pathlib import Path
-
 import pytest
 
 from i18n_check.check.unused_keys import (
@@ -14,31 +12,14 @@ from i18n_check.check.unused_keys import (
 )
 from i18n_check.utils import read_json_file
 
-fail_checks_src_json = (
-    Path(__file__).parent.parent.parent
-    / "src"
-    / "i18n_check"
-    / "test_frontends"
-    / "all_checks_fail"
-    / "test_i18n"
-    / "test_i18n_src.json"
-)
-pass_checks_src_json = (
-    Path(__file__).parent.parent.parent
-    / "src"
-    / "i18n_check"
-    / "test_frontends"
-    / "all_checks_pass"
-    / "test_i18n"
-    / "test_i18n_src.json"
-)
+from ..test_utils import fail_checks_src_json_path, pass_checks_src_json_path
 
 UNUSED_FAIL_KEYS = find_unused_keys(
-    i18n_src_dict=read_json_file(file_path=fail_checks_src_json),
+    i18n_src_dict=read_json_file(file_path=fail_checks_src_json_path),
     files_to_check_contents=files_to_check_contents,
 )
 UNUSED_PASS_KEYS = find_unused_keys(
-    i18n_src_dict=read_json_file(file_path=pass_checks_src_json),
+    i18n_src_dict=read_json_file(file_path=pass_checks_src_json_path),
     files_to_check_contents=files_to_check_contents,
 )
 

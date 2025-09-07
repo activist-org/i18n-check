@@ -3,7 +3,6 @@
 Tests for the non_source_keys.py.
 """
 
-from pathlib import Path
 from typing import Dict
 
 import pytest
@@ -12,35 +11,21 @@ from i18n_check.check.non_source_keys import (
     get_non_source_keys,
     report_non_source_keys,
 )
-from i18n_check.utils import read_json_file
 
-fail_dir = (
-    Path(__file__).parent.parent.parent
-    / "src"
-    / "i18n_check"
-    / "test_frontends"
-    / "all_checks_fail"
-    / "test_i18n"
+from ..test_utils import (
+    checks_fail_json_dir,
+    checks_pass_json_dir,
+    fail_checks_src_json,
+    pass_checks_src_json,
 )
-
-pass_dir = (
-    Path(__file__).parent.parent.parent
-    / "src"
-    / "i18n_check"
-    / "test_frontends"
-    / "all_checks_pass"
-    / "test_i18n"
-)
-fail_checks_src_json = read_json_file(file_path=fail_dir / "test_i18n_src.json")
-pass_checks_src_json = read_json_file(file_path=pass_dir / "test_i18n_src.json")
 
 non_source_keys_fail = get_non_source_keys(
     i18n_src_dict=fail_checks_src_json,
-    i18n_directory=fail_dir,
+    i18n_directory=checks_fail_json_dir,
 )
 non_source_keys_pass = get_non_source_keys(
     i18n_src_dict=pass_checks_src_json,
-    i18n_directory=pass_dir,
+    i18n_directory=checks_pass_json_dir,
 )
 
 

@@ -22,7 +22,7 @@ from i18n_check.cli.generate_config_file import (
 )
 
 # Check for Windows and derive directory path separator.
-path_separator = "\\" if os.name == "nt" else "/"
+PATH_SEPARATOR = "\\" if os.name == "nt" else "/"
 
 # MARK: YAML Reading
 
@@ -337,7 +337,7 @@ def path_to_valid_key(p: str) -> str:
     # Remove path segments like '[id]'.
     p = re.sub(r"\[.*?\]", "", p)
     # Replace path separator with a dot.
-    p = p.replace(path_separator, ".")
+    p = p.replace(PATH_SEPARATOR, ".")
 
     # Convert camelCase or PascalCase to snake_case, but preserve acronyms.
     p = re.sub(r"([A-Z]+)([A-Z][a-z])", r"\1_\2", p)  # ABCxyz -> ABC_xyz
@@ -383,7 +383,7 @@ def filter_valid_key_parts(potential_key_parts: list[str]) -> list[str]:
 # MARK: JSON Files
 
 
-def get_all_json_files(directory: str | Path, path_separator: str) -> List[str]:
+def get_all_json_files(directory: str | Path) -> List[str]:
     """
     Get all JSON files in the specified directory.
 
@@ -392,15 +392,12 @@ def get_all_json_files(directory: str | Path, path_separator: str) -> List[str]:
     directory : str
         The directory in which to search for JSON files.
 
-    path_separator : str
-        The path separator to be used in the directory path.
-
     Returns
     -------
     list
         A list of paths to all JSON files in the specified directory.
     """
-    return glob.glob(f"{directory}{path_separator}*.json")
+    return glob.glob(f"{directory}{PATH_SEPARATOR}*.json")
 
 
 # MARK: Lower and Remove Punctuation

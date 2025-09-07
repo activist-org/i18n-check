@@ -3,8 +3,6 @@
 Tests for the invalid_keys.py.
 """
 
-from pathlib import Path
-
 import pytest
 
 from i18n_check.check.invalid_keys import (
@@ -12,43 +10,19 @@ from i18n_check.check.invalid_keys import (
     map_keys_to_files,
     report_and_correct_keys,
 )
-from i18n_check.utils import read_json_file, replace_text_in_file
+from i18n_check.utils import replace_text_in_file
 
-fail_dir = (
-    Path(__file__).parent.parent.parent
-    / "src"
-    / "i18n_check"
-    / "test_frontends"
-    / "all_checks_fail"
+from ..test_utils import (
+    fail_checks_src_json_path,
+    fail_checks_sub_dir_first_file_path,
+    fail_checks_sub_dir_second_file_path,
+    fail_checks_test_file_path,
+    i18n_map_fail,
+    i18n_map_pass,
 )
-fail_checks_src_json = read_json_file(
-    file_path=fail_dir / "test_i18n" / "test_i18n_src.json"
-)
-i18n_map_fail = map_keys_to_files(
-    i18n_src_dict=fail_checks_src_json, src_directory=fail_dir
-)
-
-fail_checks_src_json_path = fail_dir / "test_i18n" / "test_i18n_src.json"
-fail_checks_test_file_path = fail_dir / "test_file.ts"
-fail_checks_sub_dir_first_file_path = fail_dir / "sub_dir" / "sub_dir_first_file.ts"
-fail_checks_sub_dir_second_file_path = fail_dir / "sub_dir" / "sub_dir_second_file.ts"
 
 invalid_format_fail, invalid_name_fail = audit_i18n_keys(
     key_file_dict=i18n_map_fail, keys_to_ignore_regex=""
-)
-
-pass_dir = (
-    Path(__file__).parent.parent.parent
-    / "src"
-    / "i18n_check"
-    / "test_frontends"
-    / "all_checks_pass"
-)
-pass_checks_src_json = read_json_file(
-    file_path=pass_dir / "test_i18n" / "test_i18n_src.json"
-)
-i18n_map_pass = map_keys_to_files(
-    i18n_src_dict=pass_checks_src_json, src_directory=pass_dir
 )
 
 invalid_format_pass, invalid_name_pass = audit_i18n_keys(

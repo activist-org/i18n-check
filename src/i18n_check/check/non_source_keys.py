@@ -18,10 +18,10 @@ from typing import Dict
 from rich import print as rprint
 
 from i18n_check.utils import (
+    PATH_SEPARATOR,
     config_i18n_directory,
     config_i18n_src_file,
     get_all_json_files,
-    path_separator,
     read_json_file,
 )
 
@@ -54,17 +54,17 @@ def get_non_source_keys(
     """
     all_src_keys = i18n_src_dict.keys()
     non_source_keys_dict = {}
-    for json_file in get_all_json_files(i18n_directory, path_separator):
+    for json_file in get_all_json_files(directory=i18n_directory):
         if (
-            json_file.split(path_separator)[-1]
-            != str(config_i18n_src_file).split(path_separator)[-1]
+            json_file.split(PATH_SEPARATOR)[-1]
+            != str(config_i18n_src_file).split(PATH_SEPARATOR)[-1]
         ):
             json_dict = read_json_file(file_path=json_file)
 
             all_keys = json_dict.keys()
 
             if len(all_keys - all_src_keys) > 0:
-                non_source_keys_dict[json_file.split(path_separator)[-1]] = (
+                non_source_keys_dict[json_file.split(PATH_SEPARATOR)[-1]] = (
                     all_keys - all_src_keys
                 )
     return non_source_keys_dict

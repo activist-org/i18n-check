@@ -17,7 +17,7 @@ from typing import Dict
 
 from rich import print as rprint
 
-from i18n_check.utils import config_i18n_directory, path_separator, read_json_file
+from i18n_check.utils import PATH_SEPARATOR, config_i18n_directory, read_json_file
 
 # MARK: Is Nested
 
@@ -60,7 +60,7 @@ def validate_nested_keys(directory: str | Path) -> None:
             if is_nested_json(data):
                 error_message = (
                     "[red]\n❌ nested_keys error: Nested JSON structure detected in "
-                    + str(file_path).split(path_separator)[-1]
+                    + str(file_path).split(PATH_SEPARATOR)[-1]
                     + ". i18n-check recommends using flat JSON files to allow easy find-and-replace operations. You can disable this check in your i18n-check.yaml configuration file.[/red]"
                 )
                 rprint(error_message)

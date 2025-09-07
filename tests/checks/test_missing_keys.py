@@ -17,38 +17,23 @@ from i18n_check.check.missing_keys import (
 )
 from i18n_check.utils import read_json_file
 
-fail_dir = (
-    Path(__file__).parent.parent.parent
-    / "src"
-    / "i18n_check"
-    / "test_frontends"
-    / "all_checks_fail"
-    / "test_i18n"
+from ..test_utils import (
+    checks_fail_json_dir,
+    checks_pass_json_dir,
+    fail_checks_locale_json,
+    fail_checks_src_json,
+    pass_checks_src_json,
 )
-
-fail_checks_src_json = read_json_file(file_path=fail_dir / "test_i18n_src.json")
-fail_checks_locale_json = read_json_file(file_path=fail_dir / "test_i18n_locale.json")
 
 missing_keys_fail = get_missing_keys_by_locale(
     i18n_src_dict=fail_checks_src_json,
-    i18n_directory=fail_dir,
+    i18n_directory=checks_fail_json_dir,
     locales_to_check=[],
 )
 
-pass_dir = (
-    Path(__file__).parent.parent.parent
-    / "src"
-    / "i18n_check"
-    / "test_frontends"
-    / "all_checks_pass"
-    / "test_i18n"
-)
-
-pass_checks_src_json = read_json_file(file_path=pass_dir / "test_i18n_src.json")
-
 missing_keys_pass = get_missing_keys_by_locale(
     i18n_src_dict=pass_checks_src_json,
-    i18n_directory=pass_dir,
+    i18n_directory=checks_pass_json_dir,
     locales_to_check=[],
 )
 
@@ -100,7 +85,7 @@ def test_get_missing_keys_by_locale_with_specific_locales() -> None:
     # Test with a locale that doesn't exist.
     result = get_missing_keys_by_locale(
         i18n_src_dict=pass_checks_src_json,
-        i18n_directory=pass_dir,
+        i18n_directory=checks_pass_json_dir,
         locales_to_check=["not_a_locale.json"],
     )
     assert result == {}
@@ -108,7 +93,7 @@ def test_get_missing_keys_by_locale_with_specific_locales() -> None:
     # Test with the existing locale file.
     result = get_missing_keys_by_locale(
         i18n_src_dict=pass_checks_src_json,
-        i18n_directory=pass_dir,
+        i18n_directory=checks_pass_json_dir,
         locales_to_check=["test_i18n_locale"],
     )
     assert result == {}
@@ -154,7 +139,7 @@ def test_get_missing_keys_by_locale_with_empty_source(tmp_path: Path) -> None:
     When the source i18n dict is empty, the function should report no missing keys
     and the missing percentage should be 0.0 by definition.
     """
-    # Arrange: Create a temporary i18n directory with a dummy locale file.
+    # Create a temporary i18n directory with a dummy locale file.
     i18n_dir = tmp_path / "i18n"
     i18n_dir.mkdir(parents=True)
 
@@ -238,11 +223,11 @@ def test_add_missing_keys_interactively_with_translations(
     add_missing_keys_interactively(
         locale="test_i18n_locale",
         i18n_src_dict=fail_checks_src_json,
-        i18n_directory=fail_dir,
+        i18n_directory=checks_fail_json_dir,
     )
 
     updated_fail_checks_locale_json = read_json_file(
-        file_path=fail_dir / "test_i18n_locale.json"
+        file_path=checks_fail_json_dir / "test_i18n_locale.json"
     )
 
     expected_content = {
@@ -257,7 +242,9 @@ def test_add_missing_keys_interactively_with_translations(
     assert updated_fail_checks_locale_json == expected_content
 
     # Revert change to test_i18n_locale.json.
-    with open(fail_dir / "test_i18n_locale.json", "w", encoding="utf-8") as f:
+    with open(
+        checks_fail_json_dir / "test_i18n_locale.json", "w", encoding="utf-8"
+    ) as f:
         json.dump(fail_checks_locale_json, f, indent=2, ensure_ascii=False)
         f.write("\n")
 
@@ -275,7 +262,7 @@ def test_add_missing_keys_interactively_keyboard_interrupt(
         add_missing_keys_interactively(
             locale="test_i18n_locale",
             i18n_src_dict=fail_checks_src_json,
-            i18n_directory=fail_dir,
+            i18n_directory=checks_fail_json_dir,
         )
 
 
@@ -286,7 +273,7 @@ def test_check_missing_keys_with_fix_no_locale(capsys) -> None:
     check_missing_keys_with_fix(
         fix_locale=None,
         i18n_src_dict=pass_checks_src_json,
-        i18n_directory=pass_dir,
+        i18n_directory=checks_pass_json_dir,
         locales_to_check=[],
     )
 

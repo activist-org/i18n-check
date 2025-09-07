@@ -4,7 +4,6 @@ Tests for the non_existent_keys.py.
 """
 
 import re
-from pathlib import Path
 
 import pytest
 
@@ -12,34 +11,20 @@ from i18n_check.check.non_existent_keys import (
     get_used_i18n_keys,
     validate_i18n_keys,
 )
-from i18n_check.utils import read_json_file
 
-fail_dir = (
-    Path(__file__).parent.parent.parent
-    / "src"
-    / "i18n_check"
-    / "test_frontends"
-    / "all_checks_fail"
+from ..test_utils import (
+    checks_fail_dir,
+    checks_pass_dir,
+    fail_checks_src_json,
+    pass_checks_src_json,
 )
-fail_checks_src_json = read_json_file(
-    file_path=fail_dir / "test_i18n" / "test_i18n_src.json"
-)
+
 i18n_used_fail = get_used_i18n_keys(
-    i18n_src_dict=fail_checks_src_json, src_directory=fail_dir
+    i18n_src_dict=fail_checks_src_json, src_directory=checks_fail_dir
 )
 
-pass_dir = (
-    Path(__file__).parent.parent.parent
-    / "src"
-    / "i18n_check"
-    / "test_frontends"
-    / "all_checks_pass"
-)
-pass_checks_src_json = read_json_file(
-    file_path=pass_dir / "test_i18n" / "test_i18n_src.json"
-)
 i18n_used_pass = get_used_i18n_keys(
-    i18n_src_dict=pass_checks_src_json, src_directory=pass_dir
+    i18n_src_dict=pass_checks_src_json, src_directory=checks_pass_dir
 )
 
 all_i18n_used = get_used_i18n_keys()

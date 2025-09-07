@@ -12,6 +12,25 @@ Emojis for the following are chosen based on [gitmoji](https://gitmoji.dev/).
 
 ## [Upcoming] i18n-check 1.x
 
+## i18n-check 1.10.0
+
+### ✨ Features
+
+- The check and `--fix` options for aria label and alt text checks now works for all i18n files including locales, not just the `i18n-src` file.
+
+### 🐞 Bug Fixes
+
+- A formatting error in the tip to use `--fix` in the sorted keys check was fixed.
+
+### ✅ Tests
+
+- Tests were refactored to use the test frontend directories more and share variables via the `test_utils.py` file.
+- Tests of the aria label and alt text checks were rewritten to account for the new functionalities.
+
+### ♻️ Code Refactoring
+
+- The name of the path separator variable was changed to `PATH_SEPARATOR`.
+
 ## i18n-check 1.9.0
 
 ### ✨ Features

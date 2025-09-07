@@ -23,12 +23,12 @@ from rich.prompt import Prompt
 from i18n_check.check.invalid_keys import map_keys_to_files
 from i18n_check.check.sorted_keys import check_file_keys_sorted
 from i18n_check.utils import (
+    PATH_SEPARATOR,
     config_i18n_directory,
     config_i18n_src_file,
     config_missing_keys_locales_to_check,
     config_src_directory,
     get_all_json_files,
-    path_separator,
     read_json_file,
 )
 
@@ -68,12 +68,12 @@ def get_missing_keys_by_locale(
     all_src_keys = set(i18n_src_dict.keys())
     missing_keys_by_locale = {}
 
-    for json_file in get_all_json_files(i18n_directory, path_separator):
+    for json_file in get_all_json_files(directory=i18n_directory):
         # Get just the filename without the extension.
-        filename = json_file.split(path_separator)[-1].split(".")[0]
+        filename = json_file.split(PATH_SEPARATOR)[-1].split(".")[0]
 
         # Skip the source file itself.
-        if filename == str(config_i18n_src_file).split(path_separator)[-1]:
+        if filename == str(config_i18n_src_file).split(PATH_SEPARATOR)[-1]:
             continue
 
         # Skip if locales_to_check is specified and this file isn't in the list.
@@ -182,8 +182,8 @@ def add_missing_keys_interactively(
         If the locale file doesn't exist or can't be processed.
     """
     locale_file_path = None
-    for json_file in get_all_json_files(i18n_directory, path_separator):
-        filename = json_file.split(path_separator)[-1].split(".")[0]
+    for json_file in get_all_json_files(directory=i18n_directory):
+        filename = json_file.split(PATH_SEPARATOR)[-1].split(".")[0]
         if filename == locale:
             locale_file_path = json_file
             break
@@ -251,7 +251,7 @@ def add_missing_keys_interactively(
                     rprint(f"[cyan]Source value:[/cyan] '{source_value}'")
 
                     missing_key_file_names = [
-                        f.split(path_separator)[-1] for f in missing_key_file_dict[key]
+                        f.split(PATH_SEPARATOR)[-1] for f in missing_key_file_dict[key]
                     ]
                     rprint(f"[cyan]Used in:[/cyan] {', '.join(missing_key_file_names)}")
 

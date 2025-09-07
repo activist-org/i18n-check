@@ -3,7 +3,6 @@
 Tests for the repeat_values.py.
 """
 
-from pathlib import Path
 from typing import Dict
 
 import pytest
@@ -14,29 +13,13 @@ from i18n_check.check.repeat_values import (
     i18n_src_dict,
     validate_repeat_values,
 )
-from i18n_check.utils import read_json_file
 
-# repeat values across the repo
+from ..test_utils import (
+    fail_checks_src_json,
+    pass_checks_src_json,
+)
+
 json_repeat_value_counts = get_repeat_value_counts(i18n_src_dict)
-
-fail_checks_src_json = read_json_file(
-    file_path=Path(__file__).parent.parent.parent
-    / "src"
-    / "i18n_check"
-    / "test_frontends"
-    / "all_checks_fail"
-    / "test_i18n"
-    / "test_i18n_src.json"
-)
-pass_checks_src_json = read_json_file(
-    file_path=Path(__file__).parent.parent.parent
-    / "src"
-    / "i18n_check"
-    / "test_frontends"
-    / "all_checks_pass"
-    / "test_i18n"
-    / "test_i18n_src.json"
-)
 
 
 @pytest.mark.parametrize(

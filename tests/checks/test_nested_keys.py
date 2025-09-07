@@ -4,29 +4,13 @@ Test script for nested_keys.py functionality.
 """
 
 import unittest
-from pathlib import Path
 
 import pytest
 
 from i18n_check.check.nested_keys import is_nested_json, validate_nested_keys
 from i18n_check.utils import read_json_file
 
-fail_json_dir = (
-    Path(__file__).parent.parent.parent
-    / "src"
-    / "i18n_check"
-    / "test_frontends"
-    / "all_checks_fail"
-    / "test_i18n"
-)
-pass_json_dir = (
-    Path(__file__).parent.parent.parent
-    / "src"
-    / "i18n_check"
-    / "test_frontends"
-    / "all_checks_pass"
-    / "test_i18n"
-)
+from ..test_utils import checks_fail_json_dir, checks_pass_json_dir
 
 
 class TestIsNestedJson(unittest.TestCase):
@@ -42,12 +26,12 @@ class TestIsNestedJson(unittest.TestCase):
             # (description, input_data, expected_result)
             (
                 "flat JSON",
-                read_json_file(file_path=pass_json_dir / "test_i18n_src.json"),
+                read_json_file(file_path=checks_pass_json_dir / "test_i18n_src.json"),
                 False,
             ),
             (
                 "nested JSON",
-                read_json_file(file_path=fail_json_dir / "test_i18n_src.json"),
+                read_json_file(file_path=checks_fail_json_dir / "test_i18n_src.json"),
                 True,
             ),
             ("deeply nested JSON", {"key": {"nested": {"deep": "value"}}}, True),
@@ -70,7 +54,7 @@ class TestCheckI18nFiles:
         Test that validate_nested_keys prints a warning for nested files.
         """
         # Test the failing case.
-        validate_nested_keys(fail_json_dir)
+        validate_nested_keys(checks_fail_json_dir)
         captured_fail = capsys.readouterr()
 
         # The output from `rich` might have extra newlines or formatting.
@@ -85,7 +69,7 @@ class TestCheckI18nFiles:
         )
 
         # Test the passing case.
-        validate_nested_keys(pass_json_dir)
+        validate_nested_keys(checks_pass_json_dir)
         captured_pass = capsys.readouterr()
         assert captured_pass.out == ""
 

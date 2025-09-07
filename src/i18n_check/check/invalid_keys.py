@@ -34,7 +34,6 @@ from i18n_check.utils import (
     filter_valid_key_parts,
     get_all_json_files,
     is_valid_key,
-    path_separator,
     path_to_valid_key,
     read_json_file,
     replace_text_in_file,
@@ -319,7 +318,7 @@ Please rename the following {name_key_or_keys} \\[current_key -> suggested_corre
             files_to_skip=config_global_files_to_skip,
         )
 
-        json_files = get_all_json_files(config_i18n_directory, path_separator)
+        json_files = get_all_json_files(directory=config_i18n_directory)
         all_files_to_fix = json_files + files_to_fix
 
         # If incorrect key, replace it with the suggested key and give feedback with the replacement.

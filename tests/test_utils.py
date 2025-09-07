@@ -7,10 +7,12 @@ import json
 import os
 import tempfile
 import unittest
+from pathlib import Path
 from unittest.mock import patch
 
 import pytest
 
+from i18n_check.check.invalid_keys import map_keys_to_files
 from i18n_check.utils import (
     collect_files_to_check,
     filter_valid_key_parts,
@@ -21,6 +23,47 @@ from i18n_check.utils import (
     read_files_to_dict,
     read_json_file,
     replace_text_in_file,
+)
+
+checks_fail_dir = (
+    Path(__file__).parent.parent
+    / "src"
+    / "i18n_check"
+    / "test_frontends"
+    / "all_checks_fail"
+)
+checks_fail_json_dir = checks_fail_dir / "test_i18n"
+
+fail_checks_src_json_path = checks_fail_json_dir / "test_i18n_src.json"
+fail_checks_src_locale_path = checks_fail_json_dir / "test_i18n_locale.json"
+fail_checks_test_file_path = checks_fail_dir / "test_file.ts"
+fail_checks_sub_dir_first_file_path = (
+    checks_fail_dir / "sub_dir" / "sub_dir_first_file.ts"
+)
+fail_checks_sub_dir_second_file_path = (
+    checks_fail_dir / "sub_dir" / "sub_dir_second_file.ts"
+)
+
+fail_checks_src_json = read_json_file(file_path=fail_checks_src_json_path)
+fail_checks_locale_json = read_json_file(file_path=fail_checks_src_locale_path)
+i18n_map_fail = map_keys_to_files(
+    i18n_src_dict=fail_checks_src_json, src_directory=checks_fail_dir
+)
+
+checks_pass_dir = (
+    Path(__file__).parent.parent
+    / "src"
+    / "i18n_check"
+    / "test_frontends"
+    / "all_checks_pass"
+)
+checks_pass_json_dir = checks_pass_dir / "test_i18n"
+
+pass_checks_src_json_path = checks_pass_json_dir / "test_i18n_src.json"
+
+pass_checks_src_json = read_json_file(file_path=pass_checks_src_json_path)
+i18n_map_pass = map_keys_to_files(
+    i18n_src_dict=pass_checks_src_json, src_directory=checks_pass_dir
 )
 
 
@@ -82,7 +125,7 @@ class TestUtils(unittest.TestCase):
             with open(non_json_file, "w") as f:
                 f.write("test")
 
-            result = get_all_json_files(temp_dir, os.sep)
+            result = get_all_json_files(directory=temp_dir)
 
             assert json_file_1 in result
             assert json_file_2 in result

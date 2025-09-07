@@ -17,23 +17,7 @@ from i18n_check.check.sorted_keys import (
 )
 from i18n_check.utils import read_json_file
 
-fail_dir = (
-    Path(__file__).parent.parent.parent
-    / "src"
-    / "i18n_check"
-    / "test_frontends"
-    / "all_checks_fail"
-)
-fail_checks_src_json_path = fail_dir / "test_i18n" / "test_i18n_src.json"
-
-pass_dir = (
-    Path(__file__).parent.parent.parent
-    / "src"
-    / "i18n_check"
-    / "test_frontends"
-    / "all_checks_pass"
-)
-pass_checks_src_json_path = pass_dir / "test_i18n" / "test_i18n_src.json"
+from ..test_utils import fail_checks_src_json_path, pass_checks_src_json_path
 
 
 class TestCheckKeysAreSorted:
@@ -227,7 +211,6 @@ class TestCheckSortedKeysIntegration:
             monkeypatch.setattr(
                 "i18n_check.check.sorted_keys.config_i18n_directory", temp_path
             )
-            monkeypatch.setattr("i18n_check.check.sorted_keys.path_separator", "/")
 
             # Test that check fails when there are unsorted files.
             with pytest.raises(SystemExit) as exc_info:
