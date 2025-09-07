@@ -1,7 +1,7 @@
 {
-  "i18n.test_file.hello_test_file": "",
   "i18n._global.hello_global": "Hello, global in another language!",
-  "i18n.test_file.form_button_aria_label": "Click here to submit the form in another language.",
   "i18n._global.not_in_i18n_src": "A reference that can't be used.",
-  "i18n.sub_dir_first_file.hello_sub_dir_first_file": ""
+  "i18n.sub_dir_first_file.hello_sub_dir_first_file": "",
+  "i18n.test_file.form_button_aria_label": "Click here to submit the form in another language.",
+  "i18n.test_file.hello_test_file": ""
 }

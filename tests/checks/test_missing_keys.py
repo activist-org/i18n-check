@@ -178,12 +178,12 @@ def test_add_missing_keys_interactively_nonexistent_locale(tmp_path: Path) -> No
     i18n_dir.mkdir(parents=True)
 
     src_file = i18n_dir / "src.json"
-    src_file.write_text('{"key1": "value1"}', encoding="utf-8")
+    src_file.write_text('{"key_0": "value_0"}', encoding="utf-8")
 
     with pytest.raises(SystemExit):
         add_missing_keys_interactively(
             locale="nonexistent",
-            i18n_src_dict={"key1": "value1"},
+            i18n_src_dict={"key_0": "value_0"},
             i18n_directory=i18n_dir,
         )
 
@@ -195,12 +195,14 @@ def test_add_missing_keys_interactively_no_missing_keys(tmp_path: Path, capsys) 
     i18n_dir = tmp_path / "i18n"
     i18n_dir.mkdir(parents=True)
 
-    locale_file = i18n_dir / "de.json"
-    locale_file.write_text('{"key1": "wert1", "key2": "wert2"}', encoding="utf-8")
+    locale_file = i18n_dir / "locale.json"
+    locale_file.write_text(
+        '{"key_0": "locale_value_0", "key_1": "locale_value_1"}', encoding="utf-8"
+    )
 
     add_missing_keys_interactively(
-        locale="de",
-        i18n_src_dict={"key1": "value1", "key2": "value2"},
+        locale="locale",
+        i18n_src_dict={"key_0": "value_0", "key_1": "value_1"},
         i18n_directory=i18n_dir,
     )
 
@@ -218,23 +220,23 @@ def test_add_missing_keys_interactively_with_translations(
     i18n_dir = tmp_path / "i18n"
     i18n_dir.mkdir(parents=True)
 
-    locale_file = i18n_dir / "de.json"
-    locale_file.write_text('{"key2": "wert2"}', encoding="utf-8")
+    locale_file = i18n_dir / "locale.json"
+    locale_file.write_text('{"key_1": "locale_value_1"}', encoding="utf-8")
 
     # Mock user input: first translation, skip second
     mock_prompt.side_effect = ["german translation", ""]
 
     add_missing_keys_interactively(
-        locale="de",
-        i18n_src_dict={"key1": "value1", "key2": "value2", "key3": "value3"},
+        locale="locale",
+        i18n_src_dict={"key_0": "value_0", "key_1": "value_1", "key_2": "value_2"},
         i18n_directory=i18n_dir,
     )
 
     updated_content = json.loads(locale_file.read_text(encoding="utf-8"))
     expected_content = {
-        "key1": "german translation",
-        "key2": "wert2",
-        # key3 should not be present since it was skipped
+        "key_0": "german translation",
+        "key_1": "locale_value_1",
+        # key_2 should not be present since it was skipped.
     }
 
     assert updated_content == expected_content
@@ -250,16 +252,15 @@ def test_add_missing_keys_interactively_keyboard_interrupt(
     i18n_dir = tmp_path / "i18n"
     i18n_dir.mkdir(parents=True)
 
-    locale_file = i18n_dir / "de.json"
-    locale_file.write_text('{"key2": "wert2"}', encoding="utf-8")
+    locale_file = i18n_dir / "locale.json"
+    locale_file.write_text('{"key_1": "locale_value_1"}', encoding="utf-8")
 
-    # Mock KeyboardInterrupt
     mock_prompt.side_effect = KeyboardInterrupt()
 
     with pytest.raises(SystemExit):
         add_missing_keys_interactively(
-            locale="de",
-            i18n_src_dict={"key1": "value1", "key2": "value2"},
+            locale="locale",
+            i18n_src_dict={"key_0": "value_0", "key_1": "value_1"},
             i18n_directory=i18n_dir,
         )
 
@@ -286,7 +287,7 @@ def test_check_missing_keys_with_fix_with_locale(mock_add_function) -> None:
     """
     check_missing_keys_with_fix(
         fix_locale="de",
-        i18n_src_dict={"key1": "value1"},
+        i18n_src_dict={"key_0": "value_0"},
         i18n_directory=Path("/tmp"),
         locales_to_check=[],
     )
@@ -294,7 +295,7 @@ def test_check_missing_keys_with_fix_with_locale(mock_add_function) -> None:
     # Verify the interactive function was called with correct parameters
     mock_add_function.assert_called_once_with(
         locale="de",
-        i18n_src_dict={"key1": "value1"},
+        i18n_src_dict={"key_0": "value_0"},
         i18n_directory=Path("/tmp"),
     )
 

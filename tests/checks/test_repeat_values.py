@@ -45,7 +45,7 @@ pass_checks_json = read_json_file(
         # Empty dicts.
         ({}, {}),
         # Unicode/special characters.
-        ({"key1": "café", "key2": "CAFÉ", "key3": "café"}, {"café": 3}),
+        ({"key_0": "café", "key_1": "CAFÉ", "key_2": "café"}, {"café": 3}),
         (pass_checks_json, {}),
         # The second value will be filtered out by analyze_and_generate_repeat_value_report.
         (

@@ -216,8 +216,21 @@ def add_missing_keys_interactively(
     locale_dict = read_json_file(locale_file_path)
 
     try:
-        # Sort missing keys by the length of their source values (shortest first).
+
         def get_source_value_length(key: str) -> int:
+            """
+            Get the length of missing key value so that they can be sorted by length (shortest first).
+
+            Parameters
+            ----------
+            key : str
+                The key in the i18n_src_dict to get the length of the value for.
+
+            Returns
+            -------
+            int
+                The length of the value of the given key.
+            """
             return len(i18n_src_dict.get(key, ""))
 
         sorted_missing_keys = sorted(missing_keys, key=get_source_value_length)
@@ -225,46 +238,48 @@ def add_missing_keys_interactively(
         for key in sorted_missing_keys:
             source_value = i18n_src_dict.get(key, "")
 
-            missing_key_file_dict = map_keys_to_files(
-                i18n_src_dict={key: source_value},
-                src_directory=config_src_directory,
-            )
-
-            rprint(f"[cyan]Key:[/cyan] {key}")
-            rprint(f"[cyan]Source value:[/cyan] '{source_value}'")
-
-            missing_key_file_names = [
-                f.split(path_separator)[-1] for f in missing_key_file_dict[key]
-            ]
-            rprint(f"[cyan]Used in:[/cyan] {', '.join(missing_key_file_names)}")
-
-            # Get translation from user.
-            translation = Prompt.ask(
-                f"[green]Enter translation for '{key}'[/green]",
-                default="",
-                show_default=False,
-            )
-
-            if translation:
-                # Add the translation to the locale dictionary.
-                locale_dict[key] = translation
-
-                # Check if sorted keys are required.
-                is_sorted, sorted_keys = check_file_keys_sorted(locale_dict)
-                if not is_sorted:
-                    # Sort the dictionary if keys should be ordered.
-                    locale_dict = dict(sorted(locale_dict.items()))
-
-                with open(locale_file_path, "w", encoding="utf-8") as f:
-                    json.dump(locale_dict, f, indent=2, ensure_ascii=False)
-                    f.write("\n")
-
-                rprint(
-                    f"[green]✅ Added translation for '{key}': '{translation}'[/green]\n"
+            # Skip if the result is a nested key.
+            if not isinstance(source_value, dict):
+                missing_key_file_dict = map_keys_to_files(
+                    i18n_src_dict={key: source_value},
+                    src_directory=config_src_directory,
                 )
 
-            else:
-                rprint(f"⏭️ Skipped '{key}' (empty translation)\n")
+                rprint(f"[cyan]Key:[/cyan] {key}")
+                rprint(f"[cyan]Source value:[/cyan] '{source_value}'")
+
+                missing_key_file_names = [
+                    f.split(path_separator)[-1] for f in missing_key_file_dict[key]
+                ]
+                rprint(f"[cyan]Used in:[/cyan] {', '.join(missing_key_file_names)}")
+
+                # Get translation from user.
+                translation = Prompt.ask(
+                    f"[green]Enter translation for '{key}'[/green]",
+                    default="",
+                    show_default=False,
+                )
+
+                if translation:
+                    # Add the translation to the locale dictionary.
+                    locale_dict[key] = translation
+
+                    # Check if sorted keys are required.
+                    is_sorted, sorted_keys = check_file_keys_sorted(locale_dict)
+                    if not is_sorted:
+                        # Sort the dictionary if keys should be ordered.
+                        locale_dict = dict(sorted(locale_dict.items()))
+
+                    with open(locale_file_path, "w", encoding="utf-8") as f:
+                        json.dump(locale_dict, f, indent=2, ensure_ascii=False)
+                        f.write("\n")
+
+                    rprint(
+                        f"[green]✅ Added translation for '{key}': '{translation}'[/green]\n"
+                    )
+
+                else:
+                    rprint(f"⏭️ Skipped '{key}' (empty translation)\n")
 
     except KeyboardInterrupt:
         rprint("\n[yellow]Cancelled by user[/yellow]")
