@@ -12,17 +12,12 @@ Run the following script in terminal:
 """
 
 import json
-import os
 from pathlib import Path
 from typing import Dict
 
 from rich import print as rprint
 
-from i18n_check.utils import config_i18n_directory, read_json_file
-
-path_separator = "/"
-if os.name == "nt":
-    path_separator = "\\"
+from i18n_check.utils import config_i18n_directory, path_separator, read_json_file
 
 # MARK: Is Nested
 

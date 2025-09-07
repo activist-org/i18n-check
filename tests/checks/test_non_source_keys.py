@@ -31,15 +31,15 @@ pass_dir = (
     / "all_checks_pass"
     / "test_i18n"
 )
-fail_checks_json = read_json_file(file_path=fail_dir / "test_i18n_src.json")
-pass_checks_json = read_json_file(file_path=pass_dir / "test_i18n_src.json")
+fail_checks_src_json = read_json_file(file_path=fail_dir / "test_i18n_src.json")
+pass_checks_src_json = read_json_file(file_path=pass_dir / "test_i18n_src.json")
 
 non_source_keys_fail = get_non_source_keys(
-    i18n_src_dict=fail_checks_json,
+    i18n_src_dict=fail_checks_src_json,
     i18n_directory=fail_dir,
 )
 non_source_keys_pass = get_non_source_keys(
-    i18n_src_dict=pass_checks_json,
+    i18n_src_dict=pass_checks_src_json,
     i18n_directory=pass_dir,
 )
 

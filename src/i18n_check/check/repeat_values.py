@@ -80,7 +80,7 @@ def analyze_and_generate_repeat_value_report(
 
     keys_to_remove = []
     for repeat_value in json_repeat_value_counts:
-        i18n_keys = [
+        repeat_value_i18n_keys = [
             k
             for k, v in i18n_src_dict.items()
             if repeat_value == lower_and_remove_punctuation(text=v)
@@ -88,17 +88,19 @@ def analyze_and_generate_repeat_value_report(
         ]
 
         # Needed as we're removing keys that are set to lowercase above.
-        if len(i18n_keys) > 1:
+        if len(repeat_value_i18n_keys) > 1:
             repeat_value_error_report += (
                 f"\n\nRepeat value: '{repeat_value}'"
-                f"\nNumber of instances: {len(i18n_keys)}"
-                f"\nKeys: {', '.join(i18n_keys)}"
+                f"\nNumber of instances: {len(repeat_value_i18n_keys)}"
+                f"\nKeys: {', '.join(repeat_value_i18n_keys)}"
             )
 
             # Use the methods from the invalid keys check to assure that results are consistent.
             repeat_value_key_file_dict = map_keys_to_files(
                 i18n_src_dict={
-                    k: v for k, v in i18n_src_dict.items() if k in i18n_keys
+                    k: v
+                    for k, v in i18n_src_dict.items()
+                    if k in repeat_value_i18n_keys
                 },
                 src_directory=config_src_directory,
             )

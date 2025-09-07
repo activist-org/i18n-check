@@ -13,7 +13,7 @@ from i18n_check.check.repeat_keys import (
     validate_repeat_keys,
 )
 
-fail_checks_json = (
+fail_checks_src_json = (
     Path(__file__).parent.parent.parent
     / "src"
     / "i18n_check"
@@ -22,7 +22,7 @@ fail_checks_json = (
     / "test_i18n"
     / "test_i18n_src.json"
 )
-pass_checks_json = (
+pass_checks_src_json = (
     Path(__file__).parent.parent.parent
     / "src"
     / "i18n_check"
@@ -37,7 +37,7 @@ pass_checks_json = (
     "json_str,expected",
     [
         (
-            fail_checks_json,
+            fail_checks_src_json,
             {
                 "i18n._global.repeat_key": [
                     "This key is duplicated",
@@ -45,7 +45,7 @@ pass_checks_json = (
                 ]
             },
         ),
-        (pass_checks_json, {}),
+        (pass_checks_src_json, {}),
         (
             '{"a": 1, "b": 2, "a": 3, "b": 4, "c": 5}',
             {"a": ["1", "3"], "b": ["2", "4"]},
@@ -75,7 +75,7 @@ def test_invalid_json(json_str) -> None:
     "file_path,expected_duplicates",
     [
         (
-            fail_checks_json,
+            fail_checks_src_json,
             {
                 "i18n._global.repeat_key": [
                     "This key is duplicated",
@@ -83,7 +83,7 @@ def test_invalid_json(json_str) -> None:
                 ]
             },
         ),
-        (pass_checks_json, {}),
+        (pass_checks_src_json, {}),
     ],
 )
 def test_check_file(file_path, expected_duplicates) -> None:

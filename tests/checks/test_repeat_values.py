@@ -19,7 +19,7 @@ from i18n_check.utils import read_json_file
 # repeat values across the repo
 json_repeat_value_counts = get_repeat_value_counts(i18n_src_dict)
 
-fail_checks_json = read_json_file(
+fail_checks_src_json = read_json_file(
     file_path=Path(__file__).parent.parent.parent
     / "src"
     / "i18n_check"
@@ -28,7 +28,7 @@ fail_checks_json = read_json_file(
     / "test_i18n"
     / "test_i18n_src.json"
 )
-pass_checks_json = read_json_file(
+pass_checks_src_json = read_json_file(
     file_path=Path(__file__).parent.parent.parent
     / "src"
     / "i18n_check"
@@ -45,11 +45,11 @@ pass_checks_json = read_json_file(
         # Empty dicts.
         ({}, {}),
         # Unicode/special characters.
-        ({"key1": "café", "key2": "CAFÉ", "key3": "café"}, {"café": 3}),
-        (pass_checks_json, {}),
+        ({"key_0": "café", "key_1": "CAFÉ", "key_2": "café"}, {"café": 3}),
+        (pass_checks_src_json, {}),
         # The second value will be filtered out by analyze_and_generate_repeat_value_report.
         (
-            fail_checks_json,
+            fail_checks_src_json,
             {
                 "hello global!": 2,
                 "hello single file!": 2,
@@ -71,10 +71,10 @@ def test_get_repeat_value_counts(
 
 def test_multiple_repeats_with_common_prefix(capsys) -> None:
     fail_result, fail_report = analyze_and_generate_repeat_value_report(
-        fail_checks_json, get_repeat_value_counts(fail_checks_json)
+        fail_checks_src_json, get_repeat_value_counts(fail_checks_src_json)
     )
     pass_result, pass_report = analyze_and_generate_repeat_value_report(
-        pass_checks_json, get_repeat_value_counts(pass_checks_json)
+        pass_checks_src_json, get_repeat_value_counts(pass_checks_src_json)
     )
 
     assert "Repeat value: 'hello global!'" in fail_report
@@ -118,7 +118,7 @@ def test_key_with_lower_suffix_ignored(capsys) -> None:
 def test_validate_repeat_values_behavior(capsys) -> None:
     with pytest.raises(SystemExit):
         validate_repeat_values(
-            json_repeat_value_counts=get_repeat_value_counts(fail_checks_json),
+            json_repeat_value_counts=get_repeat_value_counts(fail_checks_src_json),
             repeat_value_error_report="",
         )
         assert (
@@ -127,7 +127,7 @@ def test_validate_repeat_values_behavior(capsys) -> None:
         )
 
     validate_repeat_values(
-        json_repeat_value_counts=get_repeat_value_counts(pass_checks_json),
+        json_repeat_value_counts=get_repeat_value_counts(pass_checks_src_json),
         repeat_value_error_report="",
     )
     output = capsys.readouterr().out
