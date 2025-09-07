@@ -14,9 +14,16 @@ Emojis for the following are chosen based on [gitmoji](https://gitmoji.dev/).
 
 ### ✨ Features
 
-- A new aria label check has been added to make sure that i18n keys that end in `_aria_label` do not end in punctuation ([#48](https://github.com/activist-org/i18n-check/issues/48)).
+- A new missing keys check has been added to validate if any of the locale JSON files are missing keys that are present in the source file ([#38](https://github.com/activist-org/i18n-check/issues/38)).
+  - The `--fix` argument for this check uses an interactive mode to add translations that the user enters into the terminal into a locale file of choice ([#41](https://github.com/activist-org/i18n-check/issues/41)).
+- A new sorted keys check has been added to make sure that the i18n JSON files are alphabetical ([#40](https://github.com/activist-org/i18n-check/issues/40)).
+  - The `--fix` argument sorts the i18n JSON files for the user.
+- A new aria label check has been added to make sure that i18n keys that end in `_aria_label` dom't have values that end in punctuation ([#48](https://github.com/activist-org/i18n-check/issues/48)).
+  - The `--fix` argument removes all punctuation in these values.
+- A new alt text check has been added to make sure that i18n keys that end in `_alt_text` have values that end in a period ([#49](https://github.com/activist-org/i18n-check/issues/49)).
+  - The `--fix` argument adds periods to these values.
 - The user can now ignore certain regex patterns in their i18n keys within the invalid keys check ([#52](https://github.com/activist-org/i18n-check/issues/52), [#58](https://github.com/activist-org/i18n-check/issues/58)).
-- In the invalid keys check the `--fix` option now uses just the global directories and files to skip to assure that all instances of keys are replaced even if their locations should not be factored into the names of the key ([#59](https://github.com/activist-org/i18n-check/issues/59)).
+- In the invalid keys check the `--fix` argument now uses just the global directories and files to skip to assure that all instances of keys are replaced even if their locations should not be factored into the names of the key ([#59](https://github.com/activist-org/i18n-check/issues/59)).
 
 ### 🐞 Bug Fixes
 
