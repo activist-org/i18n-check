@@ -23,7 +23,6 @@ from rich import print as rprint
 from i18n_check.utils import (
     PATH_SEPARATOR,
     config_i18n_directory,
-    config_i18n_src_file,
     get_all_json_files,
     read_json_file,
     replace_text_in_file,
@@ -105,7 +104,7 @@ def report_and_fix_aria_labels(
     for k in aria_label_issues:
         error_string += f"Key: {k}\n"
         for json_file in aria_label_issues[k]:
-            error_string += f"  File: '{json_file.split(PATH_SEPARATOR)[-1]}'\n"
+            error_string += f"  File:      '{json_file.split(PATH_SEPARATOR)[-1]}'\n"
 
             current_value = aria_label_issues[k][json_file]["current_value"]
             corrected_value = aria_label_issues[k][json_file]["correct_value"]
@@ -127,17 +126,17 @@ def report_and_fix_aria_labels(
         for k in aria_label_issues:
             for json_file in aria_label_issues[k]:
                 current_value = aria_label_issues[k][json_file]["current_value"]
-                corrected_value = aria_label_issues[k][json_file]["corrected_value"]
+                correct_value = aria_label_issues[k][json_file]["correct_value"]
 
                 # Replace the full key-value pair in JSON format.
                 old_pattern = f'"{k}": "{current_value}"'
-                new_pattern = f'"{k}": "{corrected_value}"'
+                new_pattern = f'"{k}": "{correct_value}"'
                 replace_text_in_file(path=json_file, old=old_pattern, new=new_pattern)
 
                 total_aria_label_issues += 1
 
         rprint(
-            f"\n[green]✅ Fixed {len(total_aria_label_issues)} aria label punctuation issues.[/green]\n"
+            f"\n[green]✅ Fixed {total_aria_label_issues} aria label punctuation issues.[/green]\n"
         )
         sys.exit(0)
 
@@ -154,8 +153,7 @@ def check_aria_labels(fix: bool = False) -> None:
     fix : bool, optional, default=False
         Whether to automatically fix issues, by default False.
     """
-    i18n_src_dict = read_json_file(file_path=config_i18n_src_file)
-    aria_label_issues = find_aria_label_punctuation_issues(i18n_src_dict=i18n_src_dict)
+    aria_label_issues = find_aria_label_punctuation_issues()
     report_and_fix_aria_labels(aria_label_issues=aria_label_issues, fix=fix)
 
 

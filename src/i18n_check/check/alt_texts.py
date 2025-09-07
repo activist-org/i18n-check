@@ -23,7 +23,6 @@ from rich import print as rprint
 from i18n_check.utils import (
     PATH_SEPARATOR,
     config_i18n_directory,
-    config_i18n_src_file,
     get_all_json_files,
     read_json_file,
     replace_text_in_file,
@@ -101,7 +100,7 @@ def report_and_fix_alt_texts(
     for k in alt_text_issues:
         error_string += f"Key: {k}\n"
         for json_file in alt_text_issues[k]:
-            error_string += f"  File: '{json_file.split(PATH_SEPARATOR)[-1]}'\n"
+            error_string += f"  File:      '{json_file.split(PATH_SEPARATOR)[-1]}'\n"
 
             current_value = alt_text_issues[k][json_file]["current_value"]
             corrected_value = alt_text_issues[k][json_file]["correct_value"]
@@ -120,20 +119,20 @@ def report_and_fix_alt_texts(
 
     else:
         total_alt_text_issues = 0
-        for k in alt_text_issues.items():
+        for k in alt_text_issues:
             for json_file in alt_text_issues[k]:
                 current_value = alt_text_issues[k][json_file]["current_value"]
-                corrected_value = alt_text_issues[k][json_file]["corrected_value"]
+                correct_value = alt_text_issues[k][json_file]["correct_value"]
 
                 # Replace the full key-value pair in JSON format.
                 old_pattern = f'"{k}": "{current_value}"'
-                new_pattern = f'"{k}": "{corrected_value}"'
+                new_pattern = f'"{k}": "{correct_value}"'
                 replace_text_in_file(path=json_file, old=old_pattern, new=new_pattern)
 
                 total_alt_text_issues += 1
 
         rprint(
-            f"\n[green]✅ Fixed {len(total_alt_text_issues)} alt text punctuation issues.[/green]\n"
+            f"\n[green]✅ Fixed {total_alt_text_issues} alt text punctuation issues.[/green]\n"
         )
         sys.exit(0)
 
@@ -150,8 +149,7 @@ def check_alt_texts(fix: bool = False) -> None:
     fix : bool, optional, default=False
         Whether to automatically fix issues, by default False.
     """
-    i18n_src_dict = read_json_file(file_path=config_i18n_src_file)
-    alt_text_issues = find_alt_text_punctuation_issues(i18n_src_dict=i18n_src_dict)
+    alt_text_issues = find_alt_text_punctuation_issues()
     report_and_fix_alt_texts(alt_text_issues=alt_text_issues, fix=fix)
 
 
