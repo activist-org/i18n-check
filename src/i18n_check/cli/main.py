@@ -15,6 +15,7 @@ from i18n_check.check.invalid_keys import (
     invalid_keys_by_name,
     report_and_correct_keys,
 )
+from i18n_check.check.missing_keys import check_missing_keys_with_fix
 from i18n_check.check.sorted_keys import check_all_files_sorted
 from i18n_check.cli.generate_config_file import generate_config_file
 from i18n_check.cli.generate_test_frontends import generate_test_frontends
@@ -61,7 +62,7 @@ def main() -> None:
     >>> i18n-check --generate-config-file  # -gcf
     >>> i18n-check --invalid-keys  # -ik
     >>> i18n-check --all-checks  # -a
-    >>> i18n-check --missing-keys --fix --locale de  # Interactive mode to add missing keys for German
+    >>> i18n-check --missing-keys --fix --locale ENTER_ISO_2_CODE  # interactive mode to add missing keys
     """
     # MARK: CLI Base
 
@@ -271,17 +272,18 @@ def main() -> None:
 
     if args.missing_keys:
         if args.fix and args.locale:
-            from i18n_check.check.missing_keys import check_missing_keys_with_fix
-
             check_missing_keys_with_fix(fix_locale=args.locale)
+
         elif args.fix and not args.locale:
             rprint(
                 "[red]❌ Error: --locale (-l) is required when using --fix (-f) with --missing-keys (-mk)[/red]"
             )
             rprint("[yellow]💡 Example: i18n-check -mk -f -l de[/yellow]")
             sys.exit(1)
+
         else:
             run_check("missing_keys")
+
         return
 
     if args.aria_labels:

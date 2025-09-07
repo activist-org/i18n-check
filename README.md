@@ -93,7 +93,7 @@ i18n-check -gcf  # generate a configuration file
 i18n-check -gtf  # generate test frontends to experiment with
 i18n-check -a  # run all checks
 i18n-check -CHECK_ID  # run a specific check (see options below)
-i18n-check -mk -f -l de  # interactively add missing keys for German locale
+i18n-check -mk -f -l ENTER_ISO_2_CODE  # interactive mode to add missing keys
 ```
 
 <a id="previews-"></a>
@@ -125,6 +125,7 @@ There the following checks can ran across your codebase:
 
 - `invalid-keys` (`ik`): Does the source file have keys that don't match the above format or name conventions?
   - Rename them so i18n key usage is consistent and their scope is communicated in their name.
+  - Pass `--fix` (`-f`) to fix all naming issues automatically.
 - `non-existent-keys` (`nek`): Does the codebase include i18n keys that are not within the source file?
   - Check their validity and resolve if they should be added to the i18n files or replaced.
 - `unused-keys` (`uk`): Does the source file have keys that are not used in the codebase?
@@ -137,15 +138,19 @@ There the following checks can ran across your codebase:
   - Combine them so the localization team only needs to localize one of them.
 - `sorted-keys` (`sk`): Are the i18n source and target locale files sorted alphabetically?
   - Sort them alphabetically to reduce merge conflicts from the files changing.
+  - Pass `--fix` (`-f`) to sort the i18n files automatically.
 - `nested-keys` (`nk`): Do the i18n files contain nested JSON structures?
   - Flatten them to make replacing invalid keys easier with find-and-replace all.
 - `missing-keys` (`mk`): Are any keys from the source file missing in the locale files?
   - Add the missing keys to ensure all translations are complete.
   - Keys with empty string values are also considered missing.
+  - Pass `--fix --locale ENTER_ISO_2_CODE` (`-f -l ENTER_ISO_2_CODE`) to interactively add missing keys.
 - `aria-labels` (`al`): Do keys that end in `_aria_label` end in punctuation?
   - Remove the punctuation as it negatively affects screen reader experience.
+  - Pass `--fix` (`-f`) to remove punctuation automatically.
 - `alt-texts` (`at`): Do keys that end in `_alt_text` lack proper punctuation?
   - Add periods to the end to comply with alt text guidelines.
+  - Pass `--fix` (`-f`) to add periods automatically.
 
 Directions for how to fix the i18n files are provided when errors are raised. Checks can also be disabled in the workflow via options passed in the configuration YAML file.
 
