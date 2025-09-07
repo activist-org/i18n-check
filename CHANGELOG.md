@@ -12,6 +12,8 @@ Emojis for the following are chosen based on [gitmoji](https://gitmoji.dev/).
 
 ## [Upcoming] i18n-check 1.x
 
+## i18n-check 1.9.0
+
 ### ✨ Features
 
 - A new missing keys check has been added to validate if any of the locale JSON files are missing keys that are present in the source file ([#38](https://github.com/activist-org/i18n-check/issues/38)).

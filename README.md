@@ -110,7 +110,7 @@ The following GIFs show the response to the command `i18n-check -a` when all che
 
 ### Arguments [`⇧`](#contents)
 
-You provide `i18n-check` with the following arguments:
+You provide `i18n-check` with the following arguments in the `.i18n-check.yaml` configuration file (see [configuration](#configuration-) below):
 
 - `src-dir`: The path to the directory that has source code to check
 - `i18n-dir`: The directory path to your i18n files
@@ -164,6 +164,17 @@ Directions for how to fix the i18n files are provided when errors are raised. Ch
 
 The following details the `.18n-check.yaml` configuration file, with a further example being the [configuration file for this repository](/.i18n-check.yaml) that we use in testing.
 
+> [!NOTE]
+> When `global.active` is set to `true`, all checks are enabled by default. You can then explicitly disable specific checks by setting their `active` value to `false`. This allows for more concise configuration files. For example:
+>
+> ```yaml
+> checks:
+>   global:
+>     active: true
+>   missing-keys:
+>     active: false # disabled even though global is active
+> ```
+
 ```yaml
 src-dir: frontend
 i18n-dir: frontend/i18n
@@ -208,17 +219,6 @@ checks:
   alt-texts:
     active: true
 ```
-
-> [!NOTE]
-> When `global.active` is set to `true`, all checks are enabled by default. You can then explicitly disable specific checks by setting their `active` value to `false`. This allows for more concise configuration files. For example:
->
-> ```yaml
-> checks:
->   global:
->     active: true
->   missing-keys:
->     active: false # disabled even though global is active
-> ```
 
 <a id="additional-arguments-"></a>
 

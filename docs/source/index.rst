@@ -93,7 +93,7 @@ The following are example commands for `i18n-check`:
 Arguments
 =========
 
-You provide ``i18n-check`` with the following arguments:
+You provide ``i18n-check`` with the following arguments in the ``.i18n-check.yaml`` configuration file (see the configuration section below):
 
 - ``src-dir``: The path to the directory that has source code to check
 - ``i18n-dir``: The directory path to your i18n files
@@ -136,6 +136,11 @@ There the following checks can ran across your codebase:
 
 Directions for how to fix the i18n files are provided when errors are raised. Checks can also be disabled in the workflow via options passed in the configuration YAML file.
 
+Configuration
+=============
+
+The following details the ``.18n-check.yaml`` configuration file, with a further example being the `configuration file for the i18n-check repository <https://github.com/activist-org/i18n-check/blob/main/.i18n-check.yaml>`_ that we use in testing.
+
     | **Note**
 
     When ``global.active`` is set to ``true``, all checks are enabled by default. You can then explicitly disable specific checks by setting their ``active`` value to ``false``. This allows for more concise configuration files. For example:
@@ -147,11 +152,6 @@ Directions for how to fix the i18n files are provided when errors are raised. Ch
             active: true
           missing-keys:
             active: false # disabled even though global is active
-
-Configuration
-=============
-
-The following details the ``.18n-check.yaml`` configuration file, with a further example being the `configuration file for the i18n-check repository <https://github.com/activist-org/i18n-check/blob/main/.i18n-check.yaml>`_ that we use in testing.
 
 .. code-block:: yaml
 
