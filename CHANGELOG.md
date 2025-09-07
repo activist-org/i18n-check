@@ -12,6 +12,16 @@ Emojis for the following are chosen based on [gitmoji](https://gitmoji.dev/).
 
 ## [Upcoming] i18n-check 1.x
 
+## i18n-check 1.10.1
+
+### ♻️ Code Refactoring
+
+- The error messages of the sorted keys check have been reformatted.
+
+### 📝 Documentation
+
+- The sorting technique of the sorted keys check that puts periods before underscores was noted.
+
 ## i18n-check 1.10.0
 
 ### ✨ Features
@@ -50,6 +60,10 @@ Emojis for the following are chosen based on [gitmoji](https://gitmoji.dev/).
 
 - Fixed an issue where the repeat values check was providing a suggestion for the new key that was sometimes invalid when checked against the invalid keys check when the key was used in multiple files ([#50](https://github.com/activist-org/i18n-check/issues/50)).
 - Fixed a bug where repeat values with `_lower` at the end of their keys were not being removed from the count of repeats for value.
+
+### 📝 Documentation
+
+- Extensive documentation was written for all new checks.
 
 ## i18n-check 1.8.1
 

@@ -120,6 +120,7 @@ There the following checks can ran across your codebase:
     - Combine them so the localization team only needs to localize one of them.
 - ``sorted-keys`` (``sk``): Are the i18n source and target locale files sorted alphabetically?
     - Sort them alphabetically to reduce merge conflicts from the files changing.
+    - Note: Sorting is done such that periods come before underscores (some JSON extensions do otherwise).
     - Pass ``--fix`` (``-f``) to sort the i18n files automatically.
 - ``nested-keys`` (``nk``): Do the i18n files contain nested JSON structures?
     - Flatten them to make replacing invalid keys easier with find-and-replace all.

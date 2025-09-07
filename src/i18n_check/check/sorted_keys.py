@@ -150,16 +150,17 @@ def check_all_files_sorted(fix: bool = False) -> None:
         sys.exit(1)
 
     elif unsorted_files and fix:
+        file_or_files = "file" if len(unsorted_files) == 1 else "files"
         rprint(
-            f"\n[green]✅ Fixing key sorting in {len(unsorted_files)} file(s).[/green]"
+            f"\n[green]Fixing key sorting in {len(unsorted_files)} {file_or_files}:[/green]"
         )
 
         for f in unsorted_files:
             if fix_sorted_keys(f):
-                rprint(f"[green]✅ Fixed key order in: {f}[/green]")
+                rprint(f"[green]✅ Fixed key order in {f}[/green]")
 
             else:
-                rprint(f"[red]Failed to fix key order in: {f}[/red]")
+                rprint(f"[red]Failed to fix key order in {f}[/red]")
 
     else:
         rprint(
