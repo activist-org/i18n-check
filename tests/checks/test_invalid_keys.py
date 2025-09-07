@@ -21,14 +21,14 @@ fail_dir = (
     / "test_frontends"
     / "all_checks_fail"
 )
-fail_checks_json = read_json_file(
+fail_checks_src_json = read_json_file(
     file_path=fail_dir / "test_i18n" / "test_i18n_src.json"
 )
 i18n_map_fail = map_keys_to_files(
-    i18n_src_dict=fail_checks_json, src_directory=fail_dir
+    i18n_src_dict=fail_checks_src_json, src_directory=fail_dir
 )
 
-fail_checks_json_path = fail_dir / "test_i18n" / "test_i18n_src.json"
+fail_checks_src_json_path = fail_dir / "test_i18n" / "test_i18n_src.json"
 fail_checks_test_file_path = fail_dir / "test_file.ts"
 fail_checks_sub_dir_first_file_path = fail_dir / "sub_dir" / "sub_dir_first_file.ts"
 fail_checks_sub_dir_second_file_path = fail_dir / "sub_dir" / "sub_dir_second_file.ts"
@@ -44,11 +44,11 @@ pass_dir = (
     / "test_frontends"
     / "all_checks_pass"
 )
-pass_checks_json = read_json_file(
+pass_checks_src_json = read_json_file(
     file_path=pass_dir / "test_i18n" / "test_i18n_src.json"
 )
 i18n_map_pass = map_keys_to_files(
-    i18n_src_dict=pass_checks_json, src_directory=pass_dir
+    i18n_src_dict=pass_checks_src_json, src_directory=pass_dir
 )
 
 invalid_format_pass, invalid_name_pass = audit_i18n_keys(
@@ -168,7 +168,7 @@ def test_report_and_correct_keys_fail_fix_mode(capsys):
 
     # Return to old state before string replacement:
     replace_text_in_file(
-        path=fail_checks_json_path,
+        path=fail_checks_src_json_path,
         old="i18n.test_file.content_reference",
         new="i18n.wrong_identifier_path.content_reference",
     )
@@ -180,12 +180,12 @@ def test_report_and_correct_keys_fail_fix_mode(capsys):
 
     # Repeat value keys as well:
     replace_text_in_file(
-        path=fail_checks_json_path,
+        path=fail_checks_src_json_path,
         old="i18n._global.repeat_value_multiple_files",
         new="i18n.repeat_value_multiple_files",
     )
     replace_text_in_file(
-        path=fail_checks_json_path,
+        path=fail_checks_src_json_path,
         old="i18n.test_file.repeat_value_single_file",
         new="i18n.repeat_value_single_file",
     )

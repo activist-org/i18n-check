@@ -21,11 +21,11 @@ fail_dir = (
     / "test_frontends"
     / "all_checks_fail"
 )
-fail_checks_json = read_json_file(
+fail_checks_src_json = read_json_file(
     file_path=fail_dir / "test_i18n" / "test_i18n_src.json"
 )
 i18n_used_fail = get_used_i18n_keys(
-    i18n_src_dict=fail_checks_json, src_directory=fail_dir
+    i18n_src_dict=fail_checks_src_json, src_directory=fail_dir
 )
 
 pass_dir = (
@@ -35,11 +35,11 @@ pass_dir = (
     / "test_frontends"
     / "all_checks_pass"
 )
-pass_checks_json = read_json_file(
+pass_checks_src_json = read_json_file(
     file_path=pass_dir / "test_i18n" / "test_i18n_src.json"
 )
 i18n_used_pass = get_used_i18n_keys(
-    i18n_src_dict=pass_checks_json, src_directory=pass_dir
+    i18n_src_dict=pass_checks_src_json, src_directory=pass_dir
 )
 
 all_i18n_used = get_used_i18n_keys()
@@ -96,7 +96,7 @@ def test_validate_fail_i18n_keys(capsys) -> None:
     """
     with pytest.raises(SystemExit):
         validate_i18n_keys(
-            all_used_i18n_keys=i18n_used_fail, i18n_src_dict=fail_checks_json
+            all_used_i18n_keys=i18n_used_fail, i18n_src_dict=fail_checks_src_json
         )
 
     msg = capsys.readouterr().out.replace("\n", "")
@@ -111,7 +111,7 @@ def test_validate_pass_i18n_keys(capsys) -> None:
     """
     # For pass case, it should not raise an error.
     validate_i18n_keys(
-        all_used_i18n_keys=i18n_used_pass, i18n_src_dict=pass_checks_json
+        all_used_i18n_keys=i18n_used_pass, i18n_src_dict=pass_checks_src_json
     )
     pass_result = capsys.readouterr().out
     cleaned_pass_result = re.sub(r"\x1b\[.*?m", "", pass_result).strip()

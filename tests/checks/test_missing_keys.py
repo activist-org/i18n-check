@@ -26,6 +26,15 @@ fail_dir = (
     / "test_i18n"
 )
 
+fail_checks_src_json = read_json_file(file_path=fail_dir / "test_i18n_src.json")
+fail_checks_locale_json = read_json_file(file_path=fail_dir / "test_i18n_locale.json")
+
+missing_keys_fail = get_missing_keys_by_locale(
+    i18n_src_dict=fail_checks_src_json,
+    i18n_directory=fail_dir,
+    locales_to_check=[],
+)
+
 pass_dir = (
     Path(__file__).parent.parent.parent
     / "src"
@@ -35,16 +44,10 @@ pass_dir = (
     / "test_i18n"
 )
 
-fail_checks_json = read_json_file(file_path=fail_dir / "test_i18n_src.json")
-pass_checks_json = read_json_file(file_path=pass_dir / "test_i18n_src.json")
+pass_checks_src_json = read_json_file(file_path=pass_dir / "test_i18n_src.json")
 
-missing_keys_fail = get_missing_keys_by_locale(
-    i18n_src_dict=fail_checks_json,
-    i18n_directory=fail_dir,
-    locales_to_check=[],
-)
 missing_keys_pass = get_missing_keys_by_locale(
-    i18n_src_dict=pass_checks_json,
+    i18n_src_dict=pass_checks_src_json,
     i18n_directory=pass_dir,
     locales_to_check=[],
 )
@@ -96,7 +99,7 @@ def test_get_missing_keys_by_locale_with_specific_locales() -> None:
     """
     # Test with a locale that doesn't exist.
     result = get_missing_keys_by_locale(
-        i18n_src_dict=pass_checks_json,
+        i18n_src_dict=pass_checks_src_json,
         i18n_directory=pass_dir,
         locales_to_check=["not_a_locale.json"],
     )
@@ -104,7 +107,7 @@ def test_get_missing_keys_by_locale_with_specific_locales() -> None:
 
     # Test with the existing locale file.
     result = get_missing_keys_by_locale(
-        i18n_src_dict=pass_checks_json,
+        i18n_src_dict=pass_checks_src_json,
         i18n_directory=pass_dir,
         locales_to_check=["test_i18n_locale"],
     )
@@ -217,29 +220,46 @@ def test_add_missing_keys_interactively_with_translations(
     """
     Test that add_missing_keys_interactively adds translations and sorts keys.
     """
-    i18n_dir = tmp_path / "i18n"
-    i18n_dir.mkdir(parents=True)
-
-    locale_file = i18n_dir / "locale.json"
-    locale_file.write_text('{"key_1": "locale_value_1"}', encoding="utf-8")
-
-    # Mock user input: first translation, skip second
-    mock_prompt.side_effect = ["german translation", ""]
+    # Mock user input for all translations all except the first being skipped automatically or explicitly.
+    mock_prompt.side_effect = ["Locale translation"] + [
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+    ]
 
     add_missing_keys_interactively(
-        locale="locale",
-        i18n_src_dict={"key_0": "value_0", "key_1": "value_1", "key_2": "value_2"},
-        i18n_directory=i18n_dir,
+        locale="test_i18n_locale",
+        i18n_src_dict=fail_checks_src_json,
+        i18n_directory=fail_dir,
     )
 
-    updated_content = json.loads(locale_file.read_text(encoding="utf-8"))
+    updated_fail_checks_locale_json = read_json_file(
+        file_path=fail_dir / "test_i18n_locale.json"
+    )
+
     expected_content = {
-        "key_0": "german translation",
-        "key_1": "locale_value_1",
-        # key_2 should not be present since it was skipped.
+        "i18n._global.hello_global": "Hello, global in another language!",
+        "i18n._global.not_in_i18n_src": "A reference that can't be used.",
+        "i18n._global.repeat_value_hello_global": "Locale translation",
+        "i18n.sub_dir_first_file.hello_sub_dir_first_file": "",
+        "i18n.test_file.form_button_aria_label": "Click here to submit the form in another language.",
+        "i18n.test_file.hello_test_file": "",
     }
 
-    assert updated_content == expected_content
+    assert updated_fail_checks_locale_json == expected_content
+
+    # Revert change to test_i18n_locale.json.
+    with open(fail_dir / "test_i18n_locale.json", "w", encoding="utf-8") as f:
+        json.dump(fail_checks_locale_json, f, indent=2, ensure_ascii=False)
+        f.write("\n")
 
 
 @patch("i18n_check.check.missing_keys.Prompt.ask")
@@ -249,19 +269,13 @@ def test_add_missing_keys_interactively_keyboard_interrupt(
     """
     Test that add_missing_keys_interactively handles KeyboardInterrupt gracefully.
     """
-    i18n_dir = tmp_path / "i18n"
-    i18n_dir.mkdir(parents=True)
-
-    locale_file = i18n_dir / "locale.json"
-    locale_file.write_text('{"key_1": "locale_value_1"}', encoding="utf-8")
-
     mock_prompt.side_effect = KeyboardInterrupt()
 
     with pytest.raises(SystemExit):
         add_missing_keys_interactively(
-            locale="locale",
-            i18n_src_dict={"key_0": "value_0", "key_1": "value_1"},
-            i18n_directory=i18n_dir,
+            locale="test_i18n_locale",
+            i18n_src_dict=fail_checks_src_json,
+            i18n_directory=fail_dir,
         )
 
 
@@ -271,7 +285,7 @@ def test_check_missing_keys_with_fix_no_locale(capsys) -> None:
     """
     check_missing_keys_with_fix(
         fix_locale=None,
-        i18n_src_dict=pass_checks_json,
+        i18n_src_dict=pass_checks_src_json,
         i18n_directory=pass_dir,
         locales_to_check=[],
     )

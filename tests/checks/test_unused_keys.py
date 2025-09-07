@@ -14,7 +14,7 @@ from i18n_check.check.unused_keys import (
 )
 from i18n_check.utils import read_json_file
 
-fail_checks_json = (
+fail_checks_src_json = (
     Path(__file__).parent.parent.parent
     / "src"
     / "i18n_check"
@@ -23,7 +23,7 @@ fail_checks_json = (
     / "test_i18n"
     / "test_i18n_src.json"
 )
-pass_checks_json = (
+pass_checks_src_json = (
     Path(__file__).parent.parent.parent
     / "src"
     / "i18n_check"
@@ -34,11 +34,11 @@ pass_checks_json = (
 )
 
 UNUSED_FAIL_KEYS = find_unused_keys(
-    i18n_src_dict=read_json_file(file_path=fail_checks_json),
+    i18n_src_dict=read_json_file(file_path=fail_checks_src_json),
     files_to_check_contents=files_to_check_contents,
 )
 UNUSED_PASS_KEYS = find_unused_keys(
-    i18n_src_dict=read_json_file(file_path=pass_checks_json),
+    i18n_src_dict=read_json_file(file_path=pass_checks_src_json),
     files_to_check_contents=files_to_check_contents,
 )
 

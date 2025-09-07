@@ -24,7 +24,7 @@ fail_dir = (
     / "test_frontends"
     / "all_checks_fail"
 )
-fail_checks_json_path = fail_dir / "test_i18n" / "test_i18n_src.json"
+fail_checks_src_json_path = fail_dir / "test_i18n" / "test_i18n_src.json"
 
 pass_dir = (
     Path(__file__).parent.parent.parent
@@ -33,7 +33,7 @@ pass_dir = (
     / "test_frontends"
     / "all_checks_pass"
 )
-pass_checks_json_path = pass_dir / "test_i18n" / "test_i18n_src.json"
+pass_checks_src_json_path = pass_dir / "test_i18n" / "test_i18n_src.json"
 
 
 class TestCheckKeysAreSorted:
@@ -103,7 +103,7 @@ class TestCheckFileSortedKeys:
         """
         Test that the pass frontend file has sorted keys.
         """
-        is_sorted, sorted_keys = check_file_sorted(pass_checks_json_path)
+        is_sorted, sorted_keys = check_file_sorted(pass_checks_src_json_path)
 
         assert is_sorted is True
         assert len(sorted_keys) > 0
@@ -112,7 +112,7 @@ class TestCheckFileSortedKeys:
         """
         Test that the fail frontend file has unsorted keys.
         """
-        is_sorted, sorted_keys = check_file_sorted(fail_checks_json_path)
+        is_sorted, sorted_keys = check_file_sorted(fail_checks_src_json_path)
 
         assert is_sorted is False
         assert len(sorted_keys) > 0
