@@ -52,7 +52,9 @@ class TestGenerateConfigFile(unittest.TestCase):
             checks=checks,
         )
 
-        mock_open_func.assert_called_with(Path("/fake/path/.i18n-check.yaml"), "w")
+        mock_open_func.assert_called_with(
+            Path("/fake/path/.i18n-check.yaml"), "w", encoding="utf-8"
+        )
         handle = mock_open_func()
         written_content = handle.write.call_args[0][0]
         self.assertIn(f"src-dir: my_app{PATH_SEPARATOR}src", written_content)

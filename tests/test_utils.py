@@ -95,11 +95,11 @@ class TestUtils(unittest.TestCase):
             skipped_file = os.path.join(temp_dir, "skip.txt")
             file_in_skip_dir = os.path.join(skip_dir, "file_in_skip_dir.txt")
 
-            with open(valid_file, "w") as f:
+            with open(valid_file, "w", encoding="utf-8") as f:
                 f.write("test")
-            with open(skipped_file, "w") as f:
+            with open(skipped_file, "w", encoding="utf-8") as f:
                 f.write("test")
-            with open(file_in_skip_dir, "w") as f:
+            with open(file_in_skip_dir, "w", encoding="utf-8") as f:
                 f.write("test")
 
             result = collect_files_to_check(
@@ -121,11 +121,11 @@ class TestUtils(unittest.TestCase):
             json_file_2 = os.path.join(temp_dir, "file2.json")
             non_json_file = os.path.join(temp_dir, "file.txt")
 
-            with open(json_file_1, "w") as f:
+            with open(json_file_1, "w", encoding="utf-8") as f:
                 f.write("{}")
-            with open(json_file_2, "w") as f:
+            with open(json_file_2, "w", encoding="utf-8") as f:
                 f.write("{}")
-            with open(non_json_file, "w") as f:
+            with open(non_json_file, "w", encoding="utf-8") as f:
                 f.write("test")
 
             result = get_all_json_files(directory=temp_dir)
@@ -142,9 +142,9 @@ class TestUtils(unittest.TestCase):
             content1 = "Hello, world!"
             content2 = "Python testing."
 
-            with open(file1, "w") as f:
+            with open(file1, "w", encoding="utf-8") as f:
                 f.write(content1)
-            with open(file2, "w") as f:
+            with open(file2, "w", encoding="utf-8") as f:
                 f.write(content2)
 
             result = read_files_to_dict([file1, file2])

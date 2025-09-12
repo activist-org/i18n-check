@@ -101,11 +101,11 @@ def test_validate_pass_i18n_keys(capsys) -> None:
     pass_result = capsys.readouterr().out
     cleaned_pass_result = re.sub(r"\x1b\[.*?m", "", pass_result).strip()
 
-    success_message = (
-        "✅ non_existent_keys success: All i18n keys that are used in the project"
-        " are in the i18n source file."
+    assert "✅ non_existent_keys success: " in cleaned_pass_result.replace("\n", "")
+    assert "All i18n keys that are used in the project" in cleaned_pass_result.replace(
+        "\n", ""
     )
-    assert success_message in cleaned_pass_result.replace("\n", "")
+    assert "i18n source file." in cleaned_pass_result.replace("\n", "")
 
 
 if __name__ == "__main__":

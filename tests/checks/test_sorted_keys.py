@@ -198,13 +198,13 @@ class TestCheckSortedKeysIntegration:
             # Create an sorted file.
             sorted_file = temp_path / "sorted.json"
             sorted_data = {"a": "1", "b": "2", "c": "3"}
-            with open(sorted_file, "w") as f:
+            with open(sorted_file, "w", encoding="utf-8") as f:
                 json.dump(sorted_data, f, indent=2)
 
             # Create an unsorted file.
             unsorted_file = temp_path / "unsorted.json"
             unsorted_data = {"c": "3", "a": "1", "b": "2"}
-            with open(unsorted_file, "w") as f:
+            with open(unsorted_file, "w", encoding="utf-8") as f:
                 json.dump(unsorted_data, f, indent=2)
 
             # Mock the configuration.

@@ -45,7 +45,7 @@ def write_to_file(
     checks : dict
         The boolean values for checks being enabled or not.
     """
-    with open(YAML_CONFIG_FILE_PATH, "w") as file:
+    with open(YAML_CONFIG_FILE_PATH, "w", encoding="utf-8") as file:
         checks_str = ""
         for c in checks:
             checks_str += f"  {c}:\n    active: {checks[c]['active']}\n"
