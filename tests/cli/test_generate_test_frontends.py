@@ -4,12 +4,11 @@ Tests for the generate_test_frontends.py script.
 """
 
 import unittest
+from pathlib import Path
 from unittest.mock import call, patch
 
-from i18n_check.cli.generate_test_frontends import (
-    TEST_FRONTENDS_DIRECTORY,
-    generate_test_frontends,
-)
+from i18n_check.cli.generate_test_frontends import generate_test_frontends
+from i18n_check.utils import INTERNAL_TEST_FRONTENDS_DIR_PATH, PATH_SEPARATOR
 
 
 class TestGenerateTestFrontends(unittest.TestCase):
@@ -31,13 +30,13 @@ class TestGenerateTestFrontends(unittest.TestCase):
 
         mock_is_dir.assert_called_with()
         mock_copytree.assert_called_once_with(
-            TEST_FRONTENDS_DIRECTORY,
-            "./i18n_check_test_frontends/",
+            INTERNAL_TEST_FRONTENDS_DIR_PATH,
+            Path("./i18n_check_test_frontends/"),
             dirs_exist_ok=True,
         )
         self.assertIn(
             call(
-                "Generating testing frontends for i18n-check in ./i18n_check_test_frontends/ ..."
+                f"Generating testing frontends for i18n-check in .{PATH_SEPARATOR}i18n_check_test_frontends{PATH_SEPARATOR} ..."
             ),
             mock_print.call_args_list,
         )
@@ -66,7 +65,7 @@ class TestGenerateTestFrontends(unittest.TestCase):
         mock_is_dir.assert_called_with()
         mock_copytree.assert_not_called()
         mock_print.assert_called_once_with(
-            "Test frontends for i18n-check already exist in ./i18n_check_test_frontends/ and will not be regenerated."
+            f"Test frontends for i18n-check already exist in .{PATH_SEPARATOR}i18n_check_test_frontends{PATH_SEPARATOR} and will not be regenerated."
         )
 
     @patch("pathlib.Path.is_dir", return_value=False)

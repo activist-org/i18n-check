@@ -3,10 +3,13 @@
 Functionality to copy the test frontend files from the package to the present working directory.
 """
 
+import os
 import shutil
 from pathlib import Path
 
-TEST_FRONTENDS_DIRECTORY = Path(__file__).parent.parent / "test_frontends"
+# Note: Repeat from utils to avoid circular import.
+PATH_SEPARATOR = "\\" if os.name == "nt" else "/"
+INTERNAL_TEST_FRONTENDS_DIR_PATH = Path(__file__).parent.parent / "test_frontends"
 
 
 def generate_test_frontends() -> None:
@@ -15,12 +18,12 @@ def generate_test_frontends() -> None:
     """
     if not Path("./i18n_check_test_frontends/").is_dir():
         print(
-            "Generating testing frontends for i18n-check in ./i18n_check_test_frontends/ ..."
+            f"Generating testing frontends for i18n-check in .{PATH_SEPARATOR}i18n_check_test_frontends{PATH_SEPARATOR} ..."
         )
 
         shutil.copytree(
-            TEST_FRONTENDS_DIRECTORY,
-            "./i18n_check_test_frontends/",
+            INTERNAL_TEST_FRONTENDS_DIR_PATH,
+            Path("./i18n_check_test_frontends/"),
             dirs_exist_ok=True,
         )
 
@@ -43,7 +46,7 @@ def generate_test_frontends() -> None:
 
     else:
         print(
-            "Test frontends for i18n-check already exist in ./i18n_check_test_frontends/ and will not be regenerated."
+            f"Test frontends for i18n-check already exist in .{PATH_SEPARATOR}i18n_check_test_frontends{PATH_SEPARATOR} and will not be regenerated."
         )
 
 

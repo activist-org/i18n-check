@@ -8,8 +8,11 @@ from typing import Dict
 
 from i18n_check.cli.generate_test_frontends import generate_test_frontends
 
+EXTERNAL_TEST_FRONTENDS_DIR_PATH = (
+    Path(__file__).parent.parent.parent / "i18n_check_test_frontends/"
+)
+# Note: Repeat from utils to avoid circular import.
 YAML_CONFIG_FILE_PATH = Path.cwd() / ".i18n-check.yaml"
-TEST_FRONTENDS_PATH = Path(__file__).parent.parent.parent / "i18n_check_test_frontends/"
 
 
 def write_to_file(
@@ -224,7 +227,7 @@ def generate_config_file() -> None:
             print("Configuring...")
             receive_data()
             print("Your .i18n-check.yaml file has been generated successfully.")
-            if not Path(TEST_FRONTENDS_PATH).is_dir():
+            if not Path(EXTERNAL_TEST_FRONTENDS_DIR_PATH).is_dir():
                 test_frontend_choice = input(
                     "\nWould you like to generate test pseudocode frontends to experiment with i18n-check?"
                     "\nPress y to generate an i18n_check_test_frontends directory [y]: "

@@ -12,6 +12,7 @@ from i18n_check.cli.generate_config_file import (
     receive_data,
     write_to_file,
 )
+from i18n_check.utils import PATH_SEPARATOR
 
 
 class TestGenerateConfigFile(unittest.TestCase):
@@ -29,9 +30,9 @@ class TestGenerateConfigFile(unittest.TestCase):
         Tests the write_to_file function to ensure it formats the output string correctly
         when all parameters are provided.
         """
-        src_dir = "my_app/src"
-        i18n_dir = "my_app/i18n"
-        i18n_src_file = "my_app/i18n/en.json"
+        src_dir = Path("my_app/src")
+        i18n_dir = Path("my_app/i18n")
+        i18n_src_file = Path("my_app/i18n/en.json")
         checks = {
             "global": {
                 "active": True,
@@ -54,9 +55,12 @@ class TestGenerateConfigFile(unittest.TestCase):
         mock_open_func.assert_called_with(Path("/fake/path/.i18n-check.yaml"), "w")
         handle = mock_open_func()
         written_content = handle.write.call_args[0][0]
-        self.assertIn("src-dir: my_app/src", written_content)
-        self.assertIn("i18n-dir: my_app/i18n", written_content)
-        self.assertIn("i18n-src: my_app/i18n/en.json", written_content)
+        self.assertIn(f"src-dir: my_app{PATH_SEPARATOR}src", written_content)
+        self.assertIn(f"i18n-dir: my_app{PATH_SEPARATOR}i18n", written_content)
+        self.assertIn(
+            f"i18n-src: my_app{PATH_SEPARATOR}i18n{PATH_SEPARATOR}en.json",
+            written_content,
+        )
         self.assertIn("file-types-to-check: [.js, .ts]", written_content)
         self.assertIn("global:\n    active: True", written_content)
         self.assertIn("non_existent_keys:\n    active: False", written_content)
@@ -107,7 +111,7 @@ class TestGenerateConfigFile(unittest.TestCase):
             "global": {
                 "title": "all checks",
                 "active": False,
-                "directories-to-skip": ["frontend/node_modules"],
+                "directories-to-skip": [f"frontend{PATH_SEPARATOR}node_modules"],
                 "files-to-skip": [],
             },
             "invalid_keys": {

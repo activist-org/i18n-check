@@ -16,13 +16,14 @@ from typing import Any, Dict, List
 import yaml
 from rich import print as rprint
 
-from i18n_check.cli.generate_config_file import (
-    YAML_CONFIG_FILE_PATH,
-    generate_config_file,
-)
+from i18n_check.cli.generate_config_file import generate_config_file
 
 # Check for Windows and derive directory path separator.
 PATH_SEPARATOR = "\\" if os.name == "nt" else "/"
+
+# Centrally needed base paths.
+INTERNAL_TEST_FRONTENDS_DIR_PATH = Path(__file__).parent / "test_frontends"
+YAML_CONFIG_FILE_PATH = Path.cwd() / ".i18n-check.yaml"
 
 # MARK: YAML Reading
 

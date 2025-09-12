@@ -10,7 +10,7 @@ from i18n_check.check.invalid_keys import (
     map_keys_to_files,
     report_and_correct_keys,
 )
-from i18n_check.utils import replace_text_in_file
+from i18n_check.utils import PATH_SEPARATOR, replace_text_in_file
 
 from ..test_utils import (
     fail_checks_src_json_path,
@@ -37,25 +37,29 @@ invalid_format_pass, invalid_name_pass = audit_i18n_keys(
         (len(map_keys_to_files()), 15),
         (
             set(i18n_map_fail["i18n._global.repeat_value_hello_global"]),
-            {"test_file", "sub_dir/sub_dir_first_file", "sub_dir/sub_dir_second_file"},
+            {
+                "test_file",
+                f"sub_dir{PATH_SEPARATOR}sub_dir_first_file",
+                f"sub_dir{PATH_SEPARATOR}sub_dir_second_file",
+            },
         ),
         (
             {k: sorted(v) for k, v in i18n_map_pass.items()},
             {
                 "i18n._global.hello_global": [
-                    "sub_dir/sub_dir_first_file",
-                    "sub_dir/sub_dir_second_file",
+                    f"sub_dir{PATH_SEPARATOR}sub_dir_first_file",
+                    f"sub_dir{PATH_SEPARATOR}sub_dir_second_file",
                     "test_file",
                 ],
                 "i18n.sub_dir._global.hello_sub_dir": [
-                    "sub_dir/sub_dir_first_file",
-                    "sub_dir/sub_dir_second_file",
+                    f"sub_dir{PATH_SEPARATOR}sub_dir_first_file",
+                    f"sub_dir{PATH_SEPARATOR}sub_dir_second_file",
                 ],
                 "i18n.sub_dir_first_file.hello_sub_dir_first_file": [
-                    "sub_dir/sub_dir_first_file"
+                    f"sub_dir{PATH_SEPARATOR}sub_dir_first_file"
                 ],
                 "i18n.sub_dir_second_file.hello_sub_dir_second_file": [
-                    "sub_dir/sub_dir_second_file"
+                    f"sub_dir{PATH_SEPARATOR}sub_dir_second_file"
                 ],
                 "i18n.test_file.form_button_aria_label": ["test_file"],
                 "i18n.test_file.hello_test_file": ["test_file"],
@@ -192,12 +196,14 @@ def test_audit_i18n_keys_regex_ignore() -> None:
     Test that keys matching regex pattern are ignored during validation.
     """
     test_key_file_dict = {
-        "i18n.legacy.old_component.title": ["legacy/old_component.ts"],
-        "i18n.temp.test_component.label": ["temp/test_component.ts"],
-        "i18n.valid.component.title": ["src/component.ts"],
-        "i18n.temp.another_test.message": ["temp/another_test.ts"],
-        "i18n.legacy.deprecated.button": ["legacy/deprecated.ts"],
-        "i18n.current.modern_component.title": ["src/modern_component.ts"],
+        "i18n.legacy.old_component.title": [f"legacy{PATH_SEPARATOR}old_component.ts"],
+        "i18n.temp.test_component.label": [f"temp{PATH_SEPARATOR}test_component.ts"],
+        "i18n.valid.component.title": [f"src{PATH_SEPARATOR}component.ts"],
+        "i18n.temp.another_test.message": [f"temp{PATH_SEPARATOR}another_test.ts"],
+        "i18n.legacy.deprecated.button": [f"legacy{PATH_SEPARATOR}deprecated.ts"],
+        "i18n.current.modern_component.title": [
+            f"src{PATH_SEPARATOR}modern_component.ts"
+        ],
     }
 
     invalid_format_all, invalid_name_all = audit_i18n_keys(
@@ -239,13 +245,17 @@ def test_audit_i18n_keys_regex_ignore_list() -> None:
     Test that keys matching any regex pattern in a list are ignored during validation.
     """
     test_key_file_dict = {
-        "i18n.legacy.old_component.title": ["legacy/old_component.ts"],
-        "i18n.temp.test_component.label": ["temp/test_component.ts"],
-        "i18n.valid.component.title": ["src/component.ts"],
-        "i18n.temp.another_test.message": ["temp/another_test.ts"],
-        "i18n.legacy.deprecated.button": ["legacy/deprecated.ts"],
-        "i18n.deprecated.old_feature.text": ["deprecated/old_feature.ts"],
-        "i18n.current.modern_component.title": ["src/modern_component.ts"],
+        "i18n.legacy.old_component.title": [f"legacy{PATH_SEPARATOR}old_component.ts"],
+        "i18n.temp.test_component.label": [f"temp{PATH_SEPARATOR}test_component.ts"],
+        "i18n.valid.component.title": [f"src{PATH_SEPARATOR}component.ts"],
+        "i18n.temp.another_test.message": [f"temp{PATH_SEPARATOR}another_test.ts"],
+        "i18n.legacy.deprecated.button": [f"legacy{PATH_SEPARATOR}deprecated.ts"],
+        "i18n.deprecated.old_feature.text": [
+            f"deprecated{PATH_SEPARATOR}old_feature.ts"
+        ],
+        "i18n.current.modern_component.title": [
+            f"src{PATH_SEPARATOR}modern_component.ts"
+        ],
     }
 
     invalid_format_empty, invalid_name_empty = audit_i18n_keys(
@@ -301,9 +311,9 @@ def test_audit_i18n_keys_regex_ignore_backward_compatibility() -> None:
     Test that the function still accepts string input for backward compatibility.
     """
     test_key_file_dict = {
-        "i18n.legacy.old_component.title": ["legacy/old_component.ts"],
-        "i18n.temp.test_component.label": ["temp/test_component.ts"],
-        "i18n.valid.component.title": ["src/component.ts"],
+        "i18n.legacy.old_component.title": [f"legacy{PATH_SEPARATOR}old_component.ts"],
+        "i18n.temp.test_component.label": [f"temp{PATH_SEPARATOR}test_component.ts"],
+        "i18n.valid.component.title": [f"src{PATH_SEPARATOR}component.ts"],
     }
 
     invalid_format_string, invalid_name_string = audit_i18n_keys(
@@ -325,9 +335,9 @@ def test_audit_i18n_keys_regex_ignore_empty_patterns() -> None:
     Test that empty patterns in the list are handled correctly.
     """
     test_key_file_dict = {
-        "i18n.legacy.old_component.title": ["legacy/old_component.ts"],
-        "i18n.temp.test_component.label": ["temp/test_component.ts"],
-        "i18n.valid.component.title": ["src/component.ts"],
+        "i18n.legacy.old_component.title": [f"legacy{PATH_SEPARATOR}old_component.ts"],
+        "i18n.temp.test_component.label": [f"temp{PATH_SEPARATOR}test_component.ts"],
+        "i18n.valid.component.title": [f"src{PATH_SEPARATOR}component.ts"],
     }
 
     invalid_format_mixed, invalid_name_mixed = audit_i18n_keys(
