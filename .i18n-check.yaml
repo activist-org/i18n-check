@@ -16,5 +16,5 @@ checks:
   # Global configurations are applied to all checks.
   global:
     active: true
-    directories-to-skip: []
+    directories-to-skip: [src/i18n_check/test_frontends/all_checks_fail/skip_dir]
     files-to-skip: []
