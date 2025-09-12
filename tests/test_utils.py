@@ -14,6 +14,7 @@ import pytest
 
 from i18n_check.check.invalid_keys import map_keys_to_files
 from i18n_check.utils import (
+    PATH_SEPARATOR,
     collect_files_to_check,
     filter_valid_key_parts,
     get_all_json_files,
@@ -104,11 +105,11 @@ class TestUtils(unittest.TestCase):
             result = collect_files_to_check(
                 directory=temp_dir,
                 file_types=[".txt"],
-                directories_to_skip=["skip_dir"],
-                files_to_skip=["skip.txt"],
+                directories_to_skip=[Path("skip_dir")],
+                files_to_skip=[Path("skip.txt")],
             )
 
-            assert valid_file in result
+            assert f"{PATH_SEPARATOR}private{valid_file}" in result
             assert skipped_file not in result
             assert file_in_skip_dir not in result
 

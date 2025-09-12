@@ -8,8 +8,11 @@
 .. |rtd| image:: https://img.shields.io/readthedocs/i18n-check.svg?label=%20&logo=read-the-docs&logoColor=ffffff
     :target: http://i18n-check.readthedocs.io/en/latest/
 
-.. |ci_backend| image:: https://img.shields.io/github/actions/workflow/status/activist-org/i18n-check/pr_ci.yaml?branch=main&label=%20&logo=pytest&logoColor=ffffff
-    :target: https://github.com/activist-org/i18n-check/actions/workflows/pr_ci_backend.yaml
+.. |pr_ci| image:: https://img.shields.io/github/actions/workflow/status/activist-org/i18n-check/pr_ci.yaml?branch=main&label=%20&logo=ruff&logoColor=ffffff
+    :target: https://github.com/activist-org/i18n-check/actions/workflows/pr_ci.yaml
+
+.. |python_package_ci| image:: https://img.shields.io/github/actions/workflow/status/activist-org/i18n-check/pr_ci.yaml?branch=main&label=%20&logo=pytest&logoColor=ffffff
+    :target: https://github.com/activist-org/i18n-check/actions/workflows/python_package_ci.yaml
 
 .. |issues| image:: https://img.shields.io/github/issues/activist-org/i18n-check?label=%20&logo=github
     :target: https://github.com/activist-org/i18n-check/issues

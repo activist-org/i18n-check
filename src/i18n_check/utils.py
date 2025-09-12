@@ -62,12 +62,14 @@ if "global" in config["checks"]:
         config_global_active = config["checks"]["global"]["active"]
 
     if "directories-to-skip" in config["checks"]["global"]:
-        config_global_directories_to_skip = config["checks"]["global"][
-            "directories-to-skip"
+        config_global_directories_to_skip = [
+            Path(d) for d in config["checks"]["global"]["directories-to-skip"]
         ]
 
     if "files-to-skip" in config["checks"]["global"]:
-        config_global_files_to_skip = config["checks"]["global"]["files-to-skip"]
+        config_global_files_to_skip = [
+            Path(f) for f in config["checks"]["global"]["files-to-skip"]
+        ]
 
 # MARK: Invalid Keys
 
@@ -81,13 +83,13 @@ if "invalid-keys" in config["checks"]:
         config_invalid_keys_active = config["checks"]["invalid-keys"]["active"]
 
     if "directories-to-skip" in config["checks"]["invalid-keys"]:
-        config_invalid_keys_directories_to_skip += config["checks"]["invalid-keys"][
-            "directories-to-skip"
+        config_invalid_keys_directories_to_skip += [
+            Path(d) for d in config["checks"]["invalid-keys"]["directories-to-skip"]
         ]
 
     if "files-to-skip" in config["checks"]["invalid-keys"]:
-        config_invalid_keys_files_to_skip += config["checks"]["invalid-keys"][
-            "files-to-skip"
+        config_invalid_keys_files_to_skip += [
+            Path(f) for f in config["checks"]["invalid-keys"]["files-to-skip"]
         ]
 
     if "keys-to-ignore" in config["checks"]["invalid-keys"]:
@@ -117,13 +119,14 @@ if "non-existent-keys" in config["checks"]:
         ]
 
     if "directories-to-skip" in config["checks"]["non-existent-keys"]:
-        config_non_existent_keys_directories_to_skip += config["checks"][
-            "non-existent-keys"
-        ]["directories-to-skip"]
+        config_non_existent_keys_directories_to_skip += [
+            Path(d)
+            for d in config["checks"]["non-existent-keys"]["directories-to-skip"]
+        ]
 
     if "files-to-skip" in config["checks"]["non-existent-keys"]:
-        config_non_existent_keys_files_to_skip += config["checks"]["global"][
-            "files-to-skip"
+        config_non_existent_keys_files_to_skip += [
+            Path(f) for f in config["checks"]["global"]["files-to-skip"]
         ]
 
 # MARK: Non-Source Keys
@@ -167,13 +170,13 @@ if "unused-keys" in config["checks"]:
         config_unused_keys_active = config["checks"]["unused-keys"]["active"]
 
     if "directories-to-skip" in config["checks"]["unused-keys"]:
-        config_unused_keys_directories_to_skip += config["checks"]["unused-keys"][
-            "directories-to-skip"
+        config_unused_keys_directories_to_skip += [
+            Path(d) for d in config["checks"]["unused-keys"]["directories-to-skip"]
         ]
 
     if "files-to-skip" in config["checks"]["unused-keys"]:
-        config_unused_keys_files_to_skip += config["checks"]["unused-keys"][
-            "files-to-skip"
+        config_unused_keys_files_to_skip += [
+            Path(f) for f in config["checks"]["unused-keys"]["files-to-skip"]
         ]
 
 # MARK: Sorted Keys
@@ -249,8 +252,8 @@ def read_json_file(file_path: str | Path) -> Any:
 def collect_files_to_check(
     directory: str | Path,
     file_types: list[str],
-    directories_to_skip: list[str],
-    files_to_skip: list[str],
+    directories_to_skip: list[Path],
+    files_to_skip: list[Path],
 ) -> List[str]:
     """
     Collect all files with a given extension from a directory and its subdirectories.
@@ -263,29 +266,39 @@ def collect_files_to_check(
     file_types : list[str]
         The file extensions to search in.
 
-    directories_to_skip : list[str]
-        Directories to not include in the search.
+    directories_to_skip : list[Path]
+        Paths to directories to not include in the search.
 
-    files_to_skip : list[str]
-        Files to not include in the check.
+    files_to_skip : list[Path]
+        Paths to files to not include in the check.
 
     Returns
     -------
     list
         A list of file paths that match the given extension.
     """
+    directory = Path(directory).resolve()
+    skip_dirs_resolved = [d.resolve() for d in directories_to_skip]
+    skip_files_resolved = [f.resolve() for f in files_to_skip]
     files_to_check: List[str] = []
+
     for root, dirs, files in os.walk(directory):
-        # Skip directories in directories_to_skip.
-        if all(skip_dir not in root for skip_dir in directories_to_skip):
-            # Collect files that match the file_types and are not in files_to_skip.
-            files_to_check.extend(
-                os.path.join(root, file)
-                for file in files
-                if not any(root.startswith(d) for d in directories_to_skip)
-                and any(file.endswith(file_type) for file_type in file_types)
-                and file not in files_to_skip
-            )
+        root_path = Path(root).resolve()
+
+        # Skip directories in directories_to_skip
+        if any(
+            root_path == skip_dir or root_path.is_relative_to(skip_dir)
+            for skip_dir in skip_dirs_resolved
+        ):
+            continue
+
+        for file in files:
+            file_path = (root_path / file).resolve()
+            if (
+                any(file_path.suffix == f".{ftype.lstrip('.')}" for ftype in file_types)
+                and file_path not in skip_files_resolved
+            ):
+                files_to_check.append(str(file_path))
 
     return files_to_check
 

@@ -3,6 +3,7 @@
 Functionality to generate a configuration file for i18n-check.
 """
 
+import os
 from pathlib import Path
 from typing import Dict
 
@@ -11,7 +12,9 @@ from i18n_check.cli.generate_test_frontends import generate_test_frontends
 EXTERNAL_TEST_FRONTENDS_DIR_PATH = (
     Path(__file__).parent.parent.parent / "i18n_check_test_frontends/"
 )
+
 # Note: Repeat from utils to avoid circular import.
+PATH_SEPARATOR = "\\" if os.name == "nt" else "/"
 YAML_CONFIG_FILE_PATH = Path.cwd() / ".i18n-check.yaml"
 
 
@@ -96,10 +99,15 @@ def receive_data() -> None:
     Interact with user to configure a .yml file.
     """
     src_dir = input("Enter src dir [frontend]: ").strip() or "frontend"
-    i18n_dir = input("Enter i18n-dir [frontend/i18n]: ").strip() or "frontend/i18n"
+    i18n_dir = (
+        input(f"Enter i18n-dir [frontend{PATH_SEPARATOR}i18n]: ").strip()
+        or f"frontend{PATH_SEPARATOR}i18n"
+    )
     i18n_src_file = (
-        input("Enter i18n-src file [frontend/i18n/en.json]: ").strip()
-        or "frontend/i18n/en.json"
+        input(
+            f"Enter i18n-src file [frontend{PATH_SEPARATOR}i18n{PATH_SEPARATOR}en.json]: "
+        ).strip()
+        or f"frontend{PATH_SEPARATOR}i18n{PATH_SEPARATOR}en.json"
     )
     file_types_to_check = input(
         "Enter the file extension types to check [.ts, .js]: "
@@ -157,12 +165,12 @@ def receive_data() -> None:
         if "directories-to-skip" in v:
             if c == "global":
                 directories_to_skip = input(
-                    f"Directories to skip for {checks[c]['title']} [frontend/node_modules]: "
+                    f"Directories to skip for {checks[c]['title']} [frontend{PATH_SEPARATOR}node_modules]: "
                 ).lower()
                 checks[c]["directories-to-skip"] = (
                     directories_to_skip
                     if directories_to_skip != ""
-                    else ["frontend/node_modules"]
+                    else [f"frontend{PATH_SEPARATOR}node_modules"]
                 )
 
             else:
