@@ -106,7 +106,7 @@ class TestUtils(unittest.TestCase):
                 directory=temp_dir,
                 file_types=[".txt"],
                 directories_to_skip=[Path("skip_dir")],
-                files_to_skip=[Path("skip.txt")],
+                files_to_skip=[Path(temp_dir) / "skip.txt"],
             )
 
             assert (
