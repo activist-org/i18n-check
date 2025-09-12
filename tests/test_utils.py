@@ -105,7 +105,7 @@ class TestUtils(unittest.TestCase):
             result = collect_files_to_check(
                 directory=temp_dir,
                 file_types=[".txt"],
-                directories_to_skip=[Path("skip_dir")],
+                directories_to_skip=[Path(temp_dir) / "skip_dir"],
                 files_to_skip=[Path(temp_dir) / "skip.txt"],
             )
 
