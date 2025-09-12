@@ -12,6 +12,22 @@ Emojis for the following are chosen based on [gitmoji](https://gitmoji.dev/).
 
 ## [Upcoming] i18n-check 1.x
 
+## i18n-check 1.11.0
+
+### 🐞 Bug Fixes
+
+- The manner in which paths to be skipped are derived has been switched from strings to `pathlib.Path` objects to assurer that it works across operating systems ([#68](https://github.com/activist-org/i18n-check/issues/68)).
+
+### ✅ Tests
+
+- The CI workflow was split into one that's focussed on linting and formatting and another that runs `pytest` based tests.
+- `pytest` tests are now checked against Linux, macOS and Windows.
+- Tests were refactored where needed to account for the new ways of deriving paths to skipped directories and files as well as to assure that they work across operating systems.
+
+### 📝 Documentation
+
+- Testing shields in main doc pages were split based on new CI tests for multiple operating systems.
+
 ## i18n-check 1.10.1
 
 ### ♻️ Code Refactoring
