@@ -9,6 +9,11 @@ except ImportError:
 
 package_directory = os.path.abspath(os.path.dirname(__file__))
 with open(
+    os.path.join(package_directory, "README.md"), encoding="utf-8"
+) as readme_file:
+    long_description = readme_file.read()
+
+with open(
     os.path.join(package_directory, "requirements.txt"), encoding="utf-8"
 ) as req_file:
     requirements = req_file.readlines()
@@ -24,7 +29,7 @@ setup_args = dict(
     author="i18n-check developers",
     author_email="team@activist.org",
     description="Check i18n/L10n keys and values",
-    long_description=open("README.md").read(),
+    long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/activist-org/i18n-check",
     packages=find_packages(where="src"),
