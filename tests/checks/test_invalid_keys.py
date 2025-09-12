@@ -119,7 +119,10 @@ def test_report_and_correct_keys_pass(capsys) -> None:
     # For pass case, it should not raise an error.
     report_and_correct_keys(invalid_format_pass, invalid_name_pass)
     pass_result = capsys.readouterr().out
-    success_message = "✅ invalid_keys success: All i18n keys are formatted and named correctly in the i18n-src file."
+    success_message = (
+        "✅ invalid_keys success: All i18n keys are formatted and named correctly"
+        " in the i18n-src file."
+    )
     assert pass_result.replace("\n", "").strip() == success_message
 
 

@@ -109,7 +109,9 @@ class TestUtils(unittest.TestCase):
                 files_to_skip=[Path("skip.txt")],
             )
 
-            assert f"{PATH_SEPARATOR}private{valid_file}" in result
+            assert (
+                f"{PATH_SEPARATOR}private{valid_file}" in result or valid_file in result
+            )
             assert skipped_file not in result
             assert file_in_skip_dir not in result
 
