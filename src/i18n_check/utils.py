@@ -43,9 +43,22 @@ with open(YAML_CONFIG_FILE_PATH, "r", encoding="utf-8") as file:
 
 # MARK: Paths
 
-config_src_directory = (i18n_check_root_path / Path(config["src-dir"])).resolve()
-config_i18n_directory = (i18n_check_root_path / Path(config["i18n-dir"])).resolve()
-config_i18n_src_file = (i18n_check_root_path / Path(config["i18n-src"])).resolve()
+config_src_directory = (
+    i18n_check_root_path
+    / Path(config["src-dir"].replace("/", PATH_SEPARATOR).replace("\\", PATH_SEPARATOR))
+).resolve()
+config_i18n_directory = (
+    i18n_check_root_path
+    / Path(
+        config["i18n-dir"].replace("/", PATH_SEPARATOR).replace("\\", PATH_SEPARATOR)
+    )
+).resolve()
+config_i18n_src_file = (
+    i18n_check_root_path
+    / Path(
+        config["i18n-src"].replace("/", PATH_SEPARATOR).replace("\\", PATH_SEPARATOR)
+    )
+).resolve()
 
 # MARK: File Types
 
@@ -63,12 +76,14 @@ if "global" in config["checks"]:
 
     if "directories-to-skip" in config["checks"]["global"]:
         config_global_directories_to_skip = [
-            Path(d) for d in config["checks"]["global"]["directories-to-skip"]
+            Path(d.replace("/", PATH_SEPARATOR).replace("\\", PATH_SEPARATOR))
+            for d in config["checks"]["global"]["directories-to-skip"]
         ]
 
     if "files-to-skip" in config["checks"]["global"]:
         config_global_files_to_skip = [
-            Path(f) for f in config["checks"]["global"]["files-to-skip"]
+            Path(f.replace("/", PATH_SEPARATOR).replace("\\", PATH_SEPARATOR))
+            for f in config["checks"]["global"]["files-to-skip"]
         ]
 
 # MARK: Invalid Keys
@@ -84,12 +99,14 @@ if "invalid-keys" in config["checks"]:
 
     if "directories-to-skip" in config["checks"]["invalid-keys"]:
         config_invalid_keys_directories_to_skip += [
-            Path(d) for d in config["checks"]["invalid-keys"]["directories-to-skip"]
+            Path(d.replace("/", PATH_SEPARATOR).replace("\\", PATH_SEPARATOR))
+            for d in config["checks"]["invalid-keys"]["directories-to-skip"]
         ]
 
     if "files-to-skip" in config["checks"]["invalid-keys"]:
         config_invalid_keys_files_to_skip += [
-            Path(f) for f in config["checks"]["invalid-keys"]["files-to-skip"]
+            Path(f.replace("/", PATH_SEPARATOR).replace("\\", PATH_SEPARATOR))
+            for f in config["checks"]["invalid-keys"]["files-to-skip"]
         ]
 
     if "keys-to-ignore" in config["checks"]["invalid-keys"]:
@@ -120,13 +137,14 @@ if "non-existent-keys" in config["checks"]:
 
     if "directories-to-skip" in config["checks"]["non-existent-keys"]:
         config_non_existent_keys_directories_to_skip += [
-            Path(d)
+            Path(d.replace("/", PATH_SEPARATOR).replace("\\", PATH_SEPARATOR))
             for d in config["checks"]["non-existent-keys"]["directories-to-skip"]
         ]
 
     if "files-to-skip" in config["checks"]["non-existent-keys"]:
         config_non_existent_keys_files_to_skip += [
-            Path(f) for f in config["checks"]["global"]["files-to-skip"]
+            Path(f.replace("/", PATH_SEPARATOR).replace("\\", PATH_SEPARATOR))
+            for f in config["checks"]["global"]["files-to-skip"]
         ]
 
 # MARK: Non-Source Keys
@@ -171,12 +189,14 @@ if "unused-keys" in config["checks"]:
 
     if "directories-to-skip" in config["checks"]["unused-keys"]:
         config_unused_keys_directories_to_skip += [
-            Path(d) for d in config["checks"]["unused-keys"]["directories-to-skip"]
+            Path(d.replace("/", PATH_SEPARATOR).replace("\\", PATH_SEPARATOR))
+            for d in config["checks"]["unused-keys"]["directories-to-skip"]
         ]
 
     if "files-to-skip" in config["checks"]["unused-keys"]:
         config_unused_keys_files_to_skip += [
-            Path(f) for f in config["checks"]["unused-keys"]["files-to-skip"]
+            Path(f.replace("/", PATH_SEPARATOR).replace("\\", PATH_SEPARATOR))
+            for f in config["checks"]["unused-keys"]["files-to-skip"]
         ]
 
 # MARK: Sorted Keys

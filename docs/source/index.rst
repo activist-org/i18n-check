@@ -61,7 +61,7 @@ Conventions
 
     File: ``components/component/ComponentName.ext``
 
-    Key: ``"components.component_name.CONTENT_REFERENCE"``
+    Key: ``"components.component_name.content_reference"``
 
 Installation
 ============

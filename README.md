@@ -58,7 +58,7 @@ Developed by the [activist community](https://github.com/activist-org), this pac
 >
 > File: `components/component/ComponentName.ext`
 >
-> Key: `"components.component_name.CONTENT_REFERENCE"`
+> Key: `"components.component_name.content_reference"`
 
 <a id="installation-"></a>
 

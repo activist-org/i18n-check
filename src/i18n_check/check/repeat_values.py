@@ -113,11 +113,11 @@ def analyze_and_generate_repeat_value_report(
                 keys_to_ignore_regex=config_invalid_key_regexes_to_ignore,
             )
 
-            # Remove dummy value and add 'CONTENT_REFERENCE' for user to replace.
+            # Remove dummy value and add 'content_reference' for user to replace.
             valid_key_stub_based_on_files = invalid_keys_by_name["repeat_key"].replace(
                 ".repeat_key", ""
             )
-            repeat_value_error_report += f"\nSuggested new key: {valid_key_stub_based_on_files}.CONTENT_REFERENCE"
+            repeat_value_error_report += f"\nSuggested new key: {valid_key_stub_based_on_files}.content_reference"
 
         else:
             # Remove the key if the repeat is caused by a lowercase word.
