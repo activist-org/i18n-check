@@ -305,7 +305,7 @@ def collect_files_to_check(
     for root, dirs, files in os.walk(directory):
         root_path = Path(root).resolve()
 
-        # Skip directories in directories_to_skip
+        # Skip directories in directories_to_skip and later files in files_to_skip.
         if any(
             root_path == skip_dir or root_path.is_relative_to(skip_dir)
             for skip_dir in skip_dirs_resolved
