@@ -9,9 +9,7 @@ from typing import Dict
 
 from i18n_check.cli.generate_test_frontends import generate_test_frontends
 
-EXTERNAL_TEST_FRONTENDS_DIR_PATH = (
-    Path(__file__).parent.parent.parent / "i18n_check_test_frontends/"
-)
+EXTERNAL_TEST_FRONTENDS_DIR_PATH = Path.cwd() / "i18n_check_test_frontends"
 
 # Note: Repeat from utils to avoid circular import.
 PATH_SEPARATOR = "\\" if os.name == "nt" else "/"

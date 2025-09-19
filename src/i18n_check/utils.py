@@ -22,12 +22,11 @@ from i18n_check.cli.generate_config_file import generate_config_file
 PATH_SEPARATOR = "\\" if os.name == "nt" else "/"
 
 # Centrally needed base paths.
+CWD_PATH = Path.cwd()
+YAML_CONFIG_FILE_PATH = CWD_PATH / ".i18n-check.yaml"
 INTERNAL_TEST_FRONTENDS_DIR_PATH = Path(__file__).parent / "test_frontends"
-YAML_CONFIG_FILE_PATH = Path.cwd() / ".i18n-check.yaml"
 
 # MARK: YAML Reading
-
-i18n_check_root_path = Path.cwd()
 
 if not Path(YAML_CONFIG_FILE_PATH).is_file():
     generate_config_file()
@@ -43,22 +42,9 @@ with open(YAML_CONFIG_FILE_PATH, "r", encoding="utf-8") as file:
 
 # MARK: Paths
 
-config_src_directory = (
-    i18n_check_root_path
-    / Path(config["src-dir"].replace("/", PATH_SEPARATOR).replace("\\", PATH_SEPARATOR))
-).resolve()
-config_i18n_directory = (
-    i18n_check_root_path
-    / Path(
-        config["i18n-dir"].replace("/", PATH_SEPARATOR).replace("\\", PATH_SEPARATOR)
-    )
-).resolve()
-config_i18n_src_file = (
-    i18n_check_root_path
-    / Path(
-        config["i18n-src"].replace("/", PATH_SEPARATOR).replace("\\", PATH_SEPARATOR)
-    )
-).resolve()
+config_src_directory = (CWD_PATH / Path(config["src-dir"])).resolve()
+config_i18n_directory = (CWD_PATH / Path(config["i18n-dir"])).resolve()
+config_i18n_src_file = (CWD_PATH / Path(config["i18n-src"])).resolve()
 
 # MARK: File Types
 
@@ -76,14 +62,13 @@ if "global" in config["checks"]:
 
     if "directories-to-skip" in config["checks"]["global"]:
         config_global_directories_to_skip = [
-            Path(d.replace("/", PATH_SEPARATOR).replace("\\", PATH_SEPARATOR))
+            CWD_PATH / Path(d)
             for d in config["checks"]["global"]["directories-to-skip"]
         ]
 
     if "files-to-skip" in config["checks"]["global"]:
         config_global_files_to_skip = [
-            Path(f.replace("/", PATH_SEPARATOR).replace("\\", PATH_SEPARATOR))
-            for f in config["checks"]["global"]["files-to-skip"]
+            CWD_PATH / Path(f) for f in config["checks"]["global"]["files-to-skip"]
         ]
 
 # MARK: Invalid Keys
@@ -99,13 +84,13 @@ if "invalid-keys" in config["checks"]:
 
     if "directories-to-skip" in config["checks"]["invalid-keys"]:
         config_invalid_keys_directories_to_skip += [
-            Path(d.replace("/", PATH_SEPARATOR).replace("\\", PATH_SEPARATOR))
+            CWD_PATH / Path(d)
             for d in config["checks"]["invalid-keys"]["directories-to-skip"]
         ]
 
     if "files-to-skip" in config["checks"]["invalid-keys"]:
         config_invalid_keys_files_to_skip += [
-            Path(f.replace("/", PATH_SEPARATOR).replace("\\", PATH_SEPARATOR))
+            CWD_PATH / Path(f)
             for f in config["checks"]["invalid-keys"]["files-to-skip"]
         ]
 
@@ -137,14 +122,13 @@ if "non-existent-keys" in config["checks"]:
 
     if "directories-to-skip" in config["checks"]["non-existent-keys"]:
         config_non_existent_keys_directories_to_skip += [
-            Path(d.replace("/", PATH_SEPARATOR).replace("\\", PATH_SEPARATOR))
+            CWD_PATH / Path(d)
             for d in config["checks"]["non-existent-keys"]["directories-to-skip"]
         ]
 
     if "files-to-skip" in config["checks"]["non-existent-keys"]:
         config_non_existent_keys_files_to_skip += [
-            Path(f.replace("/", PATH_SEPARATOR).replace("\\", PATH_SEPARATOR))
-            for f in config["checks"]["global"]["files-to-skip"]
+            CWD_PATH / Path(f) for f in config["checks"]["global"]["files-to-skip"]
         ]
 
 # MARK: Non-Source Keys
@@ -189,14 +173,13 @@ if "unused-keys" in config["checks"]:
 
     if "directories-to-skip" in config["checks"]["unused-keys"]:
         config_unused_keys_directories_to_skip += [
-            Path(d.replace("/", PATH_SEPARATOR).replace("\\", PATH_SEPARATOR))
+            CWD_PATH / Path(d)
             for d in config["checks"]["unused-keys"]["directories-to-skip"]
         ]
 
     if "files-to-skip" in config["checks"]["unused-keys"]:
         config_unused_keys_files_to_skip += [
-            Path(f.replace("/", PATH_SEPARATOR).replace("\\", PATH_SEPARATOR))
-            for f in config["checks"]["unused-keys"]["files-to-skip"]
+            CWD_PATH / Path(f) for f in config["checks"]["unused-keys"]["files-to-skip"]
         ]
 
 # MARK: Sorted Keys
