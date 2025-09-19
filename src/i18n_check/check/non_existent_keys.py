@@ -68,7 +68,7 @@ def get_used_i18n_keys(
 
     files_to_check = collect_files_to_check(
         directory=src_directory,
-        file_types=config_file_types_to_check,
+        file_types_to_check=config_file_types_to_check,
         directories_to_skip=config_non_existent_keys_directories_to_skip,
         files_to_skip=config_non_existent_keys_files_to_skip,
     )

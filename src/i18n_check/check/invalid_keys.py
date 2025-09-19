@@ -68,7 +68,7 @@ def map_keys_to_files(
     """
     files_to_check = collect_files_to_check(
         directory=src_directory,
-        file_types=config_file_types_to_check,
+        file_types_to_check=config_file_types_to_check,
         directories_to_skip=config_invalid_keys_directories_to_skip,
         files_to_skip=config_invalid_keys_files_to_skip,
     )
@@ -313,7 +313,7 @@ Please rename the following {name_key_or_keys} \\[current_key -> suggested_corre
     if fix and invalid_keys_by_name:
         files_to_fix = collect_files_to_check(
             directory=config_src_directory,
-            file_types=config_file_types_to_check,
+            file_types_to_check=config_file_types_to_check,
             directories_to_skip=config_global_directories_to_skip,
             files_to_skip=config_global_files_to_skip,  # global as we want to fix all instances
         )

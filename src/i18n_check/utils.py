@@ -254,7 +254,7 @@ def read_json_file(file_path: str | Path) -> Any:
 
 def collect_files_to_check(
     directory: str | Path,
-    file_types: list[str],
+    file_types_to_check: list[str],
     directories_to_skip: list[Path],
     files_to_skip: list[Path],
 ) -> List[str]:
@@ -266,7 +266,7 @@ def collect_files_to_check(
     directory : str
         The directory to search in.
 
-    file_types : list[str]
+    file_types_to_check : list[str]
         The file extensions to search in.
 
     directories_to_skip : list[Path]
@@ -298,7 +298,10 @@ def collect_files_to_check(
         for file in files:
             file_path = (root_path / file).resolve()
             if (
-                any(file_path.suffix == f".{ftype.lstrip('.')}" for ftype in file_types)
+                any(
+                    file_path.suffix == f".{ftype.lstrip('.')}"
+                    for ftype in file_types_to_check
+                )
                 and file_path not in skip_files_resolved
             ):
                 files_to_check.append(str(file_path))

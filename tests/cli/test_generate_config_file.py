@@ -41,14 +41,14 @@ class TestGenerateConfigFile(unittest.TestCase):
             },
             "non_existent_keys": {"active": False},
         }
-        file_types = [".js", ".ts"]
+        file_types_to_check = [".ts", ".js"]
 
         # FIX 2: Call write_to_file with the correct 7 arguments in the correct order.
         write_to_file(
             src_dir=src_dir,
             i18n_dir=i18n_dir,
             i18n_src_file=i18n_src_file,
-            file_types_to_check=file_types,
+            file_types_to_check=file_types_to_check,
             checks=checks,
         )
 
@@ -63,7 +63,7 @@ class TestGenerateConfigFile(unittest.TestCase):
             f"i18n-src: my_app{PATH_SEPARATOR}i18n{PATH_SEPARATOR}en.json",
             written_content,
         )
-        self.assertIn("file-types-to-check: [.js, .ts]", written_content)
+        self.assertIn("file-types-to-check: [.ts, .js]", written_content)
         self.assertIn("global:\n    active: True", written_content)
         self.assertIn("non_existent_keys:\n    active: False", written_content)
         self.assertIn("directories-to-skip: [node_modules, dist]", written_content)
@@ -80,7 +80,7 @@ class TestGenerateConfigFile(unittest.TestCase):
             "",  # default src_dir
             "",  # default i18n_dir
             "",  # default i18n_src_file
-            "",  # default file_types
+            "",  # default file_types_to_check
             "n",  # all checks
             "",  # global directories_to_skip
             "",  # global files_to_skip

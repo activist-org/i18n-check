@@ -33,7 +33,7 @@ from i18n_check.utils import (
 i18n_src_dict = read_json_file(file_path=config_i18n_src_file)
 files_to_check = collect_files_to_check(
     directory=config_src_directory,
-    file_types=config_file_types_to_check,
+    file_types_to_check=config_file_types_to_check,
     directories_to_skip=config_unused_keys_directories_to_skip,
     files_to_skip=config_unused_keys_files_to_skip,
 )
