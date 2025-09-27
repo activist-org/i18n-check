@@ -283,7 +283,7 @@ class TestRunCheck(unittest.TestCase):
         )
 
         with pytest.raises(SystemExit) as execution_info:
-            run_check("test_script", include_suppress_errors=False)
+            run_check("test_script", suppress_subprocess_errors=False)
 
         mock_print.assert_called_once()
         self.assertIn("Error running test_script:", mock_print.call_args[0][0])
@@ -291,11 +291,11 @@ class TestRunCheck(unittest.TestCase):
 
     @patch("i18n_check.utils.subprocess.run")
     @patch("builtins.print")
-    def test_run_check_failure_include_suppress_errors(
+    def test_run_check_failure_suppress_subprocess_errors(
         self, mock_print, mock_subprocess_run
     ):
         """
-        Test run_check suppresses error message when include_suppress_errors=True.
+        Test run_check suppresses error message when suppress_subprocess_errors=True.
         """
         from subprocess import CalledProcessError
 
@@ -305,7 +305,7 @@ class TestRunCheck(unittest.TestCase):
             1, ["python", "-m", "test"]
         )
 
-        result = run_check("test_script", include_suppress_errors=True)
+        result = run_check("test_script", suppress_subprocess_errors=True)
         self.assertFalse(result)
         mock_print.assert_not_called()
 
