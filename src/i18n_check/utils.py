@@ -474,7 +474,9 @@ def read_files_to_dict(files: list[str]) -> Dict[str, str]:
 # MARK: Run Check
 
 
-def run_check(script_name: str, include_suppress_errors: bool = False) -> bool:
+def run_check(
+    script_name: str, fix_check: bool = False, suppress_subprocess_errors: bool = False
+) -> bool:
     """
     Run a check script and report the results via the terminal.
 
@@ -483,7 +485,10 @@ def run_check(script_name: str, include_suppress_errors: bool = False) -> bool:
     script_name : str
         The name for the script to run.
 
-    include_suppress_errors : bool, optional, default=False
+    fix_check : bool, optional, default=False
+        Whether the errors in the check should be fixed automatically or via user input.
+
+    suppress_subprocess_errors : bool, optional, default=False
         Whether to suppress subprocess error output.
 
     Returns
@@ -504,7 +509,7 @@ def run_check(script_name: str, include_suppress_errors: bool = False) -> bool:
         return True
 
     except subprocess.CalledProcessError as e:
-        if not include_suppress_errors:
+        if not suppress_subprocess_errors:
             print(f"Error running {script_name}: {e}\n")
             sys.exit(1)
 
