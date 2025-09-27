@@ -9,6 +9,7 @@ Run the following script in terminal:
 >>> i18n-check -a
 """
 
+import argparse
 import sys
 from concurrent.futures import ProcessPoolExecutor, as_completed
 from functools import partial
@@ -54,7 +55,7 @@ from i18n_check.utils import (
 # MARK: Run All
 
 
-def run_all_checks(args) -> None:
+def run_all_checks(args: argparse.ArgumentParser) -> None:
     """
     Run all internationalization (i18n) checks for the project.
 
@@ -64,7 +65,7 @@ def run_all_checks(args) -> None:
 
     Parameters
     ----------
-    args : parser.parse_args
+    args : argparse.ArgumentParser
         The arguments that have been passed to the CLI.
 
     Raises

@@ -127,8 +127,9 @@ def sorted_keys_check_and_fix(fix: bool = False) -> bool:
     json_files = get_all_json_files(directory=config_i18n_directory)
 
     if not json_files:
-        rprint("[yellow]No JSON files found in the i18n directory.[/yellow]")
-        return
+        ValueError(
+            "No JSON files found in the i18n directory. Did you define i18n-dir incorrectly in .i18n-check.yaml?"
+        )
 
     unsorted_files = []
     for file_path in json_files:
