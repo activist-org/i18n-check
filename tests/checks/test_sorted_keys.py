@@ -10,10 +10,10 @@ from pathlib import Path
 import pytest
 
 from i18n_check.check.sorted_keys import (
-    check_all_files_sorted,
     check_file_keys_sorted,
     check_file_sorted,
     fix_sorted_keys,
+    sorted_keys_check_and_fix,
 )
 from i18n_check.utils import read_json_file
 
@@ -184,7 +184,7 @@ class TestFixSortedKeys:
 
 class TestCheckSortedKeysIntegration:
     """
-    Integration tests for the check_all_files_sorted function.
+    Integration tests for the sorted_keys_check_and_fix function.
     """
 
     def test_check_with_mock_config(self, monkeypatch):
@@ -214,12 +214,12 @@ class TestCheckSortedKeysIntegration:
 
             # Test that check fails when there are unsorted files.
             with pytest.raises(SystemExit) as exc_info:
-                check_all_files_sorted(fix=False)
+                sorted_keys_check_and_fix(fix=False)
 
             assert exc_info.value.code == 1
 
             # Test that fix mode works.
-            check_all_files_sorted(fix=True)
+            sorted_keys_check_and_fix(fix=True)
 
             # Verify both files are now sorted.
             sorted_after = read_json_file(sorted_file)

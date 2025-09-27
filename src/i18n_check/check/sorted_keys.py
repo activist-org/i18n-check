@@ -13,7 +13,6 @@ Run the following script in terminal:
 """
 
 import json
-import sys
 from pathlib import Path
 from typing import Any, Dict, List, Tuple
 
@@ -106,7 +105,7 @@ def fix_sorted_keys(file_path: str | Path) -> bool:
         return False
 
 
-def check_all_files_sorted(fix: bool = False) -> None:
+def sorted_keys_check_and_fix(fix: bool = False) -> bool:
     """
     Check if all i18n JSON files have keys sorted alphabetically.
 
@@ -115,9 +114,14 @@ def check_all_files_sorted(fix: bool = False) -> None:
     fix : bool, optional, default=False
         If True, automatically fix unsorted key in files that are not sorted.
 
+    Returns
+    -------
+    bool
+        True if the check is successful.
+
     Raises
     ------
-    sys.exit(1)
+    ValueError
         If any files have unsorted keys and fix is False.
     """
     json_files = get_all_json_files(directory=config_i18n_directory)
@@ -147,7 +151,7 @@ def check_all_files_sorted(fix: bool = False) -> None:
         for f in unsorted_files:
             rprint(f"[red]Keys not sorted alphabetically in: {f}[/red]")
 
-        sys.exit(1)
+        raise ValueError("The sorted keys i18n check has failed.")
 
     elif unsorted_files and fix:
         file_or_files = "file" if len(unsorted_files) == 1 else "files"
@@ -167,8 +171,4 @@ def check_all_files_sorted(fix: bool = False) -> None:
             "[green]✅ sorted_keys success: All i18n JSON files have keys sorted alphabetically.[/green]"
         )
 
-
-# MARK: Main
-
-if __name__ == "__main__":
-    check_all_files_sorted()
+    return True

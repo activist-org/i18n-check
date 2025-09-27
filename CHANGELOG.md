@@ -16,12 +16,16 @@ Emojis for the following are chosen based on [gitmoji](https://gitmoji.dev/).
 
 ### 🐞 Bug Fixes
 
-- All configuration paths are loaded and appended to the current working directory to assure accurate path derivations ([#68](https://github.com/activist-org/i18n-check/issues/68)).
+- Removed `run_check` from the codebase as certain operating systems are not able to set their `__name__` variable appropriately to run Python files as scripts via the CLI ([#68](https://github.com/activist-org/i18n-check/issues/68)).
+  - All checks are now ran as functions rather than as scripts.
 - The path for generated configuration files is now set to the current working directory instead of relative to the configuration generation file.
 
 ### ♻️ Code Refactoring
 
+- All configuration paths are loaded and appended to the current working directory to assure accurate path derivations.
 - `file_types` was renamed `file_types_to_check` in all instances to make its usage more clear and for standardization.
+- Instances of `non_existent` and `non-existent` we changed to `nonexistent` given the proper spelling of the word.
+- The `nested-keys` check was changed to `nested-files` to not conflict with `nonexistent-keys`.
 
 ## i18n-check 1.11.0
 

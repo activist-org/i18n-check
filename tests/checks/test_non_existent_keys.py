@@ -1,15 +1,15 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 """
-Tests for the non_existent_keys.py.
+Tests for the nonexistent_keys.py.
 """
 
 import re
 
 import pytest
 
-from i18n_check.check.non_existent_keys import (
+from i18n_check.check.nonexistent_keys import (
     get_used_i18n_keys,
-    validate_i18n_keys,
+    nonexistent_keys_check,
 )
 
 from ..test_utils import (
@@ -77,10 +77,10 @@ def test_all_keys_include_fail_and_pass_sets():
 
 def test_validate_fail_i18n_keys(capsys) -> None:
     """
-    Test validate_i18n_keys for the fail case.
+    Test nonexistent_keys_check for the fail case.
     """
     with pytest.raises(SystemExit):
-        validate_i18n_keys(
+        nonexistent_keys_check(
             all_used_i18n_keys=i18n_used_fail, i18n_src_dict=fail_checks_src_json
         )
 
@@ -92,16 +92,16 @@ def test_validate_fail_i18n_keys(capsys) -> None:
 
 def test_validate_pass_i18n_keys(capsys) -> None:
     """
-    Test validate_i18n_keys for the pass case.
+    Test nonexistent_keys_check for the pass case.
     """
     # For pass case, it should not raise an error.
-    validate_i18n_keys(
+    nonexistent_keys_check(
         all_used_i18n_keys=i18n_used_pass, i18n_src_dict=pass_checks_src_json
     )
     pass_result = capsys.readouterr().out
     cleaned_pass_result = re.sub(r"\x1b\[.*?m", "", pass_result).strip()
 
-    assert "✅ non_existent_keys success: " in cleaned_pass_result.replace("\n", "")
+    assert "✅ nonexistent_keys success: " in cleaned_pass_result.replace("\n", "")
     assert "All i18n keys that are used in the project" in cleaned_pass_result.replace(
         "\n", ""
     )

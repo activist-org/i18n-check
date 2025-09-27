@@ -12,7 +12,6 @@ Run the following script in terminal:
 """
 
 import json
-import sys
 from collections import defaultdict
 from pathlib import Path
 from typing import Any, Dict, List, Tuple, Union
@@ -80,6 +79,7 @@ def find_repeat_keys(json_input: Union[str, Path]) -> Dict[str, List[str]]:
         if isinstance(json_input, Path):
             if not json_input.exists():
                 raise ValueError(f"File does not exist: {json_input}")
+
             json_str = Path(json_input).read_text(encoding="utf-8")
 
         else:
@@ -138,16 +138,26 @@ def check_file(file_path: str) -> Tuple[str, Dict[str, List[str]]]:
 # MARK: Error Outputs
 
 
-def validate_repeat_keys() -> None:
+def repeat_keys_check(directory: str | Path = config_i18n_directory) -> bool:
     """
     Main check execution.
 
+    Parameters
+    ----------
+    directory : str | Path, default=config_i18n_directory
+        The directory path to check for JSON files.
+
+    Returns
+    -------
+    bool
+        True if the check is successful.
+
     Raises
     ------
-    sys.exit(1)
-        The system exits with 1 and prints error details if any duplicate keys found.
+    ValueError
+        An error is raised and the system prints error details if any duplicate keys found.
     """
-    json_files = get_all_json_files(directory=config_i18n_directory)
+    json_files = get_all_json_files(directory=directory)
     has_errors = False
 
     error_message = ""
@@ -166,15 +176,10 @@ def validate_repeat_keys() -> None:
         error_message += file_duplicate_keys_messages
         rprint(error_message)
 
-        sys.exit(1)
+        raise ValueError("The repeat keys i18n check has failed.")
 
     rprint(
         "[green]✅ repeat_keys success: No duplicate keys found in i18n files.[/green]"
     )
 
-
-# MARK: Main
-
-
-if __name__ == "__main__":
-    validate_repeat_keys()
+    return True

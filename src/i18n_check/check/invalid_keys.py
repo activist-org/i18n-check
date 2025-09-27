@@ -13,7 +13,6 @@ Run the following script in terminal:
 """
 
 import re
-import sys
 from collections import defaultdict
 from pathlib import Path
 from typing import Dict, List, Optional, Tuple
@@ -119,7 +118,7 @@ def _ignore_key(key: str, keys_to_ignore_regex: List[str]) -> bool:
     return any(pattern and re.search(pattern, key) for pattern in keys_to_ignore_regex)
 
 
-def audit_i18n_keys(
+def audit_invalid_i18n_keys(
     key_file_dict: Dict[str, List[str]],
     keys_to_ignore_regex: Optional[List[str]] = None,
 ) -> Tuple[List[str], Dict[str, str]]:
@@ -222,11 +221,11 @@ def audit_i18n_keys(
 # MARK: Error Outputs
 
 
-def report_and_correct_keys(
+def invalid_keys_check_and_fix(
     invalid_keys_by_format: List[str],
     invalid_keys_by_name: Dict[str, str],
     fix: bool = False,
-) -> None:
+) -> bool:
     """
     Report and correct invalid i18n keys based on their formatting and naming conventions.
 
@@ -241,10 +240,15 @@ def report_and_correct_keys(
     fix : bool, optional, default=False
         If True, automatically corrects the invalid key names in the source files.
 
+    Returns
+    -------
+    bool
+        True if the check is successful.
+
     Raises
     ------
-    sys.exit(1)
-        The system exits with 1 and prints error details if there are invalid keys by format or name.
+    ValueError
+        An error is raised and the system prints error details if there are invalid keys by format or name.
     """
     invalid_keys_by_format_string = ", ".join(invalid_keys_by_format)
     format_to_be = "are" if len(invalid_keys_by_format) > 1 else "is"
@@ -283,7 +287,7 @@ Please rename the following {name_key_or_keys} \\[current_key -> suggested_corre
             rprint(
                 "\n[yellow]💡 Tip: You can automatically fix invalid key names by running the --invalid-keys (-ik) check with the --fix (-f) flag.[/yellow]\n"
             )
-            sys.exit(1)
+            raise ValueError("The invalid keys i18n check has failed.")
 
     else:
         if invalid_keys_by_format:
@@ -308,7 +312,7 @@ Please rename the following {name_key_or_keys} \\[current_key -> suggested_corre
             rprint(
                 "\n[yellow]💡 Tip: You can automatically fix invalid key names by running the --invalid-keys (-ik) check with the --fix (-f) flag.[/yellow]\n"
             )
-            sys.exit(1)
+            raise ValueError
 
     if fix and invalid_keys_by_name:
         files_to_fix = collect_files_to_check(
@@ -326,21 +330,18 @@ Please rename the following {name_key_or_keys} \\[current_key -> suggested_corre
             for f in all_files_to_fix:
                 replace_text_in_file(path=f, old=current, new=correct)
 
-        sys.exit(1)
+        raise ValueError
 
+    return True
+
+
+# MARK: Variables
 
 key_file_dict = map_keys_to_files(
     i18n_src_dict=i18n_src_dict,
     src_directory=config_src_directory,
 )
-invalid_keys_by_format, invalid_keys_by_name = audit_i18n_keys(
+invalid_keys_by_format, invalid_keys_by_name = audit_invalid_i18n_keys(
     key_file_dict=key_file_dict,
     keys_to_ignore_regex=config_invalid_key_regexes_to_ignore,
 )
-
-if __name__ == "__main__":
-    report_and_correct_keys(
-        invalid_keys_by_format=invalid_keys_by_format,
-        invalid_keys_by_name=invalid_keys_by_name,
-        fix=False,
-    )

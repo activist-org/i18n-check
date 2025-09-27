@@ -11,13 +11,12 @@ Run the following script in terminal:
 >>> i18n-check -rv
 """
 
-import sys
 from collections import Counter
 from typing import Dict
 
 from rich import print as rprint
 
-from i18n_check.check.invalid_keys import audit_i18n_keys, map_keys_to_files
+from i18n_check.check.invalid_keys import audit_invalid_i18n_keys, map_keys_to_files
 from i18n_check.utils import (
     config_i18n_src_file,
     config_invalid_key_regexes_to_ignore,
@@ -106,7 +105,7 @@ def analyze_and_generate_repeat_value_report(
             )
 
             # Replace with 'repeat_key' as a dummy for if this was the key in all files.
-            _, invalid_keys_by_name = audit_i18n_keys(
+            _, invalid_keys_by_name = audit_invalid_i18n_keys(
                 key_file_dict={
                     "repeat_key": v for k, v in repeat_value_key_file_dict.items()
                 },
@@ -132,9 +131,9 @@ def analyze_and_generate_repeat_value_report(
 # MARK: Error Outputs
 
 
-def validate_repeat_values(
+def repeat_values_check(
     json_repeat_value_counts: Dict[str, int], repeat_value_error_report: str
-) -> None:
+) -> bool:
     """
     Check and report if there are repeat translation values.
 
@@ -148,13 +147,13 @@ def validate_repeat_values(
 
     Returns
     -------
-    None
-        This function either exits or prints a success message.
+    bool
+        True if the check is successful.
 
     Raises
     ------
-    sys.exit(1)
-        The system exits with 1 and prints error details if repeat values are found.
+    ValueError
+        An error is raised and the system prints error details if repeat values are found.
     """
     if json_repeat_value_counts:
         is_or_are = "is"
@@ -172,26 +171,22 @@ def validate_repeat_values(
 
         rprint(error_message)
 
-        sys.exit(1)
+        raise ValueError("The repeat values i18n check has failed.")
 
     else:
         rprint(
             "[green]✅ repeat_values success: No repeat i18n values found in the i18n-src file.[/green]"
         )
 
+    return True
 
-# MARK: Main
 
+# MARK: Variables
 
-if __name__ == "__main__":
-    json_repeat_value_counts = get_repeat_value_counts(i18n_src_dict)
-    json_repeat_value_counts, repeat_value_error_report = (
-        analyze_and_generate_repeat_value_report(
-            i18n_src_dict=i18n_src_dict,
-            json_repeat_value_counts=json_repeat_value_counts,
-        )
-    )
-    validate_repeat_values(
+json_repeat_value_counts = get_repeat_value_counts(i18n_src_dict)
+json_repeat_value_counts, repeat_value_error_report = (
+    analyze_and_generate_repeat_value_report(
+        i18n_src_dict=i18n_src_dict,
         json_repeat_value_counts=json_repeat_value_counts,
-        repeat_value_error_report=repeat_value_error_report,
     )
+)

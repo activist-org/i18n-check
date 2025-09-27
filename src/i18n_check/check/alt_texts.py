@@ -14,7 +14,6 @@ Run the following script in terminal:
 """
 
 import string
-import sys
 from pathlib import Path
 from typing import Dict
 
@@ -89,6 +88,11 @@ def report_and_fix_alt_texts(
 
     fix : bool, optional
         Whether to automatically fix the issues, by default False.
+
+    Raises
+    ------
+    ValueError
+        An error is raised and the system prints error details if there are alt texts with invalid punctuation.
     """
     if not alt_text_issues:
         rprint(
@@ -115,7 +119,7 @@ def report_and_fix_alt_texts(
         rprint(
             "[yellow]💡 Tip: You can automatically fix alt text punctuation by running the --alt-texts (-at) check with the --fix (-f) flag.[/yellow]\n"
         )
-        sys.exit(1)
+        raise ValueError("The alt texts i18n check has failed.")
 
     else:
         total_alt_text_issues = 0
@@ -134,13 +138,12 @@ def report_and_fix_alt_texts(
         rprint(
             f"\n[green]✅ Fixed {total_alt_text_issues} alt text punctuation issues.[/green]\n"
         )
-        sys.exit(0)
 
 
 # MARK: Check Function
 
 
-def check_alt_texts(fix: bool = False) -> None:
+def alt_texts_check_and_fix(fix: bool = False) -> bool:
     """
     Main function to check alt text punctuation.
 
@@ -148,10 +151,17 @@ def check_alt_texts(fix: bool = False) -> None:
     ----------
     fix : bool, optional, default=False
         Whether to automatically fix issues, by default False.
+
+    Returns
+    -------
+    bool
+        True if the check is successful.
     """
     alt_text_issues = find_alt_text_punctuation_issues()
     report_and_fix_alt_texts(alt_text_issues=alt_text_issues, fix=fix)
 
+    return True
+
 
 if __name__ == "__main__":
-    check_alt_texts(fix=False)
+    alt_texts_check_and_fix(fix=False)

@@ -14,7 +14,6 @@ Run the following script in terminal:
 """
 
 import string
-import sys
 from pathlib import Path
 from typing import Dict
 
@@ -93,6 +92,11 @@ def report_and_fix_aria_labels(
 
     fix : bool, optional
         Whether to automatically fix the issues, by default False.
+
+    Raises
+    ------
+    ValueError
+        An error is raised and the system prints error details if there are aria labels with invalid punctuation.
     """
     if not aria_label_issues:
         rprint(
@@ -119,7 +123,7 @@ def report_and_fix_aria_labels(
         rprint(
             "[yellow]💡 Tip: You can automatically fix aria label punctuation by running the --aria-labels (-al) check with the --fix (-f) flag.[/yellow]\n"
         )
-        sys.exit(1)
+        raise ValueError("The aria labels i18n check has failed.")
 
     else:
         total_aria_label_issues = 0
@@ -138,13 +142,12 @@ def report_and_fix_aria_labels(
         rprint(
             f"\n[green]✅ Fixed {total_aria_label_issues} aria label punctuation issues.[/green]\n"
         )
-        sys.exit(0)
 
 
 # MARK: Check Function
 
 
-def check_aria_labels(fix: bool = False) -> None:
+def aria_labels_check_and_fix(fix: bool = False) -> bool:
     """
     Main function to check aria label punctuation.
 
@@ -152,10 +155,13 @@ def check_aria_labels(fix: bool = False) -> None:
     ----------
     fix : bool, optional, default=False
         Whether to automatically fix issues, by default False.
+
+    Returns
+    -------
+    bool
+        True if the check is successful.
     """
     aria_label_issues = find_aria_label_punctuation_issues()
     report_and_fix_aria_labels(aria_label_issues=aria_label_issues, fix=fix)
 
-
-if __name__ == "__main__":
-    check_aria_labels(fix=False)
+    return True

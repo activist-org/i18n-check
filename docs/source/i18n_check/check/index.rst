@@ -7,13 +7,13 @@ check/
     :maxdepth: 1
 
     invalid_keys
-    non_existent_keys
+    nonexistent_keys
     unused_keys
     non_source_keys
     repeat_values
     repeat_keys
     sorted_keys
-    nested_keys
+    nested_files
     missing_keys
     aria_labels
     alt_texts

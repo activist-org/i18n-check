@@ -11,7 +11,6 @@ Run the following script in terminal:
 >>> i18n-check -nsk
 """
 
-import sys
 from pathlib import Path
 from typing import Dict
 
@@ -73,9 +72,9 @@ def get_non_source_keys(
 # MARK: Error Outputs
 
 
-def report_non_source_keys(
+def non_source_keys_check(
     non_source_keys_dict: Dict[str, str],
-) -> None:
+) -> bool:
     """
     Report non-source keys found in the JSON file.
 
@@ -84,10 +83,15 @@ def report_non_source_keys(
     non_source_keys_dict : dict
         A dictionary with non-source keys found in the JSON file.
 
+    Returns
+    -------
+    bool
+        True if the check is successful.
+
     Raises
     ------
-    sys.exit(1)
-        The system exits with 1 and prints error details if the input dictionary is not empty.
+    ValueError
+        An error is raised and the system prints error details if the input dictionary is not empty.
     """
     if non_source_keys_dict:
         non_source_keys_string = "\n\n".join(
@@ -113,20 +117,19 @@ def report_non_source_keys(
         )
         rprint(error_message)
 
-        sys.exit(1)
+        raise ValueError("The non source keys i18n check has failed.")
 
     else:
         rprint(
             "[green]✅ non_source_keys success: No i18n target file has keys that are not in the i18n source file.[/green]"
         )
 
+    return True
 
-# MARK: Main
 
+# MARK: Variables
 
-if __name__ == "__main__":
-    non_source_keys_dict = get_non_source_keys(
-        i18n_src_dict=i18n_src_dict,
-        i18n_directory=config_i18n_directory,
-    )
-    report_non_source_keys(non_source_keys_dict=non_source_keys_dict)
+non_source_keys_dict = get_non_source_keys(
+    i18n_src_dict=i18n_src_dict,
+    i18n_directory=config_i18n_directory,
+)

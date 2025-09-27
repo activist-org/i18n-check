@@ -122,8 +122,8 @@ def report_missing_keys(
 
     Raises
     ------
-    sys.exit(1)
-        The system exits with 1 and prints error details if any locale files have missing keys.
+    ValueError
+        An error is raised and the system prints error details if any locale files have missing keys.
     """
     if missing_keys_by_locale:
         error_message = (
@@ -146,7 +146,7 @@ def report_missing_keys(
         error_message += "[/red]"
         rprint(error_message)
 
-        sys.exit(1)
+        raise ValueError("The missing keys i18n check has failed.")
 
     else:
         rprint(
@@ -285,7 +285,6 @@ def add_missing_keys_interactively(
 
     except KeyboardInterrupt:
         rprint("\n[yellow]Cancelled by user[/yellow]")
-        sys.exit(0)
 
     # Show final status.
     remaining_missing = get_missing_keys_by_locale(
@@ -308,20 +307,17 @@ def add_missing_keys_interactively(
 # MARK: Check with Fix
 
 
-def check_missing_keys_with_fix(
-    fix_locale: Optional[str] = None,
+def missing_keys_check_and_fix(
     i18n_src_dict: Dict[str, str] = i18n_src_dict,
     i18n_directory: Path = config_i18n_directory,
     locales_to_check: List[str] = config_missing_keys_locales_to_check,
-) -> None:
+    fix_locale: Optional[str] = None,
+) -> bool:
     """
     Check missing keys and optionally enter interactive mode to fix them.
 
     Parameters
     ----------
-    fix_locale : str, optional
-        If provided, enter interactive mode to add missing keys for this locale.
-
     i18n_src_dict : dict
         The dictionary containing i18n source keys and their associated values.
 
@@ -330,6 +326,14 @@ def check_missing_keys_with_fix(
 
     locales_to_check : list
         List of locale files to check. If empty, all locale files are checked.
+
+    fix_locale : str, optional
+        If provided, enter interactive mode to add missing keys for this locale.
+
+    Returns
+    -------
+    bool
+        True if the check is successful.
     """
     if fix_locale:
         add_missing_keys_interactively(
@@ -337,6 +341,7 @@ def check_missing_keys_with_fix(
             i18n_src_dict=i18n_src_dict,
             i18n_directory=i18n_directory,
         )
+
     else:
         missing_keys_by_locale = get_missing_keys_by_locale(
             i18n_src_dict=i18n_src_dict,
@@ -345,13 +350,4 @@ def check_missing_keys_with_fix(
         )
         report_missing_keys(missing_keys_by_locale=missing_keys_by_locale)
 
-
-# MARK: Main
-
-
-if __name__ == "__main__":
-    check_missing_keys_with_fix(
-        i18n_src_dict=i18n_src_dict,
-        i18n_directory=config_i18n_directory,
-        locales_to_check=config_missing_keys_locales_to_check,
-    )
+    return True
