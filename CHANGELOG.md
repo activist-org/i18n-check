@@ -12,6 +12,17 @@ Emojis for the following are chosen based on [gitmoji](https://gitmoji.dev/).
 
 ## [Upcoming] i18n-check 1.x
 
+## i18n-check 1.12.0
+
+### 🐞 Bug Fixes
+
+- All configuration paths are loaded and appended to the current working directory to assure accurate path derivations ([#68](https://github.com/activist-org/i18n-check/issues/68)).
+- The path for generated configuration files is now set to the current working directory instead of relative to the configuration generation file.
+
+### ♻️ Code Refactoring
+
+- `file_types` was renamed `file_types_to_check` in all instances to make its usage more clear and for standardization.
+
 ## i18n-check 1.11.0
 
 ### 🐞 Bug Fixes
