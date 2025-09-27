@@ -11,7 +11,7 @@ from i18n_check.check.repeat_values import (
     analyze_and_generate_repeat_value_report,
     get_repeat_value_counts,
     i18n_src_dict,
-    validate_repeat_values,
+    repeat_values_check,
 )
 
 from ..test_utils import (
@@ -98,9 +98,9 @@ def test_key_with_lower_suffix_ignored(capsys) -> None:
     assert "Suggested new key: i18n.test_file.content_reference" in report
 
 
-def test_validate_repeat_values_behavior(capsys) -> None:
+def test_repeat_values_check_behavior(capsys) -> None:
     with pytest.raises(SystemExit):
-        validate_repeat_values(
+        repeat_values_check(
             json_repeat_value_counts=get_repeat_value_counts(fail_checks_src_json),
             repeat_value_error_report="",
         )
@@ -109,7 +109,7 @@ def test_validate_repeat_values_behavior(capsys) -> None:
             in capsys.readouterr().out
         )
 
-    validate_repeat_values(
+    repeat_values_check(
         json_repeat_value_counts=get_repeat_value_counts(pass_checks_src_json),
         repeat_value_error_report="",
     )

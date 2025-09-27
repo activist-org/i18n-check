@@ -6,9 +6,9 @@ Tests for the invalid_keys.py.
 import pytest
 
 from i18n_check.check.invalid_keys import (
-    audit_i18n_keys,
+    audit_invalid_i18n_keys,
+    invalid_keys_check_and_fix,
     map_keys_to_files,
-    report_and_correct_keys,
 )
 from i18n_check.utils import PATH_SEPARATOR, replace_text_in_file
 
@@ -21,11 +21,11 @@ from ..test_utils import (
     i18n_map_pass,
 )
 
-invalid_format_fail, invalid_name_fail = audit_i18n_keys(
+invalid_format_fail, invalid_name_fail = audit_invalid_i18n_keys(
     key_file_dict=i18n_map_fail, keys_to_ignore_regex=""
 )
 
-invalid_format_pass, invalid_name_pass = audit_i18n_keys(
+invalid_format_pass, invalid_name_pass = audit_invalid_i18n_keys(
     key_file_dict=i18n_map_pass, keys_to_ignore_regex=""
 )
 
@@ -79,9 +79,9 @@ def test_map_keys_to_files(i18n_map, expected_output) -> None:
     assert i18n_map == expected_output
 
 
-def test_audit_i18n_keys() -> None:
+def test_audit_invalid_i18n_keys() -> None:
     """
-    Test audit_i18n_keys with various scenarios.
+    Test audit_invalid_i18n_keys with various scenarios.
     """
     assert invalid_format_pass == []
     assert len(invalid_name_fail) == 3
@@ -93,12 +93,12 @@ def test_audit_i18n_keys() -> None:
     )
 
 
-def test_report_and_correct_keys_fail(capsys) -> None:
+def test_invalid_keys_check_and_fix_fail(capsys) -> None:
     """
-    Test report_and_correct_keys for the fail case.
+    Test invalid_keys_check_and_fix for the fail case.
     """
     with pytest.raises(SystemExit):
-        report_and_correct_keys(invalid_format_fail, invalid_name_fail)
+        invalid_keys_check_and_fix(invalid_format_fail, invalid_name_fail)
 
     output_msg = capsys.readouterr().out
 
@@ -112,12 +112,12 @@ def test_report_and_correct_keys_fail(capsys) -> None:
     assert "i18n.test_file.content_reference" in output_msg
 
 
-def test_report_and_correct_keys_pass(capsys) -> None:
+def test_invalid_keys_check_and_fix_pass(capsys) -> None:
     """
-    Test report_and_correct_keys for the pass case.
+    Test invalid_keys_check_and_fix for the pass case.
     """
     # For pass case, it should not raise an error.
-    report_and_correct_keys(invalid_format_pass, invalid_name_pass)
+    invalid_keys_check_and_fix(invalid_format_pass, invalid_name_pass)
     pass_result = capsys.readouterr().out
 
     assert "✅ invalid_keys success: " in pass_result.replace("\n", "").strip()
@@ -128,9 +128,9 @@ def test_report_and_correct_keys_pass(capsys) -> None:
     assert "i18n-src file." in pass_result.replace("\n", "").strip()
 
 
-def test_report_and_correct_keys_fail_with_tip(capsys):
+def test_invalid_keys_check_and_fix_fail_with_tip(capsys):
     with pytest.raises(SystemExit):
-        report_and_correct_keys(invalid_format_fail, invalid_name_fail)
+        invalid_keys_check_and_fix(invalid_format_fail, invalid_name_fail)
 
     output = capsys.readouterr().out
     assert "not formatted correctly" in output
@@ -140,16 +140,16 @@ def test_report_and_correct_keys_fail_with_tip(capsys):
     assert "--fix (-f) flag" in output
 
 
-def test_report_and_correct_keys_fail_fix_mode(capsys):
+def test_invalid_keys_check_and_fix_fail_fix_mode(capsys):
     with pytest.raises(SystemExit):
-        report_and_correct_keys(invalid_format_fail, invalid_name_fail, fix=True)
+        invalid_keys_check_and_fix(invalid_format_fail, invalid_name_fail, fix=True)
 
     output = capsys.readouterr().out
     assert "--fix (-f) flag" not in output
     assert "✨ Replaced 'i18n.wrong_identifier_path.content_reference'" in output
     assert "'i18n.test_file.content_reference'" in output
 
-    # Return to old state before string replacement:
+    # Return to old state before string replacement in tests:
     replace_text_in_file(
         path=fail_checks_src_json_path,
         old="i18n.test_file.content_reference",
@@ -196,7 +196,7 @@ def test_report_and_correct_keys_fail_fix_mode(capsys):
     )
 
 
-def test_audit_i18n_keys_regex_ignore() -> None:
+def test_audit_invalid_i18n_keys_regex_ignore() -> None:
     """
     Test that keys matching regex pattern are ignored during validation.
     """
@@ -211,11 +211,11 @@ def test_audit_i18n_keys_regex_ignore() -> None:
         ],
     }
 
-    invalid_format_all, invalid_name_all = audit_i18n_keys(
+    invalid_format_all, invalid_name_all = audit_invalid_i18n_keys(
         key_file_dict=test_key_file_dict, keys_to_ignore_regex=""
     )
 
-    invalid_format_filtered, invalid_name_filtered = audit_i18n_keys(
+    invalid_format_filtered, invalid_name_filtered = audit_invalid_i18n_keys(
         key_file_dict=test_key_file_dict,
         keys_to_ignore_regex=r"i18n\.(legacy|temp)\.",
     )
@@ -228,7 +228,7 @@ def test_audit_i18n_keys_regex_ignore() -> None:
             f"Ignored key {ignored_key} should not appear in results"
         )
 
-    invalid_format_legacy_only, invalid_name_legacy_only = audit_i18n_keys(
+    invalid_format_legacy_only, invalid_name_legacy_only = audit_invalid_i18n_keys(
         key_file_dict=test_key_file_dict, keys_to_ignore_regex=r"i18n\.legacy\."
     )
 
@@ -245,7 +245,7 @@ def test_audit_i18n_keys_regex_ignore() -> None:
     )
 
 
-def test_audit_i18n_keys_regex_ignore_list() -> None:
+def test_audit_invalid_i18n_keys_regex_ignore_list() -> None:
     """
     Test that keys matching any regex pattern in a list are ignored during validation.
     """
@@ -263,11 +263,11 @@ def test_audit_i18n_keys_regex_ignore_list() -> None:
         ],
     }
 
-    invalid_format_empty, invalid_name_empty = audit_i18n_keys(
+    invalid_format_empty, invalid_name_empty = audit_invalid_i18n_keys(
         key_file_dict=test_key_file_dict, keys_to_ignore_regex=[]
     )
 
-    invalid_format_filtered, invalid_name_filtered = audit_i18n_keys(
+    invalid_format_filtered, invalid_name_filtered = audit_invalid_i18n_keys(
         key_file_dict=test_key_file_dict,
         keys_to_ignore_regex=[
             r"i18n\.legacy\.",
@@ -288,7 +288,7 @@ def test_audit_i18n_keys_regex_ignore_list() -> None:
             f"Ignored key {ignored_key} should not appear in results"
         )
 
-    invalid_format_single, invalid_name_single = audit_i18n_keys(
+    invalid_format_single, invalid_name_single = audit_invalid_i18n_keys(
         key_file_dict=test_key_file_dict, keys_to_ignore_regex=[r"i18n\.legacy\."]
     )
 
@@ -311,7 +311,7 @@ def test_audit_i18n_keys_regex_ignore_list() -> None:
     )
 
 
-def test_audit_i18n_keys_regex_ignore_backward_compatibility() -> None:
+def test_audit_invalid_i18n_keys_regex_ignore_backward_compatibility() -> None:
     """
     Test that the function still accepts string input for backward compatibility.
     """
@@ -321,12 +321,12 @@ def test_audit_i18n_keys_regex_ignore_backward_compatibility() -> None:
         "i18n.valid.component.title": [f"src{PATH_SEPARATOR}component.ts"],
     }
 
-    invalid_format_string, invalid_name_string = audit_i18n_keys(
+    invalid_format_string, invalid_name_string = audit_invalid_i18n_keys(
         key_file_dict=test_key_file_dict,
         keys_to_ignore_regex=r"i18n\.(legacy|temp)\.",
     )
 
-    invalid_format_list, invalid_name_list = audit_i18n_keys(
+    invalid_format_list, invalid_name_list = audit_invalid_i18n_keys(
         key_file_dict=test_key_file_dict,
         keys_to_ignore_regex=[r"i18n\.(legacy|temp)\."],
     )
@@ -335,7 +335,7 @@ def test_audit_i18n_keys_regex_ignore_backward_compatibility() -> None:
     assert invalid_name_string == invalid_name_list
 
 
-def test_audit_i18n_keys_regex_ignore_empty_patterns() -> None:
+def test_audit_invalid_i18n_keys_regex_ignore_empty_patterns() -> None:
     """
     Test that empty patterns in the list are handled correctly.
     """
@@ -345,12 +345,12 @@ def test_audit_i18n_keys_regex_ignore_empty_patterns() -> None:
         "i18n.valid.component.title": [f"src{PATH_SEPARATOR}component.ts"],
     }
 
-    invalid_format_mixed, invalid_name_mixed = audit_i18n_keys(
+    invalid_format_mixed, invalid_name_mixed = audit_invalid_i18n_keys(
         key_file_dict=test_key_file_dict,
         keys_to_ignore_regex=["", r"i18n\.legacy\.", "", r"i18n\.temp\.", ""],
     )
 
-    invalid_format_clean, invalid_name_clean = audit_i18n_keys(
+    invalid_format_clean, invalid_name_clean = audit_invalid_i18n_keys(
         key_file_dict=test_key_file_dict,
         keys_to_ignore_regex=[r"i18n\.legacy\.", r"i18n\.temp\."],
     )

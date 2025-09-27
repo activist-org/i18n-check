@@ -1,13 +1,13 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 """
-Test script for nested_keys.py functionality.
+Test script for nested_files.py functionality.
 """
 
 import unittest
 
 import pytest
 
-from i18n_check.check.nested_keys import is_nested_json, validate_nested_keys
+from i18n_check.check.nested_files import is_nested_json, nested_files_check
 from i18n_check.utils import read_json_file
 
 from ..test_utils import checks_fail_json_dir, checks_pass_json_dir
@@ -46,20 +46,20 @@ class TestIsNestedJson(unittest.TestCase):
 
 class TestCheckI18nFiles:
     """
-    Test cases for the validate_nested_keys function.
+    Test cases for the nested_files_check function.
     """
 
-    def test_validate_nested_keys_with_warnings(self, capsys) -> None:
+    def test_nested_files_check_with_warnings(self, capsys) -> None:
         """
-        Test that validate_nested_keys prints a warning for nested files.
+        Test that nested_files_check prints a warning for nested files.
         """
         # Test the failing case.
-        validate_nested_keys(checks_fail_json_dir)
+        nested_files_check(checks_fail_json_dir)
         captured_fail = capsys.readouterr()
 
         # The output from `rich` might have extra newlines or formatting.
         assert (
-            "nested_keys error: Nested JSON structure detected in"
+            "nested_files error: Nested JSON structure detected in"
             in captured_fail.out.replace("\n", "")
         )
         assert "test_i18n_src.json" in captured_fail.out.replace("\n", "")
@@ -69,16 +69,16 @@ class TestCheckI18nFiles:
         )
 
         # Test the passing case.
-        validate_nested_keys(checks_pass_json_dir)
+        nested_files_check(checks_pass_json_dir)
         captured_pass = capsys.readouterr()
         assert captured_pass.out == ""
 
-    def test_validate_nested_keys_with_nonexistent_directory(self) -> None:
+    def test_nested_files_check_with_nonexistent_directory(self) -> None:
         """
-        Test validate_nested_keys with a nonexistent directory.
+        Test nested_files_check with a nonexistent directory.
         """
         with pytest.raises(FileNotFoundError):
-            validate_nested_keys("/nonexistent/directory")
+            nested_files_check("/nonexistent/directory")
 
 
 if __name__ == "__main__":

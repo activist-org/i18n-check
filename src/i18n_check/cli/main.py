@@ -8,20 +8,33 @@ import sys
 
 from rich import print as rprint
 
-from i18n_check.check.alt_texts import check_alt_texts
-from i18n_check.check.aria_labels import check_aria_labels
+from i18n_check.check.all_checks import run_all_checks
+from i18n_check.check.alt_texts import alt_texts_check_and_fix
+from i18n_check.check.aria_labels import aria_labels_check_and_fix
 from i18n_check.check.invalid_keys import (
     invalid_keys_by_format,
     invalid_keys_by_name,
-    report_and_correct_keys,
+    invalid_keys_check_and_fix,
 )
-from i18n_check.check.missing_keys import check_missing_keys_with_fix
-from i18n_check.check.sorted_keys import check_all_files_sorted
+from i18n_check.check.missing_keys import missing_keys_check_and_fix
+from i18n_check.check.nested_files import nested_files_check
+from i18n_check.check.non_source_keys import non_source_keys_check, non_source_keys_dict
+from i18n_check.check.nonexistent_keys import (
+    all_used_i18n_keys,
+    nonexistent_keys_check,
+)
+from i18n_check.check.repeat_keys import repeat_keys_check
+from i18n_check.check.repeat_values import (
+    json_repeat_value_counts,
+    repeat_value_error_report,
+    repeat_values_check,
+)
+from i18n_check.check.sorted_keys import sorted_keys_check_and_fix
+from i18n_check.check.unused_keys import unused_keys, unused_keys_check
 from i18n_check.cli.generate_config_file import generate_config_file
 from i18n_check.cli.generate_test_frontends import generate_test_frontends
 from i18n_check.cli.upgrade import upgrade_cli
 from i18n_check.cli.version import get_version_message
-from i18n_check.utils import run_check
 
 
 def main() -> None:
@@ -45,13 +58,13 @@ def main() -> None:
     - --generate-test-frontends (-gtf): Generate frontends to test i18n-check functionalities
     - --all-checks (-a): Run all available checks
     - --invalid-keys (-ik): Check for invalid i18n keys in codebase
-    - --non-existent-keys (-nek): Check i18n key usage and formatting
+    - --nonexistent-keys (-nk): Check i18n key usage and formatting
     - --unused-keys (-uk): Check for unused i18n keys
     - --non-source-keys (-nsk): Check for keys in translations not in source
     - --repeat-keys (-rk): Check for duplicate keys in JSON files
     - --repeat-values (-rv): Check for repeated values in source file
     - --sorted-keys (-sk): Check if all i18n JSON files have keys sorted alphabetically
-    - --nested-keys (-nk): Check for nested i18n keys
+    - --nested-files (-nf): Check for nested i18n keys
     - --missing-keys (-mk): Check for missing keys in locale files
     - --locale (-l): Specify locale for interactive key addition
     - --aria-labels (-al): Check for appropriate punctuation in aria label keys
@@ -126,8 +139,8 @@ def main() -> None:
     )
 
     parser.add_argument(
-        "-nek",
-        "--non-existent-keys",
+        "-nk",
+        "--nonexistent-keys",
         action="store_true",
         help="Check if the codebase includes i18n keys that are not within the source file.",
     )
@@ -168,8 +181,8 @@ def main() -> None:
     )
 
     parser.add_argument(
-        "-nk",
-        "--nested-keys",
+        "-nf",
+        "--nested-files",
         action="store_true",
         help="Check for nested i18n source and translation keys.",
     )
@@ -221,86 +234,73 @@ def main() -> None:
     # MARK: Run Checks
 
     if args.all_checks:
-        run_check("all_checks")
+        run_all_checks(args=args)
         return
 
     if args.invalid_keys:
-        if args.fix:
-            report_and_correct_keys(
-                invalid_keys_by_format=invalid_keys_by_format,
-                invalid_keys_by_name=invalid_keys_by_name,
-                fix=True,
-            )
-
-        else:
-            run_check("invalid_keys")
+        invalid_keys_check_and_fix(
+            invalid_keys_by_format=invalid_keys_by_format,
+            invalid_keys_by_name=invalid_keys_by_name,
+            fix=args.fix,
+        )
 
         return
 
-    if args.non_existent_keys:
-        run_check("non_existent_keys")
+    if args.nonexistent_keys:
+        nonexistent_keys_check(all_used_i18n_keys=all_used_i18n_keys)
         return
 
     if args.unused_keys:
-        run_check("unused_keys")
+        unused_keys_check(unused_keys=unused_keys)
         return
 
     if args.non_source_keys:
-        run_check("non_source_keys")
+        non_source_keys_check(non_source_keys_dict=non_source_keys_dict)
         return
 
     if args.repeat_keys:
-        run_check("repeat_keys")
+        repeat_keys_check()
         return
 
     if args.repeat_values:
-        run_check("repeat_values")
+        repeat_values_check(
+            json_repeat_value_counts=json_repeat_value_counts,
+            repeat_value_error_report=repeat_value_error_report,
+        )
         return
 
     if args.sorted_keys:
-        if args.fix:
-            check_all_files_sorted(fix=True)
-
-        else:
-            run_check("sorted_keys")
+        sorted_keys_check_and_fix(fix=args.fix)
 
         return
 
-    if args.nested_keys:
-        run_check("nested_keys")
+    if args.nested_files:
+        nested_files_check()
         return
 
     if args.missing_keys:
         if args.fix and args.locale:
-            check_missing_keys_with_fix(fix_locale=args.locale)
+            missing_keys_check_and_fix(fix_locale=args.locale)
 
-        elif args.fix and not args.locale:
+        elif args.fix:
             rprint(
                 "[red]❌ Error: --locale (-l) is required when using --fix (-f) with --missing-keys (-mk)[/red]"
             )
-            rprint("[yellow]💡 Example: i18n-check -mk -f -l de[/yellow]")
+            rprint("[yellow]💡 Example: i18n-check -mk -f -l ENTER_ISO_2_CODE[/yellow]")
             sys.exit(1)
 
         else:
-            run_check("missing_keys")
+            missing_keys_check_and_fix()
 
         return
 
     if args.aria_labels:
-        if args.fix:
-            check_aria_labels(fix=True)
-
-        else:
-            run_check("aria_labels")
+        aria_labels_check_and_fix(fix=args.fix)
 
         return
 
     if args.alt_texts:
-        if args.fix:
-            check_alt_texts(fix=True)
-
-        else:
-            run_check("alt_texts")
+        alt_texts_check_and_fix(fix=args.fix)
 
         return
 

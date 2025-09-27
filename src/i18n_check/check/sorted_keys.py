@@ -106,25 +106,36 @@ def fix_sorted_keys(file_path: str | Path) -> bool:
         return False
 
 
-def check_all_files_sorted(fix: bool = False) -> None:
+def sorted_keys_check_and_fix(
+    all_checks_enabled: bool = False, fix: bool = False
+) -> bool:
     """
     Check if all i18n JSON files have keys sorted alphabetically.
 
     Parameters
     ----------
+    all_checks_enabled : bool, optional, default=False
+        Whether all checks are being ran by the CLI.
+
     fix : bool, optional, default=False
         If True, automatically fix unsorted key in files that are not sorted.
 
+    Returns
+    -------
+    bool
+        True if the check is successful.
+
     Raises
     ------
-    sys.exit(1)
+    ValueError, sys.exit(1)
         If any files have unsorted keys and fix is False.
     """
     json_files = get_all_json_files(directory=config_i18n_directory)
 
     if not json_files:
-        rprint("[yellow]No JSON files found in the i18n directory.[/yellow]")
-        return
+        ValueError(
+            "No JSON files found in the i18n directory. Did you define i18n-dir incorrectly in .i18n-check.yaml?"
+        )
 
     unsorted_files = []
     for file_path in json_files:
@@ -147,7 +158,11 @@ def check_all_files_sorted(fix: bool = False) -> None:
         for f in unsorted_files:
             rprint(f"[red]Keys not sorted alphabetically in: {f}[/red]")
 
-        sys.exit(1)
+        if all_checks_enabled:
+            raise ValueError("The sorted keys i18n check has failed.")
+
+        else:
+            sys.exit(1)
 
     elif unsorted_files and fix:
         file_or_files = "file" if len(unsorted_files) == 1 else "files"
@@ -167,8 +182,4 @@ def check_all_files_sorted(fix: bool = False) -> None:
             "[green]✅ sorted_keys success: All i18n JSON files have keys sorted alphabetically.[/green]"
         )
 
-
-# MARK: Main
-
-if __name__ == "__main__":
-    check_all_files_sorted()
+    return True

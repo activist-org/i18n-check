@@ -8,7 +8,7 @@ import pytest
 from i18n_check.check.repeat_keys import (
     check_file,
     find_repeat_keys,
-    validate_repeat_keys,
+    repeat_keys_check,
 )
 
 from ..test_utils import (
@@ -82,7 +82,7 @@ def test_check_file_not_found() -> None:
 
 def test_main_with_duplicates_raises(capsys) -> None:
     with pytest.raises(SystemExit):
-        validate_repeat_keys()
+        repeat_keys_check()
 
     output = capsys.readouterr().out
     assert "Repeat keys in" in output

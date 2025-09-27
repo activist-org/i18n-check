@@ -78,7 +78,7 @@ def find_unused_keys(
 # MARK: Error Outputs
 
 
-def print_unused_keys(unused_keys: List[str]) -> None:
+def unused_keys_check(unused_keys: List[str], all_checks_enabled: bool = False) -> bool:
     """
     Print a message reporting unused translation keys or success.
 
@@ -87,15 +87,18 @@ def print_unused_keys(unused_keys: List[str]) -> None:
     unused_keys : List[str]
         A list of keys that are unused in the project.
 
+    all_checks_enabled : bool, optional, default=False
+        Whether all checks are being ran by the CLI.
+
     Returns
     -------
-    None
-        This function doesn't return anything; it either raises an error or prints a success message.
+    bool
+        True if the check is successful.
 
     Raises
     ------
-    sys.exit(1)
-        The system exits with 1 and prints error details if there are unused keys.
+    ValueError, sys.exit(1)
+        An error is raised and the system prints error details if there are unused keys.
     """
     if unused_keys:
         to_be = "are" if len(unused_keys) > 1 else "is"
@@ -111,19 +114,22 @@ def print_unused_keys(unused_keys: List[str]) -> None:
         )
         rprint(error_message)
 
-        sys.exit(1)
+        if all_checks_enabled:
+            raise ValueError("The unused keys i18n check has failed.")
+
+        else:
+            sys.exit(1)
 
     else:
         rprint(
             "[green]✅ unused_keys success: All i18n keys in the i18n-src file are used in the project.[/green]"
         )
 
+    return True
 
-# MARK: Main
 
+# MARK: Variables
 
-if __name__ == "__main__":
-    unused_keys = find_unused_keys(
-        i18n_src_dict=i18n_src_dict, files_to_check_contents=files_to_check_contents
-    )
-    print_unused_keys(unused_keys)
+unused_keys = find_unused_keys(
+    i18n_src_dict=i18n_src_dict, files_to_check_contents=files_to_check_contents
+)

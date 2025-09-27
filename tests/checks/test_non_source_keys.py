@@ -9,7 +9,7 @@ import pytest
 
 from i18n_check.check.non_source_keys import (
     get_non_source_keys,
-    report_non_source_keys,
+    non_source_keys_check,
 )
 
 from ..test_utils import (
@@ -53,15 +53,15 @@ def test_get_non_source_keys(
     assert non_source_keys == expected_output
 
 
-def test_report_non_source_keys_pass_output(capsys):
-    report_non_source_keys(non_source_keys_pass)
+def test_non_source_keys_check_pass_output(capsys):
+    non_source_keys_check(non_source_keys_pass)
     output = capsys.readouterr().out
     assert "non_source_keys success" in output
 
 
-def test_report_non_source_keys_fail_output(capsys):
+def test_non_source_keys_check_fail_output(capsys):
     with pytest.raises(SystemExit):
-        report_non_source_keys(non_source_keys_fail)
+        non_source_keys_check(non_source_keys_fail)
 
     output_msg = capsys.readouterr().out
     assert "non_source_keys error:" in output_msg

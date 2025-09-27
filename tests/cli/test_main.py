@@ -8,6 +8,14 @@ from io import StringIO
 from unittest.mock import patch
 
 from i18n_check.cli.main import main
+from i18n_check.utils import read_json_file, replace_text_in_file
+
+from ..test_utils import (
+    fail_checks_src_json_path,
+    fail_checks_sub_dir_first_file_path,
+    fail_checks_sub_dir_second_file_path,
+    fail_checks_test_file_path,
+)
 
 
 class TestMainCli(unittest.TestCase):
@@ -23,6 +31,7 @@ class TestMainCli(unittest.TestCase):
         """
         with patch("sys.argv", ["i18n-check"]):
             main()
+
         mock_print_help.assert_called_once()
 
     @patch("i18n_check.cli.main.upgrade_cli")
@@ -32,6 +41,7 @@ class TestMainCli(unittest.TestCase):
         """
         with patch("sys.argv", ["i18n-check", "--upgrade"]):
             main()
+
         mock_upgrade_cli.assert_called_once()
 
     @patch("i18n_check.cli.main.generate_config_file")
@@ -41,6 +51,7 @@ class TestMainCli(unittest.TestCase):
         """
         with patch("sys.argv", ["i18n-check", "--generate-config-file"]):
             main()
+
         mock_generate_config_file.assert_called_once()
 
     @patch("i18n_check.cli.main.generate_test_frontends")
@@ -50,90 +61,160 @@ class TestMainCli(unittest.TestCase):
         """
         with patch("sys.argv", ["i18n-check", "--generate-test-frontends"]):
             main()
+
         mock_generate_test_frontends.assert_called_once()
 
-    @patch("i18n_check.cli.main.run_check")
-    def test_main_all_checks(self, mock_run_check):
+    @patch("i18n_check.check.all_checks.run_all_checks")
+    @patch("sys.exit")
+    def test_main_all_checks(self, mock_all_checks, mock_sys_exit):
         """
-        Test that `run_check` is called for the --all-checks flag.
+        Test that `run_all_checks` is called for the --all flag.
         """
         with patch("sys.argv", ["i18n-check", "--all-checks"]):
             main()
-        mock_run_check.assert_called_once_with("all_checks")
 
-    @patch("i18n_check.cli.main.run_check")
-    def test_main_invalid_keys(self, mock_run_check):
+        mock_all_checks.assert_called_once()
+
+    @patch("i18n_check.check.invalid_keys.invalid_keys_check_and_fix")
+    @patch("sys.exit")
+    def test_main_invalid_keys(self, mock_invalid_keys_check_and_fix, mock_sys_exit):
         """
-        Test that `run_check` is called for the --invalid-keys flag.
+        Test that `invalid_keys_check` is called for the --invalid-keys flag.
         """
         with patch("sys.argv", ["i18n-check", "--invalid-keys"]):
             main()
-        mock_run_check.assert_called_once_with("invalid_keys")
 
-    @patch("i18n_check.cli.main.report_and_correct_keys")
-    def test_main_invalid_keys_with_fix(self, mock_report_and_correct_keys):
+        mock_invalid_keys_check_and_fix.assert_called_once()
+
+    @patch("i18n_check.check.invalid_keys.invalid_keys_check_and_fix")
+    @patch("sys.exit")
+    def test_main_invalid_keys_with_fix(
+        self, mock_invalid_keys_check_and_fix, mock_sys_exit
+    ):
         """
-        Test that `report_and_correct_keys` is called with fix=True for --invalid-keys and --fix.
+        Test that `invalid_keys_check_and_fix` is called with fix=True for --invalid-keys and --fix.
         """
         with patch("sys.argv", ["i18n-check", "--invalid-keys", "--fix"]):
             main()
-        mock_report_and_correct_keys.assert_called_once()
-        args, kwargs = mock_report_and_correct_keys.call_args
-        assert kwargs.get("fix") is True
 
-    @patch("i18n_check.cli.main.run_check")
-    def test_main_non_existent_keys(self, mock_run_check):
+        mock_invalid_keys_check_and_fix.assert_called_once()
+
+        fail_checks_src_json = read_json_file(file_path=fail_checks_src_json_path)
+
+        assert fail_checks_src_json.get("i18n.test_file.content_reference")
+        assert fail_checks_src_json.get("i18n._global.repeat_value_multiple_files")
+        assert fail_checks_src_json.get("i18n.test_file.repeat_value_single_file")
+
+        # Return to old state before string replacement in tests:
+        replace_text_in_file(
+            path=fail_checks_src_json_path,
+            old="i18n.test_file.content_reference",
+            new="i18n.wrong_identifier_path.content_reference",
+        )
+        replace_text_in_file(
+            path=fail_checks_test_file_path,
+            old="i18n.test_file.content_reference",
+            new="i18n.wrong_identifier_path.content_reference",
+        )
+
+        # Repeat value keys as well:
+        replace_text_in_file(
+            path=fail_checks_src_json_path,
+            old="i18n._global.repeat_value_multiple_files",
+            new="i18n.repeat_value_multiple_files",
+        )
+        replace_text_in_file(
+            path=fail_checks_src_json_path,
+            old="i18n.test_file.repeat_value_single_file",
+            new="i18n.repeat_value_single_file",
+        )
+
+        replace_text_in_file(
+            path=fail_checks_test_file_path,
+            old="i18n._global.repeat_value_multiple_files",
+            new="i18n.repeat_value_multiple_files",
+        )
+        replace_text_in_file(
+            path=fail_checks_sub_dir_first_file_path,
+            old="i18n._global.repeat_value_multiple_files",
+            new="i18n.repeat_value_multiple_files",
+        )
+        replace_text_in_file(
+            path=fail_checks_sub_dir_second_file_path,
+            old="i18n._global.repeat_value_multiple_files",
+            new="i18n.repeat_value_multiple_files",
+        )
+
+        replace_text_in_file(
+            path=fail_checks_test_file_path,
+            old="i18n.test_file.repeat_value_single_file",
+            new="i18n.repeat_value_single_file",
+        )
+
+    @patch("i18n_check.check.nonexistent_keys.nonexistent_keys_check")
+    @patch("sys.exit")
+    def test_main_nonexistent_keys(self, mock_nonexistent_keys_check, mock_sys_exit):
         """
-        Test that `run_check` is called for the --non-existent-keys flag.
+        Test that `nonexistent_keys_check` is called for the --nonexistent-keys flag.
         """
-        with patch("sys.argv", ["i18n-check", "--non-existent-keys"]):
+        with patch("sys.argv", ["i18n-check", "--nonexistent-keys"]):
             main()
-        mock_run_check.assert_called_once_with("non_existent_keys")
 
-    @patch("i18n_check.cli.main.run_check")
-    def test_main_unused_keys(self, mock_run_check):
+        mock_nonexistent_keys_check.assert_called_once()
+
+    @patch("i18n_check.check.unused_keys.unused_keys_check")
+    @patch("sys.exit")
+    def test_main_unused_keys(self, mock_unused_keys_check, mock_sys_exit):
         """
-        Test that `run_check` is called for the --unused-keys flag.
+        Test that `unused_keys_check` is called for the --unused-keys flag.
         """
         with patch("sys.argv", ["i18n-check", "--unused-keys"]):
             main()
-        mock_run_check.assert_called_once_with("unused_keys")
 
-    @patch("i18n_check.cli.main.run_check")
-    def test_main_non_source_keys(self, mock_run_check):
+        mock_unused_keys_check.assert_called_once()
+
+    @patch("i18n_check.check.non_source_keys.non_source_keys_check")
+    @patch("sys.exit")
+    def test_main_non_source_keys(self, mock_non_source_keys_check, mock_sys_exit):
         """
-        Test that `run_check` is called for the --non-source-keys flag.
+        Test that `non_source_keys_check` is called for the --non-source-keys flag.
         """
         with patch("sys.argv", ["i18n-check", "--non-source-keys"]):
             main()
-        mock_run_check.assert_called_once_with("non_source_keys")
 
-    @patch("i18n_check.cli.main.run_check")
-    def test_main_repeat_keys(self, mock_run_check):
+        mock_non_source_keys_check.assert_called_once()
+
+    @patch("i18n_check.check.repeat_keys.repeat_keys_check")
+    @patch("sys.exit")
+    def test_main_repeat_keys(self, mock_repeat_keys_check, mock_sys_exit):
         """
-        Test that `run_check` is called for the --repeat-keys flag.
+        Test that `repeat_keys_check` is called for the --repeat-keys flag.
         """
         with patch("sys.argv", ["i18n-check", "--repeat-keys"]):
             main()
-        mock_run_check.assert_called_once_with("repeat_keys")
 
-    @patch("i18n_check.cli.main.run_check")
-    def test_main_repeat_values(self, mock_run_check):
+        mock_repeat_keys_check.assert_called_once()
+
+    @patch("i18n_check.check.repeat_values.repeat_values_check")
+    @patch("sys.exit")
+    def test_main_repeat_values(self, mock_repeat_values_check, mock_sys_exit):
         """
-        Test that `run_check` is called for the --repeat-values flag.
+        Test that `repeat_values_check` is called for the --repeat-values flag.
         """
         with patch("sys.argv", ["i18n-check", "--repeat-values"]):
             main()
-        mock_run_check.assert_called_once_with("repeat_values")
 
-    @patch("i18n_check.cli.main.run_check")
-    def test_main_nested_keys(self, mock_run_check):
+        mock_repeat_values_check.assert_called_once()
+
+    @patch("i18n_check.cli.main.nested_files_check")
+    def test_main_nested_files(self, mock_nested_files_check):
         """
-        Test that `run_check` is called for the --nested-keys flag.
+        Test that `nested_files_check` is called for the --nested-files flag.
         """
-        with patch("sys.argv", ["i18n-check", "--nested-keys"]):
+        with patch("sys.argv", ["i18n-check", "--nested-files"]):
             main()
-        mock_run_check.assert_called_once_with("nested_keys")
+
+        mock_nested_files_check.assert_called_once()
 
     @patch(
         "i18n_check.cli.main.get_version_message",
@@ -147,7 +228,9 @@ class TestMainCli(unittest.TestCase):
             with self.assertRaises(SystemExit):
                 with patch("sys.argv", ["i18n-check", "--version"]):
                     main()
+
             self.assertIn("i18n-check version 1.0.0", mock_stdout.getvalue())
+
         mock_get_version.assert_called_once()
 
 
