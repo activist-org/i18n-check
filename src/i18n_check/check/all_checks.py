@@ -55,7 +55,7 @@ from i18n_check.utils import (
 # MARK: Run All
 
 
-def run_all_checks(args: argparse.ArgumentParser) -> None:
+def run_all_checks(args: argparse.Namespace) -> None:
     """
     Run all internationalization (i18n) checks for the project.
 
@@ -65,7 +65,7 @@ def run_all_checks(args: argparse.ArgumentParser) -> None:
 
     Parameters
     ----------
-    args : argparse.ArgumentParser
+    args : argparse.Namespace
         The arguments that have been passed to the CLI.
 
     Raises
