@@ -14,6 +14,7 @@ Run the following script in terminal:
 """
 
 import string
+import sys
 from pathlib import Path
 from typing import Dict
 
@@ -76,7 +77,9 @@ def find_alt_text_punctuation_issues(
 
 
 def report_and_fix_alt_texts(
-    alt_text_issues: Dict[str, Dict[str, Dict[str, str]]], fix: bool = False
+    alt_text_issues: Dict[str, Dict[str, Dict[str, str]]],
+    all_checks_enabled: bool = False,
+    fix: bool = False,
 ) -> None:
     """
     Report alt text punctuation issues and optionally fix them.
@@ -85,6 +88,9 @@ def report_and_fix_alt_texts(
     ----------
     alt_text_issues : Dict[str, Dict[str, Dict[str, str]]]
         Dictionary mapping keys with issues to their corrected values.
+
+    all_checks_enabled : bool, optional, default=False
+        Whether all checks are being ran by the CLI.
 
     fix : bool, optional
         Whether to automatically fix the issues, by default False.
@@ -119,7 +125,12 @@ def report_and_fix_alt_texts(
         rprint(
             "[yellow]💡 Tip: You can automatically fix alt text punctuation by running the --alt-texts (-at) check with the --fix (-f) flag.[/yellow]\n"
         )
-        raise ValueError("The alt texts i18n check has failed.")
+
+        if all_checks_enabled:
+            raise ValueError("The alt texts i18n check has failed.")
+
+        else:
+            sys.exit(1)
 
     else:
         total_alt_text_issues = 0
@@ -143,7 +154,9 @@ def report_and_fix_alt_texts(
 # MARK: Check Function
 
 
-def alt_texts_check_and_fix(fix: bool = False) -> bool:
+def alt_texts_check_and_fix(
+    fix: bool = False, all_checks_enabled: bool = False
+) -> bool:
     """
     Main function to check alt text punctuation.
 
@@ -152,13 +165,18 @@ def alt_texts_check_and_fix(fix: bool = False) -> bool:
     fix : bool, optional, default=False
         Whether to automatically fix issues, by default False.
 
+    all_checks_enabled : bool, optional, default=False
+        Whether all checks are being ran by the CLI.
+
     Returns
     -------
     bool
         True if the check is successful.
     """
     alt_text_issues = find_alt_text_punctuation_issues()
-    report_and_fix_alt_texts(alt_text_issues=alt_text_issues, fix=fix)
+    report_and_fix_alt_texts(
+        alt_text_issues=alt_text_issues, all_checks_enabled=all_checks_enabled, fix=fix
+    )
 
     return True
 

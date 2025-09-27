@@ -98,6 +98,7 @@ def run_all_checks(args: argparse.Namespace) -> None:
                 invalid_keys_check_and_fix,
                 invalid_keys_by_format=invalid_keys_by_format,
                 invalid_keys_by_name=invalid_keys_by_name,
+                all_checks_enabled=True,
                 fix=args.fix,
             )
         )
@@ -105,22 +106,32 @@ def run_all_checks(args: argparse.Namespace) -> None:
 
     if config_nonexistent_keys_active:
         checks.append(
-            partial(nonexistent_keys_check, all_used_i18n_keys=all_used_i18n_keys)
+            partial(
+                nonexistent_keys_check,
+                all_used_i18n_keys=all_used_i18n_keys,
+                all_checks_enabled=True,
+            )
         )
         check_names.append("nonexistent_keys")
 
     if config_unused_keys_active:
-        checks.append(partial(unused_keys_check, unused_keys=unused_keys))
+        checks.append(
+            partial(unused_keys_check, unused_keys=unused_keys, all_checks_enabled=True)
+        )
         check_names.append("unused_keys")
 
     if config_non_source_keys_active:
         checks.append(
-            partial(non_source_keys_check, non_source_keys_dict=non_source_keys_dict)
+            partial(
+                non_source_keys_check,
+                non_source_keys_dict=non_source_keys_dict,
+                all_checks_enabled=True,
+            )
         )
         check_names.append("non_source_keys")
 
     if config_repeat_keys_active:
-        checks.append(partial(repeat_keys_check))
+        checks.append(partial(repeat_keys_check, all_checks_enabled=True))
         check_names.append("repeat_keys")
 
     if config_repeat_values_active:
@@ -129,21 +140,31 @@ def run_all_checks(args: argparse.Namespace) -> None:
                 repeat_values_check,
                 json_repeat_value_counts=json_repeat_value_counts,
                 repeat_value_error_report=repeat_value_error_report,
+                all_checks_enabled=True,
             )
         )
         check_names.append("repeat_values")
 
     if config_sorted_keys_active:
-        checks.append(partial(sorted_keys_check_and_fix, fix=args.fix))
+        checks.append(
+            partial(sorted_keys_check_and_fix, all_checks_enabled=True, fix=args.fix)
+        )
         check_names.append("sorted_keys")
 
     if config_nested_files_active:
+        # Note: This check warns the user and doesn't raise an error, so no need for all_checks_enabled.
         checks.append(partial(nested_files_check))
         check_names.append("nested_files")
 
     if config_missing_keys_active:
         if args.fix and args.locale:
-            checks.append(partial(missing_keys_check_and_fix, fix_locale=args.locale))
+            checks.append(
+                partial(
+                    missing_keys_check_and_fix,
+                    all_checks_enabled=True,
+                    fix_locale=args.locale,
+                )
+            )
             check_names.append("missing_keys")
 
         elif args.fix:
@@ -154,15 +175,19 @@ def run_all_checks(args: argparse.Namespace) -> None:
             sys.exit(1)
 
         else:
-            checks.append(partial(missing_keys_check_and_fix))
+            checks.append(partial(missing_keys_check_and_fix, all_checks_enabled=True))
             check_names.append("missing_keys")
 
     if config_aria_labels_active:
-        checks.append(partial(aria_labels_check_and_fix, fix=args.fix))
+        checks.append(
+            partial(aria_labels_check_and_fix, all_checks_enabled=True, fix=args.fix)
+        )
         check_names.append("aria_labels")
 
     if config_alt_texts_active:
-        checks.append(partial(alt_texts_check_and_fix, fix=args.fix))
+        checks.append(
+            partial(alt_texts_check_and_fix, all_checks_enabled=True, fix=args.fix)
+        )
         check_names.append("alt_texts")
 
     if not (

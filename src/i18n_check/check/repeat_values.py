@@ -11,6 +11,7 @@ Run the following script in terminal:
 >>> i18n-check -rv
 """
 
+import sys
 from collections import Counter
 from typing import Dict
 
@@ -132,7 +133,9 @@ def analyze_and_generate_repeat_value_report(
 
 
 def repeat_values_check(
-    json_repeat_value_counts: Dict[str, int], repeat_value_error_report: str
+    json_repeat_value_counts: Dict[str, int],
+    repeat_value_error_report: str,
+    all_checks_enabled: bool = False,
 ) -> bool:
     """
     Check and report if there are repeat translation values.
@@ -145,6 +148,9 @@ def repeat_values_check(
     repeat_value_error_report : str
         An error report including repeat values and changes that should be made.
 
+    all_checks_enabled : bool, optional, default=False
+        Whether all checks are being ran by the CLI.
+
     Returns
     -------
     bool
@@ -152,7 +158,7 @@ def repeat_values_check(
 
     Raises
     ------
-    ValueError
+    ValueError, sys.exit(1)
         An error is raised and the system prints error details if repeat values are found.
     """
     if json_repeat_value_counts:
@@ -171,7 +177,11 @@ def repeat_values_check(
 
         rprint(error_message)
 
-        raise ValueError("The repeat values i18n check has failed.")
+        if all_checks_enabled:
+            raise ValueError("The repeat values i18n check has failed.")
+
+        else:
+            sys.exit(1)
 
     else:
         rprint(

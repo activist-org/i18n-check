@@ -13,6 +13,7 @@ Run the following script in terminal:
 """
 
 import re
+import sys
 from collections import defaultdict
 from pathlib import Path
 from typing import Dict, List, Optional, Tuple
@@ -224,6 +225,7 @@ def audit_invalid_i18n_keys(
 def invalid_keys_check_and_fix(
     invalid_keys_by_format: List[str],
     invalid_keys_by_name: Dict[str, str],
+    all_checks_enabled: bool = False,
     fix: bool = False,
 ) -> bool:
     """
@@ -237,6 +239,9 @@ def invalid_keys_check_and_fix(
     invalid_keys_by_name : Dict[str, str]
         A dictionary mapping i18n keys that are not named correctly to their suggested corrections.
 
+    all_checks_enabled : bool, optional, default=False
+        Whether all checks are being ran by the CLI.
+
     fix : bool, optional, default=False
         If True, automatically corrects the invalid key names in the source files.
 
@@ -247,7 +252,7 @@ def invalid_keys_check_and_fix(
 
     Raises
     ------
-    ValueError
+    ValueError, sys.exit(1)
         An error is raised and the system prints error details if there are invalid keys by format or name.
     """
     invalid_keys_by_format_string = ", ".join(invalid_keys_by_format)
@@ -287,7 +292,12 @@ Please rename the following {name_key_or_keys} \\[current_key -> suggested_corre
             rprint(
                 "\n[yellow]💡 Tip: You can automatically fix invalid key names by running the --invalid-keys (-ik) check with the --fix (-f) flag.[/yellow]\n"
             )
-            raise ValueError("The invalid keys i18n check has failed.")
+
+            if all_checks_enabled:
+                raise ValueError("The invalid keys i18n check has failed.")
+
+            else:
+                sys.exit(1)
 
     else:
         if invalid_keys_by_format:
@@ -312,7 +322,12 @@ Please rename the following {name_key_or_keys} \\[current_key -> suggested_corre
             rprint(
                 "\n[yellow]💡 Tip: You can automatically fix invalid key names by running the --invalid-keys (-ik) check with the --fix (-f) flag.[/yellow]\n"
             )
-            raise ValueError
+
+            if all_checks_enabled:
+                raise ValueError("The invalid keys i18n check has failed.")
+
+            else:
+                sys.exit(1)
 
     if fix and invalid_keys_by_name:
         files_to_fix = collect_files_to_check(
@@ -330,7 +345,11 @@ Please rename the following {name_key_or_keys} \\[current_key -> suggested_corre
             for f in all_files_to_fix:
                 replace_text_in_file(path=f, old=current, new=correct)
 
-        raise ValueError
+        if all_checks_enabled:
+            raise ValueError("The invalid keys i18n check has failed.")
+
+        else:
+            sys.exit(1)
 
     return True
 

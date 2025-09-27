@@ -12,6 +12,7 @@ Run the following script in terminal:
 """
 
 import re
+import sys
 from typing import Dict, List
 
 from rich import print as rprint
@@ -77,7 +78,7 @@ def find_unused_keys(
 # MARK: Error Outputs
 
 
-def unused_keys_check(unused_keys: List[str]) -> bool:
+def unused_keys_check(unused_keys: List[str], all_checks_enabled: bool = False) -> bool:
     """
     Print a message reporting unused translation keys or success.
 
@@ -86,6 +87,9 @@ def unused_keys_check(unused_keys: List[str]) -> bool:
     unused_keys : List[str]
         A list of keys that are unused in the project.
 
+    all_checks_enabled : bool, optional, default=False
+        Whether all checks are being ran by the CLI.
+
     Returns
     -------
     bool
@@ -93,7 +97,7 @@ def unused_keys_check(unused_keys: List[str]) -> bool:
 
     Raises
     ------
-    ValueError
+    ValueError, sys.exit(1)
         An error is raised and the system prints error details if there are unused keys.
     """
     if unused_keys:
@@ -110,7 +114,11 @@ def unused_keys_check(unused_keys: List[str]) -> bool:
         )
         rprint(error_message)
 
-        raise ValueError("The unused keys i18n check has failed.")
+        if all_checks_enabled:
+            raise ValueError("The unused keys i18n check has failed.")
+
+        else:
+            sys.exit(1)
 
     else:
         rprint(

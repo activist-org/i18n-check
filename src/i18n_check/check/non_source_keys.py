@@ -11,6 +11,7 @@ Run the following script in terminal:
 >>> i18n-check -nsk
 """
 
+import sys
 from pathlib import Path
 from typing import Dict
 
@@ -73,7 +74,7 @@ def get_non_source_keys(
 
 
 def non_source_keys_check(
-    non_source_keys_dict: Dict[str, str],
+    non_source_keys_dict: Dict[str, str], all_checks_enabled: bool = False
 ) -> bool:
     """
     Report non-source keys found in the JSON file.
@@ -83,6 +84,9 @@ def non_source_keys_check(
     non_source_keys_dict : dict
         A dictionary with non-source keys found in the JSON file.
 
+    all_checks_enabled : bool, optional, default=False
+        Whether all checks are being ran by the CLI.
+
     Returns
     -------
     bool
@@ -90,7 +94,7 @@ def non_source_keys_check(
 
     Raises
     ------
-    ValueError
+    ValueError, sys.exit(1)
         An error is raised and the system prints error details if the input dictionary is not empty.
     """
     if non_source_keys_dict:
@@ -117,7 +121,11 @@ def non_source_keys_check(
         )
         rprint(error_message)
 
-        raise ValueError("The non source keys i18n check has failed.")
+        if all_checks_enabled:
+            raise ValueError("The non source keys i18n check has failed.")
+
+        else:
+            sys.exit(1)
 
     else:
         rprint(

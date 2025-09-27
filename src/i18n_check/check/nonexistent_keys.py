@@ -12,6 +12,7 @@ Run the following script in terminal:
 """
 
 import re
+import sys
 from pathlib import Path
 from typing import Any, Dict, List, Set
 
@@ -96,6 +97,7 @@ def get_used_i18n_keys(
 def nonexistent_keys_check(
     all_used_i18n_keys: Set[str],
     i18n_src_dict: Dict[str, str] = i18n_src_dict,
+    all_checks_enabled: bool = False,
 ) -> bool:
     """
     Validate that all used i18n keys are present in the source file.
@@ -108,6 +110,9 @@ def nonexistent_keys_check(
     i18n_src_dict : Dict[str, str], default=i18n_src_dict
         The dictionary containing i18n source keys and their associated values.
 
+    all_checks_enabled : bool, optional, default=False
+        Whether all checks are being ran by the CLI.
+
     Returns
     -------
     bool
@@ -115,7 +120,7 @@ def nonexistent_keys_check(
 
     Raises
     ------
-    ValueError
+    ValueError, sys.exit(1)
         An error is raised and the system prints error details if there are any i18n keys that are used in the project but not defined in the source file.
     """
     all_keys = i18n_src_dict.keys()
@@ -131,7 +136,11 @@ def nonexistent_keys_check(
 
         rprint(error_message)
 
-        raise ValueError("The nonexistent keys i18n check has failed.")
+        if all_checks_enabled:
+            raise ValueError("The nonexistent keys i18n check has failed.")
+
+        else:
+            sys.exit(1)
 
     else:
         rprint(

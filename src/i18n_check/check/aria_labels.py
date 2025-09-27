@@ -14,6 +14,7 @@ Run the following script in terminal:
 """
 
 import string
+import sys
 from pathlib import Path
 from typing import Dict
 
@@ -80,7 +81,9 @@ def find_aria_label_punctuation_issues(
 
 
 def report_and_fix_aria_labels(
-    aria_label_issues: Dict[str, Dict[str, Dict[str, str]]], fix: bool = False
+    aria_label_issues: Dict[str, Dict[str, Dict[str, str]]],
+    all_checks_enabled: bool = False,
+    fix: bool = False,
 ) -> None:
     """
     Report aria label punctuation issues and optionally fix them.
@@ -90,12 +93,15 @@ def report_and_fix_aria_labels(
     aria_label_issues : Dict[str, Dict[str, Dict[str, str]]]
         Dictionary mapping keys with issues to their corrected values.
 
+    all_checks_enabled : bool, optional, default=False
+        Whether all checks are being ran by the CLI.
+
     fix : bool, optional
         Whether to automatically fix the issues, by default False.
 
     Raises
     ------
-    ValueError
+    ValueError, sys.exit(1)
         An error is raised and the system prints error details if there are aria labels with invalid punctuation.
     """
     if not aria_label_issues:
@@ -123,7 +129,12 @@ def report_and_fix_aria_labels(
         rprint(
             "[yellow]💡 Tip: You can automatically fix aria label punctuation by running the --aria-labels (-al) check with the --fix (-f) flag.[/yellow]\n"
         )
-        raise ValueError("The aria labels i18n check has failed.")
+
+        if all_checks_enabled:
+            raise ValueError("The aria labels i18n check has failed.")
+
+        else:
+            sys.exit(1)
 
     else:
         total_aria_label_issues = 0
@@ -147,7 +158,9 @@ def report_and_fix_aria_labels(
 # MARK: Check Function
 
 
-def aria_labels_check_and_fix(fix: bool = False) -> bool:
+def aria_labels_check_and_fix(
+    fix: bool = False, all_checks_enabled: bool = False
+) -> bool:
     """
     Main function to check aria label punctuation.
 
@@ -156,12 +169,19 @@ def aria_labels_check_and_fix(fix: bool = False) -> bool:
     fix : bool, optional, default=False
         Whether to automatically fix issues, by default False.
 
+    all_checks_enabled : bool, optional, default=False
+        Whether all checks are being ran by the CLI.
+
     Returns
     -------
     bool
         True if the check is successful.
     """
     aria_label_issues = find_aria_label_punctuation_issues()
-    report_and_fix_aria_labels(aria_label_issues=aria_label_issues, fix=fix)
+    report_and_fix_aria_labels(
+        aria_label_issues=aria_label_issues,
+        all_checks_enabled=all_checks_enabled,
+        fix=fix,
+    )
 
     return True

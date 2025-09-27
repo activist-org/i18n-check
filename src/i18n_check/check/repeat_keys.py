@@ -12,6 +12,7 @@ Run the following script in terminal:
 """
 
 import json
+import sys
 from collections import defaultdict
 from pathlib import Path
 from typing import Any, Dict, List, Tuple, Union
@@ -138,7 +139,9 @@ def check_file(file_path: str) -> Tuple[str, Dict[str, List[str]]]:
 # MARK: Error Outputs
 
 
-def repeat_keys_check(directory: str | Path = config_i18n_directory) -> bool:
+def repeat_keys_check(
+    directory: str | Path = config_i18n_directory, all_checks_enabled: bool = False
+) -> bool:
     """
     Main check execution.
 
@@ -147,6 +150,9 @@ def repeat_keys_check(directory: str | Path = config_i18n_directory) -> bool:
     directory : str | Path, default=config_i18n_directory
         The directory path to check for JSON files.
 
+    all_checks_enabled : bool, optional, default=False
+        Whether all checks are being ran by the CLI.
+
     Returns
     -------
     bool
@@ -154,7 +160,7 @@ def repeat_keys_check(directory: str | Path = config_i18n_directory) -> bool:
 
     Raises
     ------
-    ValueError
+    ValueError, sys.exit(1)
         An error is raised and the system prints error details if any duplicate keys found.
     """
     json_files = get_all_json_files(directory=directory)
@@ -176,7 +182,11 @@ def repeat_keys_check(directory: str | Path = config_i18n_directory) -> bool:
         error_message += file_duplicate_keys_messages
         rprint(error_message)
 
-        raise ValueError("The repeat keys i18n check has failed.")
+        if all_checks_enabled:
+            raise ValueError("The repeat keys i18n check has failed.")
+
+        else:
+            sys.exit(1)
 
     rprint(
         "[green]✅ repeat_keys success: No duplicate keys found in i18n files.[/green]"

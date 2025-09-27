@@ -111,6 +111,7 @@ def get_missing_keys_by_locale(
 
 def report_missing_keys(
     missing_keys_by_locale: Dict[str, Tuple[List[str], float]],
+    all_checks_enabled: bool = False,
 ) -> None:
     """
     Report missing keys found in locale files.
@@ -120,9 +121,12 @@ def report_missing_keys(
     missing_keys_by_locale : dict
         A dictionary with locale filenames as keys and tuples of (missing keys, percentage) as values.
 
+    all_checks_enabled : bool, optional, default=False
+        Whether all checks are being ran by the CLI.
+
     Raises
     ------
-    ValueError
+    ValueError, sys.exit(1)
         An error is raised and the system prints error details if any locale files have missing keys.
     """
     if missing_keys_by_locale:
@@ -146,7 +150,11 @@ def report_missing_keys(
         error_message += "[/red]"
         rprint(error_message)
 
-        raise ValueError("The missing keys i18n check has failed.")
+        if all_checks_enabled:
+            raise ValueError("The missing keys i18n check has failed.")
+
+        else:
+            sys.exit(1)
 
     else:
         rprint(
@@ -285,6 +293,7 @@ def add_missing_keys_interactively(
 
     except KeyboardInterrupt:
         rprint("\n[yellow]Cancelled by user[/yellow]")
+        sys.exit(0)
 
     # Show final status.
     remaining_missing = get_missing_keys_by_locale(
@@ -311,6 +320,7 @@ def missing_keys_check_and_fix(
     i18n_src_dict: Dict[str, str] = i18n_src_dict,
     i18n_directory: Path = config_i18n_directory,
     locales_to_check: List[str] = config_missing_keys_locales_to_check,
+    all_checks_enabled: bool = False,
     fix_locale: Optional[str] = None,
 ) -> bool:
     """
@@ -326,6 +336,9 @@ def missing_keys_check_and_fix(
 
     locales_to_check : list
         List of locale files to check. If empty, all locale files are checked.
+
+    all_checks_enabled : bool, optional, default=False
+        Whether all checks are being ran by the CLI.
 
     fix_locale : str, optional
         If provided, enter interactive mode to add missing keys for this locale.
@@ -348,6 +361,9 @@ def missing_keys_check_and_fix(
             i18n_directory=i18n_directory,
             locales_to_check=locales_to_check,
         )
-        report_missing_keys(missing_keys_by_locale=missing_keys_by_locale)
+        report_missing_keys(
+            missing_keys_by_locale=missing_keys_by_locale,
+            all_checks_enabled=all_checks_enabled,
+        )
 
     return True
