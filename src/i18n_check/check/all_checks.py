@@ -157,26 +157,9 @@ def run_all_checks(args: argparse.Namespace) -> None:
         check_names.append("nested_files")
 
     if config_missing_keys_active:
-        if args.fix and args.locale:
-            checks.append(
-                partial(
-                    missing_keys_check_and_fix,
-                    all_checks_enabled=True,
-                    fix_locale=args.locale,
-                )
-            )
-            check_names.append("missing_keys")
-
-        elif args.fix:
-            rprint(
-                "[red]❌ Error: --locale (-l) is required when using --fix (-f) with --missing-keys (-mk)[/red]"
-            )
-            rprint("[yellow]💡 Example: i18n-check -mk -f -l ENTER_ISO_2_CODE[/yellow]")
-            sys.exit(1)
-
-        else:
-            checks.append(partial(missing_keys_check_and_fix, all_checks_enabled=True))
-            check_names.append("missing_keys")
+        # We don't allow fix in all checks mode.
+        checks.append(partial(missing_keys_check_and_fix, all_checks_enabled=True))
+        check_names.append("missing_keys")
 
     if config_aria_labels_active:
         checks.append(
