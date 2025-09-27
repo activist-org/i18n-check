@@ -2,13 +2,13 @@
 """
 Checks the i18n keys used in the project and makes sure that each of them appears in the i18n-src file.
 
-If there are non-existent keys, alert the user to their presence.
+If there are nonexistent keys, alert the user to their presence.
 
 Examples
 --------
 Run the following script in terminal:
 
->>> i18n-check -nek
+>>> i18n-check -nk
 """
 
 import re
@@ -22,8 +22,8 @@ from i18n_check.utils import (
     collect_files_to_check,
     config_file_types_to_check,
     config_i18n_src_file,
-    config_non_existent_keys_directories_to_skip,
-    config_non_existent_keys_files_to_skip,
+    config_nonexistent_keys_directories_to_skip,
+    config_nonexistent_keys_files_to_skip,
     config_src_directory,
     read_json_file,
 )
@@ -69,8 +69,8 @@ def get_used_i18n_keys(
     files_to_check = collect_files_to_check(
         directory=src_directory,
         file_types_to_check=config_file_types_to_check,
-        directories_to_skip=config_non_existent_keys_directories_to_skip,
-        files_to_skip=config_non_existent_keys_files_to_skip,
+        directories_to_skip=config_nonexistent_keys_directories_to_skip,
+        files_to_skip=config_nonexistent_keys_files_to_skip,
     )
     files_to_check_contents = {}
     for frontend_file in files_to_check:
@@ -94,10 +94,11 @@ def get_used_i18n_keys(
 # MARK: Error Outputs
 
 
-def validate_i18n_keys(
+def nonexistent_keys_check(
     all_used_i18n_keys: Set[str],
-    i18n_src_dict: Dict[str, str],
-) -> None:
+    i18n_src_dict: Dict[str, str] = i18n_src_dict,
+    all_checks_enabled: bool = False,
+) -> bool:
     """
     Validate that all used i18n keys are present in the source file.
 
@@ -106,39 +107,51 @@ def validate_i18n_keys(
     all_used_i18n_keys : Set[str]
         A set of all i18n keys that are used in the project.
 
-    i18n_src_dict : Dict[str, str]
+    i18n_src_dict : Dict[str, str], default=i18n_src_dict
         The dictionary containing i18n source keys and their associated values.
+
+    all_checks_enabled : bool, optional, default=False
+        Whether all checks are being ran by the CLI.
+
+    Returns
+    -------
+    bool
+        True if the check is successful.
 
     Raises
     ------
-    sys.exit(1)
-        The system exits with 1 and prints error details if there are any i18n keys that are used in the project but not defined in the source file.
+    ValueError, sys.exit(1)
+        An error is raised and the system prints error details if there are any i18n keys that are used in the project but not defined in the source file.
     """
     all_keys = i18n_src_dict.keys()
-    if non_existent_keys := list(all_used_i18n_keys - all_keys):
-        to_be = "are" if len(non_existent_keys) > 1 else "is"
-        key_to_be = "keys that are" if len(non_existent_keys) > 1 else "key that is"
-        key_or_keys = "keys" if len(non_existent_keys) > 1 else "key"
+    if nonexistent_keys := list(all_used_i18n_keys - all_keys):
+        to_be = "are" if len(nonexistent_keys) > 1 else "is"
+        key_to_be = "keys that are" if len(nonexistent_keys) > 1 else "key that is"
+        key_or_keys = "keys" if len(nonexistent_keys) > 1 else "key"
 
-        error_message = f"[red]❌ non_existent_keys error: There {to_be} {len(non_existent_keys)} i18n {key_to_be} not in the i18n source file. Please check the validity of the following {key_or_keys}:"
+        error_message = f"[red]❌ nonexistent_keys error: There {to_be} {len(nonexistent_keys)} i18n {key_to_be} not in the i18n source file. Please check the validity of the following {key_or_keys}:"
         error_message += "\n\n"
-        error_message += "\n".join(non_existent_keys)
+        error_message += "\n".join(nonexistent_keys)
         error_message += "[/red]"
 
         rprint(error_message)
 
-        sys.exit(1)
+        if all_checks_enabled:
+            raise ValueError("The nonexistent keys i18n check has failed.")
+
+        else:
+            sys.exit(1)
 
     else:
         rprint(
-            "[green]✅ non_existent_keys success: All i18n keys that are used in the project are in the i18n source file.[/green]"
+            "[green]✅ nonexistent_keys success: All i18n keys that are used in the project are in the i18n source file.[/green]"
         )
 
+    return True
 
-if __name__ == "__main__":
-    all_used_i18n_keys = get_used_i18n_keys(
-        i18n_src_dict=i18n_src_dict, src_directory=config_src_directory
-    )
-    validate_i18n_keys(
-        all_used_i18n_keys=all_used_i18n_keys, i18n_src_dict=i18n_src_dict
-    )
+
+# MARK: Variables
+
+all_used_i18n_keys = get_used_i18n_keys(
+    i18n_src_dict=i18n_src_dict, src_directory=config_src_directory
+)

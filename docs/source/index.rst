@@ -111,7 +111,7 @@ There the following checks can ran across your codebase:
 - ``invalid-keys`` (``ik``): Does the source file have keys that don't match the above format or name conventions?
     - Rename them so i18n key usage is consistent and their scope is communicated in their name.
     - Pass ``--fix``` (``-f``) to fix all naming issues automatically.
-- ``non-existent-keys`` (``nek``): Does the codebase include i18n keys that are not within the source file?
+- ``nonexistent-keys`` (``nk``): Does the codebase include i18n keys that are not within the source file?
     - Check their validity and resolve if they should be added to the i18n files or replaced.
 - ``unused-keys`` (``uk``): Does the source file have keys that are not used in the codebase?
     - Remove them so the localization team isn't working on strings that aren't used.
@@ -125,7 +125,7 @@ There the following checks can ran across your codebase:
     - Sort them alphabetically to reduce merge conflicts from the files changing.
     - Note: Sorting is done such that periods come before underscores (some JSON extensions do otherwise).
     - Pass ``--fix`` (``-f``) to sort the i18n files automatically.
-- ``nested-keys`` (``nk``): Do the i18n files contain nested JSON structures?
+- ``nested-files`` (``nf``): Do the i18n files contain nested JSON structures?
     - Flatten them to make replacing invalid keys easier with find-and-replace all.
 - ``missing-keys`` (``mk``): Are any keys from the source file missing in the locale files?
     - Add the missing keys to ensure all translations are complete.
@@ -176,7 +176,7 @@ The following details the ``.18n-check.yaml`` configuration file, with a further
         directories-to-skip: []
         files-to-skip: []
         keys-to-ignore: [] # regexes for ignoring keys
-      non-existent-keys:
+      nonexistent-keys:
         active: true
         directories-to-skip: []
         files-to-skip: []
@@ -192,7 +192,7 @@ The following details the ``.18n-check.yaml`` configuration file, with a further
         active: true
       sorted-keys:
         active: true
-      nested-keys:
+      nested-files:
         active: true
       missing-keys:
         active: true

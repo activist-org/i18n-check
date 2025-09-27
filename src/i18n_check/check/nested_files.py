@@ -8,7 +8,7 @@ Examples
 --------
 Run the following script in terminal:
 
->>> i18n-check -nk
+>>> i18n-check -nf
 """
 
 import json
@@ -42,14 +42,19 @@ def is_nested_json(data: Dict[str, str]) -> bool:
     return False
 
 
-def validate_nested_keys(directory: str | Path) -> None:
+def nested_files_check(directory: str | Path = config_i18n_directory) -> bool:
     """
     Check all JSON files in the given directory for nested structures.
 
     Parameters
     ----------
-    directory : str
+    directory : str | Path, default=config_i18n_directory
         The directory path to check for JSON files.
+
+    Returns
+    -------
+    bool
+        True if the check is successful.
     """
     if not Path(directory).exists():
         raise FileNotFoundError(f"Directory does not exist: {directory}")
@@ -59,7 +64,7 @@ def validate_nested_keys(directory: str | Path) -> None:
             data = read_json_file(file_path=file_path)
             if is_nested_json(data):
                 error_message = (
-                    "[red]\n❌ nested_keys error: Nested JSON structure detected in "
+                    "[red]\n❌ nested_files error: Nested JSON structure detected in "
                     + str(file_path).split(PATH_SEPARATOR)[-1]
                     + ". i18n-check recommends using flat JSON files to allow easy find-and-replace operations. You can disable this check in your i18n-check.yaml configuration file.[/red]"
                 )
@@ -68,9 +73,4 @@ def validate_nested_keys(directory: str | Path) -> None:
         except (json.JSONDecodeError, IOError) as e:
             print(f"Error processing {file_path}: {e}")
 
-
-# MARK: Main
-
-
-if __name__ == "__main__":
-    validate_nested_keys(config_i18n_directory)
+    return True

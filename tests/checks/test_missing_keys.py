@@ -11,8 +11,8 @@ import pytest
 
 from i18n_check.check.missing_keys import (
     add_missing_keys_interactively,
-    check_missing_keys_with_fix,
     get_missing_keys_by_locale,
+    missing_keys_check_and_fix,
     report_missing_keys,
 )
 from i18n_check.utils import read_json_file
@@ -266,11 +266,11 @@ def test_add_missing_keys_interactively_keyboard_interrupt(
         )
 
 
-def test_check_missing_keys_with_fix_no_locale(capsys) -> None:
+def test_missing_keys_check_and_fix_no_locale(capsys) -> None:
     """
-    Test that check_missing_keys_with_fix works without locale (normal check mode).
+    Test that missing_keys_check_and_fix works without locale (normal check mode).
     """
-    check_missing_keys_with_fix(
+    missing_keys_check_and_fix(
         fix_locale=None,
         i18n_src_dict=pass_checks_src_json,
         i18n_directory=checks_pass_json_dir,
@@ -282,11 +282,11 @@ def test_check_missing_keys_with_fix_no_locale(capsys) -> None:
 
 
 @patch("i18n_check.check.missing_keys.add_missing_keys_interactively")
-def test_check_missing_keys_with_fix_with_locale(mock_add_function) -> None:
+def test_missing_keys_check_and_fix_with_locale(mock_add_function) -> None:
     """
-    Test that check_missing_keys_with_fix calls interactive function when locale is provided.
+    Test that missing_keys_check_and_fix calls interactive function when locale is provided.
     """
-    check_missing_keys_with_fix(
+    missing_keys_check_and_fix(
         fix_locale="de",
         i18n_src_dict={"key_0": "value_0"},
         i18n_directory=Path("/tmp"),

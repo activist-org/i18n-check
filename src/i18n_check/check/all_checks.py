@@ -9,36 +9,64 @@ Run the following script in terminal:
 >>> i18n-check -a
 """
 
+import argparse
 import sys
 from concurrent.futures import ProcessPoolExecutor, as_completed
+from functools import partial
 
 from rich import print as rprint
 
+from i18n_check.check.alt_texts import alt_texts_check_and_fix
+from i18n_check.check.aria_labels import aria_labels_check_and_fix
+from i18n_check.check.invalid_keys import (
+    invalid_keys_by_format,
+    invalid_keys_by_name,
+    invalid_keys_check_and_fix,
+)
+from i18n_check.check.missing_keys import missing_keys_check_and_fix
+from i18n_check.check.nested_files import nested_files_check
+from i18n_check.check.non_source_keys import non_source_keys_check, non_source_keys_dict
+from i18n_check.check.nonexistent_keys import (
+    all_used_i18n_keys,
+    nonexistent_keys_check,
+)
+from i18n_check.check.repeat_keys import repeat_keys_check
+from i18n_check.check.repeat_values import (
+    json_repeat_value_counts,
+    repeat_value_error_report,
+    repeat_values_check,
+)
+from i18n_check.check.sorted_keys import sorted_keys_check_and_fix
+from i18n_check.check.unused_keys import unused_keys, unused_keys_check
 from i18n_check.utils import (
     config_alt_texts_active,
     config_aria_labels_active,
     config_invalid_keys_active,
     config_missing_keys_active,
-    config_nested_keys_active,
-    config_non_existent_keys_active,
+    config_nested_files_active,
     config_non_source_keys_active,
+    config_nonexistent_keys_active,
     config_repeat_keys_active,
     config_repeat_values_active,
     config_sorted_keys_active,
     config_unused_keys_active,
-    run_check,
 )
 
 # MARK: Run All
 
 
-def run_all_checks() -> None:
+def run_all_checks(args: argparse.Namespace) -> None:
     """
     Run all internationalization (i18n) checks for the project.
 
     This function executes a series of checks to validate the project's
     internationalization setup, including key validation, usage checks
     and duplicate detection.
+
+    Parameters
+    ----------
+    args : argparse.Namespace
+        The arguments that have been passed to the CLI.
 
     Raises
     ------
@@ -62,48 +90,98 @@ def run_all_checks() -> None:
     - Alt text punctuation validation
     """
     checks = []
-    if config_invalid_keys_active:
-        checks.append("invalid_keys")
+    check_names = []
 
-    if config_non_existent_keys_active:
-        checks.append("non_existent_keys")
+    if config_invalid_keys_active:
+        checks.append(
+            partial(
+                invalid_keys_check_and_fix,
+                invalid_keys_by_format=invalid_keys_by_format,
+                invalid_keys_by_name=invalid_keys_by_name,
+                all_checks_enabled=True,
+                fix=args.fix,
+            )
+        )
+        check_names.append("invalid_keys")
+
+    if config_nonexistent_keys_active:
+        checks.append(
+            partial(
+                nonexistent_keys_check,
+                all_used_i18n_keys=all_used_i18n_keys,
+                all_checks_enabled=True,
+            )
+        )
+        check_names.append("nonexistent_keys")
 
     if config_unused_keys_active:
-        checks.append("unused_keys")
+        checks.append(
+            partial(unused_keys_check, unused_keys=unused_keys, all_checks_enabled=True)
+        )
+        check_names.append("unused_keys")
 
     if config_non_source_keys_active:
-        checks.append("non_source_keys")
+        checks.append(
+            partial(
+                non_source_keys_check,
+                non_source_keys_dict=non_source_keys_dict,
+                all_checks_enabled=True,
+            )
+        )
+        check_names.append("non_source_keys")
 
     if config_repeat_keys_active:
-        checks.append("repeat_keys")
+        checks.append(partial(repeat_keys_check, all_checks_enabled=True))
+        check_names.append("repeat_keys")
 
     if config_repeat_values_active:
-        checks.append("repeat_values")
+        checks.append(
+            partial(
+                repeat_values_check,
+                json_repeat_value_counts=json_repeat_value_counts,
+                repeat_value_error_report=repeat_value_error_report,
+                all_checks_enabled=True,
+            )
+        )
+        check_names.append("repeat_values")
 
     if config_sorted_keys_active:
-        checks.append("sorted_keys")
+        checks.append(
+            partial(sorted_keys_check_and_fix, all_checks_enabled=True, fix=args.fix)
+        )
+        check_names.append("sorted_keys")
 
-    if config_nested_keys_active:
-        checks.append("nested_keys")
+    if config_nested_files_active:
+        # Note: This check warns the user and doesn't raise an error, so no need for all_checks_enabled.
+        checks.append(partial(nested_files_check))
+        check_names.append("nested_files")
 
     if config_missing_keys_active:
-        checks.append("missing_keys")
+        # We don't allow fix in all checks mode.
+        checks.append(partial(missing_keys_check_and_fix, all_checks_enabled=True))
+        check_names.append("missing_keys")
 
     if config_aria_labels_active:
-        checks.append("aria_labels")
+        checks.append(
+            partial(aria_labels_check_and_fix, all_checks_enabled=True, fix=args.fix)
+        )
+        check_names.append("aria_labels")
 
     if config_alt_texts_active:
-        checks.append("alt_texts")
+        checks.append(
+            partial(alt_texts_check_and_fix, all_checks_enabled=True, fix=args.fix)
+        )
+        check_names.append("alt_texts")
 
     if not (
         config_invalid_keys_active
-        and config_non_existent_keys_active
+        and config_nonexistent_keys_active
         and config_unused_keys_active
         and config_non_source_keys_active
         and config_repeat_keys_active
         and config_repeat_values_active
         and config_sorted_keys_active
-        and config_nested_keys_active
+        and config_nested_files_active
         and config_missing_keys_active
         and config_aria_labels_active
         and config_alt_texts_active
@@ -115,16 +193,16 @@ def run_all_checks() -> None:
     check_results: list[bool] = []
     with ProcessPoolExecutor() as executor:
         # Create a future for each check.
-        futures = {executor.submit(run_check, c, True): c for c in checks}
+        futures = {
+            executor.submit(checks[i]): check_names[i] for i in range(len(checks))
+        }
 
         for future in as_completed(futures):
-            check_name = futures[future]
             try:
                 result = future.result()
                 check_results.append(result)
 
-            except Exception as exc:
-                print(f"{check_name} generated an exception: {exc}")
+            except ValueError:
                 check_results.append(False)
 
     if not all(check_results):
@@ -137,9 +215,3 @@ def run_all_checks() -> None:
         sys.exit(1)
 
     rprint("\n[green]✅ Success: All i18n checks have passed![/green]")
-
-
-# MARK: Main
-
-if __name__ == "__main__":
-    run_all_checks()

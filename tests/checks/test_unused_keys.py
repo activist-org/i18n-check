@@ -8,7 +8,7 @@ import pytest
 from i18n_check.check.unused_keys import (
     files_to_check_contents,
     find_unused_keys,
-    print_unused_keys,
+    unused_keys_check,
 )
 from i18n_check.utils import read_json_file
 
@@ -33,15 +33,15 @@ def test_find_unused_keys_behavior() -> None:
     assert UNUSED_PASS_KEYS == []
 
 
-def test_print_unused_keys_pass_output(capsys):
-    print_unused_keys(UNUSED_PASS_KEYS)
+def test_unused_keys_check_pass_output(capsys):
+    unused_keys_check(UNUSED_PASS_KEYS)
     output = capsys.readouterr().out
     assert "unused_keys success" in output
 
 
-def test_print_unused_keys_fail_raises_value_error(capsys) -> None:
+def test_unused_keys_check_fail_raises_value_error(capsys) -> None:
     with pytest.raises(SystemExit):
-        print_unused_keys(UNUSED_FAIL_KEYS)
+        unused_keys_check(UNUSED_FAIL_KEYS)
 
     output = capsys.readouterr().out
     assert "❌ unused_keys error: There are 3 i18n keys that are unused" in output

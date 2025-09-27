@@ -8,8 +8,6 @@ import json
 import os
 import re
 import string
-import subprocess
-import sys
 from pathlib import Path
 from typing import Any, Dict, List
 
@@ -108,26 +106,24 @@ if "invalid-keys" in config["checks"]:
         else:
             config_invalid_key_regexes_to_ignore = []
 
-# MARK: Non-Existent Keys
+# MARK: Nonexistent Keys
 
-config_non_existent_keys_active = config_global_active
-config_non_existent_keys_directories_to_skip = config_global_directories_to_skip.copy()
-config_non_existent_keys_files_to_skip = config_global_files_to_skip.copy()
+config_nonexistent_keys_active = config_global_active
+config_nonexistent_keys_directories_to_skip = config_global_directories_to_skip.copy()
+config_nonexistent_keys_files_to_skip = config_global_files_to_skip.copy()
 
-if "non-existent-keys" in config["checks"]:
-    if "active" in config["checks"]["non-existent-keys"]:
-        config_non_existent_keys_active = config["checks"]["non-existent-keys"][
-            "active"
-        ]
+if "nonexistent-keys" in config["checks"]:
+    if "active" in config["checks"]["nonexistent-keys"]:
+        config_nonexistent_keys_active = config["checks"]["nonexistent-keys"]["active"]
 
-    if "directories-to-skip" in config["checks"]["non-existent-keys"]:
-        config_non_existent_keys_directories_to_skip += [
+    if "directories-to-skip" in config["checks"]["nonexistent-keys"]:
+        config_nonexistent_keys_directories_to_skip += [
             CWD_PATH / Path(d)
-            for d in config["checks"]["non-existent-keys"]["directories-to-skip"]
+            for d in config["checks"]["nonexistent-keys"]["directories-to-skip"]
         ]
 
-    if "files-to-skip" in config["checks"]["non-existent-keys"]:
-        config_non_existent_keys_files_to_skip += [
+    if "files-to-skip" in config["checks"]["nonexistent-keys"]:
+        config_nonexistent_keys_files_to_skip += [
             CWD_PATH / Path(f) for f in config["checks"]["global"]["files-to-skip"]
         ]
 
@@ -192,11 +188,11 @@ if "sorted-keys" in config["checks"] and "active" in config["checks"]["sorted-ke
 
 # MARK: Nested Keys
 
-# Note: We don't have skipped files or directories for nested-keys.
-config_nested_keys_active = config_global_active
+# Note: We don't have skipped files or directories for nested-files.
+config_nested_files_active = config_global_active
 
-if "nested-keys" in config["checks"] and "active" in config["checks"]["nested-keys"]:
-    config_nested_keys_active = config["checks"]["nested-keys"]["active"]
+if "nested-files" in config["checks"] and "active" in config["checks"]["nested-files"]:
+    config_nested_files_active = config["checks"]["nested-files"]["active"]
 
 # MARK: Missing Keys
 
@@ -469,51 +465,6 @@ def read_files_to_dict(files: list[str]) -> Dict[str, str]:
             file_contents[file] = f.read()
 
     return file_contents
-
-
-# MARK: Run Check
-
-
-def run_check(
-    script_name: str, fix_check: bool = False, suppress_subprocess_errors: bool = False
-) -> bool:
-    """
-    Run a check script and report the results via the terminal.
-
-    Parameters
-    ----------
-    script_name : str
-        The name for the script to run.
-
-    fix_check : bool, optional, default=False
-        Whether the errors in the check should be fixed automatically or via user input.
-
-    suppress_subprocess_errors : bool, optional, default=False
-        Whether to suppress subprocess error output.
-
-    Returns
-    -------
-    bool
-        Whether the given script passed or not from subprocess.run.check.
-
-    Raises
-    -------
-    subprocess.CalledProcessError
-        An error that the given check script has failed.
-    """
-    try:
-        subprocess.run(
-            ["python", "-m", f"i18n_check.check.{script_name}"],
-            check=True,
-        )
-        return True
-
-    except subprocess.CalledProcessError as e:
-        if not suppress_subprocess_errors:
-            print(f"Error running {script_name}: {e}\n")
-            sys.exit(1)
-
-        return False
 
 
 # MARK: Replace Keys

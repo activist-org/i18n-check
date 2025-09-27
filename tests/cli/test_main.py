@@ -70,25 +70,25 @@ class TestMainCli(unittest.TestCase):
             main()
         mock_run_check.assert_called_once_with("invalid_keys")
 
-    @patch("i18n_check.cli.main.report_and_correct_keys")
-    def test_main_invalid_keys_with_fix(self, mock_report_and_correct_keys):
+    @patch("i18n_check.cli.main.invalid_keys_check_and_fix")
+    def test_main_invalid_keys_with_fix(self, mock_invalid_keys_check_and_fix):
         """
-        Test that `report_and_correct_keys` is called with fix=True for --invalid-keys and --fix.
+        Test that `invalid_keys_check_and_fix` is called with fix=True for --invalid-keys and --fix.
         """
         with patch("sys.argv", ["i18n-check", "--invalid-keys", "--fix"]):
             main()
-        mock_report_and_correct_keys.assert_called_once()
-        args, kwargs = mock_report_and_correct_keys.call_args
+        mock_invalid_keys_check_and_fix.assert_called_once()
+        args, kwargs = mock_invalid_keys_check_and_fix.call_args
         assert kwargs.get("fix") is True
 
     @patch("i18n_check.cli.main.run_check")
-    def test_main_non_existent_keys(self, mock_run_check):
+    def test_main_nonexistent_keys(self, mock_run_check):
         """
-        Test that `run_check` is called for the --non-existent-keys flag.
+        Test that `run_check` is called for the --nonexistent-keys flag.
         """
-        with patch("sys.argv", ["i18n-check", "--non-existent-keys"]):
+        with patch("sys.argv", ["i18n-check", "--nonexistent-keys"]):
             main()
-        mock_run_check.assert_called_once_with("non_existent_keys")
+        mock_run_check.assert_called_once_with("nonexistent_keys")
 
     @patch("i18n_check.cli.main.run_check")
     def test_main_unused_keys(self, mock_run_check):
@@ -127,13 +127,13 @@ class TestMainCli(unittest.TestCase):
         mock_run_check.assert_called_once_with("repeat_values")
 
     @patch("i18n_check.cli.main.run_check")
-    def test_main_nested_keys(self, mock_run_check):
+    def test_main_nested_files(self, mock_run_check):
         """
-        Test that `run_check` is called for the --nested-keys flag.
+        Test that `run_check` is called for the --nested-files flag.
         """
-        with patch("sys.argv", ["i18n-check", "--nested-keys"]):
+        with patch("sys.argv", ["i18n-check", "--nested-files"]):
             main()
-        mock_run_check.assert_called_once_with("nested_keys")
+        mock_run_check.assert_called_once_with("nested_files")
 
     @patch(
         "i18n_check.cli.main.get_version_message",

@@ -127,7 +127,7 @@ def receive_data() -> None:
             "files-to-skip": [],
             "keys-to-ignore": [],
         },
-        "non_existent_keys": {
+        "nonexistent_keys": {
             "title": "non existent keys",
             "active": False,
             "directories-to-skip": [],
@@ -143,7 +143,7 @@ def receive_data() -> None:
         "repeat_keys": {"title": "repeat keys", "active": False},
         "repeat_values": {"title": "repeat values", "active": False},
         "sorted_keys": {"title": "sorted keys", "active": False},
-        "nested_keys": {"title": "nested keys", "active": False},
+        "nested_files": {"title": "nested keys", "active": False},
         "missing_keys": {
             "title": "missing keys",
             "active": False,

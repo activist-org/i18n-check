@@ -39,7 +39,7 @@ class TestGenerateConfigFile(unittest.TestCase):
                 "directories-to-skip": ["node_modules", "dist"],
                 "files-to-skip": ["test.js", "setup.py"],
             },
-            "non_existent_keys": {"active": False},
+            "nonexistent_keys": {"active": False},
         }
         file_types_to_check = [".ts", ".js"]
 
@@ -65,7 +65,7 @@ class TestGenerateConfigFile(unittest.TestCase):
         )
         self.assertIn("file-types-to-check: [.ts, .js]", written_content)
         self.assertIn("global:\n    active: True", written_content)
-        self.assertIn("non_existent_keys:\n    active: False", written_content)
+        self.assertIn("nonexistent_keys:\n    active: False", written_content)
         self.assertIn("directories-to-skip: [node_modules, dist]", written_content)
         self.assertIn("files-to-skip: [test.js, setup.py]", written_content)
 
@@ -88,9 +88,9 @@ class TestGenerateConfigFile(unittest.TestCase):
             "",  # invalid_keys directories_to_skip
             "",  # invalid_keys files_to_skip
             "",  # invalid_keys keys_to_ignore
-            "n",  # non_existent_keys
-            "",  # non_existent_keys directories_to_skip
-            "",  # non_existent_keys files_to_skip
+            "n",  # nonexistent_keys
+            "",  # nonexistent_keys directories_to_skip
+            "",  # nonexistent_keys files_to_skip
             "y",  # unused_keys
             "",  # unused_keys directories_to_skip
             "",  # unused_keys files_to_skip
@@ -98,7 +98,7 @@ class TestGenerateConfigFile(unittest.TestCase):
             "y",  # repeat_keys
             "n",  # repeat_values
             "n",  # sorted_keys
-            "y",  # nested_keys
+            "y",  # nested_files
             "y",  # missing_keys
             "",  # locales-to-check
         ]
@@ -123,7 +123,7 @@ class TestGenerateConfigFile(unittest.TestCase):
                 "files-to-skip": [],
                 "keys-to-ignore": [],
             },
-            "non_existent_keys": {
+            "nonexistent_keys": {
                 "title": "non existent keys",
                 "active": False,
                 "directories-to-skip": [],
@@ -139,7 +139,7 @@ class TestGenerateConfigFile(unittest.TestCase):
             "repeat_keys": {"title": "repeat keys", "active": True},
             "repeat_values": {"title": "repeat values", "active": False},
             "sorted_keys": {"title": "sorted keys", "active": False},
-            "nested_keys": {"title": "nested keys", "active": True},
+            "nested_files": {"title": "nested keys", "active": True},
             "missing_keys": {
                 "title": "missing keys",
                 "active": True,
