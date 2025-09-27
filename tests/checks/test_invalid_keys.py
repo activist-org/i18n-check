@@ -149,7 +149,7 @@ def test_invalid_keys_check_and_fix_fail_fix_mode(capsys):
     assert "✨ Replaced 'i18n.wrong_identifier_path.content_reference'" in output
     assert "'i18n.test_file.content_reference'" in output
 
-    # Return to old state before string replacement:
+    # Return to old state before string replacement in tests:
     replace_text_in_file(
         path=fail_checks_src_json_path,
         old="i18n.test_file.content_reference",
