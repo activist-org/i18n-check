@@ -81,7 +81,3 @@ def get_version_message() -> str:
 
     else:
         return f"i18n-check v{local_version_clean} (Upgrade available: i18n-check v{latest_version_clean}). To upgrade: i18n-check -u"
-
-
-if __name__ == "__main__":
-    print(get_version_message())

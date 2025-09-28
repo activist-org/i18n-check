@@ -253,7 +253,3 @@ def generate_config_file() -> None:
         )
         receive_data()
         print("Your .i18n-check.yaml file has been generated successfully.")
-
-
-if __name__ == "__main__":
-    generate_config_file()

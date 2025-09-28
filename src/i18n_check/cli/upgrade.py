@@ -78,7 +78,3 @@ def upgrade_cli() -> None:
             print(
                 f"Failed to install the latest version of i18n-check with error {e}. Please check the error message and report any issues to the team at https://github.com/activist-org/i18n-check/issues."
             )
-
-
-if __name__ == "__main__":
-    upgrade_cli()

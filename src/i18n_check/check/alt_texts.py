@@ -179,7 +179,3 @@ def alt_texts_check_and_fix(
     )
 
     return True
-
-
-if __name__ == "__main__":
-    alt_texts_check_and_fix(fix=False)
