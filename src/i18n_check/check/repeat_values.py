@@ -96,7 +96,7 @@ def analyze_and_generate_repeat_value_report(
             )
 
             # Use the methods from the invalid keys check to assure that results are consistent.
-            repeat_value_key_file_dict = map_keys_to_files(
+            repeat_values_key_file_dict = map_keys_to_files(
                 i18n_src_dict={
                     k: v
                     for k, v in i18n_src_dict.items()
@@ -108,7 +108,7 @@ def analyze_and_generate_repeat_value_report(
             # Replace with 'repeat_key' as a dummy for if this was the key in all files.
             _, invalid_keys_by_name = audit_invalid_i18n_keys(
                 key_file_dict={
-                    "repeat_key": v for k, v in repeat_value_key_file_dict.items()
+                    "repeat_key": v for k, v in repeat_values_key_file_dict.items()
                 },
                 keys_to_ignore_regex=config_invalid_key_regexes_to_ignore,
             )

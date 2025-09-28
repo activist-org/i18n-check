@@ -72,6 +72,7 @@ def map_keys_to_files(
         directories_to_skip=config_invalid_keys_directories_to_skip,
         files_to_skip=config_invalid_keys_files_to_skip,
     )
+
     files_to_check_contents = {}
     for frontend_file in files_to_check:
         with open(frontend_file, "r", encoding="utf-8") as f:
@@ -356,11 +357,11 @@ Please rename the following {name_key_or_keys} \\[current_key -> suggested_corre
 
 # MARK: Variables
 
-key_file_dict = map_keys_to_files(
+invalid_keys_key_file_dict = map_keys_to_files(
     i18n_src_dict=i18n_src_dict,
     src_directory=config_src_directory,
 )
 invalid_keys_by_format, invalid_keys_by_name = audit_invalid_i18n_keys(
-    key_file_dict=key_file_dict,
+    key_file_dict=invalid_keys_key_file_dict,
     keys_to_ignore_regex=config_invalid_key_regexes_to_ignore,
 )

@@ -248,18 +248,19 @@ def add_missing_keys_interactively(
 
             # Skip if the result is a nested key.
             if not isinstance(source_value, dict):
-                missing_key_file_dict = map_keys_to_files(
+                missing_keys_key_file_dict = map_keys_to_files(
                     i18n_src_dict={key: source_value},
                     src_directory=config_src_directory,
                 )
 
                 # Skip if the key isn't used in any file.
-                if missing_key_file_dict:
+                if missing_keys_key_file_dict:
                     rprint(f"[cyan]Key:[/cyan] {key}")
                     rprint(f"[cyan]Source value:[/cyan] '{source_value}'")
 
                     missing_key_file_names = [
-                        f.split(PATH_SEPARATOR)[-1] for f in missing_key_file_dict[key]
+                        f.split(PATH_SEPARATOR)[-1]
+                        for f in missing_keys_key_file_dict[key]
                     ]
                     rprint(f"[cyan]Used in:[/cyan] {', '.join(missing_key_file_names)}")
 
