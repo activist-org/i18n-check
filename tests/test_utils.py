@@ -126,8 +126,8 @@ class TestUtils(unittest.TestCase):
 
             result = get_all_json_files(directory=temp_dir)
 
-            assert json_file_1 in result
-            assert json_file_2 in result
+            assert os.path.realpath(json_file_1) in result
+            assert os.path.realpath(json_file_2) in result
             assert non_json_file not in result
 
     def test_read_files_to_dict(self) -> None:

@@ -289,10 +289,13 @@ def _collect_files_to_check_cached(
     ----------
     directory : str
         The resolved directory path to search in.
+
     file_types_to_check : tuple[str, ...]
         Tuple of file extensions to search for.
+
     directories_to_skip : tuple[str, ...]
         Tuple of resolved directory paths to skip.
+
     files_to_skip : tuple[str, ...]
         Tuple of resolved file paths to skip.
 
@@ -361,13 +364,12 @@ def collect_files_to_check(
     list
         A list of file paths that match the given extension.
     """
-    # Convert to hashable types for caching
+    # Convert to hashable types and call cached implementation.
     directory_str = str(Path(directory).resolve())
     file_types_tuple = tuple(file_types_to_check)
     directories_tuple = tuple(str(Path(d).resolve()) for d in directories_to_skip)
     files_tuple = tuple(str(Path(f).resolve()) for f in files_to_skip)
 
-    # Call cached implementation
     result = _collect_files_to_check_cached(
         directory_str,
         file_types_tuple,
@@ -375,7 +377,7 @@ def collect_files_to_check(
         files_tuple,
     )
 
-    # Convert back to list for backward compatibility
+    # Convert back to list for backward compatibility.
     return list(result)
 
 
