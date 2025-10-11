@@ -8,6 +8,7 @@ import json
 import os
 import re
 import string
+from functools import lru_cache
 from pathlib import Path
 from typing import Any, Dict, List
 
@@ -272,40 +273,43 @@ def read_json_file(file_path: str | Path) -> Any:
 # MARK: Collect Files
 
 
-def collect_files_to_check(
-    directory: str | Path,
-    file_types_to_check: list[str],
-    directories_to_skip: list[Path],
-    files_to_skip: list[Path],
-) -> List[str]:
+@lru_cache(maxsize=128)
+def _collect_files_to_check_cached(
+    directory: str,
+    file_types_to_check: tuple[str, ...],
+    directories_to_skip: tuple[str, ...],
+    files_to_skip: tuple[str, ...],
+) -> tuple[str, ...]:
     """
-    Collect all files with a given extension from a directory and its subdirectories.
+    Cached implementation of collect_files_to_check.
+
+    This internal function uses hashable types (tuples and strings) to enable caching.
 
     Parameters
     ----------
     directory : str
-        The directory to search in.
+        The resolved directory path to search in.
 
-    file_types_to_check : list[str]
-        The file extensions to search in.
+    file_types_to_check : tuple[str, ...]
+        Tuple of file extensions to search for.
 
-    directories_to_skip : list[Path]
-        Paths to directories to not include in the search.
+    directories_to_skip : tuple[str, ...]
+        Tuple of resolved directory paths to skip.
 
-    files_to_skip : list[Path]
-        Paths to files to not include in the check.
+    files_to_skip : tuple[str, ...]
+        Tuple of resolved file paths to skip.
 
     Returns
     -------
-    list
-        A list of file paths that match the given extension.
+    tuple[str, ...]
+        Tuple of file paths that match the given extensions.
     """
-    directory = Path(directory).resolve()
-    skip_dirs_resolved = [d.resolve() for d in directories_to_skip]
-    skip_files_resolved = [f.resolve() for f in files_to_skip]
+    directory_path = Path(directory).resolve()
+    skip_dirs_resolved = [Path(d).resolve() for d in directories_to_skip]
+    skip_files_resolved = [Path(f).resolve() for f in files_to_skip]
     files_to_check: List[str] = []
 
-    for root, dirs, files in os.walk(directory):
+    for root, dirs, files in os.walk(directory_path):
         root_path = Path(root).resolve()
 
         # Skip directories in directories_to_skip and later files in files_to_skip.
@@ -326,7 +330,55 @@ def collect_files_to_check(
             ):
                 files_to_check.append(str(file_path))
 
-    return files_to_check
+    return tuple(files_to_check)
+
+
+def collect_files_to_check(
+    directory: str | Path,
+    file_types_to_check: list[str],
+    directories_to_skip: list[Path],
+    files_to_skip: list[Path],
+) -> List[str]:
+    """
+    Collect all files with a given extension from a directory and its subdirectories.
+
+    This function is cached, so repeated calls with the same parameters will return
+    the cached result without re-scanning the filesystem.
+
+    Parameters
+    ----------
+    directory : str
+        The directory to search in.
+
+    file_types_to_check : list[str]
+        The file extensions to search in.
+
+    directories_to_skip : list[Path]
+        Paths to directories to not include in the search.
+
+    files_to_skip : list[Path]
+        Paths to files to not include in the check.
+
+    Returns
+    -------
+    list
+        A list of file paths that match the given extension.
+    """
+    # Convert to hashable types and call cached implementation.
+    directory_str = str(Path(directory).resolve())
+    file_types_tuple = tuple(file_types_to_check)
+    directories_tuple = tuple(str(Path(d).resolve()) for d in directories_to_skip)
+    files_tuple = tuple(str(Path(f).resolve()) for f in files_to_skip)
+
+    result = _collect_files_to_check_cached(
+        directory_str,
+        file_types_tuple,
+        directories_tuple,
+        files_tuple,
+    )
+
+    # Convert back to list for backward compatibility.
+    return list(result)
 
 
 # MARK: Invalid Keys
@@ -423,9 +475,32 @@ def filter_valid_key_parts(potential_key_parts: list[str]) -> list[str]:
 # MARK: JSON Files
 
 
+@lru_cache(maxsize=32)
+def _get_all_json_files_cached(directory: str) -> tuple[str, ...]:
+    """
+    Cached implementation of get_all_json_files.
+
+    This internal function uses hashable types (strings and tuples) to enable caching.
+
+    Parameters
+    ----------
+    directory : str
+        The resolved directory path to search in.
+
+    Returns
+    -------
+    tuple[str, ...]
+        Tuple of JSON file paths.
+    """
+    json_files = glob.glob(f"{directory}{PATH_SEPARATOR}*.json")
+    return tuple(json_files)
+
+
 def get_all_json_files(directory: str | Path) -> List[str]:
     """
     Get all JSON files in the specified directory.
+
+    This function is cached to avoid repeated filesystem scans.
 
     Parameters
     ----------
@@ -437,7 +512,9 @@ def get_all_json_files(directory: str | Path) -> List[str]:
     list
         A list of paths to all JSON files in the specified directory.
     """
-    return glob.glob(f"{directory}{PATH_SEPARATOR}*.json")
+    directory_str = str(Path(directory).resolve())
+    result = _get_all_json_files_cached(directory_str)
+    return list(result)
 
 
 # MARK: Lower and Remove Punctuation

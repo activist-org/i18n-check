@@ -18,6 +18,7 @@ Emojis for the following are chosen based on [gitmoji](https://gitmoji.dev/).
 
 - `i18n-check --all --fix` (`i18n-check -a -f`) can be ran to fix all checks that do not require user input.
   - The user is warned if there are failing checks that require user input to fix or don't have a fix option.
+- The results of the `collect_files_to_check` and `get_all_json_files` utility functions have been cached using `@lru_cache` on private functions that are called within them ([#72](https://github.com/activist-org/i18n-check/issues/72)).
 
 ### 🐞 Bug Fixes
 
