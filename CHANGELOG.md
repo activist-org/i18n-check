@@ -38,6 +38,11 @@ Emojis for the following are chosen based on [gitmoji](https://gitmoji.dev/).
 - Instances of `non_existent` and `non-existent` we changed to `nonexistent` given the proper spelling of the word.
 - The `nested-keys` check was changed to `nested-files` to not conflict with `nonexistent-keys`.
 
+### ⬆️ Dependencies
+
+- Python [packaging](https://github.com/pypa/packaging) was added into the dependencies.
+- Development and production dependencies were upgraded.
+
 ## i18n-check 1.11.0
 
 ### 🐞 Bug Fixes

@@ -8,9 +8,9 @@ alabaster==1.0.0
     # via sphinx
 babel==2.17.0
     # via sphinx
-build==1.2.2.post1
+build==1.3.0
     # via pip-tools
-certifi==2025.8.3
+certifi==2025.10.5
     # via
     #   -r requirements.txt
     #   requests
@@ -20,19 +20,19 @@ charset-normalizer==3.4.3
     # via
     #   -r requirements.txt
     #   requests
-click==8.2.1
+click==8.3.0
     # via pip-tools
-coverage[toml]==7.9.2
+coverage[toml]==7.10.7
     # via pytest-cov
-distlib==0.3.9
+distlib==0.4.0
     # via virtualenv
 docutils==0.21.2
     # via
     #   sphinx
     #   sphinx-rtd-theme
-filelock==3.18.0
+filelock==3.20.0
     # via virtualenv
-identify==2.6.12
+identify==2.6.15
     # via pre-commit
 idna==3.10
     # via
@@ -48,13 +48,13 @@ markdown-it-py==4.0.0
     # via
     #   -r requirements.txt
     #   rich
-markupsafe==3.0.2
+markupsafe==3.0.3
     # via jinja2
 mdurl==0.1.2
     # via
     #   -r requirements.txt
     #   markdown-it-py
-mypy==1.16.1
+mypy==1.18.2
     # via -r requirements-dev.in
 mypy-extensions==1.1.0
     # via mypy
@@ -64,20 +64,21 @@ numpydoc==1.9.0
     # via -r requirements-dev.in
 packaging==25.0
     # via
+    #   -r requirements.txt
     #   build
     #   pytest
     #   sphinx
 pathspec==0.12.1
     # via mypy
-pip-tools==7.4.1
+pip-tools==7.5.1
     # via -r requirements-dev.in
-platformdirs==4.3.8
+platformdirs==4.5.0
     # via virtualenv
 pluggy==1.6.0
     # via
     #   pytest
     #   pytest-cov
-pre-commit==4.2.0
+pre-commit==4.3.0
     # via -r requirements-dev.in
 pygments==2.19.2
     # via
@@ -89,13 +90,13 @@ pyproject-hooks==1.2.0
     # via
     #   build
     #   pip-tools
-pytest==8.4.1
+pytest==8.4.2
     # via
     #   -r requirements-dev.in
     #   pytest-cov
-pytest-cov==6.2.1
+pytest-cov==7.0.0
     # via -r requirements-dev.in
-pyyaml==6.0.2
+pyyaml==6.0.3
     # via
     #   -r requirements.txt
     #   pre-commit
@@ -103,11 +104,11 @@ requests==2.32.5
     # via
     #   -r requirements.txt
     #   sphinx
-rich==14.1.0
+rich==14.2.0
     # via -r requirements.txt
 roman-numerals-py==3.1.0
     # via sphinx
-ruff==0.12.3
+ruff==0.14.0
     # via -r requirements-dev.in
 snowballstemmer==3.0.1
     # via sphinx
@@ -132,18 +133,18 @@ sphinxcontrib-qthelp==2.0.0
     # via sphinx
 sphinxcontrib-serializinghtml==2.0.0
     # via sphinx
-types-pyyaml==6.0.12.20250516
+types-pyyaml==6.0.12.20250915
     # via -r requirements-dev.in
-types-requests==2.32.4.20250611
+types-requests==2.32.4.20250913
     # via -r requirements-dev.in
-typing-extensions==4.14.1
+typing-extensions==4.15.0
     # via mypy
 urllib3==2.5.0
     # via
     #   -r requirements.txt
     #   requests
     #   types-requests
-virtualenv==20.31.2
+virtualenv==20.35.3
     # via pre-commit
 wheel==0.45.1
     # via pip-tools

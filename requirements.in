@@ -9,6 +9,7 @@
 # - pip-compile --upgrade requirements.in && sed -i "" "s/==/>=/g" requirements.txt
 # - pip-compile --upgrade requirements-dev.in
 
+packaging
 pyyaml
 requests
 rich
