@@ -9,6 +9,7 @@ from unittest.mock import mock_open, patch
 
 from i18n_check.cli.generate_config_file import (
     generate_config_file,
+    get_config_file_path,
     receive_data,
     write_to_file,
 )
@@ -165,7 +166,8 @@ class TestGenerateConfigFile(unittest.TestCase):
         Tests that if the config file does NOT exist, the receive_data function is called.
         """
         generate_config_file()
-        mock_is_file.assert_called_once()
+        # is_file is called multiple times now (checking both .yaml and .yml)
+        self.assertGreater(mock_is_file.call_count, 0)
         mock_receive_data.assert_called_once()
 
     @patch("pathlib.Path.is_file", return_value=True)
@@ -193,6 +195,37 @@ class TestGenerateConfigFile(unittest.TestCase):
         """
         generate_config_file()
         mock_receive_data.assert_not_called()
+
+    def test_get_config_file_path_yaml_preferred(self):
+        """
+        Test that .yaml file is preferred when both .yaml and .yml exist.
+        """
+        with patch("pathlib.Path.cwd", return_value=Path("/fake/path")):
+            with patch("pathlib.Path.is_file") as mock_is_file:
+                # Mock both files existing - first call returns True (.yaml exists)
+                mock_is_file.return_value = True
+                result = get_config_file_path()
+                self.assertEqual(result.name, ".i18n-check.yaml")
+
+    def test_get_config_file_path_yml_fallback(self):
+        """
+        Test that .yml file is used when only .yml exists.
+        """
+        with patch("pathlib.Path.cwd", return_value=Path("/fake/path")):
+            with patch("pathlib.Path.is_file") as mock_is_file:
+                # Mock only .yml file existing - first call False, second True
+                mock_is_file.side_effect = [False, True]
+                result = get_config_file_path()
+                self.assertEqual(result.name, ".i18n-check.yml")
+
+    def test_get_config_file_path_default_yaml(self):
+        """
+        Test that .yaml is returned as default when neither file exists.
+        """
+        with patch("pathlib.Path.is_file", return_value=False):
+            with patch("pathlib.Path.cwd", return_value=Path("/fake/path")):
+                result = get_config_file_path()
+                self.assertEqual(result.name, ".i18n-check.yaml")
 
 
 if __name__ == "__main__":

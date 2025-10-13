@@ -22,7 +22,33 @@ PATH_SEPARATOR = "\\" if os.name == "nt" else "/"
 
 # Centrally needed base paths.
 CWD_PATH = Path.cwd()
-YAML_CONFIG_FILE_PATH = CWD_PATH / ".i18n-check.yaml"
+
+
+def get_config_file_path() -> Path:
+    """
+    Get the path to the i18n-check configuration file.
+
+    Checks for both .yaml and .yml extensions, preferring .yaml if both exist.
+
+    Returns
+    -------
+    Path
+        The path to the configuration file (.yaml or .yml).
+    """
+    yaml_path = CWD_PATH / ".i18n-check.yaml"
+    yml_path = CWD_PATH / ".i18n-check.yml"
+
+    # Prefer .yaml if it exists, otherwise check for .yml
+    if yaml_path.is_file():
+        return yaml_path
+    elif yml_path.is_file():
+        return yml_path
+    else:
+        # Default to .yaml for new files
+        return yaml_path
+
+
+YAML_CONFIG_FILE_PATH = get_config_file_path()
 INTERNAL_TEST_FRONTENDS_DIR_PATH = Path(__file__).parent / "test_frontends"
 
 # MARK: YAML Reading
@@ -32,7 +58,7 @@ if not Path(YAML_CONFIG_FILE_PATH).is_file():
 
 if not Path(YAML_CONFIG_FILE_PATH).is_file():
     print(
-        "No configuration file. Please generate an .i18n-check.yaml file with i18n-check -gcf."
+        "No configuration file. Please generate a configuration file (.i18n-check.yaml or .i18n-check.yml) with i18n-check -gcf."
     )
     exit(1)
 

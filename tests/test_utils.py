@@ -7,6 +7,7 @@ import json
 import os
 import tempfile
 import unittest
+import unittest.mock
 from pathlib import Path
 
 import pytest
@@ -16,6 +17,7 @@ from i18n_check.utils import (
     collect_files_to_check,
     filter_valid_key_parts,
     get_all_json_files,
+    get_config_file_path,
     is_valid_key,
     lower_and_remove_punctuation,
     path_to_valid_key,
@@ -249,6 +251,42 @@ def test_filter_valid_key_parts(input_list, expected_output) -> None:
 )
 def test_lower_and_remove_punctuation(input_list, expected_output) -> None:
     assert lower_and_remove_punctuation(input_list) == expected_output
+
+
+def test_get_config_file_path_yaml_exists(tmp_path) -> None:
+    """Test that .yaml file is preferred when both .yaml and .yml exist."""
+    yaml_file = tmp_path / ".i18n-check.yaml"
+    yml_file = tmp_path / ".i18n-check.yml"
+
+    yaml_file.write_text("yaml: true", encoding="utf-8")
+    yml_file.write_text("yml: true", encoding="utf-8")
+
+    # Mock CWD_PATH to use tmp_path
+    with unittest.mock.patch("i18n_check.utils.CWD_PATH", tmp_path):
+        result = get_config_file_path()
+        assert result.name == ".i18n-check.yaml"
+        assert result.is_file()
+
+
+def test_get_config_file_path_only_yml_exists(tmp_path) -> None:
+    """Test that .yml file is found when only .yml exists."""
+    yml_file = tmp_path / ".i18n-check.yml"
+    yml_file.write_text("yml: true", encoding="utf-8")
+
+    # Mock CWD_PATH to use tmp_path
+    with unittest.mock.patch("i18n_check.utils.CWD_PATH", tmp_path):
+        result = get_config_file_path()
+        assert result.name == ".i18n-check.yml"
+        assert result.is_file()
+
+
+def test_get_config_file_path_neither_exists(tmp_path) -> None:
+    """Test that .yaml is returned as default when neither file exists."""
+    # Mock CWD_PATH to use tmp_path
+    with unittest.mock.patch("i18n_check.utils.CWD_PATH", tmp_path):
+        result = get_config_file_path()
+        assert result.name == ".i18n-check.yaml"
+        assert not result.is_file()
 
 
 if __name__ == "__main__":
