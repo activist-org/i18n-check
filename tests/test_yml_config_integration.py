@@ -16,7 +16,7 @@ def test_yml_config_file_is_recognized():
     with tempfile.TemporaryDirectory() as tmp_dir:
         tmp_path = Path(tmp_dir)
 
-        # Create a .i18n-check.yml file
+        # Create a .i18n-check.yml file.
         yml_config = tmp_path / ".i18n-check.yml"
         yml_config.write_text(
             """# Test configuration
@@ -33,7 +33,7 @@ def test_yml_config_file_is_recognized():
             encoding="utf-8",
         )
 
-        # Mock CWD_PATH to use tmp_path
+        # Mock CWD_PATH to use tmp_path.
         import unittest.mock
 
         with unittest.mock.patch("i18n_check.utils.CWD_PATH", tmp_path):
@@ -52,14 +52,14 @@ def test_yaml_preferred_over_yml():
     with tempfile.TemporaryDirectory() as tmp_dir:
         tmp_path = Path(tmp_dir)
 
-        # Create both .yaml and .yml files
+        # Create both .yaml and .yml files.
         yaml_config = tmp_path / ".i18n-check.yaml"
         yml_config = tmp_path / ".i18n-check.yml"
 
         yaml_config.write_text("# YAML config", encoding="utf-8")
         yml_config.write_text("# YML config", encoding="utf-8")
 
-        # Mock CWD_PATH to use tmp_path
+        # Mock CWD_PATH to use tmp_path.
         import unittest.mock
 
         with unittest.mock.patch("i18n_check.utils.CWD_PATH", tmp_path):

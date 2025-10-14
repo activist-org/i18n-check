@@ -9,11 +9,10 @@ from unittest.mock import mock_open, patch
 
 from i18n_check.cli.generate_config_file import (
     generate_config_file,
-    get_config_file_path,
     receive_data,
     write_to_file,
 )
-from i18n_check.utils import PATH_SEPARATOR
+from i18n_check.utils import PATH_SEPARATOR, get_config_file_path
 
 
 class TestGenerateConfigFile(unittest.TestCase):
@@ -23,10 +22,10 @@ class TestGenerateConfigFile(unittest.TestCase):
 
     @patch("builtins.open", new_callable=mock_open)
     @patch(
-        "i18n_check.cli.generate_config_file.YAML_CONFIG_FILE_PATH",
-        Path("/fake/path/.i18n-check.yaml"),
+        "i18n_check.utils.get_config_file_path",
+        return_value=Path("/fake/path/.i18n-check.yaml"),
     )
-    def test_write_to_file_all_options(self, mock_open_func):
+    def test_write_to_file_all_options(self, mock_get_config_path, mock_open_func):
         """
         Tests the write_to_file function to ensure it formats the output string correctly
         when all parameters are provided.
@@ -44,7 +43,6 @@ class TestGenerateConfigFile(unittest.TestCase):
         }
         file_types_to_check = [".ts", ".js"]
 
-        # FIX 2: Call write_to_file with the correct 7 arguments in the correct order.
         write_to_file(
             src_dir=src_dir,
             i18n_dir=i18n_dir,
@@ -200,9 +198,9 @@ class TestGenerateConfigFile(unittest.TestCase):
         """
         Test that .yaml file is preferred when both .yaml and .yml exist.
         """
-        with patch("pathlib.Path.cwd", return_value=Path("/fake/path")):
+        with patch("i18n_check.utils.CWD_PATH", Path("/fake/path")):
             with patch("pathlib.Path.is_file") as mock_is_file:
-                # Mock both files existing - first call returns True (.yaml exists)
+                # Mock both files existing - first call returns True (.yaml exists).
                 mock_is_file.return_value = True
                 result = get_config_file_path()
                 self.assertEqual(result.name, ".i18n-check.yaml")
@@ -211,9 +209,9 @@ class TestGenerateConfigFile(unittest.TestCase):
         """
         Test that .yml file is used when only .yml exists.
         """
-        with patch("pathlib.Path.cwd", return_value=Path("/fake/path")):
+        with patch("i18n_check.utils.CWD_PATH", Path("/fake/path")):
             with patch("pathlib.Path.is_file") as mock_is_file:
-                # Mock only .yml file existing - first call False, second True
+                # Mock only .yml file existing - first call False, second True.
                 mock_is_file.side_effect = [False, True]
                 result = get_config_file_path()
                 self.assertEqual(result.name, ".i18n-check.yml")
@@ -222,8 +220,8 @@ class TestGenerateConfigFile(unittest.TestCase):
         """
         Test that .yaml is returned as default when neither file exists.
         """
-        with patch("pathlib.Path.is_file", return_value=False):
-            with patch("pathlib.Path.cwd", return_value=Path("/fake/path")):
+        with patch("i18n_check.utils.CWD_PATH", Path("/fake/path")):
+            with patch("pathlib.Path.is_file", return_value=False):
                 result = get_config_file_path()
                 self.assertEqual(result.name, ".i18n-check.yaml")
 

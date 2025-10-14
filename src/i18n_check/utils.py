@@ -15,12 +15,11 @@ from typing import Any, Dict, List
 import yaml
 from rich import print as rprint
 
-from i18n_check.cli.generate_config_file import generate_config_file
-
 # Check for Windows and derive directory path separator.
 PATH_SEPARATOR = "\\" if os.name == "nt" else "/"
 
-# Centrally needed base paths.
+# MARK: Base Paths
+
 CWD_PATH = Path.cwd()
 
 
@@ -38,15 +37,18 @@ def get_config_file_path() -> Path:
     yaml_path = CWD_PATH / ".i18n-check.yaml"
     yml_path = CWD_PATH / ".i18n-check.yml"
 
-    # Prefer .yaml if it exists, otherwise check for .yml
+    # Prefer .yaml if it exists, otherwise check for .yml.
     if yaml_path.is_file():
         return yaml_path
     elif yml_path.is_file():
         return yml_path
     else:
-        # Default to .yaml for new files
+        # Default to .yaml for new files.
         return yaml_path
 
+
+# Import after defining get_config_file_path to avoid circular import.
+from i18n_check.cli.generate_config_file import generate_config_file  # noqa: E402
 
 YAML_CONFIG_FILE_PATH = get_config_file_path()
 INTERNAL_TEST_FRONTENDS_DIR_PATH = Path(__file__).parent / "test_frontends"

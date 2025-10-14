@@ -15,33 +15,6 @@ EXTERNAL_TEST_FRONTENDS_DIR_PATH = Path.cwd() / "i18n_check_test_frontends"
 PATH_SEPARATOR = "\\" if os.name == "nt" else "/"
 
 
-def get_config_file_path() -> Path:
-    """
-    Get the path to the i18n-check configuration file.
-
-    Checks for both .yaml and .yml extensions, preferring .yaml if both exist.
-
-    Returns
-    -------
-    Path
-        The path to the configuration file (.yaml or .yml).
-    """
-    yaml_path = Path.cwd() / ".i18n-check.yaml"
-    yml_path = Path.cwd() / ".i18n-check.yml"
-
-    # Prefer .yaml if it exists, otherwise check for .yml
-    if yaml_path.is_file():
-        return yaml_path
-    elif yml_path.is_file():
-        return yml_path
-    else:
-        # Default to .yaml for new files
-        return yaml_path
-
-
-YAML_CONFIG_FILE_PATH = get_config_file_path()
-
-
 def write_to_file(
     src_dir: str,
     i18n_dir: str,
@@ -69,7 +42,11 @@ def write_to_file(
     checks : dict
         The boolean values for checks being enabled or not.
     """
-    with open(YAML_CONFIG_FILE_PATH, "w", encoding="utf-8") as file:
+    # Import here to avoid circular import.
+    from i18n_check.utils import get_config_file_path
+
+    config_file_path = get_config_file_path()
+    with open(config_file_path, "w", encoding="utf-8") as file:
         checks_str = ""
         for c in checks:
             checks_str += f"  {c}:\n    active: {checks[c]['active']}\n"
@@ -250,6 +227,9 @@ def generate_config_file() -> None:
     """
     Generate a configuration file for i18n-check based on user inputs.
     """
+    # Import here to avoid circular import.
+    from i18n_check.utils import get_config_file_path
+
     config_path = get_config_file_path()
     if config_path.is_file():
         config_file_name = config_path.name
@@ -277,7 +257,7 @@ def generate_config_file() -> None:
 
     else:
         print(
-            "You do not have an i18n-check configuration file. Follow the commands below to generate a configuration file..."
+            "You do not have an i18n-check configuration file. Follow the commands below to generate a .i18n-check.yaml configuration file..."
         )
         receive_data()
         config_path = get_config_file_path()
