@@ -164,7 +164,7 @@ class TestGenerateConfigFile(unittest.TestCase):
         Tests that if the config file does NOT exist, the receive_data function is called.
         """
         generate_config_file()
-        # is_file is called multiple times now (checking both .yaml and .yml)
+        # is_file is called multiple times now (checking both .yaml and .yml).
         self.assertGreater(mock_is_file.call_count, 0)
         mock_receive_data.assert_called_once()
 
