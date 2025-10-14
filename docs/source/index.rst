@@ -96,7 +96,7 @@ The following are example commands for `i18n-check`:
 Arguments
 =========
 
-You provide ``i18n-check`` with the following arguments in the ``.i18n-check.yaml`` configuration file (see the configuration section below):
+You provide ``i18n-check`` with the following arguments in the ``.i18n-check.yaml`` or ``.i18n-check.yml`` configuration file (see the configuration section below):
 
 - ``src-dir``: The path to the directory that has source code to check
 - ``i18n-dir``: The directory path to your i18n files
@@ -143,7 +143,11 @@ Directions for how to fix the i18n files are provided when errors are raised. Ch
 Configuration
 =============
 
-The following details the ``.18n-check.yaml`` configuration file, with a further example being the `configuration file for the i18n-check repository <https://github.com/activist-org/i18n-check/blob/main/.i18n-check.yaml>`_ that we use in testing.
+The following details the ``.i18n-check.yaml`` or ``.i18n-check.yml`` configuration file, with a further example being the `configuration file for the i18n-check repository <https://github.com/activist-org/i18n-check/blob/main/.i18n-check.yaml>`_ that we use in testing.
+
+    | **Note**
+
+    Both ``.i18n-check.yaml`` and ``.i18n-check.yml`` file extensions are supported. If both files exist, ``.yaml`` will be preferred.
 
     | **Note**
 

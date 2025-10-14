@@ -13,7 +13,6 @@ EXTERNAL_TEST_FRONTENDS_DIR_PATH = Path.cwd() / "i18n_check_test_frontends"
 
 # Note: Repeat from utils to avoid circular import.
 PATH_SEPARATOR = "\\" if os.name == "nt" else "/"
-YAML_CONFIG_FILE_PATH = Path.cwd() / ".i18n-check.yaml"
 
 
 def write_to_file(
@@ -43,7 +42,11 @@ def write_to_file(
     checks : dict
         The boolean values for checks being enabled or not.
     """
-    with open(YAML_CONFIG_FILE_PATH, "w", encoding="utf-8") as file:
+    # Import here to avoid circular import.
+    from i18n_check.utils import get_config_file_path
+
+    config_file_path = get_config_file_path()
+    with open(config_file_path, "w", encoding="utf-8") as file:
         checks_str = ""
         for c in checks:
             checks_str += f"  {c}:\n    active: {checks[c]['active']}\n"
@@ -224,15 +227,20 @@ def generate_config_file() -> None:
     """
     Generate a configuration file for i18n-check based on user inputs.
     """
-    if Path(YAML_CONFIG_FILE_PATH).is_file():
+    # Import here to avoid circular import.
+    from i18n_check.utils import get_config_file_path
+
+    config_path = get_config_file_path()
+    if config_path.is_file():
+        config_file_name = config_path.name
         print(
-            "An i18n-check configuration file already exists. Would you like to re-configure your .i18n-check.yaml file?"
+            f"An i18n-check configuration file already exists. Would you like to re-configure your {config_file_name} file?"
         )
         reconfigure_choice = input("Press y or n to continue [y]: ").lower()
         if reconfigure_choice in ["y", ""]:
             print("Configuring...")
             receive_data()
-            print("Your .i18n-check.yaml file has been generated successfully.")
+            print(f"Your {config_file_name} file has been generated successfully.")
             if not Path(EXTERNAL_TEST_FRONTENDS_DIR_PATH).is_dir():
                 test_frontend_choice = input(
                     "\nWould you like to generate test pseudocode frontends to experiment with i18n-check?"
@@ -249,7 +257,8 @@ def generate_config_file() -> None:
 
     else:
         print(
-            "You do not have an i18n-check configuration file. Follow the commands below to generate .i18n-check.yaml..."
+            "You do not have an i18n-check configuration file. Follow the commands below to generate a .i18n-check.yaml configuration file..."
         )
         receive_data()
-        print("Your .i18n-check.yaml file has been generated successfully.")
+        config_path = get_config_file_path()
+        print(f"Your {config_path.name} file has been generated successfully.")

@@ -12,7 +12,7 @@ from i18n_check.cli.generate_config_file import (
     receive_data,
     write_to_file,
 )
-from i18n_check.utils import PATH_SEPARATOR
+from i18n_check.utils import PATH_SEPARATOR, get_config_file_path
 
 
 class TestGenerateConfigFile(unittest.TestCase):
@@ -22,10 +22,10 @@ class TestGenerateConfigFile(unittest.TestCase):
 
     @patch("builtins.open", new_callable=mock_open)
     @patch(
-        "i18n_check.cli.generate_config_file.YAML_CONFIG_FILE_PATH",
-        Path("/fake/path/.i18n-check.yaml"),
+        "i18n_check.utils.get_config_file_path",
+        return_value=Path("/fake/path/.i18n-check.yaml"),
     )
-    def test_write_to_file_all_options(self, mock_open_func):
+    def test_write_to_file_all_options(self, mock_get_config_path, mock_open_func):
         """
         Tests the write_to_file function to ensure it formats the output string correctly
         when all parameters are provided.
@@ -43,7 +43,6 @@ class TestGenerateConfigFile(unittest.TestCase):
         }
         file_types_to_check = [".ts", ".js"]
 
-        # FIX 2: Call write_to_file with the correct 7 arguments in the correct order.
         write_to_file(
             src_dir=src_dir,
             i18n_dir=i18n_dir,
@@ -165,7 +164,8 @@ class TestGenerateConfigFile(unittest.TestCase):
         Tests that if the config file does NOT exist, the receive_data function is called.
         """
         generate_config_file()
-        mock_is_file.assert_called_once()
+        # is_file is called multiple times now (checking both .yaml and .yml).
+        self.assertGreater(mock_is_file.call_count, 0)
         mock_receive_data.assert_called_once()
 
     @patch("pathlib.Path.is_file", return_value=True)
@@ -193,6 +193,37 @@ class TestGenerateConfigFile(unittest.TestCase):
         """
         generate_config_file()
         mock_receive_data.assert_not_called()
+
+    def test_get_config_file_path_yaml_preferred(self):
+        """
+        Test that .yaml file is preferred when both .yaml and .yml exist.
+        """
+        with patch("i18n_check.utils.CWD_PATH", Path("/fake/path")):
+            with patch("pathlib.Path.is_file") as mock_is_file:
+                # Mock both files existing - first call returns True (.yaml exists).
+                mock_is_file.return_value = True
+                result = get_config_file_path()
+                self.assertEqual(result.name, ".i18n-check.yaml")
+
+    def test_get_config_file_path_yml_fallback(self):
+        """
+        Test that .yml file is used when only .yml exists.
+        """
+        with patch("i18n_check.utils.CWD_PATH", Path("/fake/path")):
+            with patch("pathlib.Path.is_file") as mock_is_file:
+                # Mock only .yml file existing - first call False, second True.
+                mock_is_file.side_effect = [False, True]
+                result = get_config_file_path()
+                self.assertEqual(result.name, ".i18n-check.yml")
+
+    def test_get_config_file_path_default_yaml(self):
+        """
+        Test that .yaml is returned as default when neither file exists.
+        """
+        with patch("i18n_check.utils.CWD_PATH", Path("/fake/path")):
+            with patch("pathlib.Path.is_file", return_value=False):
+                result = get_config_file_path()
+                self.assertEqual(result.name, ".i18n-check.yaml")
 
 
 if __name__ == "__main__":
