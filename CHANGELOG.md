@@ -14,7 +14,7 @@ Emojis for the following are chosen based on [gitmoji](https://gitmoji.dev/).
 
 ### ✨ Features
 
-- The CLI can now be configured with both a `.yaml` and `.yml` file ([#75](https://github.com/activist-org/i18n-check/issues/75)).
+- The CLI can now be configured with either a `.yaml` or `.yml` file ([#75](https://github.com/activist-org/i18n-check/issues/75)).
 
 ## i18n-check 1.12.0
 
