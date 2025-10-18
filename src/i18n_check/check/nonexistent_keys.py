@@ -9,16 +9,22 @@ Examples
 Run the following script in terminal:
 
 >>> i18n-check -nk
+>>> i18n-check -nk -f  # interactive mode to add nonexistent keys
 """
 
+import json
 import re
 import sys
 from pathlib import Path
 from typing import Any, Dict, List, Set
 
 from rich import print as rprint
+from rich.prompt import Prompt
 
+from i18n_check.check.invalid_keys import map_keys_to_files
+from i18n_check.check.sorted_keys import check_file_keys_sorted
 from i18n_check.utils import (
+    PATH_SEPARATOR,
     collect_files_to_check,
     config_file_types_to_check,
     config_i18n_src_file,
@@ -100,7 +106,7 @@ def nonexistent_keys_check(
     all_checks_enabled: bool = False,
 ) -> bool:
     """
-    Validate that all used i18n keys are present in the source file.
+    Validate that all used i18n keys are present in the i18n source file.
 
     Parameters
     ----------
@@ -131,10 +137,14 @@ def nonexistent_keys_check(
 
         error_message = f"[red]❌ nonexistent_keys error: There {to_be} {len(nonexistent_keys)} i18n {key_to_be} not in the i18n source file. Please check the validity of the following {key_or_keys}:"
         error_message += "\n\n"
-        error_message += "\n".join(nonexistent_keys)
+        error_message += "\n".join(sorted(nonexistent_keys))
         error_message += "[/red]"
 
         rprint(error_message)
+
+        rprint(
+            "\n[yellow]💡 Tip: You can interactively add nonexistent keys by running the --nonexistent-keys (-nk) check with the --fix (-f) flag.[/yellow]\n"
+        )
 
         if all_checks_enabled:
             raise ValueError("The nonexistent keys i18n check has failed.")
@@ -148,6 +158,180 @@ def nonexistent_keys_check(
         )
 
     return True
+
+
+# MARK: Interactive Fix
+
+
+def add_nonexistent_keys_interactively(
+    all_used_i18n_keys: Set[str],
+    i18n_src_dict: Dict[str, str] = i18n_src_dict,
+    i18n_src_file: Path = config_i18n_src_file,
+    src_directory: Path = config_src_directory,
+) -> None:
+    """
+    Interactively add nonexistent keys to the i18n source file.
+
+    Parameters
+    ----------
+    all_used_i18n_keys : Set[str]
+        A set of all i18n keys that are used in the project.
+
+    i18n_src_dict : Dict[str, str], default=i18n_src_dict
+        The dictionary containing i18n source keys and their associated values.
+
+    i18n_src_file : Path, default=config_i18n_src_file
+        Path to the i18n source file.
+
+    src_directory : Path, default=config_src_directory
+        The source directory where the files are located.
+
+    Raises
+    ------
+    sys.exit(0)
+        If the user cancels the operation with Ctrl+C.
+    """
+    nonexistent_keys = list(all_used_i18n_keys - i18n_src_dict.keys())
+
+    if not nonexistent_keys:
+        rprint(
+            "[green]✅ nonexistent_keys success: All i18n keys that are used in the project are in the i18n source file.[/green]"
+        )
+        return
+
+    rprint(
+        "\n[yellow]Interactive mode to add values for nonexistent keys to i18n source file[/yellow]"
+    )
+    rprint(f"[yellow]Nonexistent keys: {len(nonexistent_keys)}[/yellow]")
+    rprint(
+        "[yellow]Note: Press Enter to skip any key if you don't know what its value should be[/yellow]"
+    )
+    rprint("[yellow]Note: Press Ctrl+C at any time to cancel[/yellow]\n")
+
+    try:
+        # Check if sorted keys are required.
+        was_sorted, sorted_keys = check_file_keys_sorted(i18n_src_dict)
+
+        i18n_src_dict_updated = i18n_src_dict.copy()
+
+        # Sort nonexistent keys alphabetically for consistent presentation.
+        sorted_nonexistent_keys = sorted(nonexistent_keys)
+
+        nonexistent_keys_dict_for_mapping = {key: "" for key in sorted_nonexistent_keys}
+        nonexistent_keys_to_files_dict = map_keys_to_files(
+            i18n_src_dict=nonexistent_keys_dict_for_mapping,
+            src_directory=src_directory,
+        )
+
+        for key in sorted_nonexistent_keys:
+            nonexistent_key_files = nonexistent_keys_to_files_dict.get(key, [])
+
+            rprint(f"[cyan]Key:[/cyan] {key}")
+
+            # Show file names where the key is used.
+            nonexistent_key_file_names = [
+                f.split(PATH_SEPARATOR)[-1] for f in nonexistent_key_files
+            ]
+            rprint(f"[cyan]Used in:[/cyan] {', '.join(nonexistent_key_file_names)}")
+
+            # Get value from user.
+            value = Prompt.ask(
+                f"[green]Enter value for '{key}'[/green]",
+                default="",
+                show_default=False,
+            )
+
+            if value:
+                # Add the key-value pair to the dictionary.
+                i18n_src_dict_updated[key] = value
+
+                if was_sorted:
+                    # Sort the dictionary if keys should be ordered.
+                    i18n_src_dict_updated = dict(sorted(i18n_src_dict_updated.items()))
+
+                # Write to file.
+                with open(i18n_src_file, "w", encoding="utf-8") as f:
+                    json.dump(i18n_src_dict_updated, f, indent=2, ensure_ascii=False)
+                    f.write("\n")
+
+                rprint(f"[green]✅ Added '{key}': '{value}'[/green]\n")
+
+            else:
+                rprint(f"⏭️ Skipped '{key}' (empty value)\n")
+
+    except KeyboardInterrupt:
+        rprint("\n[yellow]Cancelled by user[/yellow]")
+        sys.exit(0)
+
+    # Show final status.
+    remaining_nonexistent = all_used_i18n_keys - set(
+        read_json_file(file_path=i18n_src_file).keys()
+    )
+
+    if not remaining_nonexistent:
+        rprint("[green]✅ All keys have been added to the i18n source file![/green]")
+    else:
+        remaining_count = len(remaining_nonexistent)
+        key_or_keys = "key" if remaining_count == 1 else "keys"
+        rprint(
+            f"[yellow]⚠️ {remaining_count} {key_or_keys} still missing in the i18n source file[/yellow]"
+        )
+
+
+# MARK: Check with Fix
+
+
+def nonexistent_keys_check_and_fix(
+    all_used_i18n_keys: Set[str],
+    i18n_src_dict: Dict[str, str] = i18n_src_dict,
+    i18n_src_file: Path = config_i18n_src_file,
+    src_directory: Path = config_src_directory,
+    all_checks_enabled: bool = False,
+    fix: bool = False,
+) -> bool:
+    """
+    Validate that all used i18n keys are present in the i18n source file and optionally enter interactive mode to add nonexistent keys.
+
+    Parameters
+    ----------
+    all_used_i18n_keys : Set[str]
+        A set of all i18n keys that are used in the project.
+
+    i18n_src_dict : Dict[str, str], default=i18n_src_dict
+        The dictionary containing i18n source keys and their associated values.
+
+    i18n_src_file : Path, default=config_i18n_src_file
+        Path to the i18n source file.
+
+    src_directory : Path, default=config_src_directory
+        The source directory where the files are located.
+
+    all_checks_enabled : bool, optional, default=False
+        Whether all checks are being ran by the CLI.
+
+    fix : bool, optional, default=False
+        If True, enter interactive mode to add nonexistent keys to the i18n source file.
+
+    Returns
+    -------
+    bool
+        True if the check is successful.
+    """
+    if fix:
+        add_nonexistent_keys_interactively(
+            all_used_i18n_keys=all_used_i18n_keys,
+            i18n_src_dict=i18n_src_dict,
+            i18n_src_file=i18n_src_file,
+            src_directory=src_directory,
+        )
+        return True
+
+    else:
+        return nonexistent_keys_check(
+            all_used_i18n_keys=all_used_i18n_keys,
+            i18n_src_dict=i18n_src_dict,
+            all_checks_enabled=all_checks_enabled,
+        )
 
 
 # MARK: Variables
