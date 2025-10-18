@@ -28,7 +28,7 @@ from i18n_check.check.nested_files import nested_files_check
 from i18n_check.check.non_source_keys import non_source_keys_check, non_source_keys_dict
 from i18n_check.check.nonexistent_keys import (
     all_used_i18n_keys,
-    nonexistent_keys_check,
+    nonexistent_keys_check_and_fix,
 )
 from i18n_check.check.repeat_keys import repeat_keys_check
 from i18n_check.check.repeat_values import (
@@ -105,9 +105,10 @@ def run_all_checks(args: argparse.Namespace) -> None:
         check_names.append("invalid_keys")
 
     if config_nonexistent_keys_active:
+        # We don't allow fix in all checks mode.
         checks.append(
             partial(
-                nonexistent_keys_check,
+                nonexistent_keys_check_and_fix,
                 all_used_i18n_keys=all_used_i18n_keys,
                 all_checks_enabled=True,
             )
