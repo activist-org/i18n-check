@@ -140,12 +140,12 @@ def test_add_nonexistent_keys_interactively_no_nonexistent_keys(capsys) -> None:
 
 
 @patch("i18n_check.check.nonexistent_keys.Prompt.ask")
-def test_add_nonexistent_keys_interactively_with_values_sorted_keys(
+def test_add_nonexistent_keys_interactively_with_values_when_keys_were_originally_sorted(
     mock_prompt, tmp_path: Path, capsys
 ) -> None:
     """
     Test that add_nonexistent_keys_interactively adds values for nonexistent keys
-    and keys in the i18n source file stay sorted since they were sorted in the input dictionary.
+    and keys in the i18n source file are sorted when they were originally sorted in the input dictionary.
     """
     i18n_dir = tmp_path / "i18n"
     i18n_dir.mkdir(parents=True)
@@ -209,12 +209,12 @@ def test_add_nonexistent_keys_interactively_with_values_sorted_keys(
 
 
 @patch("i18n_check.check.nonexistent_keys.Prompt.ask")
-def test_add_nonexistent_keys_interactively_with_values_unsorted_keys(
+def test_add_nonexistent_keys_interactively_with_values_when_keys_were_originally_unsorted(
     mock_prompt, tmp_path: Path
 ) -> None:
     """
     Test that add_nonexistent_keys_interactively adds values for nonexistent keys
-    and keys in the i18n source file stay unsorted since they were unsorted in the input dictionary.
+    and keys in the i18n source file are sorted when they were originally unsorted in the input dictionary.
     """
     i18n_dir = tmp_path / "i18n"
     i18n_dir.mkdir(parents=True)
@@ -260,9 +260,9 @@ def test_add_nonexistent_keys_interactively_with_values_unsorted_keys(
     updated_i18n_src_dict = read_json_file(file_path=i18n_src_file)
 
     expected_content = {
-        "i18n.c_existing_key": "Existing value 1",
         "i18n.a_existing_key": "Existing value 2",
         "i18n.b_nonexistent_key": "Nonexistent value 1",
+        "i18n.c_existing_key": "Existing value 1",
         "i18n.d_nonexistent_key": "Nonexistent value 2",
     }
 

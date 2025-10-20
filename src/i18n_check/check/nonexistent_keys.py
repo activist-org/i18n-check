@@ -22,7 +22,6 @@ from rich import print as rprint
 from rich.prompt import Prompt
 
 from i18n_check.check.invalid_keys import map_keys_to_files
-from i18n_check.check.sorted_keys import check_file_keys_sorted
 from i18n_check.utils import (
     PATH_SEPARATOR,
     collect_files_to_check,
@@ -209,9 +208,6 @@ def add_nonexistent_keys_interactively(
     rprint("[yellow]Note: Press Ctrl+C at any time to cancel[/yellow]\n")
 
     try:
-        # Check if sorted keys are required.
-        was_sorted, sorted_keys = check_file_keys_sorted(i18n_src_dict)
-
         i18n_src_dict_updated = i18n_src_dict.copy()
 
         # Sort nonexistent keys alphabetically for consistent presentation.
@@ -245,9 +241,8 @@ def add_nonexistent_keys_interactively(
                 # Add the key-value pair to the dictionary.
                 i18n_src_dict_updated[key] = value
 
-                if was_sorted:
-                    # Sort the dictionary if keys should be ordered.
-                    i18n_src_dict_updated = dict(sorted(i18n_src_dict_updated.items()))
+                # Sort the dictionary by its keys.
+                i18n_src_dict_updated = dict(sorted(i18n_src_dict_updated.items()))
 
                 # Write to file.
                 with open(i18n_src_file, "w", encoding="utf-8") as f:
