@@ -151,16 +151,18 @@ class TestMainCli(unittest.TestCase):
             new="i18n.repeat_value_single_file",
         )
 
-    @patch("i18n_check.check.nonexistent_keys.nonexistent_keys_check")
+    @patch("i18n_check.check.nonexistent_keys.nonexistent_keys_check_and_fix")
     @patch("sys.exit")
-    def test_main_nonexistent_keys(self, mock_nonexistent_keys_check, mock_sys_exit):
+    def test_main_nonexistent_keys(
+        self, mock_nonexistent_keys_check_and_fix, mock_sys_exit
+    ):
         """
-        Test that `nonexistent_keys_check` is called for the --nonexistent-keys flag.
+        Test that `nonexistent_keys_check_and_fix` is called for the --nonexistent-keys flag.
         """
         with patch("sys.argv", ["i18n-check", "--nonexistent-keys"]):
             main()
 
-        mock_nonexistent_keys_check.assert_called_once()
+        mock_nonexistent_keys_check_and_fix.assert_called_once()
 
     @patch("i18n_check.check.unused_keys.unused_keys_check")
     @patch("sys.exit")
