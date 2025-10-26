@@ -129,6 +129,7 @@ There the following checks can ran across your codebase:
   - Pass `--fix` (`-f`) to fix all naming issues automatically.
 - `nonexistent-keys` (`nk`): Does the codebase include i18n keys that are not within the source file?
   - Check their validity and resolve if they should be added to the i18n files or replaced.
+  - Pass `--fix` (`-f`) to interactively add nonexistent keys.
 - `unused-keys` (`uk`): Does the source file have keys that are not used in the codebase?
   - Remove them so the localization team isn't working on strings that aren't used.
 - `non-source-keys` (`nsk`): Do the target locale files have keys that are not in the source file?

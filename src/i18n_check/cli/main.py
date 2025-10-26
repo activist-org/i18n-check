@@ -21,7 +21,7 @@ from i18n_check.check.nested_files import nested_files_check
 from i18n_check.check.non_source_keys import non_source_keys_check, non_source_keys_dict
 from i18n_check.check.nonexistent_keys import (
     all_used_i18n_keys,
-    nonexistent_keys_check,
+    nonexistent_keys_check_and_fix,
 )
 from i18n_check.check.repeat_keys import repeat_keys_check
 from i18n_check.check.repeat_values import (
@@ -247,7 +247,10 @@ def main() -> None:
         return
 
     if args.nonexistent_keys:
-        nonexistent_keys_check(all_used_i18n_keys=all_used_i18n_keys)
+        nonexistent_keys_check_and_fix(
+            all_used_i18n_keys=all_used_i18n_keys,
+            fix=args.fix,
+        )
         return
 
     if args.unused_keys:
