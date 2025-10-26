@@ -199,7 +199,7 @@ def add_nonexistent_keys_interactively(
         return
 
     rprint(
-        "\n[yellow]Interactive mode to add values for nonexistent keys to i18n source file[/yellow]"
+        "\n[yellow]Interactive mode to add values for nonexistent keys to the i18n source file[/yellow]"
     )
     rprint(f"[yellow]Nonexistent keys: {len(nonexistent_keys)}[/yellow]")
     rprint(
