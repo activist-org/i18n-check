@@ -230,14 +230,11 @@ def add_nonexistent_keys_interactively(
             ]
             rprint(f"[cyan]Used in:[/cyan] {', '.join(nonexistent_key_file_names)}")
 
-            # Get value from user.
-            value = Prompt.ask(
+            if value := Prompt.ask(
                 f"[green]Enter value for '{key}'[/green]",
                 default="",
                 show_default=False,
-            )
-
-            if value:
+            ):
                 # Add the key-value pair to the dictionary.
                 i18n_src_dict_updated[key] = value
 
@@ -259,18 +256,17 @@ def add_nonexistent_keys_interactively(
         sys.exit(0)
 
     # Show final status.
-    remaining_nonexistent = all_used_i18n_keys - set(
+    if remaining_nonexistent := all_used_i18n_keys - set(
         read_json_file(file_path=i18n_src_file).keys()
-    )
-
-    if not remaining_nonexistent:
-        rprint("[green]✅ All keys have been added to the i18n source file![/green]")
-    else:
+    ):
         remaining_count = len(remaining_nonexistent)
         key_or_keys = "key" if remaining_count == 1 else "keys"
         rprint(
             f"[yellow]⚠️ {remaining_count} {key_or_keys} still missing in the i18n source file[/yellow]"
         )
+
+    else:
+        rprint("[green]✅ All keys have been added to the i18n source file![/green]")
 
 
 # MARK: Check with Fix
@@ -312,21 +308,20 @@ def nonexistent_keys_check_and_fix(
     bool
         True if the check is successful.
     """
-    if fix:
-        add_nonexistent_keys_interactively(
-            all_used_i18n_keys=all_used_i18n_keys,
-            i18n_src_dict=i18n_src_dict,
-            i18n_src_file=i18n_src_file,
-            src_directory=src_directory,
-        )
-        return True
-
-    else:
+    if not fix:
         return nonexistent_keys_check(
             all_used_i18n_keys=all_used_i18n_keys,
             i18n_src_dict=i18n_src_dict,
             all_checks_enabled=all_checks_enabled,
         )
+
+    add_nonexistent_keys_interactively(
+        all_used_i18n_keys=all_used_i18n_keys,
+        i18n_src_dict=i18n_src_dict,
+        i18n_src_file=i18n_src_file,
+        src_directory=src_directory,
+    )
+    return True
 
 
 # MARK: Variables

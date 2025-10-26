@@ -15,6 +15,11 @@ Emojis for the following are chosen based on [gitmoji](https://gitmoji.dev/).
 ### ✨ Features
 
 - The CLI can now be configured with either a `.yaml` or `.yml` file ([#75](https://github.com/activist-org/i18n-check/issues/75)).
+- The `nonexistent-keys` check now has a `--fix` argument that allows the user to add missing keys to the i18n source file ([#69](https://github.com/activist-org/i18n-check/issues/69)).
+
+### ♻️ Code Refactoring
+
+- The `missing-keys` check `--fix` method now calls the `map_keys_to_files` function only once to speed up execution.
 
 ## i18n-check 1.12.0
 
