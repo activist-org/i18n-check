@@ -30,6 +30,7 @@ from i18n_check.utils import (
     config_invalid_key_regexes_to_ignore,
     config_invalid_keys_directories_to_skip,
     config_invalid_keys_files_to_skip,
+    config_sorted_keys_active,
     config_src_directory,
     filter_valid_key_parts,
     get_all_json_files,
@@ -37,6 +38,7 @@ from i18n_check.utils import (
     path_to_valid_key,
     read_json_file,
     replace_text_in_file,
+    sort_keys,
 )
 
 # MARK: Paths / Files
@@ -335,7 +337,7 @@ Please rename the following {name_key_or_keys} \\[current_key -> suggested_corre
             directory=config_src_directory,
             file_types_to_check=config_file_types_to_check,
             directories_to_skip=config_global_directories_to_skip,
-            files_to_skip=config_global_files_to_skip,  # global as we want to fix all instances
+            files_to_skip=config_global_files_to_skip,
         )
 
         json_files = get_all_json_files(directory=config_i18n_directory)
@@ -346,9 +348,36 @@ Please rename the following {name_key_or_keys} \\[current_key -> suggested_corre
             for f in all_files_to_fix:
                 replace_text_in_file(path=f, old=current, new=correct)
 
+        # Sort the keys after invalid-keys --fix calls if sorted-keys is enabled.
+        if config_sorted_keys_active:
+            # Sort JSON files.
+            for json_file in json_files:
+                try:
+                    sort_keys(Path(json_file))
+                except Exception as e:
+                    rprint(
+                        f"[yellow]⚠️  Warning: Could not sort {json_file}: {e}[/yellow]"
+                    )
+
+            ts_files = collect_files_to_check(
+                config_src_directory,
+                [".ts", ".tsx"],
+                config_global_directories_to_skip,
+                config_global_files_to_skip,
+            )
+
+            for ts_file in ts_files:
+                try:
+                    sort_keys(Path(ts_file))
+                except Exception as e:
+                    rprint(
+                        f"[yellow]⚠️  Warning: Could not sort {ts_file}: {e}[/yellow]"
+                    )
+
+            rprint("[green]✅ Keys sorted after renaming.[/green]")
+
         if all_checks_enabled:
             raise ValueError("The invalid keys i18n check has failed.")
-
         else:
             sys.exit(1)
 

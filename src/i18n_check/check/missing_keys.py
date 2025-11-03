@@ -27,9 +27,11 @@ from i18n_check.utils import (
     config_i18n_directory,
     config_i18n_src_file,
     config_missing_keys_locales_to_check,
+    config_sorted_keys_active,
     config_src_directory,
     get_all_json_files,
     read_json_file,
+    sort_keys,
 )
 
 # MARK: Paths / Files
@@ -363,6 +365,18 @@ def missing_keys_check_and_fix(
             i18n_src_dict=i18n_src_dict,
             i18n_directory=i18n_directory,
         )
+
+        # Sort the locale file if sorting is enabled.
+        if config_sorted_keys_active:
+            locale_file = Path(i18n_directory) / f"{fix_locale}.json"
+            if locale_file.exists():
+                try:
+                    sort_keys(locale_file)
+                    rprint(f"[green] Sorted {fix_locale}.json [/green]")
+                except Exception as e:
+                    rprint(
+                        f"[yellow] Warning: Could not sort {locale_file}: {e}[/yellow]"
+                    )
 
     else:
         missing_keys_by_locale = get_missing_keys_by_locale(

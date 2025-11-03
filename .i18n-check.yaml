@@ -19,3 +19,6 @@ checks:
     active: true
     directories-to-skip: [src/i18n_check/test_frontends/all_checks_fail/skip_dir]
     files-to-skip: []
+
+  sorted-keys:
+    active: true # Set to false to disable sorting
