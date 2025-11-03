@@ -254,14 +254,6 @@ def add_nonexistent_keys_interactively(
         rprint("\n[yellow]Cancelled by user[/yellow]")
         sys.exit(0)
 
-    # Sort the file if sorting is enabled.
-    if config_sorted_keys_active and i18n_src_file.exists():
-        try:
-            sort_keys(i18n_src_file)
-            rprint("[green]✅ Sorted source file. [/green]")
-        except Exception as e:
-            rprint(f"[yellow]⚠️ Warning: Could not sort {i18n_src_file}: {e}[/yellow]")
-
     # Show final status.
     if remaining_nonexistent := all_used_i18n_keys - set(
         read_json_file(file_path=i18n_src_file).keys()
