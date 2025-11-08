@@ -12,6 +12,7 @@ Run the following script in terminal:
 >>> i18n-check -ik -f  # to fix issues automatically
 """
 
+import json
 import re
 import sys
 from collections import defaultdict
@@ -20,6 +21,8 @@ from typing import Dict, List, Optional, Tuple
 
 from rich import print as rprint
 
+from i18n_check.check.repeat_keys import find_repeat_keys
+from i18n_check.check.sorted_keys import check_file_keys_sorted
 from i18n_check.utils import (
     collect_files_to_check,
     config_file_types_to_check,
@@ -30,6 +33,7 @@ from i18n_check.utils import (
     config_invalid_key_regexes_to_ignore,
     config_invalid_keys_directories_to_skip,
     config_invalid_keys_files_to_skip,
+    config_repeat_keys_active,
     config_sorted_keys_active,
     config_src_directory,
     filter_valid_key_parts,
@@ -38,7 +42,6 @@ from i18n_check.utils import (
     path_to_valid_key,
     read_json_file,
     replace_text_in_file,
-    sort_keys,
 )
 
 # MARK: Paths / Files
@@ -337,7 +340,7 @@ Please rename the following {name_key_or_keys} \\[current_key -> suggested_corre
             directory=config_src_directory,
             file_types_to_check=config_file_types_to_check,
             directories_to_skip=config_global_directories_to_skip,
-            files_to_skip=config_global_files_to_skip,
+            files_to_skip=config_global_files_to_skip,  # global as we want to fix all instances
         )
 
         json_files = get_all_json_files(directory=config_i18n_directory)
@@ -348,36 +351,32 @@ Please rename the following {name_key_or_keys} \\[current_key -> suggested_corre
             for f in all_files_to_fix:
                 replace_text_in_file(path=f, old=current, new=correct)
 
-        # Sort the keys after invalid-keys --fix calls if sorted-keys is enabled.
+        # Sort all locale files if the the sorted-keys check is activated.
         if config_sorted_keys_active:
-            # Sort JSON files.
             for json_file in json_files:
-                try:
-                    sort_keys(Path(json_file))
-                except Exception as e:
-                    rprint(
-                        f"[yellow]⚠️  Warning: Could not sort {json_file}: {e}[/yellow]"
-                    )
+                locale_dict = read_json_file(json_file)
+                is_sorted, _ = check_file_keys_sorted(locale_dict)
 
-            ts_files = collect_files_to_check(
-                config_src_directory,
-                [".ts", ".tsx"],
-                config_global_directories_to_skip,
-                config_global_files_to_skip,
-            )
+                if not is_sorted:
+                    if config_repeat_keys_active and not find_repeat_keys(
+                        str(locale_dict)
+                    ):
+                        sorted_locale_dict = dict(sorted(locale_dict.items()))
 
-            for ts_file in ts_files:
-                try:
-                    sort_keys(Path(ts_file))
-                except Exception as e:
-                    rprint(
-                        f"[yellow]⚠️  Warning: Could not sort {ts_file}: {e}[/yellow]"
-                    )
+                        with open(json_file, "w", encoding="utf-8") as f:
+                            json.dump(
+                                sorted_locale_dict, f, indent=2, ensure_ascii=False
+                            )
+                            f.write("\n")
 
-            rprint("[green]✅ Keys sorted after renaming.[/green]")
+                    else:
+                        rprint(
+                            "[yellow]⚠️ Note: JSON key sorting skipped as there are repeat keys (i18n-check -rk)[/yellow]"
+                        )
 
         if all_checks_enabled:
             raise ValueError("The invalid keys i18n check has failed.")
+
         else:
             sys.exit(1)
 

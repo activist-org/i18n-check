@@ -120,12 +120,14 @@ There the following checks can ran across your codebase:
     - Remove them as they won't be used in the application.
 - ``repeat-keys`` (``rk``): Do any of localization files have repeat keys?
     - Separate them so that the values are not mixed when they're in production.
+    - Note: The existence of repeat keys prevents keys from being sorted.
 - ``repeat-values`` (``rv``): Does the source file have repeat values that can be combined into a single key?
     - Combine them so the localization team only needs to localize one of them.
 - ``sorted-keys`` (``sk``): Are the i18n source and target locale files sorted alphabetically?
     - Sort them alphabetically to reduce merge conflicts from the files changing.
-    - Note: Sorting is done such that periods come before underscores (some JSON extensions do otherwise).
     - Pass ``--fix`` (``-f``) to sort the i18n files automatically.
+    - Note: The ``--fix`` option for other checks will sort the keys if this check is active.
+    - Note: Sorting is done such that periods come before underscores (some JSON extensions do otherwise).
 - ``nested-files`` (``nf``): Do the i18n files contain nested JSON structures?
     - Flatten them to make replacing invalid keys easier with find-and-replace all.
 - ``missing-keys`` (``mk``): Are any keys from the source file missing in the locale files?

@@ -42,7 +42,7 @@ def check_file_keys_sorted(json_data: Dict[str, Any]) -> Tuple[bool, List[str]]:
     Tuple[bool, List[str]]
         A tuple containing:
         - bool: True if keys are sorted, False otherwise
-        - List[str]: List of keys in their correct alphabetical order
+        - List[str]: List of keys in their correct alphabetical order for testing
     """
     keys = list(json_data.keys())
     sorted_keys = sorted(keys)

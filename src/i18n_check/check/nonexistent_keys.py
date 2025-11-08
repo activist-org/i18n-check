@@ -22,6 +22,7 @@ from rich import print as rprint
 from rich.prompt import Prompt
 
 from i18n_check.check.invalid_keys import map_keys_to_files
+from i18n_check.check.repeat_keys import find_repeat_keys
 from i18n_check.utils import (
     PATH_SEPARATOR,
     collect_files_to_check,
@@ -29,10 +30,10 @@ from i18n_check.utils import (
     config_i18n_src_file,
     config_nonexistent_keys_directories_to_skip,
     config_nonexistent_keys_files_to_skip,
+    config_repeat_keys_active,
     config_sorted_keys_active,
     config_src_directory,
     read_json_file,
-    sort_keys,
 )
 
 # MARK: Paths / Files
@@ -240,7 +241,21 @@ def add_nonexistent_keys_interactively(
                 # Add the key-value pair to the dictionary.
                 i18n_src_dict_updated[key] = value
 
-                # Write to file without sorting.
+                # Sort the file if the the sorted-keys check is activated.
+                if config_sorted_keys_active:
+                    if config_repeat_keys_active and not find_repeat_keys(
+                        str(i18n_src_dict_updated)
+                    ):
+                        i18n_src_dict_updated = dict(
+                            sorted(i18n_src_dict_updated.items())
+                        )
+
+                    else:
+                        rprint(
+                            "[yellow]⚠️ Note: JSON key sorting skipped as there are repeat keys (i18n-check -rk)[/yellow]"
+                        )
+
+                # Write to file.
                 with open(i18n_src_file, "w", encoding="utf-8") as f:
                     json.dump(i18n_src_dict_updated, f, indent=2, ensure_ascii=False)
                     f.write("\n")
@@ -254,14 +269,6 @@ def add_nonexistent_keys_interactively(
         rprint("\n[yellow]Cancelled by user[/yellow]")
         sys.exit(0)
 
-    # Sort the file if sorting is enabled.
-    if config_sorted_keys_active and i18n_src_file.exists():
-        try:
-            sort_keys(i18n_src_file)
-            rprint("[green]✅ Sorted source file. [/green]")
-        except Exception as e:
-            rprint(f"[yellow]⚠️ Warning: Could not sort {i18n_src_file}: {e}[/yellow]")
-
     # Show final status.
     if remaining_nonexistent := all_used_i18n_keys - set(
         read_json_file(file_path=i18n_src_file).keys()
@@ -271,6 +278,7 @@ def add_nonexistent_keys_interactively(
         rprint(
             f"[yellow]⚠️ {remaining_count} {key_or_keys} still missing in the i18n source file[/yellow]"
         )
+
     else:
         rprint("[green]✅ All keys have been added to the i18n source file![/green]")
 
@@ -327,15 +335,6 @@ def nonexistent_keys_check_and_fix(
         i18n_src_file=i18n_src_file,
         src_directory=src_directory,
     )
-
-    # Sort the source file if sorting is enabled.
-    if config_sorted_keys_active and i18n_src_file.exists():
-        try:
-            sort_keys(i18n_src_file)
-            rprint("[green]✅ Sorted source file [/green]")
-        except Exception as e:
-            rprint(f"[yellow] Warning: Could not sort {i18n_src_file}: {e}[/yellow]")
-    return True
 
 
 # MARK: Variables
