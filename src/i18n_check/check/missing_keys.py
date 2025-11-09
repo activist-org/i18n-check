@@ -285,7 +285,7 @@ def add_missing_keys_interactively(
                         # Add the translation to the locale dictionary.
                         locale_dict[key] = translation
 
-                        # Sort the file if the sorted-keys check is activated.
+                        # Sort the file if the sorted-keys and repeat-keys checks are activated.
                         if config_sorted_keys_active:
                             if (
                                 config_repeat_keys_active
