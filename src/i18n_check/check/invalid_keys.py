@@ -21,7 +21,7 @@ from typing import Dict, List, Optional, Tuple
 
 from rich import print as rprint
 
-from i18n_check.check.repeat_keys import find_repeat_keys
+from i18n_check.check.repeat_keys import check_file_keys_repeated
 from i18n_check.check.sorted_keys import check_file_keys_sorted
 from i18n_check.utils import (
     collect_files_to_check,
@@ -358,8 +358,9 @@ Please rename the following {name_key_or_keys} \\[current_key -> suggested_corre
                 is_sorted, _ = check_file_keys_sorted(locale_dict)
 
                 if not is_sorted:
-                    if config_repeat_keys_active and not find_repeat_keys(
-                        json.dumps(locale_dict)
+                    if (
+                        config_repeat_keys_active
+                        and not check_file_keys_repeated(json_file)[1]
                     ):
                         sorted_locale_dict = dict(sorted(locale_dict.items()))
 
@@ -371,7 +372,7 @@ Please rename the following {name_key_or_keys} \\[current_key -> suggested_corre
 
                     else:
                         rprint(
-                            "[yellow]⚠️ Note: JSON key sorting skipped as there are repeat keys (i18n-check -rk)[/yellow]"
+                            "\n[yellow]⚠️  Note: JSON key sorting skipped as there are repeat keys (i18n-check -rk)[/yellow]"
                         )
 
         if all_checks_enabled:

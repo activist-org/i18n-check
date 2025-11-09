@@ -21,7 +21,7 @@ from rich import print as rprint
 from rich.prompt import Prompt
 
 from i18n_check.check.invalid_keys import map_keys_to_files
-from i18n_check.check.repeat_keys import find_repeat_keys
+from i18n_check.check.repeat_keys import check_file_keys_repeated
 from i18n_check.utils import (
     PATH_SEPARATOR,
     config_i18n_directory,
@@ -287,14 +287,15 @@ def add_missing_keys_interactively(
 
                         # Sort the file if the sorted-keys check is activated.
                         if config_sorted_keys_active:
-                            if config_repeat_keys_active and not find_repeat_keys(
-                                json.dumps(locale_dict)
+                            if (
+                                config_repeat_keys_active
+                                and not check_file_keys_repeated(locale_file_path)[1]
                             ):
                                 locale_dict = dict(sorted(locale_dict.items()))
 
                         else:
                             rprint(
-                                "[yellow]⚠️ Note: JSON key sorting skipped as there are repeat keys (i18n-check -rk)[/yellow]"
+                                "\n[yellow]⚠️  Note: JSON key sorting skipped as there are repeat keys (i18n-check -rk)[/yellow]"
                             )
 
                         with open(locale_file_path, "w", encoding="utf-8") as f:
