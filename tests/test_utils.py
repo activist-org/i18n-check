@@ -164,7 +164,7 @@ def test_successful_replacement(tmp_path):
     file_path = tmp_path / "sample.txt"
     file_path.write_text("Hello World!", encoding="utf-8")
 
-    replace_text_in_file(file_path, "World", "Universe")
+    replace_text_in_file(file_path, old="World", new="Universe")
 
     assert file_path.read_text(encoding="utf-8") == "Hello Universe!"
 
@@ -173,7 +173,7 @@ def test_no_replacement_when_old_not_found(tmp_path):
     file_path = tmp_path / "sample.txt"
     file_path.write_text("Hello World!", encoding="utf-8")
 
-    replace_text_in_file(file_path, "Galaxy", "Universe")
+    replace_text_in_file(file_path, old="Galaxy", new="Universe")
 
     # Content should remain unchanged.
     assert file_path.read_text(encoding="utf-8") == "Hello World!"
@@ -183,7 +183,7 @@ def test_replacement_with_multiple_occurrences(tmp_path):
     file_path = tmp_path / "sample.txt"
     file_path.write_text("abc abc abc", encoding="utf-8")
 
-    replace_text_in_file(file_path, "abc", "xyz")
+    replace_text_in_file(file_path, old="abc", new="xyz")
 
     assert file_path.read_text(encoding="utf-8") == "xyz xyz xyz"
 
@@ -192,7 +192,7 @@ def test_print_output_on_successful_replacement(tmp_path, capsys):
     file_path = tmp_path / "sample.txt"
     file_path.write_text("Replace this text", encoding="utf-8")
 
-    replace_text_in_file(file_path, "Replace this text", "New text")
+    replace_text_in_file(file_path, old="Replace this text", new="New text")
 
     output = capsys.readouterr().out
     assert "✨ Replaced 'Replace this text' with 'New text'" in output
@@ -203,7 +203,7 @@ def test_print_output_on_no_replacement(tmp_path, capsys):
     file_path = tmp_path / "sample.txt"
     file_path.write_text("nothing to change here", encoding="utf-8")
 
-    replace_text_in_file(file_path, "old", "new")
+    replace_text_in_file(file_path, old="old", new="new")
 
     output = capsys.readouterr().out
     assert output == ""

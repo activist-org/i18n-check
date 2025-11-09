@@ -288,7 +288,7 @@ def add_missing_keys_interactively(
                         # Sort the file if the sorted-keys check is activated.
                         if config_sorted_keys_active:
                             if config_repeat_keys_active and not find_repeat_keys(
-                                str(locale_dict)
+                                json.dumps(locale_dict)
                             ):
                                 locale_dict = dict(sorted(locale_dict.items()))
 

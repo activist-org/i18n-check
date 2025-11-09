@@ -244,7 +244,7 @@ def add_nonexistent_keys_interactively(
                 # Sort the file if the sorted-keys check is activated.
                 if config_sorted_keys_active:
                     if config_repeat_keys_active and not find_repeat_keys(
-                        str(i18n_src_dict_updated)
+                        json.dumps(i18n_src_dict_updated)
                     ):
                         i18n_src_dict_updated = dict(
                             sorted(i18n_src_dict_updated.items())

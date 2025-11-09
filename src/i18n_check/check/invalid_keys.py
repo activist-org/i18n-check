@@ -359,15 +359,15 @@ Please rename the following {name_key_or_keys} \\[current_key -> suggested_corre
 
                 if not is_sorted:
                     if config_repeat_keys_active and not find_repeat_keys(
-                        str(locale_dict)
+                        json.dumps(locale_dict)
                     ):
                         sorted_locale_dict = dict(sorted(locale_dict.items()))
 
-                        with open(json_file, "w", encoding="utf-8") as f:
+                        with open(json_file, "w", encoding="utf-8") as lf:
                             json.dump(
-                                sorted_locale_dict, f, indent=2, ensure_ascii=False
+                                sorted_locale_dict, lf, indent=2, ensure_ascii=False
                             )
-                            f.write("\n")
+                            lf.write("\n")
 
                     else:
                         rprint(
