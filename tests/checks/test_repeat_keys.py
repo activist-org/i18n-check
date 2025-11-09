@@ -6,7 +6,7 @@ Tests for the repeat_keys.py.
 import pytest
 
 from i18n_check.check.repeat_keys import (
-    check_file,
+    check_file_keys_repeated,
     find_repeat_keys,
     repeat_keys_check,
 )
@@ -70,14 +70,14 @@ def test_invalid_json(json_str) -> None:
         (pass_checks_src_json_path, {}),
     ],
 )
-def test_check_file(file_path, expected_duplicates) -> None:
-    filename, duplicates = check_file(file_path)
+def test_check_file_keys_repeated(file_path, expected_duplicates) -> None:
+    filename, duplicates = check_file_keys_repeated(file_path)
     assert duplicates == expected_duplicates
 
 
-def test_check_file_not_found() -> None:
+def test_check_file_keys_repeated_not_found() -> None:
     with pytest.raises(FileNotFoundError):
-        check_file("nonexistent_file.json")
+        check_file_keys_repeated("nonexistent_file.json")
 
 
 def test_main_with_duplicates_raises(capsys) -> None:

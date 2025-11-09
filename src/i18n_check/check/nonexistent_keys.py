@@ -22,6 +22,7 @@ from rich import print as rprint
 from rich.prompt import Prompt
 
 from i18n_check.check.invalid_keys import map_keys_to_files
+from i18n_check.check.repeat_keys import check_file_keys_repeated
 from i18n_check.utils import (
     PATH_SEPARATOR,
     collect_files_to_check,
@@ -29,6 +30,8 @@ from i18n_check.utils import (
     config_i18n_src_file,
     config_nonexistent_keys_directories_to_skip,
     config_nonexistent_keys_files_to_skip,
+    config_repeat_keys_active,
+    config_sorted_keys_active,
     config_src_directory,
     read_json_file,
 )
@@ -238,8 +241,20 @@ def add_nonexistent_keys_interactively(
                 # Add the key-value pair to the dictionary.
                 i18n_src_dict_updated[key] = value
 
-                # Sort the dictionary by its keys.
-                i18n_src_dict_updated = dict(sorted(i18n_src_dict_updated.items()))
+                # Sort the file if the sorted-keys and repeat-keys checks are activated.
+                if config_sorted_keys_active:
+                    if (
+                        config_repeat_keys_active
+                        and not check_file_keys_repeated(str(i18n_src_file))[1]
+                    ):
+                        i18n_src_dict_updated = dict(
+                            sorted(i18n_src_dict_updated.items())
+                        )
+
+                    else:
+                        rprint(
+                            "\n[yellow]⚠️  Note: JSON key sorting skipped as there are repeat keys (i18n-check -rk)[/yellow]"
+                        )
 
                 # Write to file.
                 with open(i18n_src_file, "w", encoding="utf-8") as f:

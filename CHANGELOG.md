@@ -12,6 +12,14 @@ Emojis for the following are chosen based on [gitmoji](https://gitmoji.dev/).
 
 ## [Upcoming] i18n-check 1.x
 
+## i18n-check 1.14.0
+
+### ✨ Features
+
+- The CLI now sorts all required locale files if the `sorted-keys` check is activated when `--fix` options are used for the `invalid-keys`, `missing-keys` and `nonexistent-keys` checks ([#78](https://github.com/activist-org/i18n-check/issues/78)).
+- The `sorted-keys` check only functions if the `repeat-keys` check has passed for the given JSON file.
+  - The user is warned if there are repeated keys so these can be fixed before sorting.
+
 ## i18n-check 1.13.0
 
 ### ✨ Features
@@ -166,7 +174,7 @@ Emojis for the following are chosen based on [gitmoji](https://gitmoji.dev/).
 
 ### ♻️ Code Refactoring
 
-- Check variable assignments were cleaned up the the utility file.
+- Check variable assignments were cleaned up the utility file.
 - The upgrade message instructs the user to use the built in upgrade functionality.
 - Enhanced `run_check()` utility function with optional `suppress_errors` parameter for cleaner CLI output.
 
@@ -279,7 +287,7 @@ Emojis for the following are chosen based on [gitmoji](https://gitmoji.dev/).
 
 ### 🐞 Bug Fixes
 
-- The the check for the configuration file is now within the utils file to assure that the generate configuration file workflow is ran.
+- The check for the configuration file is now within the utils file to assure that the generate configuration file workflow is ran.
 - The directory that the utils file is checking is the current working directory rather than the project root.
 
 ## i18n-check 1.0.0

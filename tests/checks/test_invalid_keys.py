@@ -98,7 +98,10 @@ def test_invalid_keys_check_and_fix_fail(capsys) -> None:
     Test invalid_keys_check_and_fix for the fail case.
     """
     with pytest.raises(SystemExit):
-        invalid_keys_check_and_fix(invalid_format_fail, invalid_name_fail)
+        invalid_keys_check_and_fix(
+            invalid_keys_by_format=invalid_format_fail,
+            invalid_keys_by_name=invalid_name_fail,
+        )
 
     output_msg = capsys.readouterr().out
 
@@ -117,7 +120,10 @@ def test_invalid_keys_check_and_fix_pass(capsys) -> None:
     Test invalid_keys_check_and_fix for the pass case.
     """
     # For pass case, it should not raise an error.
-    invalid_keys_check_and_fix(invalid_format_pass, invalid_name_pass)
+    invalid_keys_check_and_fix(
+        invalid_keys_by_format=invalid_format_pass,
+        invalid_keys_by_name=invalid_name_pass,
+    )
     pass_result = capsys.readouterr().out
 
     assert "✅ invalid_keys success: " in pass_result.replace("\n", "").strip()
@@ -130,7 +136,10 @@ def test_invalid_keys_check_and_fix_pass(capsys) -> None:
 
 def test_invalid_keys_check_and_fix_fail_with_tip(capsys):
     with pytest.raises(SystemExit):
-        invalid_keys_check_and_fix(invalid_format_fail, invalid_name_fail)
+        invalid_keys_check_and_fix(
+            invalid_keys_by_format=invalid_format_fail,
+            invalid_keys_by_name=invalid_name_fail,
+        )
 
     output = capsys.readouterr().out
     assert "not formatted correctly" in output
@@ -142,7 +151,11 @@ def test_invalid_keys_check_and_fix_fail_with_tip(capsys):
 
 def test_invalid_keys_check_and_fix_fail_fix_mode(capsys):
     with pytest.raises(SystemExit):
-        invalid_keys_check_and_fix(invalid_format_fail, invalid_name_fail, fix=True)
+        invalid_keys_check_and_fix(
+            invalid_keys_by_format=invalid_format_fail,
+            invalid_keys_by_name=invalid_name_fail,
+            fix=True,
+        )
 
     output = capsys.readouterr().out
     assert "--fix (-f) flag" not in output

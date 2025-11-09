@@ -21,12 +21,14 @@ from rich import print as rprint
 from rich.prompt import Prompt
 
 from i18n_check.check.invalid_keys import map_keys_to_files
-from i18n_check.check.sorted_keys import check_file_keys_sorted
+from i18n_check.check.repeat_keys import check_file_keys_repeated
 from i18n_check.utils import (
     PATH_SEPARATOR,
     config_i18n_directory,
     config_i18n_src_file,
     config_missing_keys_locales_to_check,
+    config_repeat_keys_active,
+    config_sorted_keys_active,
     config_src_directory,
     get_all_json_files,
     read_json_file,
@@ -283,11 +285,18 @@ def add_missing_keys_interactively(
                         # Add the translation to the locale dictionary.
                         locale_dict[key] = translation
 
-                        # Check if sorted keys are required.
-                        is_sorted, sorted_keys = check_file_keys_sorted(locale_dict)
-                        if not is_sorted:
-                            # Sort the dictionary if keys should be ordered.
-                            locale_dict = dict(sorted(locale_dict.items()))
+                        # Sort the file if the sorted-keys and repeat-keys checks are activated.
+                        if config_sorted_keys_active:
+                            if (
+                                config_repeat_keys_active
+                                and not check_file_keys_repeated(locale_file_path)[1]
+                            ):
+                                locale_dict = dict(sorted(locale_dict.items()))
+
+                        else:
+                            rprint(
+                                "\n[yellow]⚠️  Note: JSON key sorting skipped as there are repeat keys (i18n-check -rk)[/yellow]"
+                            )
 
                         with open(locale_file_path, "w", encoding="utf-8") as f:
                             json.dump(locale_dict, f, indent=2, ensure_ascii=False)

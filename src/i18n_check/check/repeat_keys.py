@@ -101,7 +101,7 @@ def find_repeat_keys(json_input: Union[str, Path]) -> Dict[str, List[str]]:
 # MARK: Check File
 
 
-def check_file(file_path: str) -> Tuple[str, Dict[str, List[str]]]:
+def check_file_keys_repeated(file_path: str) -> Tuple[str, Dict[str, List[str]]]:
     """
     Check a single JSON file for duplicate keys.
 
@@ -127,7 +127,7 @@ def check_file(file_path: str) -> Tuple[str, Dict[str, List[str]]]:
 
     Examples
     --------
-    >>> check_file("example.json")
+    >>> check_file_keys_repeated("example.json")
     ('example.json', {'duplicate_key': ['value1', 'value2']})
     """
     with open(file_path, "r", encoding="utf-8") as f:
@@ -169,7 +169,7 @@ def repeat_keys_check(
     error_message = ""
     file_duplicate_keys_messages = ""
     for json_file in json_files:
-        filename, duplicates = check_file(json_file)
+        filename, duplicates = check_file_keys_repeated(json_file)
         if duplicates:
             has_errors = True
             file_duplicate_keys_messages += f"\n[red]Repeat keys in {filename}:[/red]"

@@ -12,6 +12,7 @@ Run the following script in terminal:
 >>> i18n-check -ik -f  # to fix issues automatically
 """
 
+import json
 import re
 import sys
 from collections import defaultdict
@@ -20,6 +21,8 @@ from typing import Dict, List, Optional, Tuple
 
 from rich import print as rprint
 
+from i18n_check.check.repeat_keys import check_file_keys_repeated
+from i18n_check.check.sorted_keys import check_file_keys_sorted
 from i18n_check.utils import (
     collect_files_to_check,
     config_file_types_to_check,
@@ -30,6 +33,8 @@ from i18n_check.utils import (
     config_invalid_key_regexes_to_ignore,
     config_invalid_keys_directories_to_skip,
     config_invalid_keys_files_to_skip,
+    config_repeat_keys_active,
+    config_sorted_keys_active,
     config_src_directory,
     filter_valid_key_parts,
     get_all_json_files,
@@ -345,6 +350,30 @@ Please rename the following {name_key_or_keys} \\[current_key -> suggested_corre
         for current, correct in invalid_keys_by_name.items():
             for f in all_files_to_fix:
                 replace_text_in_file(path=f, old=current, new=correct)
+
+        # Sort all locale files if the sorted-keys and repeat-keys checks are activated.
+        if config_sorted_keys_active:
+            for json_file in json_files:
+                locale_dict = read_json_file(json_file)
+                is_sorted, _ = check_file_keys_sorted(locale_dict)
+
+                if not is_sorted:
+                    if (
+                        config_repeat_keys_active
+                        and not check_file_keys_repeated(json_file)[1]
+                    ):
+                        sorted_locale_dict = dict(sorted(locale_dict.items()))
+
+                        with open(json_file, "w", encoding="utf-8") as lf:
+                            json.dump(
+                                sorted_locale_dict, lf, indent=2, ensure_ascii=False
+                            )
+                            lf.write("\n")
+
+                    else:
+                        rprint(
+                            "\n[yellow]⚠️  Note: JSON key sorting skipped as there are repeat keys (i18n-check -rk)[/yellow]"
+                        )
 
         if all_checks_enabled:
             raise ValueError("The invalid keys i18n check has failed.")
