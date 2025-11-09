@@ -241,7 +241,7 @@ def add_nonexistent_keys_interactively(
                 # Add the key-value pair to the dictionary.
                 i18n_src_dict_updated[key] = value
 
-                # Sort the file if the the sorted-keys check is activated.
+                # Sort the file if the sorted-keys check is activated.
                 if config_sorted_keys_active:
                     if config_repeat_keys_active and not find_repeat_keys(
                         str(i18n_src_dict_updated)
@@ -335,6 +335,7 @@ def nonexistent_keys_check_and_fix(
         i18n_src_file=i18n_src_file,
         src_directory=src_directory,
     )
+    return True
 
 
 # MARK: Variables

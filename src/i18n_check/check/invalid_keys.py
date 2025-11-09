@@ -351,7 +351,7 @@ Please rename the following {name_key_or_keys} \\[current_key -> suggested_corre
             for f in all_files_to_fix:
                 replace_text_in_file(path=f, old=current, new=correct)
 
-        # Sort all locale files if the the sorted-keys check is activated.
+        # Sort all locale files if the sorted-keys check is activated.
         if config_sorted_keys_active:
             for json_file in json_files:
                 locale_dict = read_json_file(json_file)

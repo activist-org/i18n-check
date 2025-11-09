@@ -174,7 +174,7 @@ Emojis for the following are chosen based on [gitmoji](https://gitmoji.dev/).
 
 ### ♻️ Code Refactoring
 
-- Check variable assignments were cleaned up the the utility file.
+- Check variable assignments were cleaned up the utility file.
 - The upgrade message instructs the user to use the built in upgrade functionality.
 - Enhanced `run_check()` utility function with optional `suppress_errors` parameter for cleaner CLI output.
 
@@ -287,7 +287,7 @@ Emojis for the following are chosen based on [gitmoji](https://gitmoji.dev/).
 
 ### 🐞 Bug Fixes
 
-- The the check for the configuration file is now within the utils file to assure that the generate configuration file workflow is ran.
+- The check for the configuration file is now within the utils file to assure that the generate configuration file workflow is ran.
 - The directory that the utils file is checking is the current working directory rather than the project root.
 
 ## i18n-check 1.0.0

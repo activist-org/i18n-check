@@ -21,7 +21,7 @@ from rich import print as rprint
 from rich.prompt import Prompt
 
 from i18n_check.check.invalid_keys import map_keys_to_files
-from i18n_check.check.sorted_keys import find_repeat_keys
+from i18n_check.check.repeat_keys import find_repeat_keys
 from i18n_check.utils import (
     PATH_SEPARATOR,
     config_i18n_directory,
@@ -285,7 +285,7 @@ def add_missing_keys_interactively(
                         # Add the translation to the locale dictionary.
                         locale_dict[key] = translation
 
-                        # Sort the file if the the sorted-keys check is activated.
+                        # Sort the file if the sorted-keys check is activated.
                         if config_sorted_keys_active:
                             if config_repeat_keys_active and not find_repeat_keys(
                                 str(locale_dict)
