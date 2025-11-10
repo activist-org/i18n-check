@@ -146,7 +146,7 @@ Directions for how to fix the i18n files are provided when errors are raised. Ch
 Configuration
 =============
 
-The following details the ``.i18n-check.yaml`` or ``.i18n-check.yml`` configuration file, with a further example being the `configuration file for the i18n-check repository <https://github.com/activist-org/i18n-check/blob/main/.i18n-check.yaml>`_ that we use in testing.
+The following details the ``.i18n-check.yaml`` configuration file, with a further example being the `configuration file for the i18n-check repository <https://github.com/activist-org/i18n-check/blob/main/.i18n-check.yaml>`_ that we use in testing.
 
     | **Note**
 

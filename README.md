@@ -167,7 +167,7 @@ Directions for how to fix the i18n files are provided when errors are raised. Ch
 
 ### YAML File [`⇧`](#contents)
 
-The following details the `.i18n-check.yaml` or `.i18n-check.yml` configuration file, with a further example being the [configuration file for this repository](/.i18n-check.yaml) that we use in testing.
+The following details the `.i18n-check.yaml` configuration file, with a further example being the [configuration file for this repository](/.i18n-check.yaml) that we use in testing.
 
 > [!NOTE]
 > Both `.i18n-check.yaml` and `.i18n-check.yml` file extensions are supported. If both files exist, `.yaml` will be preferred.
