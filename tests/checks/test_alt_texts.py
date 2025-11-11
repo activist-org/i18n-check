@@ -33,6 +33,12 @@ class TestAltTexts(unittest.TestCase):
                     "correct_value": "The quick brown fox jumps over the lazy dog.",
                     "current_value": "The quick brown fox jumps over the lazy dog",
                 }
+            },
+            "i18n.test_file.fox_rtl_image_alt_text": {
+                str(checks_fail_json_dir / "test_i18n_locale.json"): {
+                    "correct_value": "الثعلب البني السريع يقفز فوق الكلب الكسول.",
+                    "current_value": "الثعلب البني السريع يقفز فوق الكلب الكسول",
+                }
             }
         }
 

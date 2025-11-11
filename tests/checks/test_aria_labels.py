@@ -38,6 +38,12 @@ class TestAriaLabels(unittest.TestCase):
                     "current_value": "Click here to submit the form in another language.",
                 },
             },
+            "i18n.test_file.form_rtl_button_aria_label": {
+                str(checks_fail_json_dir / "test_i18n_locale.json"): {
+                    "correct_value": "انقر هنا لتقديم النموذج",
+                    "current_value": ".انقر هنا لتقديم النموذج",
+                }
+            }
         }
 
         self.assertEqual(aria_label_issues, expected_issues)
