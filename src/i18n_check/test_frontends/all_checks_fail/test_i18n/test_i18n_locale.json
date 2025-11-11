@@ -3,5 +3,7 @@
   "i18n._global.not_in_i18n_src": "A reference that can't be used.",
   "i18n.sub_dir_first_file.hello_sub_dir_first_file": "",
   "i18n.test_file.form_button_aria_label": "Click here to submit the form in another language.",
+  "i18n.test_file.form_rtl_button_aria_label": ".انقر هنا لتقديم النموذج",
+  "i18n.test_file.fox_rtl_image_alt_text": "الثعلب البني السريع يقفز فوق الكلب الكسول",
   "i18n.test_file.hello_test_file": ""
 }
