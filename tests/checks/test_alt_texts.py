@@ -39,7 +39,7 @@ class TestAltTexts(unittest.TestCase):
                     "correct_value": "الثعلب البني السريع يقفز فوق الكلب الكسول.",
                     "current_value": "الثعلب البني السريع يقفز فوق الكلب الكسول",
                 }
-            }
+            },
         }
 
         self.maxDiff = None

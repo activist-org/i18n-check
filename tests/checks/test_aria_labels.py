@@ -43,7 +43,7 @@ class TestAriaLabels(unittest.TestCase):
                     "correct_value": "انقر هنا لتقديم النموذج",
                     "current_value": ".انقر هنا لتقديم النموذج",
                 }
-            }
+            },
         }
 
         self.assertEqual(aria_label_issues, expected_issues)
