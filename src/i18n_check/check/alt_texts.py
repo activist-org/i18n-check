@@ -15,6 +15,7 @@ Run the following script in terminal:
 
 import string
 import sys
+import unicodedata
 from pathlib import Path
 from typing import Dict
 
@@ -28,6 +29,40 @@ from i18n_check.utils import (
     replace_text_in_file,
 )
 
+# MARK: CHECK RTL/LTR TEXT
+
+
+def is_rtl_text(text: str) -> bool:
+    """
+    Check if the text contains RTL (Right-to-Left) characters.
+
+    Parameters
+    ----------
+    text : str
+        The text to check.
+
+    Returns
+    -------
+    bool
+        True if the text contains RTL characters, False otherwise.
+    """
+    if not text:
+        return False
+
+    # Check for RTL characters using Unicode bidirectional categories
+    # R = Right-to-Left (e.g., Hebrew, Arabic)
+    # AL = Right-to-Left Arabic
+    # RLE = Right-to-Left Embedding
+    # RLO = Right-to-Left Override
+    rtl_categories = {"R", "AL", "RLE", "RLO"}
+
+    for char in text:
+        if unicodedata.bidirectional(char) in rtl_categories:
+            return True
+
+    return False
+
+
 # MARK: Find Issues
 
 
@@ -35,7 +70,7 @@ def find_alt_text_punctuation_issues(
     i18n_directory: Path = config_i18n_directory,
 ) -> Dict[str, Dict[str, Dict[str, str]]]:
     """
-    Find alt text keys that don't end with appropriate punctuation.
+    Find alt text keys that don't have appropriate punctuation.
 
     Parameters
     ----------
@@ -57,18 +92,37 @@ def find_alt_text_punctuation_issues(
 
         for key, value in json_file_dict.items():
             if isinstance(value, str) and key.endswith("_alt_text"):
-                stripped_value = value.rstrip()
-                if stripped_value and stripped_value[-1] not in punctuation_to_check:
-                    corrected_value = f"{stripped_value}."
+                stripped_value = value.strip()
+                if not stripped_value:
+                    continue
 
-                    if key not in alt_text_issues:
-                        alt_text_issues[key] = {}
+                # Check if text is RTL
+                is_rtl = is_rtl_text(stripped_value)
 
-                    if json_file not in alt_text_issues[key]:
-                        alt_text_issues[key][json_file] = {}
+                if is_rtl:
+                    # For RTL text, period should be at position 0
+                    if stripped_value[0] not in punctuation_to_check:
+                        corrected_value = f".{stripped_value}"
 
-                    alt_text_issues[key][json_file]["current_value"] = value
-                    alt_text_issues[key][json_file]["correct_value"] = corrected_value
+                        if key not in alt_text_issues:
+                            alt_text_issues[key] = {}
+
+                        alt_text_issues[key][str(json_file)] = {
+                            "current_value": value,
+                            "correct_value": corrected_value,
+                        }
+                else:
+                    # For LTR text, period should be at the end
+                    if stripped_value[-1] not in punctuation_to_check:
+                        corrected_value = f"{stripped_value}."
+
+                        if key not in alt_text_issues:
+                            alt_text_issues[key] = {}
+
+                        alt_text_issues[key][str(json_file)] = {
+                            "current_value": value,
+                            "correct_value": corrected_value,
+                        }
 
     return alt_text_issues
 
