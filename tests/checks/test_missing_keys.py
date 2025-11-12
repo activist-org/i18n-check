@@ -58,7 +58,6 @@ def test_get_missing_keys_by_locale_fail() -> None:
         "i18n.sub_dir._global.hello_sub_dir",
         "i18n.sub_dir_first_file.hello_sub_dir_first_file",  # has empty value
         "i18n.sub_dir_second_file.hello_sub_dir_second_file",
-        "i18n.test_file.fox_image_alt_text",
         "i18n.test_file.hello_test_file",  # has empty value
         "i18n.test_file.incorrectly-formatted-key",
         "i18n.test_file.nested_example",
@@ -235,7 +234,8 @@ def test_add_missing_keys_interactively_with_translations(
         "i18n._global.not_in_i18n_src": "A reference that can't be used.",
         "i18n._global.repeat_value_hello_global": "Locale translation",
         "i18n.sub_dir_first_file.hello_sub_dir_first_file": "",
-        "i18n.test_file.form_button_aria_label": "Click here to submit the form in another language.",
+        "i18n.test_file.form_button_aria_label": ".انقر هنا لتقديم النموذج",
+        "i18n.test_file.fox_image_alt_text": "الثعلب البني السريع يقفز فوق الكلب الكسول",
         "i18n.test_file.hello_test_file": "",
     }
 
