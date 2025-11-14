@@ -59,7 +59,7 @@ def find_aria_label_punctuation_issues(
             if isinstance(value, str) and key.endswith("_aria_label"):
                 stripped_value = value.rstrip()
 
-                # Aria labels should not have punctuation at either end
+                # Aria labels should not have punctuation at either end.
                 has_punctuation_at_end = (
                     stripped_value and stripped_value[-1] in punctuation_to_check
                 )
@@ -70,7 +70,7 @@ def find_aria_label_punctuation_issues(
                 if stripped_value and (
                     has_punctuation_at_end or has_punctuation_at_start
                 ):
-                    # Remove punctuation from both ends to be thorough
+                    # Remove punctuation from both ends to be thorough.
                     corrected_value = stripped_value.strip(punctuation_to_check)
 
                     # Preserve any trailing whitespace from original.

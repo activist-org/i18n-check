@@ -20,6 +20,14 @@ Emojis for the following are chosen based on [gitmoji](https://gitmoji.dev/).
 - The `sorted-keys` check only functions if the `repeat-keys` check has passed for the given JSON file.
   - The user is warned if there are repeated keys so these can be fixed before sorting.
 
+### 🐞 Bug Fixes
+
+- The `aria-labels` and `alt-texts` checks now function properly for RTL and LTR languages ([#78](https://github.com/activist-org/i18n-check/issues/78)).
+
+### ✅ Tests
+
+- RTL text examples were added into the `test_frontends/all_checks_fail` files to assure that punctuation fixes are tested for appropriately.
+
 ## i18n-check 1.13.0
 
 ### ✨ Features

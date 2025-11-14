@@ -29,12 +29,12 @@ from i18n_check.utils import (
     replace_text_in_file,
 )
 
-# MARK: CHECK RTL/LTR TEXT
+# MARK: Text Direction
 
 
 def is_rtl_text(text: str) -> bool:
     """
-    Check if the text contains RTL (Right-to-Left) characters.
+    Check if the text contains RTL (right-to-left) characters.
 
     Parameters
     ----------
@@ -49,7 +49,7 @@ def is_rtl_text(text: str) -> bool:
     if not text:
         return False
 
-    # R = Right-to-Left (e.g., Hebrew, Arabic)
+    # R = Right-to-Left (e.g. Arabic, Hebrew)
     # AL = Right-to-Left Arabic
     rtl_categories = ["R", "AL"]
 
@@ -94,11 +94,8 @@ def find_alt_text_punctuation_issues(
                 if not stripped_value:
                     continue
 
-                # Check if text is RTL
-                is_rtl = is_rtl_text(stripped_value)
-
-                if is_rtl:
-                    # For RTL text, period should be at position 0
+                if is_rtl_text(stripped_value):
+                    # The period should be at position 0 for RTL text.
                     if stripped_value[0] not in punctuation_to_check:
                         corrected_value = f".{stripped_value}"
 
@@ -109,18 +106,17 @@ def find_alt_text_punctuation_issues(
                             "current_value": value,
                             "correct_value": corrected_value,
                         }
-                else:
-                    # For LTR text, period should be at the end
-                    if stripped_value[-1] not in punctuation_to_check:
-                        corrected_value = f"{stripped_value}."
 
-                        if key not in alt_text_issues:
-                            alt_text_issues[key] = {}
+                elif stripped_value[-1] not in punctuation_to_check:
+                    corrected_value = f"{stripped_value}."
 
-                        alt_text_issues[key][str(json_file)] = {
-                            "current_value": value,
-                            "correct_value": corrected_value,
-                        }
+                    if key not in alt_text_issues:
+                        alt_text_issues[key] = {}
+
+                    alt_text_issues[key][str(json_file)] = {
+                        "current_value": value,
+                        "correct_value": corrected_value,
+                    }
 
     return alt_text_issues
 
