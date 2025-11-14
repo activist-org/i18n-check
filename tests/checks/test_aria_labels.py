@@ -34,8 +34,8 @@ class TestAriaLabels(unittest.TestCase):
                     "current_value": "Click here to submit the form.",
                 },
                 str(checks_fail_json_dir / "test_i18n_locale.json"): {
-                    "correct_value": "Click here to submit the form in another language",
-                    "current_value": "Click here to submit the form in another language.",
+                    "correct_value": "انقر هنا لتقديم النموذج",
+                    "current_value": ".انقر هنا لتقديم النموذج",
                 },
             },
         }

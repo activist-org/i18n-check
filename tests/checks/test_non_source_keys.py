@@ -35,11 +35,19 @@ non_source_keys_pass = get_non_source_keys(
         (non_source_keys_pass, {}),
         (
             non_source_keys_fail,
-            {"test_i18n_locale.json": {"i18n._global.not_in_i18n_src"}},
+            {
+                "test_i18n_locale.json": {
+                    "i18n._global.not_in_i18n_src",
+                }
+            },
         ),
         (
             get_non_source_keys(),
-            {"test_i18n_locale.json": {"i18n._global.not_in_i18n_src"}},
+            {
+                "test_i18n_locale.json": {
+                    "i18n._global.not_in_i18n_src",
+                }
+            },
         ),
     ],
 )

@@ -157,6 +157,9 @@ There the following checks can ran across your codebase:
   - Add periods to the end to comply with alt text guidelines.
   - Pass `--fix` (`-f`) to add periods automatically.
 
+> [!NOTE]
+> The `aria-labels` and `alt-texts` checks function for LTR and RTL languages.
+
 Directions for how to fix the i18n files are provided when errors are raised. Checks can also be disabled in the workflow via options passed in the configuration YAML file.
 
 <a id="configuration-"></a>
