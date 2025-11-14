@@ -49,15 +49,13 @@ def is_rtl_text(text: str) -> bool:
     if not text:
         return False
 
-    # Check for RTL characters using Unicode bidirectional categories
     # R = Right-to-Left (e.g., Hebrew, Arabic)
     # AL = Right-to-Left Arabic
-    # RLE = Right-to-Left Embedding
-    # RLO = Right-to-Left Override
-    rtl_categories = {"R", "AL", "RLE", "RLO"}
+    rtl_categories = ["R", "AL"]
 
     for char in text:
-        if unicodedata.bidirectional(char) in rtl_categories:
+        bc = unicodedata.bidirectional(char)
+        if bc in rtl_categories:
             return True
 
     return False
@@ -196,7 +194,8 @@ def report_and_fix_alt_texts(
                 # Replace the full key-value pair in JSON format.
                 old_pattern = f'"{k}": "{current_value}"'
                 new_pattern = f'"{k}": "{correct_value}"'
-                replace_text_in_file(path=json_file, old=old_pattern, new=new_pattern)
+                replace_text_in_file(
+                    path=json_file, old=old_pattern, new=new_pattern)
 
                 total_alt_text_issues += 1
 
