@@ -194,8 +194,7 @@ def report_and_fix_alt_texts(
                 # Replace the full key-value pair in JSON format.
                 old_pattern = f'"{k}": "{current_value}"'
                 new_pattern = f'"{k}": "{correct_value}"'
-                replace_text_in_file(
-                    path=json_file, old=old_pattern, new=new_pattern)
+                replace_text_in_file(path=json_file, old=old_pattern, new=new_pattern)
 
                 total_alt_text_issues += 1
 
