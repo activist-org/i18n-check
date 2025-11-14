@@ -22,7 +22,7 @@ Emojis for the following are chosen based on [gitmoji](https://gitmoji.dev/).
 
 ### 🐞 Bug Fixes
 
-- The `aria-labels` and `alt-texts` checks now function properly for RTL and LTR languages ([#78](https://github.com/activist-org/i18n-check/issues/78)).
+- The `aria-labels` and `alt-texts` checks now function properly for RTL and LTR languages ([#70](https://github.com/activist-org/i18n-check/issues/70)).
 
 ### ✅ Tests
 
