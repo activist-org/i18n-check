@@ -49,9 +49,10 @@ def is_rtl_text(text: str) -> bool:
     if not text:
         return False
 
-    # R = Right-to-Left (e.g. Arabic, Hebrew)
-    # AL = Right-to-Left Arabic
-    rtl_categories = ["R", "AL"]
+    rtl_categories = [
+        "R",  # right-to-left (e.g. Arabic, Hebrew)
+        "AL",  # right-to-left Arabic
+    ]
 
     for char in text:
         bc = unicodedata.bidirectional(char)
