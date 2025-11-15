@@ -3,6 +3,7 @@ header:
     content: "SPDX-License-Identifier: GPL-3.0-or-later"
   paths:
     - '**/*.py'
+    - '**/*.ts'
   paths-ignore:
     - 'build'
     - 'dist'
