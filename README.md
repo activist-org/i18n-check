@@ -124,9 +124,11 @@ You provide `i18n-check` with the following arguments in the `.i18n-check.yaml` 
 
 There the following checks can ran across your codebase:
 
-- `invalid-keys` (`ik`): Does the source file have keys that don't match the above format or name conventions?
+- `key-formatting` (`kf`): Does the i18n source file contain keys that don't follow the required formatting rules?
+  - Review and update the keys in the source file to match the conventions.
+- `key-naming` (`kn`): Are key names consistent with how and where they are used in the codebase?
   - Rename them so i18n key usage is consistent and their scope is communicated in their name.
-  - Pass `--fix` (`-f`) to fix all naming issues automatically.
+  - Pass `--fix` (`-f`) with `--key-naming` to fix naming issues automatically.
 - `nonexistent-keys` (`nk`): Does the codebase include i18n keys that are not within the source file?
   - Check their validity and resolve if they should be added to the i18n files or replaced.
   - Pass `--fix` (`-f`) to interactively add nonexistent keys.

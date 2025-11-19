@@ -20,7 +20,7 @@ from typing import Dict, List, Optional, Tuple
 from rich import print as rprint
 from rich.prompt import Prompt
 
-from i18n_check.check.invalid_keys import map_keys_to_files
+from i18n_check.check.key_naming import map_keys_to_files
 from i18n_check.check.repeat_keys import check_file_keys_repeated
 from i18n_check.utils import (
     PATH_SEPARATOR,

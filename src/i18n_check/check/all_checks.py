@@ -18,10 +18,13 @@ from rich import print as rprint
 
 from i18n_check.check.alt_texts import alt_texts_check_and_fix
 from i18n_check.check.aria_labels import aria_labels_check_and_fix
-from i18n_check.check.invalid_keys import (
+from i18n_check.check.key_formatting import (
+    invalid_key_formats_check,
     invalid_keys_by_format,
+)
+from i18n_check.check.key_naming import (
+    invalid_key_names_check_and_fix,
     invalid_keys_by_name,
-    invalid_keys_check_and_fix,
 )
 from i18n_check.check.missing_keys import missing_keys_check_and_fix
 from i18n_check.check.nested_files import nested_files_check
@@ -95,14 +98,22 @@ def run_all_checks(args: argparse.Namespace) -> None:
     if config_invalid_keys_active:
         checks.append(
             partial(
-                invalid_keys_check_and_fix,
+                invalid_key_formats_check,
                 invalid_keys_by_format=invalid_keys_by_format,
+                all_checks_enabled=True,
+            )
+        )
+        check_names.append("invalid_keys_formatting")
+
+        checks.append(
+            partial(
+                invalid_key_names_check_and_fix,
                 invalid_keys_by_name=invalid_keys_by_name,
                 all_checks_enabled=True,
                 fix=args.fix,
             )
         )
-        check_names.append("invalid_keys")
+        check_names.append("invalid_keys_naming")
 
     if config_nonexistent_keys_active:
         # We don't allow fix in all checks mode.

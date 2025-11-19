@@ -114,7 +114,7 @@ if "global" in config["checks"]:
             for f in config["checks"]["global"]["files-to-skip"]
         ]
 
-# MARK: Invalid Keys
+# MARK: Key Formatting and Naming
 
 config_invalid_keys_active = config_global_active
 config_invalid_keys_directories_to_skip = config_global_directories_to_skip.copy()
@@ -409,7 +409,7 @@ def collect_files_to_check(
     return list(result)
 
 
-# MARK: Invalid Keys
+# MARK: Key Formatting
 
 
 def is_valid_key(k: str) -> bool:

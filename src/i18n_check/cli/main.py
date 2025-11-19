@@ -11,10 +11,13 @@ from rich import print as rprint
 from i18n_check.check.all_checks import run_all_checks
 from i18n_check.check.alt_texts import alt_texts_check_and_fix
 from i18n_check.check.aria_labels import aria_labels_check_and_fix
-from i18n_check.check.invalid_keys import (
+from i18n_check.check.key_formatting import (
+    invalid_key_formats_check,
     invalid_keys_by_format,
+)
+from i18n_check.check.key_naming import (
+    invalid_key_names_check_and_fix,
     invalid_keys_by_name,
-    invalid_keys_check_and_fix,
 )
 from i18n_check.check.missing_keys import missing_keys_check_and_fix
 from i18n_check.check.nested_files import nested_files_check
@@ -57,7 +60,8 @@ def main() -> None:
     - --generate-config-file (-gcf): Generate a configuration file for i18n-check
     - --generate-test-frontends (-gtf): Generate frontends to test i18n-check functionalities
     - --all-checks (-a): Run all available checks
-    - --invalid-keys (-ik): Check for invalid i18n keys in codebase
+    - --key-formatting (-kf): Check for proper formatting of i18n keys
+    - --key-naming (-kn): Check for consistent naming of i18n keys
     - --nonexistent-keys (-nk): Check i18n key usage and formatting
     - --unused-keys (-uk): Check for unused i18n keys
     - --non-source-keys (-nsk): Check for keys in translations not in source
@@ -73,7 +77,8 @@ def main() -> None:
     Examples
     --------
     >>> i18n-check --generate-config-file  # -gcf
-    >>> i18n-check --invalid-keys  # -ik
+    >>> i18n-check --key-formatting  # -kf
+    >>> i18n-check --key-naming --fix  # -kn -f
     >>> i18n-check --all-checks  # -a
     >>> i18n-check --missing-keys --fix --locale ENTER_ISO_2_CODE  # interactive mode to add missing keys
     """
@@ -125,17 +130,24 @@ def main() -> None:
     )
 
     parser.add_argument(
-        "-ik",
-        "--invalid-keys",
+        "-kf",
+        "--key-formatting",
         action="store_true",
-        help="Check for usage and formatting of i18n keys in the i18n-src file.",
+        help="Check for proper formatting of i18n keys in the i18n-src file.",
+    )
+
+    parser.add_argument(
+        "-kn",
+        "--key-naming",
+        action="store_true",
+        help="Check for consistent naming of i18n keys in the codebase.",
     )
 
     parser.add_argument(
         "-f",
         "--fix",
         action="store_true",
-        help="(with --invalid-keys) Automatically fix key naming issues.",
+        help="(with --key-naming) Automatically fix key naming issues.",
     )
 
     parser.add_argument(
@@ -237,13 +249,19 @@ def main() -> None:
         run_all_checks(args=args)
         return
 
-    if args.invalid_keys:
-        invalid_keys_check_and_fix(
+    if args.key_formatting:
+        invalid_key_formats_check(
             invalid_keys_by_format=invalid_keys_by_format,
+            all_checks_enabled=False,
+        )
+        return
+
+    if args.key_naming:
+        invalid_key_names_check_and_fix(
             invalid_keys_by_name=invalid_keys_by_name,
+            all_checks_enabled=False,
             fix=args.fix,
         )
-
         return
 
     if args.nonexistent_keys:

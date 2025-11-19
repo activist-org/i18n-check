@@ -75,29 +75,29 @@ class TestMainCli(unittest.TestCase):
 
         mock_all_checks.assert_called_once()
 
-    @patch("i18n_check.check.invalid_keys.invalid_keys_check_and_fix")
+    @patch("i18n_check.check.key_formatting.invalid_key_formats_check")
     @patch("sys.exit")
-    def test_main_invalid_keys(self, mock_invalid_keys_check_and_fix, mock_sys_exit):
+    def test_main_key_formatting(self, mock_invalid_key_formats_check, mock_sys_exit):
         """
-        Test that `invalid_keys_check` is called for the --invalid-keys flag.
+        Test that `invalid_key_formats_check` is called for the --key-formatting flag.
         """
-        with patch("sys.argv", ["i18n-check", "--invalid-keys"]):
+        with patch("sys.argv", ["i18n-check", "--key-formatting"]):
             main()
 
-        mock_invalid_keys_check_and_fix.assert_called_once()
+        mock_invalid_key_formats_check.assert_called_once()
 
-    @patch("i18n_check.check.invalid_keys.invalid_keys_check_and_fix")
+    @patch("i18n_check.check.key_naming.invalid_key_names_check_and_fix")
     @patch("sys.exit")
-    def test_main_invalid_keys_with_fix(
-        self, mock_invalid_keys_check_and_fix, mock_sys_exit
+    def test_main_key_naming_with_fix(
+        self, mock_invalid_key_names_check_and_fix, mock_sys_exit
     ):
         """
-        Test that `invalid_keys_check_and_fix` is called with fix=True for --invalid-keys and --fix.
+        Test that `invalid_key_names_check_and_fix` is called with fix=True for --key-naming and --fix.
         """
-        with patch("sys.argv", ["i18n-check", "--invalid-keys", "--fix"]):
+        with patch("sys.argv", ["i18n-check", "--key-naming", "--fix"]):
             main()
 
-        mock_invalid_keys_check_and_fix.assert_called_once()
+        mock_invalid_key_names_check_and_fix.assert_called_once()
 
         fail_checks_src_json = read_json_file(file_path=fail_checks_src_json_path)
 

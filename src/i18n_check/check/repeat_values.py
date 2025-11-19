@@ -17,7 +17,7 @@ from typing import Dict
 
 from rich import print as rprint
 
-from i18n_check.check.invalid_keys import audit_invalid_i18n_keys, map_keys_to_files
+from i18n_check.check.key_naming import audit_invalid_i18n_key_names, map_keys_to_files
 from i18n_check.utils import (
     config_i18n_src_file,
     config_invalid_key_regexes_to_ignore,
@@ -106,7 +106,7 @@ def analyze_and_generate_repeat_value_report(
             )
 
             # Replace with 'repeat_key' as a dummy for if this was the key in all files.
-            _, invalid_keys_by_name = audit_invalid_i18n_keys(
+            invalid_keys_by_name = audit_invalid_i18n_key_names(
                 key_file_dict={
                     "repeat_key": v for k, v in repeat_values_key_file_dict.items()
                 },
