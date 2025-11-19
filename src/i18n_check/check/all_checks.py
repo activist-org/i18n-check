@@ -44,7 +44,8 @@ from i18n_check.check.unused_keys import unused_keys, unused_keys_check
 from i18n_check.utils import (
     config_alt_texts_active,
     config_aria_labels_active,
-    config_invalid_keys_active,
+    config_key_formatting_active,
+    config_key_naming_active,
     config_missing_keys_active,
     config_nested_files_active,
     config_non_source_keys_active,
@@ -95,7 +96,7 @@ def run_all_checks(args: argparse.Namespace) -> None:
     checks = []
     check_names = []
 
-    if config_invalid_keys_active:
+    if config_key_formatting_active:
         checks.append(
             partial(
                 invalid_key_formats_check,
@@ -105,6 +106,7 @@ def run_all_checks(args: argparse.Namespace) -> None:
         )
         check_names.append("invalid_keys_formatting")
 
+    if config_key_naming_active:
         checks.append(
             partial(
                 invalid_key_names_check_and_fix,
@@ -186,7 +188,8 @@ def run_all_checks(args: argparse.Namespace) -> None:
         check_names.append("alt_texts")
 
     if not (
-        config_invalid_keys_active
+        config_key_formatting_active
+        and config_key_naming_active
         and config_nonexistent_keys_active
         and config_unused_keys_active
         and config_non_source_keys_active
