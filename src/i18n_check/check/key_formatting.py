@@ -138,9 +138,11 @@ def invalid_key_formats_check(
     invalid_keys_by_format_error = f"""❌ key_formatting error: There {format_to_be} {len(invalid_keys_by_format)} i18n {format_key_to_be} not formatted correctly. Please reformat the following {format_key_or_keys}:\n\n{invalid_keys_by_format_string}"""
 
     if not invalid_keys_by_format:
+        # Split message to avoid terminal soft-wrap dropping the space before 'file.'
         rprint(
-            "[green]✅ key_formatting success: All i18n keys are formatted correctly in the i18n-src file.[/green]"
+            "[green]✅ key_formatting success: All i18n keys are formatted correctly in the [/green]"
         )
+        rprint("[green]i18n-src file.[/green]")
 
     else:
         error_string = "\n[red]"
