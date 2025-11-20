@@ -12,6 +12,20 @@ Emojis for the following are chosen based on [gitmoji](https://gitmoji.dev/).
 
 ## [Upcoming] i18n-check 1.x
 
+## i18n-check 1.15.0
+
+### ✨ Features
+
+- The `invalid-keys` check was split into `key-naming` and `key-formatting` checks ([#81](https://github.com/activist-org/i18n-check/issues/81))
+
+### ♻️ Code Refactoring
+
+- All necessary changes were made to reflect the two new checks and remove `invalid-keys`.
+
+### 📝 Documentation
+
+- Documentation was updated to reflect two new checks and remove `invalid-keys`.
+
 ## i18n-check 1.14.0
 
 ### ✨ Features
@@ -127,12 +141,12 @@ Emojis for the following are chosen based on [gitmoji](https://gitmoji.dev/).
   - The `--fix` argument removes all punctuation in these values.
 - A new alt text check has been added to make sure that i18n keys that end in `_alt_text` have values that end in a period ([#49](https://github.com/activist-org/i18n-check/issues/49)).
   - The `--fix` argument adds periods to these values.
-- The user can now ignore certain regex patterns in their i18n keys within the `key-formatting` and `key-naming` checks ([#52](https://github.com/activist-org/i18n-check/issues/52), [#58](https://github.com/activist-org/i18n-check/issues/58)).
-- In the `key-formatting` keys check the `--fix` argument now uses just the global directories and files to skip to assure that all instances of keys are replaced even if their locations should not be factored into the names of the key ([#59](https://github.com/activist-org/i18n-check/issues/59)).
+- The user can now ignore certain regex patterns in their i18n keys within the `invalid-keys` check ([#52](https://github.com/activist-org/i18n-check/issues/52), [#58](https://github.com/activist-org/i18n-check/issues/58)).
+- In the `invalid-keys` check the `--fix` argument now uses just the global directories and files to skip to assure that all instances of keys are replaced even if their locations should not be factored into the names of the key ([#59](https://github.com/activist-org/i18n-check/issues/59)).
 
 ### 🐞 Bug Fixes
 
-- Fixed an issue where the repeat values check was providing a suggestion for the new key that was sometimes invalid when checked against the `key-naming` check when the key was used in multiple files ([#50](https://github.com/activist-org/i18n-check/issues/50)).
+- Fixed an issue where the repeat values check was providing a suggestion for the new key that was sometimes invalid when checked against the `invalid-keys` check when the key was used in multiple files ([#50](https://github.com/activist-org/i18n-check/issues/50)).
 - Fixed a bug where repeat values with `_lower` at the end of their keys were not being removed from the count of repeats for value.
 
 ### 📝 Documentation
@@ -153,12 +167,11 @@ Emojis for the following are chosen based on [gitmoji](https://gitmoji.dev/).
 
 ### ✨ Features
 
-- The user can now fix invalid key names via a `--fix` (`-f`) option on the `key-naming` check ([#37](https://github.com/activist-org/i18n-check/issues/37)).
+- The user can now fix invalid key names via a `--fix` (`-f`) option on the `invalid-keys` check ([#37](https://github.com/activist-org/i18n-check/issues/37)).
 
 ### ♻️ Code Refactoring
 
 - The `key-identifiers` check was renamed `invalid-keys` and the `invalid-keys` check was renamed `non-existent-keys` ([#53](https://github.com/activist-org/i18n-check/issues/53)).
-- The `invalid-keys` check was split into `key-naming` and `key-formatting` checks ([#81](https://github.com/activist-org/i18n-check/issues/81))
 
 ### 📝 Documentation
 
