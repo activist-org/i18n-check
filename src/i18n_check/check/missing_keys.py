@@ -133,7 +133,7 @@ def report_missing_keys(
     """
     if missing_keys_by_locale:
         error_message = (
-            "\n[red]❌ missing_keys error: There are locale files with missing keys. "
+            "\n[red]❌ missing-keys error: There are locale files with missing keys. "
             "Keys are considered missing if they don't exist or have empty string values.\n\n"
         )
 
@@ -160,7 +160,7 @@ def report_missing_keys(
 
     else:
         rprint(
-            "[green]✅ missing_keys success: All checked locale files have all required keys with non-empty values.[/green]"
+            "[green]✅ missing-keys success: All checked locale files have all required keys with non-empty values.[/green]"
         )
 
 

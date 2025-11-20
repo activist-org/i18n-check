@@ -171,7 +171,7 @@ def repeat_values_check(
             value_or_values = "values"
 
         error_message = "\n[red]"
-        error_message += f"❌ repeat_values error: There {is_or_are} {len(json_repeat_value_counts)} repeat i18n {value_or_values} present in the i18n source file. Please follow the directions below to combine {it_or_them} into one key:"
+        error_message += f"❌ repeat-values error: There {is_or_are} {len(json_repeat_value_counts)} repeat i18n {value_or_values} present in the i18n source file. Please follow the directions below to combine {it_or_them} into one key:"
         error_message += repeat_value_error_report
         error_message += "[/red]"
 
@@ -185,7 +185,7 @@ def repeat_values_check(
 
     else:
         rprint(
-            "[green]✅ repeat_values success: No repeat i18n values found in the i18n-src file.[/green]"
+            "[green]✅ repeat-values success: No repeat i18n values found in the i18n-src file.[/green]"
         )
 
     return True

@@ -257,12 +257,12 @@ def invalid_key_names_check_and_fix(
     name_key_to_be = "keys that are" if len(invalid_keys_by_name) > 1 else "key that is"
     name_key_or_keys = "keys" if len(invalid_keys_by_name) > 1 else "key"
 
-    invalid_keys_by_name_error = f"""❌ key_naming error: There {name_to_be} {len(invalid_keys_by_name)} i18n {name_key_to_be} not named correctly.
+    invalid_keys_by_name_error = f"""❌ key-naming error: There {name_to_be} {len(invalid_keys_by_name)} i18n {name_key_to_be} not named correctly.
 Please rename the following {name_key_or_keys} \\[current_key -> suggested_correction]:\n{invalid_keys_by_name_string}"""
 
     if not invalid_keys_by_name:
         rprint(
-            "[green]✅ key_naming success: All i18n keys are named correctly in the i18n-src file.[/green]"
+            "[green]✅ key-naming success: All i18n keys are named correctly in the i18n-src file.[/green]"
         )
 
     else:
@@ -273,7 +273,7 @@ Please rename the following {name_key_or_keys} \\[current_key -> suggested_corre
 
         if not fix:
             rprint(
-                "\n[yellow]💡 Tip: You can automatically fix invalid key formats by running the --key-naming (-kn) check with the --fix (-f) flag.[/yellow]\n"
+                "\n[yellow]💡 Tip: You can automatically fix invalid key names by running the --key-naming (-kn) check with the --fix (-f) flag.[/yellow]\n"
             )
 
             if all_checks_enabled:

@@ -149,7 +149,7 @@ def sorted_keys_check_and_fix(
         file_or_files = "file" if files_count == 1 else "files"
 
         rprint(
-            f"\n[red]❌ sorted_keys error: {files_count} i18n JSON {file_or_files} have keys that are not sorted alphabetically.[/red]"
+            f"\n[red]❌ sorted-keys error: {files_count} i18n JSON {file_or_files} have keys that are not sorted alphabetically.[/red]"
         )
         rprint(
             "[yellow]💡 Tip: Use the --fix (-f) flag to automatically order the keys alphabetically.[/yellow]\n"
@@ -179,7 +179,7 @@ def sorted_keys_check_and_fix(
 
     else:
         rprint(
-            "[green]✅ sorted_keys success: All i18n JSON files have keys sorted alphabetically.[/green]"
+            "[green]✅ sorted-keys success: All i18n JSON files have keys sorted alphabetically.[/green]"
         )
 
     return True

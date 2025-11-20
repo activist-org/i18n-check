@@ -21,6 +21,7 @@ Emojis for the following are chosen based on [gitmoji](https://gitmoji.dev/).
 ### ♻️ Code Refactoring
 
 - All necessary changes were made to reflect the two new checks and remove `invalid-keys`.
+- CLI outputs of check names are now kebab-case instead of snake_case for consistency with the `--help` functionality messages.
 
 ### 📝 Documentation
 
@@ -30,7 +31,7 @@ Emojis for the following are chosen based on [gitmoji](https://gitmoji.dev/).
 
 ### ✨ Features
 
-- The CLI now sorts all required locale files if the `sorted-keys` check is activated when `--fix` options are used for the `key-naming`, `key-formatting`, `missing-keys` and `nonexistent-keys` checks ([#78](https://github.com/activist-org/i18n-check/issues/78)).
+- The CLI now sorts all required locale files if the `sorted-keys` check is activated when `--fix` options are used for the `invalid-keys`, `missing-keys` and `nonexistent-keys` checks ([#78](https://github.com/activist-org/i18n-check/issues/78)).
 - The `sorted-keys` check only functions if the `repeat-keys` check has passed for the given JSON file.
   - The user is warned if there are repeated keys so these can be fixed before sorting.
 

@@ -105,7 +105,7 @@ def test_repeat_values_check_behavior(capsys) -> None:
             repeat_value_error_report="",
         )
         assert (
-            "❌ repeat_values error: 1 repeat i18n value is present."
+            "❌ repeat-values error: 1 repeat i18n value is present."
             in capsys.readouterr().out
         )
 
@@ -114,7 +114,7 @@ def test_repeat_values_check_behavior(capsys) -> None:
         repeat_value_error_report="",
     )
     output = capsys.readouterr().out
-    assert "✅ repeat_values success: No repeat i18n values found" in output
+    assert "✅ repeat-values success: No repeat i18n values found" in output
 
 
 if __name__ == "__main__":

@@ -111,7 +111,7 @@ def test_invalid_keys_check_pass(capsys) -> None:
     )
     pass_result = capsys.readouterr().out
 
-    assert "✅ key_formatting success: " in pass_result.replace("\n", "").strip()
+    assert "✅ key-formatting success: " in pass_result.replace("\n", "").strip()
     assert (
         " All i18n keys are formatted correctly"
         in pass_result.replace("\n", "").strip()
