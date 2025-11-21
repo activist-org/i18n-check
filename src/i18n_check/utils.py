@@ -450,6 +450,31 @@ def is_valid_key(k: str) -> bool:
     return bool(re.match(pattern, k))
 
 
+def to_valid_key(key: str) -> str:
+    """
+    Convert an invalid key to a valid format.
+
+    Parameters
+    ----------
+    key : str
+        The key to format.
+
+    Returns
+    -------
+    str
+        The properly formatted key.
+    """
+    key = key.lower()
+    key = re.sub(r"[^a-z0-9._]", "_", key)
+    key = re.sub(r"_+", "_", key)
+    key = re.sub(r"^_|_$", "", key)
+    key = re.sub(r"\.+", ".", key)
+    key = re.sub(r"^\.+|\.+$", "", key)
+    if key == "":
+        raise ValueError("Normalized key is empty")
+    return key
+
+
 # MARK: Renaming Keys
 
 

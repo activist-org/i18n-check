@@ -75,11 +75,11 @@ class TestMainCli(unittest.TestCase):
 
         mock_all_checks.assert_called_once()
 
-    @patch("i18n_check.check.key_formatting.invalid_key_formats_check")
+    @patch("i18n_check.check.key_formatting.invalid_key_formats_check_and_fix")
     @patch("sys.exit")
     def test_main_key_formatting(self, mock_invalid_key_formats_check, mock_sys_exit):
         """
-        Test that `invalid_key_formats_check` is called for the --key-formatting flag.
+        Test that `invalid_key_formats_check_and_fix` is called for the --key-formatting flag.
         """
         with patch("sys.argv", ["i18n-check", "--key-formatting"]):
             main()

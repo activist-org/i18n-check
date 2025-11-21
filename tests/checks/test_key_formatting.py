@@ -7,7 +7,7 @@ import pytest
 
 from i18n_check.check.key_formatting import (
     audit_invalid_i18n_key_formats,
-    invalid_key_formats_check,
+    invalid_key_formats_check_and_fix,
 )
 from i18n_check.check.key_naming import (
     map_keys_to_files,
@@ -81,33 +81,42 @@ def test_audit_invalid_i18n_keys_formatting() -> None:
     """
     Test audit_invalid_i18n_key_formats for key formatting validation.
     """
-    assert invalid_format_pass == []
-    assert invalid_format_fail == ["i18n.test_file.incorrectly-formatted-key"]
+    assert invalid_format_pass == {}
+    assert invalid_format_fail == {
+        "i18n.test_file.incorrectly-formatted-key": "i18n.test_file.incorrectly_formatted_key"
+    }
 
 
 def test_invalid_keys_check_fail(capsys) -> None:
     """
-    Test invalid_key_formats_check for the fail case with formatting errors.
+    Test invalid_key_formats_check_and_fix for the fail case with formatting errors.
     """
     with pytest.raises(SystemExit):
-        invalid_key_formats_check(
+        invalid_key_formats_check_and_fix(
             invalid_keys_by_format=invalid_format_fail,
             all_checks_enabled=False,
+            fix=False,
         )
 
     output_msg = capsys.readouterr().out
 
     assert "There is 1 i18n key that is not formatted correctly" in output_msg
+    # Check both parts are in the output (they may be on separate lines)
+    assert "i18n.test_file.incorrectly-formatted-key" in output_msg
+    assert "i18n.test_file.incorrectly_formatted_key" in output_msg
+    assert "->" in output_msg
+    assert "💡 Tip: You can automatically fix invalid key formats" in output_msg
 
 
 def test_invalid_keys_check_pass(capsys) -> None:
     """
-    Test invalid_key_formats_check for the pass case.
+    Test invalid_key_formats_check_and_fix for the pass case.
     """
     # For pass case, it should not raise an error.
-    invalid_key_formats_check(
+    invalid_key_formats_check_and_fix(
         invalid_keys_by_format=invalid_format_pass,
         all_checks_enabled=False,
+        fix=False,
     )
     pass_result = capsys.readouterr().out
 
@@ -117,6 +126,22 @@ def test_invalid_keys_check_pass(capsys) -> None:
         in pass_result.replace("\n", "").strip()
     )
     assert "i18n-src file." in pass_result.replace("\n", "").strip()
+
+
+def test_invalid_keys_check_with_fix(capsys, tmp_path, monkeypatch) -> None:
+    """
+    Test invalid_key_formats_check_and_fix with fix=True to ensure it attempts to fix issues.
+    """
+    # This test would need actual file setup to fully test the fix functionality
+    # For now, we verify that fix=True doesn't crash when there are no issues
+    invalid_key_formats_check_and_fix(
+        invalid_keys_by_format={},
+        all_checks_enabled=False,
+        fix=True,
+    )
+
+    pass_result = capsys.readouterr().out
+    assert "✅ key-formatting success" in pass_result
 
 
 if __name__ == "__main__":

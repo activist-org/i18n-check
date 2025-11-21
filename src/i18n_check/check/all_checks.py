@@ -19,7 +19,7 @@ from rich import print as rprint
 from i18n_check.check.alt_texts import alt_texts_check_and_fix
 from i18n_check.check.aria_labels import aria_labels_check_and_fix
 from i18n_check.check.key_formatting import (
-    invalid_key_formats_check,
+    invalid_key_formats_check_and_fix,
     invalid_keys_by_format,
 )
 from i18n_check.check.key_naming import (
@@ -99,7 +99,7 @@ def run_all_checks(args: argparse.Namespace) -> None:
     if config_key_formatting_active:
         checks.append(
             partial(
-                invalid_key_formats_check,
+                invalid_key_formats_check_and_fix,
                 invalid_keys_by_format=invalid_keys_by_format,
                 all_checks_enabled=True,
             )

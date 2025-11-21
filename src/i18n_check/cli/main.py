@@ -12,7 +12,7 @@ from i18n_check.check.all_checks import run_all_checks
 from i18n_check.check.alt_texts import alt_texts_check_and_fix
 from i18n_check.check.aria_labels import aria_labels_check_and_fix
 from i18n_check.check.key_formatting import (
-    invalid_key_formats_check,
+    invalid_key_formats_check_and_fix,
     invalid_keys_by_format,
 )
 from i18n_check.check.key_naming import (
@@ -78,6 +78,7 @@ def main() -> None:
     --------
     >>> i18n-check --generate-config-file  # -gcf
     >>> i18n-check --key-formatting  # -kf
+    >>> i18n-check --key-formatting --fix  # -kf -f
     >>> i18n-check --key-naming --fix  # -kn -f
     >>> i18n-check --all-checks  # -a
     >>> i18n-check --missing-keys --fix --locale ENTER_ISO_2_CODE  # interactive mode to add missing keys
@@ -147,7 +148,7 @@ def main() -> None:
         "-f",
         "--fix",
         action="store_true",
-        help="(with --key-naming) Automatically fix key naming issues.",
+        help="(with --key-formatting or --key-naming) Automatically fix key issues.",
     )
 
     parser.add_argument(
@@ -250,9 +251,10 @@ def main() -> None:
         return
 
     if args.key_formatting:
-        invalid_key_formats_check(
+        invalid_key_formats_check_and_fix(
             invalid_keys_by_format=invalid_keys_by_format,
             all_checks_enabled=False,
+            fix=args.fix,
         )
         return
 
