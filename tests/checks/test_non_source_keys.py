@@ -64,7 +64,7 @@ def test_get_non_source_keys(
 def test_non_source_keys_check_pass_output(capsys):
     non_source_keys_check(non_source_keys_pass)
     output = capsys.readouterr().out
-    assert "non_source_keys success" in output
+    assert "non-source-keys success" in output
 
 
 def test_non_source_keys_check_fail_output(capsys):
@@ -72,7 +72,7 @@ def test_non_source_keys_check_fail_output(capsys):
         non_source_keys_check(non_source_keys_fail)
 
     output_msg = capsys.readouterr().out
-    assert "non_source_keys error:" in output_msg
+    assert "non-source-keys error:" in output_msg
     assert "i18n._global.not_in_i18n_src" in output_msg
 
 

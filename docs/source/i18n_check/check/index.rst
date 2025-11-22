@@ -6,7 +6,8 @@ check/
 .. toctree::
     :maxdepth: 1
 
-    invalid_keys
+    key_formatting
+    key_naming
     nonexistent_keys
     unused_keys
     non_source_keys

@@ -21,7 +21,7 @@ from typing import Any, Dict, List, Set
 from rich import print as rprint
 from rich.prompt import Prompt
 
-from i18n_check.check.invalid_keys import map_keys_to_files
+from i18n_check.check.key_naming import map_keys_to_files
 from i18n_check.check.repeat_keys import check_file_keys_repeated
 from i18n_check.utils import (
     PATH_SEPARATOR,
@@ -137,7 +137,7 @@ def nonexistent_keys_check(
         key_to_be = "keys that are" if len(nonexistent_keys) > 1 else "key that is"
         key_or_keys = "keys" if len(nonexistent_keys) > 1 else "key"
 
-        error_message = f"[red]❌ nonexistent_keys error: There {to_be} {len(nonexistent_keys)} i18n {key_to_be} not in the i18n source file. Please check the validity of the following {key_or_keys}:"
+        error_message = f"[red]❌ nonexistent-keys error: There {to_be} {len(nonexistent_keys)} i18n {key_to_be} not in the i18n source file. Please check the validity of the following {key_or_keys}:"
         error_message += "\n\n"
         error_message += "\n".join(sorted(nonexistent_keys))
         error_message += "[/red]"
@@ -156,7 +156,7 @@ def nonexistent_keys_check(
 
     else:
         rprint(
-            "[green]✅ nonexistent_keys success: All i18n keys that are used in the project are in the i18n source file.[/green]"
+            "[green]✅ nonexistent-keys success: All i18n keys that are used in the project are in the i18n source file.[/green]"
         )
 
     return True
@@ -197,7 +197,7 @@ def add_nonexistent_keys_interactively(
 
     if not nonexistent_keys:
         rprint(
-            "[green]✅ nonexistent_keys success: All i18n keys that are used in the project are in the i18n source file.[/green]"
+            "[green]✅ nonexistent-keys success: All i18n keys that are used in the project are in the i18n source file.[/green]"
         )
         return
 

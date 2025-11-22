@@ -118,11 +118,11 @@ def report_and_fix_aria_labels(
     """
     if not aria_label_issues:
         rprint(
-            "[green]✅ aria_labels: All aria label keys have appropriate punctuation.[/green]"
+            "[green]✅ aria-labels: All aria label keys have appropriate punctuation.[/green]"
         )
         return
 
-    error_string = "\n[red]❌ aria_labels errors:\n\n"
+    error_string = "\n[red]❌ aria-labels errors:\n\n"
     for k in aria_label_issues:
         error_string += f"Key: {k}\n"
         for json_file in aria_label_issues[k]:

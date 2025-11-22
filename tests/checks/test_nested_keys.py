@@ -59,7 +59,7 @@ class TestCheckI18nFiles:
 
         # The output from `rich` might have extra newlines or formatting.
         assert (
-            "nested_files error: Nested JSON structure detected in"
+            "nested-files error: Nested JSON structure detected in"
             in captured_fail.out.replace("\n", "")
         )
         assert "test_i18n_src.json" in captured_fail.out.replace("\n", "")

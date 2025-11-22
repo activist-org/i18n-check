@@ -87,7 +87,7 @@ def test_main_with_duplicates_raises(capsys) -> None:
     output = capsys.readouterr().out
     assert "Repeat keys in" in output
     assert "appears 2 times" in output
-    assert "repeat_keys error" in output
+    assert "repeat-keys error" in output
 
 
 if __name__ == "__main__":

@@ -64,7 +64,7 @@ def nested_files_check(directory: str | Path = config_i18n_directory) -> bool:
             data = read_json_file(file_path=file_path)
             if is_nested_json(data):
                 error_message = (
-                    "[red]\n❌ nested_files error: Nested JSON structure detected in "
+                    "[red]\n❌ nested-files error: Nested JSON structure detected in "
                     + str(file_path).split(PATH_SEPARATOR)[-1]
                     + ". i18n-check recommends using flat JSON files to allow easy find-and-replace operations. You can disable this check in your i18n-check.yaml configuration file.[/red]"
                 )

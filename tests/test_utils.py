@@ -12,7 +12,7 @@ from pathlib import Path
 
 import pytest
 
-from i18n_check.check.invalid_keys import map_keys_to_files
+from i18n_check.check.key_naming import map_keys_to_files
 from i18n_check.utils import (
     collect_files_to_check,
     filter_valid_key_parts,

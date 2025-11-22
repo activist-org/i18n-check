@@ -79,7 +79,7 @@ class TestAriaLabels(unittest.TestCase):
         report_and_fix_aria_labels(aria_label_issues, fix=False)
 
         mock_rprint.assert_called_once_with(
-            "[green]✅ aria_labels: All aria label keys have appropriate punctuation.[/green]"
+            "[green]✅ aria-labels: All aria label keys have appropriate punctuation.[/green]"
         )
 
 

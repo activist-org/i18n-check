@@ -108,7 +108,7 @@ def test_validate_pass_i18n_keys(capsys) -> None:
     pass_result = capsys.readouterr().out
     cleaned_pass_result = re.sub(r"\x1b\[.*?m", "", pass_result).strip()
 
-    assert "✅ nonexistent_keys success: " in cleaned_pass_result.replace("\n", "")
+    assert "✅ nonexistent-keys success: " in cleaned_pass_result.replace("\n", "")
     assert "All i18n keys that are used in the project" in cleaned_pass_result.replace(
         "\n", ""
     )
@@ -132,7 +132,7 @@ def test_add_nonexistent_keys_interactively_no_nonexistent_keys(capsys) -> None:
     assert i18n_src_dict == pass_checks_src_json
 
     captured = capsys.readouterr()
-    assert "nonexistent_keys success" in captured.out.replace("\n", "")
+    assert "nonexistent-keys success" in captured.out.replace("\n", "")
     assert (
         "All i18n keys that are used in the project are in the i18n source file"
         in captured.out.replace("\n", "")

@@ -178,7 +178,7 @@ def repeat_keys_check(
                 file_duplicate_keys_messages += f"[red]\n  {key} appears {len(values)} times with values: {values}[/red]"
 
     if has_errors:
-        error_message += "\n[red]❌ repeat_keys error: Repeat i18n keys found. All i18n keys must be unique.[/red]\n"
+        error_message += "\n[red]❌ repeat-keys error: Repeat i18n keys found. All i18n keys must be unique.[/red]\n"
         error_message += file_duplicate_keys_messages
         rprint(error_message)
 
@@ -189,7 +189,7 @@ def repeat_keys_check(
             sys.exit(1)
 
     rprint(
-        "[green]✅ repeat_keys success: No duplicate keys found in i18n files.[/green]"
+        "[green]✅ repeat-keys success: No duplicate keys found in i18n files.[/green]"
     )
 
     return True

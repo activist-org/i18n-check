@@ -106,7 +106,7 @@ def unused_keys_check(unused_keys: List[str], all_checks_enabled: bool = False) 
         key_or_keys = "keys" if len(unused_keys) > 1 else "key"
 
         error_message = (
-            "[red]\n❌ unused_keys error: There "
+            "[red]\n❌ unused-keys error: There "
             + f"{to_be} {len(unused_keys)} i18n {key_to_be} unused. Please remove or assign the following {key_or_keys}:"
             + "\n\n"
             + "\n".join(unused_keys)
@@ -122,7 +122,7 @@ def unused_keys_check(unused_keys: List[str], all_checks_enabled: bool = False) 
 
     else:
         rprint(
-            "[green]✅ unused_keys success: All i18n keys in the i18n-src file are used in the project.[/green]"
+            "[green]✅ unused-keys success: All i18n keys in the i18n-src file are used in the project.[/green]"
         )
 
     return True

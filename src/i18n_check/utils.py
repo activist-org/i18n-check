@@ -114,44 +114,63 @@ if "global" in config["checks"]:
             for f in config["checks"]["global"]["files-to-skip"]
         ]
 
-# MARK: Invalid Keys
+# MARK: Key Formatting and Naming
 
-config_invalid_keys_active = config_global_active
+# Initialize per-check actives with global defaults.
+config_key_formatting_active = config_global_active
+config_key_naming_active = config_global_active
+
 config_invalid_keys_directories_to_skip = config_global_directories_to_skip.copy()
 config_invalid_keys_files_to_skip = config_global_files_to_skip.copy()
 config_invalid_key_regexes_to_ignore = []
 
-if "invalid-keys" in config["checks"]:
-    if "active" in config["checks"]["invalid-keys"]:
-        config_invalid_keys_active = config["checks"]["invalid-keys"]["active"]
+# Read explicit per-check actives if provided.
+if (
+    "key-formatting" in config["checks"]
+    and "active" in config["checks"]["key-formatting"]
+):
+    config_key_formatting_active = config["checks"]["key-formatting"]["active"]
 
-    if "directories-to-skip" in config["checks"]["invalid-keys"]:
+if "key-naming" in config["checks"] and "active" in config["checks"]["key-naming"]:
+    config_key_naming_active = config["checks"]["key-naming"]["active"]
+
+# Derive skip lists for key-naming.
+if "key-naming" in config["checks"]:
+    if "directories-to-skip" in config["checks"]["key-naming"]:
         config_invalid_keys_directories_to_skip += [
             CWD_PATH
             / Path(d.replace("/", PATH_SEPARATOR).replace("\\", PATH_SEPARATOR))
-            for d in config["checks"]["invalid-keys"]["directories-to-skip"]
+            for d in config["checks"]["key-naming"]["directories-to-skip"]
         ]
-
-    if "files-to-skip" in config["checks"]["invalid-keys"]:
+    if "files-to-skip" in config["checks"]["key-naming"]:
         config_invalid_keys_files_to_skip += [
             CWD_PATH
             / Path(f.replace("/", PATH_SEPARATOR).replace("\\", PATH_SEPARATOR))
-            for f in config["checks"]["invalid-keys"]["files-to-skip"]
+            for f in config["checks"]["key-naming"]["files-to-skip"]
         ]
 
-    if "keys-to-ignore" in config["checks"]["invalid-keys"]:
-        keys_to_ignore = config["checks"]["invalid-keys"]["keys-to-ignore"]
+# Keys to ignore for key-formatting.
+if (
+    "key-formatting" in config["checks"]
+    and "keys-to-ignore" in config["checks"]["key-formatting"]
+):
+    _keys_to_ignore = config["checks"]["key-formatting"]["keys-to-ignore"]
+elif (
+    "invalid-keys" in config["checks"]
+    and "keys-to-ignore" in config["checks"]["invalid-keys"]
+):
+    _keys_to_ignore = config["checks"]["invalid-keys"]["keys-to-ignore"]
+else:
+    _keys_to_ignore = []
 
-        if isinstance(keys_to_ignore, str):
-            config_invalid_key_regexes_to_ignore = (
-                [keys_to_ignore] if keys_to_ignore else []
-            )
+if isinstance(_keys_to_ignore, str):
+    config_invalid_key_regexes_to_ignore = [_keys_to_ignore] if _keys_to_ignore else []
+elif isinstance(_keys_to_ignore, list):
+    config_invalid_key_regexes_to_ignore = _keys_to_ignore
+else:
+    config_invalid_key_regexes_to_ignore = []
 
-        elif isinstance(keys_to_ignore, list):
-            config_invalid_key_regexes_to_ignore = keys_to_ignore
-
-        else:
-            config_invalid_key_regexes_to_ignore = []
+config_invalid_keys_active = config_key_formatting_active and config_key_naming_active
 
 # MARK: Nonexistent Keys
 
@@ -409,7 +428,7 @@ def collect_files_to_check(
     return list(result)
 
 
-# MARK: Invalid Keys
+# MARK: Key Formatting
 
 
 def is_valid_key(k: str) -> bool:
@@ -429,6 +448,31 @@ def is_valid_key(k: str) -> bool:
     pattern = r"^[a-z0-9._]+$"
 
     return bool(re.match(pattern, k))
+
+
+def to_valid_key(key: str) -> str:
+    """
+    Convert an invalid key to a valid format.
+
+    Parameters
+    ----------
+    key : str
+        The key to format.
+
+    Returns
+    -------
+    str
+        The properly formatted key.
+    """
+    key = key.lower()
+    key = re.sub(r"[^a-z0-9._]", "_", key)
+    key = re.sub(r"_+", "_", key)
+    key = re.sub(r"^_|_$", "", key)
+    key = re.sub(r"\.+", ".", key)
+    key = re.sub(r"^\.+|\.+$", "", key)
+    if key == "":
+        raise ValueError("Normalized key is empty")
+    return key
 
 
 # MARK: Renaming Keys

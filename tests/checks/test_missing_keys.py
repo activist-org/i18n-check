@@ -104,7 +104,7 @@ def test_report_missing_keys_pass(capsys) -> None:
     """
     report_missing_keys(missing_keys_pass)
     captured = capsys.readouterr()
-    assert "missing_keys success" in captured.out
+    assert "missing-keys success" in captured.out
     assert "All checked locale files have all required keys" in captured.out
 
 
@@ -116,7 +116,7 @@ def test_report_missing_keys_fail(capsys) -> None:
         report_missing_keys(missing_keys_fail)
 
     output_msg = capsys.readouterr().out
-    assert "missing_keys error:" in output_msg
+    assert "missing-keys error:" in output_msg
     assert "test_i18n_locale" in output_msg
     assert "Summary of missing keys by locale:" in output_msg
     assert "%" in output_msg
@@ -278,7 +278,7 @@ def test_missing_keys_check_and_fix_no_locale(capsys) -> None:
     )
 
     captured = capsys.readouterr()
-    assert "missing_keys success" in captured.out
+    assert "missing-keys success" in captured.out
 
 
 @patch("i18n_check.check.missing_keys.add_missing_keys_interactively")
