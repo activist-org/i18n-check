@@ -101,7 +101,7 @@ def test_invalid_keys_check_fail(capsys) -> None:
     output_msg = capsys.readouterr().out
 
     assert "There is 1 i18n key that is not formatted correctly" in output_msg
-    # Check both parts are in the output (they may be on separate lines)
+    # Check both parts are in the output (they may be on separate lines).
     assert "i18n.test_file.incorrectly-formatted-key" in output_msg
     assert "i18n.test_file.incorrectly_formatted_key" in output_msg
     assert "->" in output_msg
@@ -132,8 +132,8 @@ def test_invalid_keys_check_with_fix(capsys, tmp_path, monkeypatch) -> None:
     """
     Test invalid_key_formats_check_and_fix with fix=True to ensure it attempts to fix issues.
     """
-    # This test would need actual file setup to fully test the fix functionality
-    # For now, we verify that fix=True doesn't crash when there are no issues
+    # This test would need actual file setup to fully test the fix functionality.
+    # For now, we verify that fix=True doesn't crash when there are no issues.
     invalid_key_formats_check_and_fix(
         invalid_keys_by_format={},
         all_checks_enabled=False,
