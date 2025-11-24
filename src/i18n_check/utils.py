@@ -92,6 +92,7 @@ config_file_types_to_check = config["file-types-to-check"]
 
 # MARK: Global
 
+# Note: We initialize per-check active states with global defaults.
 config_global_active = False
 config_global_directories_to_skip = []
 config_global_files_to_skip = []
@@ -113,8 +114,6 @@ if "global" in config["checks"]:
             / Path(f.replace("/", PATH_SEPARATOR).replace("\\", PATH_SEPARATOR))
             for f in config["checks"]["global"]["files-to-skip"]
         ]
-
-# Note: Initialize per-check actives with global defaults.
 
 # MARK: Key Formatting
 
