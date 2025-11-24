@@ -227,27 +227,12 @@ if "repeat-keys" in config["checks"] and "active" in config["checks"]["repeat-ke
 
 # Note: We don't have skipped files or directories for repeat-values.
 config_repeat_values_active = config_global_active
-config_repeat_values_regexes_to_ignore = []
 
 if (
     "repeat-values" in config["checks"]
     and "active" in config["checks"]["repeat-values"]
 ):
     config_repeat_values_active = config["checks"]["repeat-values"]["active"]
-
-    if "keys-to-ignore" in config["checks"]["repeat-values"]:
-        _keys_to_ignore = config["checks"]["repeat-values"]["keys-to-ignore"]
-
-        if isinstance(_keys_to_ignore, str):
-            config_repeat_values_regexes_to_ignore = (
-                [_keys_to_ignore] if _keys_to_ignore else []
-            )
-
-        elif isinstance(_keys_to_ignore, list):
-            config_repeat_values_regexes_to_ignore = _keys_to_ignore
-
-        else:
-            config_repeat_values_regexes_to_ignore = []
 
 # MARK: Unused Keys
 
@@ -451,7 +436,7 @@ def collect_files_to_check(
     return list(result)
 
 
-# MARK: Key Formatting
+# MARK: Valid Keys
 
 
 def is_valid_key(k: str) -> bool:
@@ -471,31 +456,6 @@ def is_valid_key(k: str) -> bool:
     pattern = r"^[a-z0-9._]+$"
 
     return bool(re.match(pattern, k))
-
-
-def to_valid_key(key: str) -> str:
-    """
-    Convert an invalid key to a valid format.
-
-    Parameters
-    ----------
-    key : str
-        The key to format.
-
-    Returns
-    -------
-    str
-        The properly formatted key.
-    """
-    key = key.lower()
-    key = re.sub(r"[^a-z0-9._]", "_", key)
-    key = re.sub(r"_+", "_", key)
-    key = re.sub(r"^_|_$", "", key)
-    key = re.sub(r"\.+", ".", key)
-    key = re.sub(r"^\.+|\.+$", "", key)
-    if key == "":
-        raise ValueError("Normalized key is empty")
-    return key
 
 
 # MARK: Renaming Keys

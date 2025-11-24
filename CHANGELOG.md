@@ -17,7 +17,6 @@ Emojis for the following are chosen based on [gitmoji](https://gitmoji.dev/).
 ### ✨ Features
 
 - The `invalid-keys` check was split into `key-naming` and `key-formatting` checks ([#81](https://github.com/activist-org/i18n-check/issues/81)).
-- The `repeat-values` check now has its own `keys-to-ignore` option in the configuration file.
 
 ### 🐞 Bug Fixes
 

@@ -207,7 +207,6 @@ The following details the ``.i18n-check.yaml`` configuration file, with a furthe
         active: true
       repeat-values:
         active: true
-        keys-to-ignore: []
       sorted-keys:
         active: true
       nested-files:

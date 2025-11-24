@@ -224,7 +224,6 @@ checks:
     active: true
   repeat-values:
     active: true
-    keys-to-ignore: []
   sorted-keys:
     active: true
   nested-files:
