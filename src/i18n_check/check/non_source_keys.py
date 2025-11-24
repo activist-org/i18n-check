@@ -114,7 +114,7 @@ def non_source_keys_check(
 
         error_message = (
             "\n"
-            + f"[red]❌ non_source_keys error: There {is_an_or_are} i18n target JSON files that {has_or_have} keys that are not in the i18n source file. Please remove or rename the following keys:"
+            + f"[red]❌ non-source-keys error: There {is_an_or_are} i18n target JSON files that {has_or_have} keys that are not in the i18n source file. Please remove or rename the following keys:"
             + "\n\n"
             + non_source_keys_string
             + "[/red]"
@@ -129,7 +129,7 @@ def non_source_keys_check(
 
     else:
         rprint(
-            "[green]✅ non_source_keys success: No i18n target file has keys that are not in the i18n source file.[/green]"
+            "[green]✅ non-source-keys success: No i18n target file has keys that are not in the i18n source file.[/green]"
         )
 
     return True

@@ -17,10 +17,10 @@ from typing import Dict
 
 from rich import print as rprint
 
-from i18n_check.check.invalid_keys import audit_invalid_i18n_keys, map_keys_to_files
+from i18n_check.check.key_naming import audit_invalid_i18n_key_names, map_keys_to_files
 from i18n_check.utils import (
     config_i18n_src_file,
-    config_invalid_key_regexes_to_ignore,
+    config_key_naming_regexes_to_ignore,
     config_src_directory,
     lower_and_remove_punctuation,
     read_json_file,
@@ -106,11 +106,11 @@ def analyze_and_generate_repeat_value_report(
             )
 
             # Replace with 'repeat_key' as a dummy for if this was the key in all files.
-            _, invalid_keys_by_name = audit_invalid_i18n_keys(
+            invalid_keys_by_name = audit_invalid_i18n_key_names(
                 key_file_dict={
                     "repeat_key": v for k, v in repeat_values_key_file_dict.items()
                 },
-                keys_to_ignore_regex=config_invalid_key_regexes_to_ignore,
+                keys_to_ignore_regex=config_key_naming_regexes_to_ignore,
             )
 
             # Remove dummy value and add 'content_reference' for user to replace.
@@ -171,7 +171,7 @@ def repeat_values_check(
             value_or_values = "values"
 
         error_message = "\n[red]"
-        error_message += f"❌ repeat_values error: There {is_or_are} {len(json_repeat_value_counts)} repeat i18n {value_or_values} present in the i18n source file. Please follow the directions below to combine {it_or_them} into one key:"
+        error_message += f"❌ repeat-values error: There {is_or_are} {len(json_repeat_value_counts)} repeat i18n {value_or_values} present in the i18n source file. Please follow the directions below to combine {it_or_them} into one key:"
         error_message += repeat_value_error_report
         error_message += "[/red]"
 
@@ -185,7 +185,7 @@ def repeat_values_check(
 
     else:
         rprint(
-            "[green]✅ repeat_values success: No repeat i18n values found in the i18n-src file.[/green]"
+            "[green]✅ repeat-values success: No repeat i18n values found in the i18n-src file.[/green]"
         )
 
     return True

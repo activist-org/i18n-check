@@ -108,9 +108,12 @@ Checks
 
 There the following checks can ran across your codebase:
 
-- ``invalid-keys`` (``ik``): Does the source file have keys that don't match the above format or name conventions?
+- ``key-formatting`` (``kf``): Does the i18n source file contain keys that don't follow the required formatting rules?
+    - Format the keys in the source file to match the conventions.
+    - Pass ``--fix`` (``-f``) to fix all formatting issues automatically.
+- ``key-naming`` (``kn``): Are key names consistent with how and where they are used in the codebase?
     - Rename them so i18n key usage is consistent and their scope is communicated in their name.
-    - Pass ``--fix``` (``-f``) to fix all naming issues automatically.
+    - Pass ``--fix`` (``-f``) to fix all naming issues automatically.
 - ``nonexistent-keys`` (``nk``): Does the codebase include i18n keys that are not within the source file?
     - Check their validity and resolve if they should be added to the i18n files or replaced.
     - Pass ``--fix`` (``-f``) to interactively add nonexistent keys.
@@ -182,11 +185,14 @@ The following details the ``.i18n-check.yaml`` configuration file, with a furthe
         active: true # enables all checks by default
         directories-to-skip: [frontend/node_modules]
         files-to-skip: []
-      invalid-keys:
+      key-formatting:
         active: true # can be used to override individual checks
+        keys-to-ignore: [] # regexes for ignoring keys
+      key-naming:
+        active: true
         directories-to-skip: []
         files-to-skip: []
-        keys-to-ignore: [] # regexes for ignoring keys
+        keys-to-ignore: []
       nonexistent-keys:
         active: true
         directories-to-skip: []

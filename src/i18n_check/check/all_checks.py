@@ -18,10 +18,13 @@ from rich import print as rprint
 
 from i18n_check.check.alt_texts import alt_texts_check_and_fix
 from i18n_check.check.aria_labels import aria_labels_check_and_fix
-from i18n_check.check.invalid_keys import (
+from i18n_check.check.key_formatting import (
+    invalid_key_formats_check_and_fix,
     invalid_keys_by_format,
+)
+from i18n_check.check.key_naming import (
+    invalid_key_names_check_and_fix,
     invalid_keys_by_name,
-    invalid_keys_check_and_fix,
 )
 from i18n_check.check.missing_keys import missing_keys_check_and_fix
 from i18n_check.check.nested_files import nested_files_check
@@ -41,7 +44,8 @@ from i18n_check.check.unused_keys import unused_keys, unused_keys_check
 from i18n_check.utils import (
     config_alt_texts_active,
     config_aria_labels_active,
-    config_invalid_keys_active,
+    config_key_formatting_active,
+    config_key_naming_active,
     config_missing_keys_active,
     config_nested_files_active,
     config_non_source_keys_active,
@@ -92,17 +96,26 @@ def run_all_checks(args: argparse.Namespace) -> None:
     checks = []
     check_names = []
 
-    if config_invalid_keys_active:
+    if config_key_formatting_active:
         checks.append(
             partial(
-                invalid_keys_check_and_fix,
+                invalid_key_formats_check_and_fix,
                 invalid_keys_by_format=invalid_keys_by_format,
+                all_checks_enabled=True,
+            )
+        )
+        check_names.append("key-formatting")
+
+    if config_key_naming_active:
+        checks.append(
+            partial(
+                invalid_key_names_check_and_fix,
                 invalid_keys_by_name=invalid_keys_by_name,
                 all_checks_enabled=True,
                 fix=args.fix,
             )
         )
-        check_names.append("invalid_keys")
+        check_names.append("key-naming")
 
     if config_nonexistent_keys_active:
         # We don't allow fix in all checks mode.
@@ -113,13 +126,13 @@ def run_all_checks(args: argparse.Namespace) -> None:
                 all_checks_enabled=True,
             )
         )
-        check_names.append("nonexistent_keys")
+        check_names.append("nonexistent-keys")
 
     if config_unused_keys_active:
         checks.append(
             partial(unused_keys_check, unused_keys=unused_keys, all_checks_enabled=True)
         )
-        check_names.append("unused_keys")
+        check_names.append("unused-keys")
 
     if config_non_source_keys_active:
         checks.append(
@@ -129,11 +142,11 @@ def run_all_checks(args: argparse.Namespace) -> None:
                 all_checks_enabled=True,
             )
         )
-        check_names.append("non_source_keys")
+        check_names.append("non-source-keys")
 
     if config_repeat_keys_active:
         checks.append(partial(repeat_keys_check, all_checks_enabled=True))
-        check_names.append("repeat_keys")
+        check_names.append("repeat-keys")
 
     if config_repeat_values_active:
         checks.append(
@@ -144,38 +157,39 @@ def run_all_checks(args: argparse.Namespace) -> None:
                 all_checks_enabled=True,
             )
         )
-        check_names.append("repeat_values")
+        check_names.append("repeat-values")
 
     if config_sorted_keys_active:
         checks.append(
             partial(sorted_keys_check_and_fix, all_checks_enabled=True, fix=args.fix)
         )
-        check_names.append("sorted_keys")
+        check_names.append("sorted-keys")
 
     if config_nested_files_active:
         # Note: This check warns the user and doesn't raise an error, so no need for all_checks_enabled.
         checks.append(partial(nested_files_check))
-        check_names.append("nested_files")
+        check_names.append("nested-files")
 
     if config_missing_keys_active:
         # We don't allow fix in all checks mode.
         checks.append(partial(missing_keys_check_and_fix, all_checks_enabled=True))
-        check_names.append("missing_keys")
+        check_names.append("missing-keys")
 
     if config_aria_labels_active:
         checks.append(
             partial(aria_labels_check_and_fix, all_checks_enabled=True, fix=args.fix)
         )
-        check_names.append("aria_labels")
+        check_names.append("aria-labels")
 
     if config_alt_texts_active:
         checks.append(
             partial(alt_texts_check_and_fix, all_checks_enabled=True, fix=args.fix)
         )
-        check_names.append("alt_texts")
+        check_names.append("alt-texts")
 
     if not (
-        config_invalid_keys_active
+        config_key_formatting_active
+        and config_key_naming_active
         and config_nonexistent_keys_active
         and config_unused_keys_active
         and config_non_source_keys_active

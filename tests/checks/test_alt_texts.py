@@ -78,7 +78,7 @@ class TestAltTexts(unittest.TestCase):
         report_and_fix_alt_texts({}, fix=False)
 
         mock_rprint.assert_called_once_with(
-            "[green]✅ alt_texts: All alt text keys have appropriate punctuation.[/green]"
+            "[green]✅ alt-texts: All alt text keys have appropriate punctuation.[/green]"
         )
 
 

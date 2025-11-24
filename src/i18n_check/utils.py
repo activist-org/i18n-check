@@ -92,6 +92,7 @@ config_file_types_to_check = config["file-types-to-check"]
 
 # MARK: Global
 
+# Note: We initialize per-check active states with global defaults.
 config_global_active = False
 config_global_directories_to_skip = []
 config_global_files_to_skip = []
@@ -114,44 +115,69 @@ if "global" in config["checks"]:
             for f in config["checks"]["global"]["files-to-skip"]
         ]
 
-# MARK: Invalid Keys
+# MARK: Key Formatting
 
-config_invalid_keys_active = config_global_active
-config_invalid_keys_directories_to_skip = config_global_directories_to_skip.copy()
-config_invalid_keys_files_to_skip = config_global_files_to_skip.copy()
-config_invalid_key_regexes_to_ignore = []
+# Note: We don't have skipped files or directories for non-source-keys.
+config_key_formatting_active = config_global_active
+config_key_formatting_regexes_to_ignore = []
 
-if "invalid-keys" in config["checks"]:
-    if "active" in config["checks"]["invalid-keys"]:
-        config_invalid_keys_active = config["checks"]["invalid-keys"]["active"]
+if "key-formatting" in config["checks"]:
+    if "active" in config["checks"]["key-formatting"]:
+        config_key_formatting_active = config["checks"]["key-formatting"]["active"]
 
-    if "directories-to-skip" in config["checks"]["invalid-keys"]:
-        config_invalid_keys_directories_to_skip += [
-            CWD_PATH
-            / Path(d.replace("/", PATH_SEPARATOR).replace("\\", PATH_SEPARATOR))
-            for d in config["checks"]["invalid-keys"]["directories-to-skip"]
-        ]
+    if "keys-to-ignore" in config["checks"]["key-formatting"]:
+        _keys_to_ignore = config["checks"]["key-formatting"]["keys-to-ignore"]
 
-    if "files-to-skip" in config["checks"]["invalid-keys"]:
-        config_invalid_keys_files_to_skip += [
-            CWD_PATH
-            / Path(f.replace("/", PATH_SEPARATOR).replace("\\", PATH_SEPARATOR))
-            for f in config["checks"]["invalid-keys"]["files-to-skip"]
-        ]
-
-    if "keys-to-ignore" in config["checks"]["invalid-keys"]:
-        keys_to_ignore = config["checks"]["invalid-keys"]["keys-to-ignore"]
-
-        if isinstance(keys_to_ignore, str):
-            config_invalid_key_regexes_to_ignore = (
-                [keys_to_ignore] if keys_to_ignore else []
+        if isinstance(_keys_to_ignore, str):
+            config_key_formatting_regexes_to_ignore = (
+                [_keys_to_ignore] if _keys_to_ignore else []
             )
 
-        elif isinstance(keys_to_ignore, list):
-            config_invalid_key_regexes_to_ignore = keys_to_ignore
+        elif isinstance(_keys_to_ignore, list):
+            config_key_formatting_regexes_to_ignore = _keys_to_ignore
 
         else:
-            config_invalid_key_regexes_to_ignore = []
+            config_key_formatting_regexes_to_ignore = []
+
+# MARK: Key Naming
+
+config_key_naming_active = config_global_active
+
+config_key_naming_directories_to_skip = config_global_directories_to_skip.copy()
+config_key_naming_files_to_skip = config_global_files_to_skip.copy()
+config_key_naming_regexes_to_ignore = []
+
+if "key-naming" in config["checks"]:
+    if "active" in config["checks"]["key-naming"]:
+        config_key_naming_active = config["checks"]["key-naming"]["active"]
+
+    if "directories-to-skip" in config["checks"]["key-naming"]:
+        config_key_naming_directories_to_skip += [
+            CWD_PATH
+            / Path(d.replace("/", PATH_SEPARATOR).replace("\\", PATH_SEPARATOR))
+            for d in config["checks"]["key-naming"]["directories-to-skip"]
+        ]
+
+    if "files-to-skip" in config["checks"]["key-naming"]:
+        config_key_naming_files_to_skip += [
+            CWD_PATH
+            / Path(f.replace("/", PATH_SEPARATOR).replace("\\", PATH_SEPARATOR))
+            for f in config["checks"]["global"]["files-to-skip"]
+        ]
+
+    if "keys-to-ignore" in config["checks"]["key-naming"]:
+        _keys_to_ignore = config["checks"]["key-naming"]["keys-to-ignore"]
+
+        if isinstance(_keys_to_ignore, str):
+            config_key_naming_regexes_to_ignore = (
+                [_keys_to_ignore] if _keys_to_ignore else []
+            )
+
+        elif isinstance(_keys_to_ignore, list):
+            config_key_naming_regexes_to_ignore = _keys_to_ignore
+
+        else:
+            config_key_naming_regexes_to_ignore = []
 
 # MARK: Nonexistent Keys
 
@@ -409,7 +435,7 @@ def collect_files_to_check(
     return list(result)
 
 
-# MARK: Invalid Keys
+# MARK: Valid Keys
 
 
 def is_valid_key(k: str) -> bool:
