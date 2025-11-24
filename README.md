@@ -274,7 +274,6 @@ The following is an example [pre-commit](https://github.com/pre-commit/pre-commi
       pass_filenames: false
       additional_dependencies:
         - i18n-check
-        - packaging
 ```
 
 <a id="contributing"></a>
