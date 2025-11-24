@@ -17,6 +17,7 @@ Emojis for the following are chosen based on [gitmoji](https://gitmoji.dev/).
 ### ✨ Features
 
 - The `invalid-keys` check was split into `key-naming` and `key-formatting` checks ([#81](https://github.com/activist-org/i18n-check/issues/81)).
+- CLI outputs of check names are now kebab-case instead of snake_case for consistency with the `--help` functionality messages.
 
 ### 🐞 Bug Fixes
 
@@ -25,11 +26,10 @@ Emojis for the following are chosen based on [gitmoji](https://gitmoji.dev/).
 ### ♻️ Code Refactoring
 
 - All necessary changes were made to reflect the two new checks and remove `invalid-keys`.
-- CLI outputs of check names are now kebab-case instead of snake_case for consistency with the `--help` functionality messages.
 
 ### 📝 Documentation
 
-- Documentation was updated to reflect two new checks and remove `invalid-keys`.
+- Documentation was updated to reflect the two newly separated checks and removal of `invalid-keys`.
 
 ## i18n-check 1.14.0
 
