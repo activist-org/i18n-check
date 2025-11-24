@@ -163,7 +163,7 @@ Please reformat the following {format_key_or_keys} [current_key -> suggested_cor
 
     if not invalid_keys_by_format:
         rprint(
-            "[green]✅ key-formatting success: All i18n keys are formatted correctly in the i18n-src\n file.[/green]"
+            "[green]✅ key-formatting success: All i18n keys are formatted correctly in the i18n-src file.[/green]"
         )
 
     else:

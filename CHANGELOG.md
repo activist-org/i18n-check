@@ -18,6 +18,10 @@ Emojis for the following are chosen based on [gitmoji](https://gitmoji.dev/).
 
 - The `invalid-keys` check was split into `key-naming` and `key-formatting` checks ([#81](https://github.com/activist-org/i18n-check/issues/81))
 
+### 🐞 Bug Fixes
+
+- The CLI arguments were not ordered in a sensible way in the `--help` output and some entries were wrong.
+
 ### ♻️ Code Refactoring
 
 - All necessary changes were made to reflect the two new checks and remove `invalid-keys`.
