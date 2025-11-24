@@ -1,8 +1,8 @@
 # SPDX-License-Identifier: GPL-3.0-or-later
 """
-Checks if the i18n-src file has invalid keys given their usage.
+Checks if the i18n-src file has invalid keys given the files in which they're used.
 
-If yes, suggest new names for the keys at the lowest possible level of usage.
+If yes, suggest new names for the keys based on the lowest possible file level usage.
 
 Examples
 --------
@@ -30,9 +30,9 @@ from i18n_check.utils import (
     config_global_files_to_skip,
     config_i18n_directory,
     config_i18n_src_file,
-    config_invalid_key_regexes_to_ignore,
-    config_invalid_keys_directories_to_skip,
-    config_invalid_keys_files_to_skip,
+    config_key_naming_directories_to_skip,
+    config_key_naming_files_to_skip,
+    config_key_naming_regexes_to_ignore,
     config_repeat_keys_active,
     config_sorted_keys_active,
     config_src_directory,
@@ -73,8 +73,8 @@ def map_keys_to_files(
     files_to_check = collect_files_to_check(
         directory=src_directory,
         file_types_to_check=config_file_types_to_check,
-        directories_to_skip=config_invalid_keys_directories_to_skip,
-        files_to_skip=config_invalid_keys_files_to_skip,
+        directories_to_skip=config_key_naming_directories_to_skip,
+        files_to_skip=config_key_naming_files_to_skip,
     )
 
     files_to_check_contents = {}
@@ -287,7 +287,7 @@ Please rename the following {name_key_or_keys} \\[current_key -> suggested_corre
             directory=config_src_directory,
             file_types_to_check=config_file_types_to_check,
             directories_to_skip=config_global_directories_to_skip,
-            files_to_skip=config_global_files_to_skip,  # global as we want to fix all instances.
+            files_to_skip=config_global_files_to_skip,  # global as we want to fix all instances
         )
 
         json_files = get_all_json_files(directory=config_i18n_directory)
@@ -339,5 +339,5 @@ invalid_keys_key_file_dict = map_keys_to_files(
 )
 invalid_keys_by_name = audit_invalid_i18n_key_names(
     key_file_dict=invalid_keys_key_file_dict,
-    keys_to_ignore_regex=config_invalid_key_regexes_to_ignore,
+    keys_to_ignore_regex=config_key_naming_regexes_to_ignore,
 )

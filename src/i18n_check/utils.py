@@ -114,63 +114,71 @@ if "global" in config["checks"]:
             for f in config["checks"]["global"]["files-to-skip"]
         ]
 
-# MARK: Key Formatting and Naming
+# Note: Initialize per-check actives with global defaults.
 
-# Initialize per-check actives with global defaults.
+# MARK: Key Formatting
+
+# Note: We don't have skipped files or directories for non-source-keys.
 config_key_formatting_active = config_global_active
+config_key_formatting_regexes_to_ignore = []
+
+if "key-formatting" in config["checks"]:
+    if "active" in config["checks"]["key-formatting"]:
+        config_key_formatting_active = config["checks"]["key-formatting"]["active"]
+
+    if "keys-to-ignore" in config["checks"]["key-formatting"]:
+        _keys_to_ignore = config["checks"]["key-formatting"]["keys-to-ignore"]
+
+        if isinstance(_keys_to_ignore, str):
+            config_key_formatting_regexes_to_ignore = (
+                [_keys_to_ignore] if _keys_to_ignore else []
+            )
+
+        elif isinstance(_keys_to_ignore, list):
+            config_key_formatting_regexes_to_ignore = _keys_to_ignore
+
+        else:
+            config_key_formatting_regexes_to_ignore = []
+
+# MARK: Key Naming
+
 config_key_naming_active = config_global_active
 
-config_invalid_keys_directories_to_skip = config_global_directories_to_skip.copy()
-config_invalid_keys_files_to_skip = config_global_files_to_skip.copy()
-config_invalid_key_regexes_to_ignore = []
+config_key_naming_directories_to_skip = config_global_directories_to_skip.copy()
+config_key_naming_files_to_skip = config_global_files_to_skip.copy()
+config_key_naming_regexes_to_ignore = []
 
-# Read explicit per-check actives if provided.
-if (
-    "key-formatting" in config["checks"]
-    and "active" in config["checks"]["key-formatting"]
-):
-    config_key_formatting_active = config["checks"]["key-formatting"]["active"]
-
-if "key-naming" in config["checks"] and "active" in config["checks"]["key-naming"]:
-    config_key_naming_active = config["checks"]["key-naming"]["active"]
-
-# Derive skip lists for key-naming.
 if "key-naming" in config["checks"]:
+    if "active" in config["checks"]["key-naming"]:
+        config_key_naming_active = config["checks"]["key-naming"]["active"]
+
     if "directories-to-skip" in config["checks"]["key-naming"]:
-        config_invalid_keys_directories_to_skip += [
+        config_key_naming_directories_to_skip += [
             CWD_PATH
             / Path(d.replace("/", PATH_SEPARATOR).replace("\\", PATH_SEPARATOR))
             for d in config["checks"]["key-naming"]["directories-to-skip"]
         ]
+
     if "files-to-skip" in config["checks"]["key-naming"]:
-        config_invalid_keys_files_to_skip += [
+        config_key_naming_files_to_skip += [
             CWD_PATH
             / Path(f.replace("/", PATH_SEPARATOR).replace("\\", PATH_SEPARATOR))
-            for f in config["checks"]["key-naming"]["files-to-skip"]
+            for f in config["checks"]["global"]["files-to-skip"]
         ]
 
-# Keys to ignore for key-formatting.
-if (
-    "key-formatting" in config["checks"]
-    and "keys-to-ignore" in config["checks"]["key-formatting"]
-):
-    _keys_to_ignore = config["checks"]["key-formatting"]["keys-to-ignore"]
-elif (
-    "invalid-keys" in config["checks"]
-    and "keys-to-ignore" in config["checks"]["invalid-keys"]
-):
-    _keys_to_ignore = config["checks"]["invalid-keys"]["keys-to-ignore"]
-else:
-    _keys_to_ignore = []
+    if "keys-to-ignore" in config["checks"]["key-naming"]:
+        _keys_to_ignore = config["checks"]["key-naming"]["keys-to-ignore"]
 
-if isinstance(_keys_to_ignore, str):
-    config_invalid_key_regexes_to_ignore = [_keys_to_ignore] if _keys_to_ignore else []
-elif isinstance(_keys_to_ignore, list):
-    config_invalid_key_regexes_to_ignore = _keys_to_ignore
-else:
-    config_invalid_key_regexes_to_ignore = []
+        if isinstance(_keys_to_ignore, str):
+            config_key_naming_regexes_to_ignore = (
+                [_keys_to_ignore] if _keys_to_ignore else []
+            )
 
-config_invalid_keys_active = config_key_formatting_active and config_key_naming_active
+        elif isinstance(_keys_to_ignore, list):
+            config_key_naming_regexes_to_ignore = _keys_to_ignore
+
+        else:
+            config_key_naming_regexes_to_ignore = []
 
 # MARK: Nonexistent Keys
 
@@ -219,12 +227,27 @@ if "repeat-keys" in config["checks"] and "active" in config["checks"]["repeat-ke
 
 # Note: We don't have skipped files or directories for repeat-values.
 config_repeat_values_active = config_global_active
+config_repeat_values_regexes_to_ignore = []
 
 if (
     "repeat-values" in config["checks"]
     and "active" in config["checks"]["repeat-values"]
 ):
     config_repeat_values_active = config["checks"]["repeat-values"]["active"]
+
+    if "keys-to-ignore" in config["checks"]["repeat-values"]:
+        _keys_to_ignore = config["checks"]["repeat-values"]["keys-to-ignore"]
+
+        if isinstance(_keys_to_ignore, str):
+            config_repeat_values_regexes_to_ignore = (
+                [_keys_to_ignore] if _keys_to_ignore else []
+            )
+
+        elif isinstance(_keys_to_ignore, list):
+            config_repeat_values_regexes_to_ignore = _keys_to_ignore
+
+        else:
+            config_repeat_values_regexes_to_ignore = []
 
 # MARK: Unused Keys
 

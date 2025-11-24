@@ -125,7 +125,7 @@ def test_invalid_keys_check_pass(capsys) -> None:
         " All i18n keys are formatted correctly"
         in pass_result.replace("\n", "").strip()
     )
-    assert "i18n-src file." in pass_result.replace("\n", "").strip()
+    assert "i18n-src file." in pass_result.replace("\n", " ").strip()
 
 
 def test_invalid_keys_check_with_fix(capsys, tmp_path, monkeypatch) -> None:

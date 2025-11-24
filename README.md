@@ -204,8 +204,6 @@ checks:
     files-to-skip: []
   key-formatting:
     active: true # can be used to override individual checks
-    directories-to-skip: []
-    files-to-skip: []
     keys-to-ignore: [] # regexes for ignoring keys
   key-naming:
     active: true
@@ -226,6 +224,7 @@ checks:
     active: true
   repeat-values:
     active: true
+    keys-to-ignore: []
   sorted-keys:
     active: true
   nested-files:

@@ -187,8 +187,6 @@ The following details the ``.i18n-check.yaml`` configuration file, with a furthe
         files-to-skip: []
       key-formatting:
         active: true # can be used to override individual checks
-        directories-to-skip: []
-        files-to-skip: []
         keys-to-ignore: [] # regexes for ignoring keys
       key-naming:
         active: true
@@ -209,6 +207,7 @@ The following details the ``.i18n-check.yaml`` configuration file, with a furthe
         active: true
       repeat-values:
         active: true
+        keys-to-ignore: []
       sorted-keys:
         active: true
       nested-files:

@@ -27,7 +27,7 @@ from i18n_check.utils import (
     config_global_files_to_skip,
     config_i18n_directory,
     config_i18n_src_file,
-    config_invalid_key_regexes_to_ignore,
+    config_key_formatting_regexes_to_ignore,
     config_repeat_keys_active,
     config_sorted_keys_active,
     config_src_directory,
@@ -236,5 +236,5 @@ Please reformat the following {format_key_or_keys} [current_key -> suggested_cor
 
 invalid_keys_by_format = audit_invalid_i18n_key_formats(
     key_file_dict=invalid_keys_key_file_dict,
-    keys_to_ignore_regex=config_invalid_key_regexes_to_ignore,
+    keys_to_ignore_regex=config_key_formatting_regexes_to_ignore,
 )
