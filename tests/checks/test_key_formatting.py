@@ -12,9 +12,11 @@ from i18n_check.check.key_formatting import (
 from i18n_check.check.key_naming import (
     map_keys_to_files,
 )
-from i18n_check.utils import PATH_SEPARATOR
+from i18n_check.utils import PATH_SEPARATOR, replace_text_in_file
 
 from ..test_utils import (
+    fail_checks_src_json_path,
+    fail_checks_test_file_path,
     i18n_map_fail,
     i18n_map_pass,
 )
@@ -87,7 +89,7 @@ def test_audit_invalid_i18n_keys_formatting() -> None:
     }
 
 
-def test_invalid_keys_check_fail(capsys) -> None:
+def test_invalid_key_formats_check_and_fix_fail(capsys) -> None:
     """
     Test invalid_key_formats_check_and_fix for the fail case with formatting errors.
     """
@@ -108,7 +110,7 @@ def test_invalid_keys_check_fail(capsys) -> None:
     assert "💡 Tip: You can automatically fix invalid key formats" in output_msg
 
 
-def test_invalid_keys_check_pass(capsys) -> None:
+def test_invalid_key_formats_check_and_fix_pass(capsys) -> None:
     """
     Test invalid_key_formats_check_and_fix for the pass case.
     """
@@ -128,12 +130,12 @@ def test_invalid_keys_check_pass(capsys) -> None:
     assert "i18n-src file." in pass_result.replace("\n", " ").strip()
 
 
-def test_invalid_keys_check_with_fix(capsys, tmp_path, monkeypatch) -> None:
+def test_invalid_key_formats_check_and_fix_with_fix(
+    capsys, tmp_path, monkeypatch
+) -> None:
     """
     Test invalid_key_formats_check_and_fix with fix=True to ensure it attempts to fix issues.
     """
-    # This test would need actual file setup to fully test the fix functionality.
-    # For now, we verify that fix=True doesn't crash when there are no issues.
     invalid_key_formats_check_and_fix(
         invalid_keys_by_format={},
         all_checks_enabled=False,
@@ -142,6 +144,37 @@ def test_invalid_keys_check_with_fix(capsys, tmp_path, monkeypatch) -> None:
 
     pass_result = capsys.readouterr().out
     assert "✅ key-formatting success" in pass_result
+
+
+def test_invalid_key_formats_check_and_fix_fail_fix_mode(capsys):
+    """
+    Test invalid_key_formats_check_and_fix in fix mode for naming errors.
+    """
+    with pytest.raises(SystemExit):
+        invalid_key_formats_check_and_fix(
+            invalid_keys_by_format={
+                "i18n.test_file.incorrectly-formatted-key": "i18n.test_file.incorrectly_formatted_key"
+            },
+            all_checks_enabled=False,
+            fix=True,
+        )
+
+    output = capsys.readouterr().out
+    assert "--fix (-f) flag" not in output
+    assert "✨ Replaced 'i18n.test_file.incorrectly-formatted-key'" in output
+    assert "'i18n.test_file.incorrectly_formatted_key'" in output
+
+    # Return to old state before string replacement in tests:
+    replace_text_in_file(
+        path=fail_checks_src_json_path,
+        old="i18n.test_file.incorrectly_formatted_key",
+        new="i18n.test_file.incorrectly-formatted-key",
+    )
+    replace_text_in_file(
+        path=fail_checks_test_file_path,
+        old="i18n.test_file.incorrectly_formatted_key",
+        new="i18n.test_file.incorrectly-formatted-key",
+    )
 
 
 if __name__ == "__main__":

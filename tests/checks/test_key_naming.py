@@ -41,7 +41,7 @@ def test_audit_invalid_i18n_keys_naming() -> None:
     )
 
 
-def test_invalid_keys_check_and_fix_fail(capsys) -> None:
+def test_invalid_key_names_check_and_fix_fail(capsys) -> None:
     """
     Test invalid_key_names_check_and_fix for the fail case with naming errors.
     """
@@ -62,7 +62,7 @@ def test_invalid_keys_check_and_fix_fail(capsys) -> None:
     assert "i18n.test_file.content_reference" in output_msg
 
 
-def test_invalid_keys_check_and_fix_fail_with_tip(capsys):
+def test_invalid_key_names_check_and_fix_fail_with_tip(capsys):
     """
     Test that fix tip is shown when not in fix mode.
     """
@@ -79,7 +79,7 @@ def test_invalid_keys_check_and_fix_fail_with_tip(capsys):
     assert "--fix (-f) flag" in output
 
 
-def test_invalid_keys_check_and_fix_fail_fix_mode(capsys):
+def test_invalid_key_names_check_and_fix_fail_fix_mode(capsys):
     """
     Test invalid_key_names_check_and_fix in fix mode for naming errors.
     """
