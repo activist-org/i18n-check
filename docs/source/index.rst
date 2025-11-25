@@ -3,7 +3,7 @@
     :align: center
     :target: https://github.com/activist-org/i18n-check
 
-|rtd| |ci_backend| |issues| |language| |pypi| |pypistatus| |license| |coc| |matrix|
+|rtd| |pr_ci| |python_package_ci| |issues| |python| |pypi| |pypistatus| |license| |coc| |matrix|
 
 .. |rtd| image:: https://img.shields.io/readthedocs/i18n-check.svg?label=%20&logo=read-the-docs&logoColor=ffffff
     :target: http://i18n-check.readthedocs.io/en/latest/
@@ -17,7 +17,7 @@
 .. |issues| image:: https://img.shields.io/github/issues/activist-org/i18n-check?label=%20&logo=github
     :target: https://github.com/activist-org/i18n-check/issues
 
-.. |language| image:: https://img.shields.io/badge/Python%203-306998.svg?logo=python&logoColor=ffffff
+.. |python| image:: https://img.shields.io/badge/Python%203-306998.svg?logo=python&logoColor=ffffff
     :target: https://github.com/activist-org/i18n-check/blob/main/CONTRIBUTING.md
 
 .. |pypi| image:: https://img.shields.io/pypi/v/i18n-check.svg?label=%20&color=4B8BBE
