@@ -12,6 +12,12 @@ Emojis for the following are chosen based on [gitmoji](https://gitmoji.dev/).
 
 ## [Upcoming] i18n-check 1.x
 
+## i18n-check 1.15.2
+
+### ♻️ Code Refactoring
+
+- The error messages for checks were improved and reformatted.
+
 ## i18n-check 1.15.1
 
 ### 🐞 Bug Fixes

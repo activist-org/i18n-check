@@ -133,7 +133,7 @@ def report_and_fix_aria_labels(
             error_string += f"  Current:   '{current_value}'\n"
             error_string += f"  Suggested: '{corrected_value}'\n\n"
 
-    error_string += "[/red][yellow]⚠️ Note: Aria labels should not end with punctuation as it affects screen reader experience.[/yellow]"
+    error_string += "[/red][yellow]⚠️  Note: Aria labels should not end with punctuation as it affects screen reader experience.[/yellow]"
 
     rprint(error_string)
 

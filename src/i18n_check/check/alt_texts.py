@@ -166,7 +166,7 @@ def report_and_fix_alt_texts(
             error_string += f"  Current:   '{current_value}'\n"
             error_string += f"  Suggested: '{corrected_value}'\n\n"
 
-    error_string += "[/red][yellow]⚠️ Note: Alt texts should end with periods for proper sentence structure and accessibility.[/yellow]"
+    error_string += "[/red][yellow]⚠️  Note: Alt texts should end with periods for proper sentence structure and accessibility.[/yellow]"
 
     rprint(error_string)
 

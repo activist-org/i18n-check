@@ -201,8 +201,8 @@ def run_all_checks(args: argparse.Namespace) -> None:
         and config_aria_labels_active
         and config_alt_texts_active
     ):
-        print(
-            "Note: Some checks are not enabled in the .i18n-check.yaml configuration file and will be skipped."
+        rprint(
+            "[yellow]⚠️  Note: Some checks are not enabled in the .i18n-check.yaml configuration file and will be skipped.[/yellow]"
         )
 
     check_results: list[bool] = []
