@@ -12,6 +12,13 @@ Emojis for the following are chosen based on [gitmoji](https://gitmoji.dev/).
 
 ## [Upcoming] i18n-check 1.x
 
+## i18n-check 1.15.1
+
+### 🐞 Bug Fixes
+
+- There was a grammar error in the `sorted-keys` check output if there was only one unsorted file.
+- The order of the `sorted-keys` check error message was made more sensible.
+
 ## i18n-check 1.15.0
 
 ### ✨ Features
