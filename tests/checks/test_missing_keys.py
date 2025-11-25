@@ -293,7 +293,7 @@ def test_missing_keys_check_and_fix_with_locale(mock_add_function) -> None:
         locales_to_check=[],
     )
 
-    # Verify the interactive function was called with correct parameters
+    # Verify the interactive function was called with correct parameters.
     mock_add_function.assert_called_once_with(
         locale="de",
         i18n_src_dict={"key_0": "value_0"},

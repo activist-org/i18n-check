@@ -23,7 +23,7 @@ class TestIsNestedJson(unittest.TestCase):
         Test various JSON structures.
         """
         test_cases = [
-            # (description, input_data, expected_result)
+            # Note: (description, input_data, expected_result).
             (
                 "flat JSON",
                 read_json_file(file_path=checks_pass_json_dir / "test_i18n_src.json"),

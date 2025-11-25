@@ -8,16 +8,19 @@
 
 # MARK: Python Files
 
-# setup.py working directory
+# setup.py directories:
 build
-# setup.py dist directory
 dist
-# Egg metadata
+
+# Egg metadata"
 *.egg-info
-# Caches
+
+# Caches:
 __pycache__
-# Test coverage output
+
+# Test coverage output:
 .coverage
-# Virtual environment
+
+# Virtual environment:
 venv
 .venv
