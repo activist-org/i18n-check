@@ -157,7 +157,7 @@ def sorted_keys_check_and_fix(
             rprint(f"[red]Keys not sorted alphabetically in: {f}[/red]")
 
         rprint(
-            "\n[yellow]💡 Tip: Use the --fix (-f) flag to automatically order the keys alphabetically.[/yellow]\n"
+            "\n[yellow]💡 Tip: Use the --fix (-f) flag to automatically sort the keys alphabetically.[/yellow]\n"
         )
 
         if all_checks_enabled:
