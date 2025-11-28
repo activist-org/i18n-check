@@ -13,6 +13,7 @@ import argparse
 import sys
 from concurrent.futures import ProcessPoolExecutor, as_completed
 from functools import partial
+from pathlib import Path
 
 from rich import print as rprint
 
@@ -187,6 +188,12 @@ def run_all_checks(args: argparse.Namespace) -> None:
         )
         check_names.append("alt-texts")
 
+    if Path(".i18n-check.yaml").is_file():
+        config_file_name = ".i18n-check.yaml"
+
+    else:
+        config_file_name = ".i18n-check.yml"
+
     if not (
         config_key_formatting_active
         and config_key_naming_active
@@ -202,7 +209,7 @@ def run_all_checks(args: argparse.Namespace) -> None:
         and config_alt_texts_active
     ):
         rprint(
-            "[yellow]⚠️  Note: Some checks are not enabled in the .i18n-check.yaml configuration file and will be skipped.[/yellow]"
+            f"[yellow]⚠️  Note: Some checks are not enabled in the {config_file_name} configuration file and will be skipped.[/yellow]"
         )
 
     check_results: list[bool] = []

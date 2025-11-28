@@ -132,9 +132,15 @@ def sorted_keys_check_and_fix(
     """
     json_files = get_all_json_files(directory=config_i18n_directory)
 
+    if Path(".i18n-check.yaml").is_file():
+        config_file_name = ".i18n-check.yaml"
+
+    else:
+        config_file_name = ".i18n-check.yml"
+
     if not json_files:
         ValueError(
-            "No JSON files found in the i18n directory. Did you define i18n-dir incorrectly in .i18n-check.yaml?"
+            f"No JSON files found in the i18n directory. Did you define i18n-dir incorrectly in {config_file_name}?"
         )
 
     unsorted_files = []

@@ -12,6 +12,16 @@ Emojis for the following are chosen based on [gitmoji](https://gitmoji.dev/).
 
 ## [Upcoming] i18n-check 1.x
 
+## i18n-check 1.15.3
+
+### 🐞 Bug Fixes
+
+- The error messages that direct the user to the `i18n-check` configuration file now react to if it's `.i18n-check.yaml` (the default) or `.i18n-check.yml`.
+
+### ♻️ Code Refactoring
+
+- Check error messages were improved for clarity.
+
 ## i18n-check 1.15.2
 
 ### ♻️ Code Refactoring
@@ -256,7 +266,7 @@ Emojis for the following are chosen based on [gitmoji](https://gitmoji.dev/).
 
 ### 🐞 Bug Fixes
 
-- All checks now raises a `sys.exit(1)` as with individual checks so that GitHub workflows, pre-commit and other systems running i18n-check will fail.
+- All checks now raises a `sys.exit(1)` as with individual checks so that GitHub workflows, pre-commit and other systems running `i18n-check` will fail.
 - The error messages are now combined into one message to assure that they're not mixed together with other parallel error outputs ([#44](https://github.com/activist-org/i18n-check/issues/44)).
 - The pseudo code in the test frontends has been fixed so that the `all_checks_pass` frontend passes all checks.
 
@@ -306,7 +316,7 @@ Emojis for the following are chosen based on [gitmoji](https://gitmoji.dev/).
 
 ### 🐞 Bug Fixes
 
-- The i18n-check source file is referred to generally in error outputs instead of using a specific localization for the source file.
+- The `i18n-check` source file is referred to generally in error outputs instead of using a specific localization for the source file.
 - The upgrade tests were removed to avoid tar balls rewriting local development files during testing ([#34](https://github.com/activist-org/i18n-check/issues/34)).
 - The path to the configuration file now no longer requires a call to `Path` to make it work more seamlessly with GitHub Actions ([#35](https://github.com/activist-org/i18n-check/issues/35)).
 

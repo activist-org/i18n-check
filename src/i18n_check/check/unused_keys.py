@@ -102,12 +102,11 @@ def unused_keys_check(unused_keys: List[str], all_checks_enabled: bool = False) 
     """
     if unused_keys:
         to_be = "are" if len(unused_keys) > 1 else "is"
-        key_to_be = "keys that are" if len(unused_keys) > 1 else "key that is"
         key_or_keys = "keys" if len(unused_keys) > 1 else "key"
 
         error_message = (
             "[red]\n❌ unused-keys error: There "
-            + f"{to_be} {len(unused_keys)} i18n {key_to_be} unused. Please remove or assign the following {key_or_keys}:"
+            + f"{to_be} {len(unused_keys)} unused i18n {key_or_keys} in the i18n source file. Please remove or assign the following {key_or_keys}:"
             + "\n\n"
             + "\n".join(unused_keys)
             + "[/red]"

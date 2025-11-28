@@ -23,7 +23,7 @@ def write_to_file(
     checks: Dict[str, dict],  # type: ignore [type-arg]
 ) -> None:
     """
-    Writing to file .i18n-check.yaml file.
+    Writing to the i18n source JSON file.
 
     Parameters
     ----------
