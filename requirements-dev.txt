@@ -4,23 +4,23 @@
 #
 #    pip-compile requirements-dev.in
 #
-alabaster==1.0.0
+alabaster==0.7.16
     # via sphinx
 babel==2.17.0
     # via sphinx
 build==1.3.0
     # via pip-tools
-certifi==2025.10.5
+certifi==2025.11.12
     # via
     #   -r requirements.txt
     #   requests
 cfgv==3.4.0
     # via pre-commit
-charset-normalizer==3.4.3
+charset-normalizer==3.4.4
     # via
     #   -r requirements.txt
     #   requests
-click==8.3.0
+click==8.1.8
     # via pip-tools
 coverage[toml]==7.10.7
     # via pytest-cov
@@ -30,21 +30,27 @@ docutils==0.21.2
     # via
     #   sphinx
     #   sphinx-rtd-theme
-filelock==3.20.0
+exceptiongroup==1.3.1
+    # via pytest
+filelock==3.19.1
     # via virtualenv
 identify==2.6.15
     # via pre-commit
-idna==3.10
+idna==3.11
     # via
     #   -r requirements.txt
     #   requests
 imagesize==1.4.1
     # via sphinx
+importlib-metadata==8.7.0
+    # via
+    #   build
+    #   sphinx
 iniconfig==2.1.0
     # via pytest
 jinja2==3.1.6
     # via sphinx
-markdown-it-py==4.0.0
+markdown-it-py==3.0.0
     # via
     #   -r requirements.txt
     #   rich
@@ -72,7 +78,7 @@ pathspec==0.12.1
     # via mypy
 pip-tools==7.5.1
     # via -r requirements-dev.in
-platformdirs==4.5.0
+platformdirs==4.4.0
     # via virtualenv
 pluggy==1.6.0
     # via
@@ -106,13 +112,11 @@ requests==2.32.5
     #   sphinx
 rich==14.2.0
     # via -r requirements.txt
-roman-numerals-py==3.1.0
-    # via sphinx
 ruff==0.14.0
     # via -r requirements-dev.in
 snowballstemmer==3.0.1
     # via sphinx
-sphinx==8.2.3
+sphinx==7.4.7
     # via
     #   numpydoc
     #   sphinx-rtd-theme
@@ -133,13 +137,25 @@ sphinxcontrib-qthelp==2.0.0
     # via sphinx
 sphinxcontrib-serializinghtml==2.0.0
     # via sphinx
+tomli==2.3.0
+    # via
+    #   build
+    #   coverage
+    #   mypy
+    #   numpydoc
+    #   pip-tools
+    #   pytest
+    #   sphinx
 types-pyyaml==6.0.12.20250915
     # via -r requirements-dev.in
 types-requests==2.32.4.20250913
     # via -r requirements-dev.in
 typing-extensions==4.15.0
-    # via mypy
-urllib3==2.5.0
+    # via
+    #   exceptiongroup
+    #   mypy
+    #   virtualenv
+urllib3==2.6.0
     # via
     #   -r requirements.txt
     #   requests
@@ -148,6 +164,8 @@ virtualenv==20.35.3
     # via pre-commit
 wheel==0.45.1
     # via pip-tools
+zipp==3.23.0
+    # via importlib-metadata
 
 # The following packages are considered to be unsafe in a requirements file:
 # pip
