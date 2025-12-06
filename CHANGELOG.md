@@ -12,6 +12,12 @@ Emojis for the following are chosen based on [gitmoji](https://gitmoji.dev/).
 
 ## [Upcoming] i18n-check 1.x
 
+## i18n-check 1.15.4
+
+### ⬆️ Dependencies
+
+- Updated all dependencies given Dependabot requirements and set version numbers to be non-explicit.
+
 ## i18n-check 1.15.3
 
 ### 🐞 Bug Fixes
