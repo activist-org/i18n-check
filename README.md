@@ -35,7 +35,7 @@ Developed by the [activist community](https://github.com/activist-org), this pac
   - [Additional Arguments](#additional-arguments-)
   - [pre-commit](#pre-commit-)
 - [Contributing](#contributing)
-- [Environment setup](#environment-setup)
+- [Environment setup](#environment-setup-)
 - [Contributors](#contributors-)
 
 <a id="conventions-"></a>
@@ -301,7 +301,7 @@ We would be happy to discuss granting you further rights as a contributor after 
 - Working with us on [new features](https://github.com/activist-org/i18n-check/issues?q=is%3Aissue+is%3Aopen+label%3Afeature) ✨
 - [Documentation](https://github.com/activist-org/i18n-check/issues?q=is%3Aissue+is%3Aopen+label%3Adocumentation) for onboarding and project cohesion 📝
 
-<a id="environment-setup"></a>
+<a id="environment-setup-"></a>
 
 # Environment setup [`⇧`](#contents)
 
