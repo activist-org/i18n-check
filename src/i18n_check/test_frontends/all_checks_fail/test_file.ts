@@ -3,7 +3,6 @@
 //   - "i18n._global.hello_global"
 //   - "i18n._global.repeat_value_hello_global"
 //   - "i18n._global.repeat_key"
-//   - "i18n.repeat_value_multiple_files"
 //   - "i18n.repeat_value_single_file"
 //   - "i18n.test_file.form_button_aria_label"
 //   - "i18n.test_file.fox_image_alt_text"

@@ -66,7 +66,7 @@ def test_multiple_repeats_with_common_prefix(capsys) -> None:
         "Keys: i18n._global.hello_global, i18n._global.repeat_value_hello_global"
         in fail_report
     )
-    assert "Suggested new key: i18n._global.content_reference" in fail_report
+    assert "Suggested new key: i18n.sub_dir._global.content_reference" in fail_report
 
     # Result remain unchanged (not removed).
     assert fail_result == {
@@ -95,7 +95,7 @@ def test_key_with_lower_suffix_ignored(capsys) -> None:
         "Keys: i18n.repeat_value_multiple_files, i18n.repeat_value_single_file"
         in report
     )
-    assert "Suggested new key: i18n.test_file.content_reference" in report
+    assert "Suggested new key: i18n._global.content_reference" in report
 
 
 def test_repeat_values_check_behavior(capsys) -> None:

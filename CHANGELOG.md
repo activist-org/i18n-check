@@ -12,6 +12,17 @@ Emojis for the following are chosen based on [gitmoji](https://gitmoji.dev/).
 
 ## [Upcoming] i18n-check 1.x
 
+## i18n-check 1.15.5
+
+### 🐞 Bug Fixes
+
+- Fixed a bug where the `repeat-values` check would fail if keys were not used in files as some projects may not be using the `key-naming` check ([#84](https://github.com/activist-org/i18n-check/issues/84)).
+- The way in which a `repeat-values` suggested key is derived was improved to assure that having different keys with the same value across multiple files is properly accounted for in the suggestion ([#84](https://github.com/activist-org/i18n-check/issues/84)).
+
+### ✅ Tests
+
+- Tests were improved for the `repeat-values` check such that a directory structure within a suggestion is also asserted.
+
 ## i18n-check 1.15.4
 
 ### ⬆️ Dependencies

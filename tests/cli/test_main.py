@@ -102,8 +102,10 @@ class TestMainCli(unittest.TestCase):
         fail_checks_src_json = read_json_file(file_path=fail_checks_src_json_path)
 
         assert fail_checks_src_json.get("i18n.test_file.content_reference")
-        assert fail_checks_src_json.get("i18n._global.repeat_value_multiple_files")
         assert fail_checks_src_json.get("i18n.test_file.repeat_value_single_file")
+        assert fail_checks_src_json.get(
+            "i18n.sub_dir._global.repeat_value_multiple_files"
+        )
 
         # Return to old state before string replacement in tests:
         replace_text_in_file(
@@ -120,7 +122,7 @@ class TestMainCli(unittest.TestCase):
         # Repeat value keys as well:
         replace_text_in_file(
             path=fail_checks_src_json_path,
-            old="i18n._global.repeat_value_multiple_files",
+            old="i18n.sub_dir._global.repeat_value_multiple_files",
             new="i18n.repeat_value_multiple_files",
         )
         replace_text_in_file(
@@ -131,17 +133,17 @@ class TestMainCli(unittest.TestCase):
 
         replace_text_in_file(
             path=fail_checks_test_file_path,
-            old="i18n._global.repeat_value_multiple_files",
+            old="i18n.sub_dir._global.repeat_value_multiple_files",
             new="i18n.repeat_value_multiple_files",
         )
         replace_text_in_file(
             path=fail_checks_sub_dir_first_file_path,
-            old="i18n._global.repeat_value_multiple_files",
+            old="i18n.sub_dir._global.repeat_value_multiple_files",
             new="i18n.repeat_value_multiple_files",
         )
         replace_text_in_file(
             path=fail_checks_sub_dir_second_file_path,
-            old="i18n._global.repeat_value_multiple_files",
+            old="i18n.sub_dir._global.repeat_value_multiple_files",
             new="i18n.repeat_value_multiple_files",
         )
 

@@ -11,6 +11,7 @@ Run the following script in terminal:
 >>> i18n-check -rv
 """
 
+import itertools
 import sys
 from collections import Counter
 from typing import Dict
@@ -106,17 +107,27 @@ def analyze_and_generate_repeat_value_report(
             )
 
             # Replace with 'repeat_key' as a dummy for if this was the key in all files.
+            repeat_key_key_file_dict = {
+                "repeat_key": list(
+                    itertools.chain.from_iterable(repeat_values_key_file_dict.values())
+                )
+            }
+
             invalid_keys_by_name = audit_invalid_i18n_key_names(
-                key_file_dict={
-                    "repeat_key": v for k, v in repeat_values_key_file_dict.items()
-                },
+                key_file_dict=repeat_key_key_file_dict,
                 keys_to_ignore_regex=config_key_naming_regexes_to_ignore,
             )
 
             # Remove dummy value and add 'content_reference' for user to replace.
-            valid_key_stub_based_on_files = invalid_keys_by_name["repeat_key"].replace(
-                ".repeat_key", ""
-            )
+            if "repeat_key" in invalid_keys_by_name:
+                valid_key_stub_based_on_files = invalid_keys_by_name[
+                    "repeat_key"
+                ].replace(".repeat_key", "")
+
+            else:
+                # In case there are keys that aren't used in files (i.e. central i18n repo).
+                valid_key_stub_based_on_files = "i18n"
+
             repeat_value_error_report += f"\nSuggested new key: {valid_key_stub_based_on_files}.content_reference"
 
         else:
