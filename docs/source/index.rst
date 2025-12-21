@@ -246,6 +246,18 @@ The following is an example YAML file for a GitHub Action to check your i18n fil
 .. code-block:: yaml
 
     name: pr_ci_i18n_check
+    on:
+      workflow_dispatch:
+      pull_request:
+        branches:
+          - main
+        types:
+          - opened
+          - reopened
+          - synchronize
+      push:
+        branches:
+          - main
 
     jobs:
       i18n_check:
