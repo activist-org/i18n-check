@@ -238,6 +238,38 @@ The following is an example `pre-commit <https://github.com/pre-commit/pre-commi
         additional_dependencies:
           - i18n-check
 
+GitHub Action
+=============
+
+The following is an example YAML file for a GitHub Action to check your i18n files on PRs and commits:
+
+.. code-block:: yaml
+
+    name: pr_ci_i18n_check
+
+    jobs:
+      i18n_check:
+        runs-on: ubuntu-latest
+        steps:
+          - name: Checkout Project
+            uses: actions/checkout@v4
+
+          - name: Setup Python
+            uses: actions/setup-python@v5
+            with:
+              python-version: "3.13"
+
+          - name: Create Environment and Install
+            run: |
+              python -m pip install --upgrade uv
+              uv venv
+              . .venv/bin/activate
+              uv pip install i18n-check
+
+          - name: Execute All i18n-check Key-Value Checks
+            run: |
+              i18n-check -a
+
 Contents
 ========
 
