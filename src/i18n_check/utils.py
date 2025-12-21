@@ -136,9 +136,6 @@ if "key-formatting" in config["checks"]:
         elif isinstance(_keys_to_ignore, list):
             config_key_formatting_regexes_to_ignore = _keys_to_ignore
 
-        else:
-            config_key_formatting_regexes_to_ignore = []
-
 # MARK: Key Naming
 
 config_key_naming_active = config_global_active
@@ -175,9 +172,6 @@ if "key-naming" in config["checks"]:
 
         elif isinstance(_keys_to_ignore, list):
             config_key_naming_regexes_to_ignore = _keys_to_ignore
-
-        else:
-            config_key_naming_regexes_to_ignore = []
 
 # MARK: Nonexistent Keys
 
@@ -238,6 +232,7 @@ if (
 config_unused_keys_active = config_global_active
 config_unused_keys_directories_to_skip = config_global_directories_to_skip.copy()
 config_unused_keys_files_to_skip = config_global_files_to_skip.copy()
+config_unused_keys_regexes_to_ignore = []
 
 if "unused-keys" in config["checks"]:
     if "active" in config["checks"]["unused-keys"]:
@@ -256,6 +251,17 @@ if "unused-keys" in config["checks"]:
             / Path(f.replace("/", PATH_SEPARATOR).replace("\\", PATH_SEPARATOR))
             for f in config["checks"]["unused-keys"]["files-to-skip"]
         ]
+
+    if "keys-to-ignore" in config["checks"]["unused-keys"]:
+        _keys_to_ignore = config["checks"]["unused-keys"]["keys-to-ignore"]
+
+        if isinstance(_keys_to_ignore, str):
+            config_unused_keys_regexes_to_ignore = (
+                [_keys_to_ignore] if _keys_to_ignore else []
+            )
+
+        elif isinstance(_keys_to_ignore, list):
+            config_unused_keys_regexes_to_ignore = _keys_to_ignore
 
 # MARK: Sorted Keys
 

@@ -218,6 +218,7 @@ checks:
     active: true
     directories-to-skip: []
     files-to-skip: []
+    keys-to-ignore: []
   non-source-keys:
     active: true
   repeat-keys:

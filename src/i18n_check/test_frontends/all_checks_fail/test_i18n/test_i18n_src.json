@@ -1,5 +1,6 @@
 {
   "i18n._global.unused_i18n_key": "A key that's unused in the project.",
+  "i18n.unused_keys.ignore.unused_i18n_key": "A key that's unused, but it's ignored.",
   "i18n._global.hello_global": "Hello, global!",
   "i18n._global.repeat_value_hello_global": "hello, global!",
   "i18n._global.repeat_key": "This key is duplicated",

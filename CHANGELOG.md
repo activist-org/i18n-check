@@ -12,6 +12,20 @@ Emojis for the following are chosen based on [gitmoji](https://gitmoji.dev/).
 
 ## [Upcoming] i18n-check 1.x
 
+## i18n-check 1.16.0
+
+### ✨ Features
+
+- A `keys-to-ignore` option has been added to the `unused-keys` check.
+
+### ✅ Tests
+
+- Tests have been added to check the `keys-to-ignore` functionality within `unused-keys` via the testing configuration file being modified to ignore unused keys.
+
+### ♻️ Code Refactoring
+
+- Minor cleanup of the code was done.
+
 ## i18n-check 1.15.5
 
 ### 🐞 Bug Fixes

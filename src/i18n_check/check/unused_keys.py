@@ -24,6 +24,7 @@ from i18n_check.utils import (
     config_src_directory,
     config_unused_keys_directories_to_skip,
     config_unused_keys_files_to_skip,
+    config_unused_keys_regexes_to_ignore,
     read_files_to_dict,
     read_json_file,
 )
@@ -71,6 +72,10 @@ def find_unused_keys(
             if re.search(key_search_pattern, file_contents):
                 used_keys.append(k)
                 break
+
+    for r in config_unused_keys_regexes_to_ignore:
+        pattern = re.compile(r)
+        all_keys = [k for k in all_keys if not pattern.match(k)]
 
     return list(set(all_keys) - set(used_keys))
 

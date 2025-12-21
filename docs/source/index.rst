@@ -201,6 +201,7 @@ The following details the ``.i18n-check.yaml`` configuration file, with a furthe
         active: true
         directories-to-skip: []
         files-to-skip: []
+        keys-to-ignore: []
       non-source-keys:
         active: true
       repeat-keys:

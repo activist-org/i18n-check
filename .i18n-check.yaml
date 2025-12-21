@@ -19,3 +19,5 @@ checks:
     active: true
     directories-to-skip: [src/i18n_check/test_frontends/all_checks_fail/skip_dir]
     files-to-skip: []
+  unused-keys:
+    keys-to-ignore: [i18n\.unused_keys\.ignore.*]

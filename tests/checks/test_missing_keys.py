@@ -62,6 +62,7 @@ def test_get_missing_keys_by_locale_fail() -> None:
         "i18n.test_file.incorrectly-formatted-key",
         "i18n.test_file.nested_example",
         "i18n.test_file.repeat_key_lower",
+        "i18n.unused_keys.ignore.unused_i18n_key",
         "i18n.wrong_identifier_path.content_reference",
     ]
 
