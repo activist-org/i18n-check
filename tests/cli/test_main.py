@@ -18,7 +18,7 @@ from ..test_utils import (
 )
 
 
-class TestMainCli(unittest.TestCase):
+class TestCliMain(unittest.TestCase):
     """
     Test suite for the main CLI entry point of i18n-check.
     """
