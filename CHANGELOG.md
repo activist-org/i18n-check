@@ -12,6 +12,17 @@ Emojis for the following are chosen based on [gitmoji](https://gitmoji.dev/).
 
 ## [Upcoming] i18n-check 1.x
 
+## i18n-check 1.16.1
+
+### ✅ Tests
+
+- Tests have been updated to pass given changes to the CLI outputs.
+
+### ♻️ Code Refactoring
+
+- The name of the i18n source file has been added to the output for those checks that relate to it.
+- The `aria-labels` and `alt-texts` checks now include a more verbose error message that provides more context on the issues.
+
 ## i18n-check 1.16.0
 
 ### ✨ Features

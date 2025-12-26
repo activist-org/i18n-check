@@ -28,6 +28,7 @@ from i18n_check.utils import (
     collect_files_to_check,
     config_file_types_to_check,
     config_i18n_src_file,
+    config_i18n_src_file_name,
     config_nonexistent_keys_directories_to_skip,
     config_nonexistent_keys_files_to_skip,
     config_repeat_keys_active,
@@ -137,7 +138,7 @@ def nonexistent_keys_check(
         key_to_be = "keys that are" if len(nonexistent_keys) > 1 else "key that is"
         key_or_keys = "keys" if len(nonexistent_keys) > 1 else "key"
 
-        error_message = f"[red]❌ nonexistent-keys error: There {to_be} {len(nonexistent_keys)} i18n {key_to_be} not in the i18n source file. Please check the validity of the following {key_or_keys}:"
+        error_message = f"[red]❌ nonexistent-keys error: There {to_be} {len(nonexistent_keys)} i18n {key_to_be} not in the {config_i18n_src_file_name} i18n source file. Please check the validity of the following {key_or_keys}:"
         error_message += "\n\n"
         error_message += "\n".join(sorted(nonexistent_keys))
         error_message += "[/red]"
@@ -202,7 +203,7 @@ def add_nonexistent_keys_interactively(
         return
 
     rprint(
-        "\n[yellow]Interactive mode to add values for nonexistent keys to the i18n source file[/yellow]"
+        f"\n[yellow]Interactive mode to add values for nonexistent keys to the {config_i18n_src_file_name} i18n source file[/yellow]"
     )
     rprint(f"[yellow]Nonexistent keys: {len(nonexistent_keys)}[/yellow]")
     rprint(
@@ -277,7 +278,7 @@ def add_nonexistent_keys_interactively(
         remaining_count = len(remaining_nonexistent)
         key_or_keys = "key" if remaining_count == 1 else "keys"
         rprint(
-            f"[yellow]⚠️ {remaining_count} {key_or_keys} still missing in the i18n source file[/yellow]"
+            f"[yellow]⚠️ {remaining_count} {key_or_keys} still missing in the {config_i18n_src_file_name} i18n source file[/yellow]"
         )
 
     else:

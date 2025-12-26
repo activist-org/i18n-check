@@ -93,7 +93,10 @@ def test_validate_fail_i18n_keys(capsys) -> None:
 
     msg = capsys.readouterr().out.replace("\n", "")
     assert "Please check the validity of the following key:" in msg
-    assert " There is 1 i18n key that is not in the i18n source file." in msg
+    assert (
+        " There is 1 i18n key that is not in the test_i18n_src.json i18n source file."
+        in msg
+    )
     assert "i18n.test_file.not_in_i18n_source_file" in msg
 
 
@@ -333,8 +336,9 @@ def test_add_nonexistent_keys_interactively_skip(
 
     captured = capsys.readouterr()
     assert "Skipped 'i18n.b_skipped_nonexistent_key'" in captured.out.replace("\n", "")
-    assert "1 key still missing in the i18n source file" in captured.out.replace(
-        "\n", ""
+    assert (
+        "1 key still missing in the test_i18n_src.json i18n source file"
+        in captured.out.replace("\n", "")
     )
 
 

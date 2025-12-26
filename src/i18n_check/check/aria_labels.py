@@ -122,7 +122,7 @@ def report_and_fix_aria_labels(
         )
         return
 
-    error_string = "\n[red]❌ aria-labels errors:\n\n"
+    error_string = "\n[red]❌ aria-labels error: There are some values that do not have proper aria label punctuation. Please follow the directions below to correct them:\n\n"
     for k in aria_label_issues:
         error_string += f"Key: {k}\n"
         for json_file in aria_label_issues[k]:

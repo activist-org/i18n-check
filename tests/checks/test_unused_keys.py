@@ -45,9 +45,10 @@ def test_unused_keys_check_fail_raises_value_error(capsys) -> None:
 
     output = capsys.readouterr().out
     assert (
-        "❌ unused-keys error: There are 3 unused i18n keys in the i18n source file"
+        "❌ unused-keys error: There are 3 unused i18n keys in the test_i18n_src.json"
         in output
     )
+    assert "i18n source file" in output
     assert "i18n._global.unused_i18n_key" in output
 
 

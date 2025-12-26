@@ -85,6 +85,7 @@ config_i18n_src_file = (
         config["i18n-src"].replace("/", PATH_SEPARATOR).replace("\\", PATH_SEPARATOR)
     )
 ).resolve()
+config_i18n_src_file_name = str(config_i18n_src_file).split(PATH_SEPARATOR)[-1]
 
 # MARK: File Types
 

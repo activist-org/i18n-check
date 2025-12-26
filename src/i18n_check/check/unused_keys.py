@@ -21,6 +21,7 @@ from i18n_check.utils import (
     collect_files_to_check,
     config_file_types_to_check,
     config_i18n_src_file,
+    config_i18n_src_file_name,
     config_src_directory,
     config_unused_keys_directories_to_skip,
     config_unused_keys_files_to_skip,
@@ -111,7 +112,7 @@ def unused_keys_check(unused_keys: List[str], all_checks_enabled: bool = False) 
 
         error_message = (
             "[red]\n❌ unused-keys error: There "
-            + f"{to_be} {len(unused_keys)} unused i18n {key_or_keys} in the i18n source file. Please remove or assign the following {key_or_keys}:"
+            + f"{to_be} {len(unused_keys)} unused i18n {key_or_keys} in the {config_i18n_src_file_name} i18n source file. Please remove or assign the following {key_or_keys}:"
             + "\n\n"
             + "\n".join(unused_keys)
             + "[/red]"

@@ -155,7 +155,7 @@ def report_and_fix_alt_texts(
         )
         return
 
-    error_string = "\n[red]❌ alt-texts errors:\n\n"
+    error_string = "\n[red]❌ alt-texts error: There are some values that do not have proper image alt text punctuation. Please follow the directions below to correct them:\n\n"
     for k in alt_text_issues:
         error_string += f"Key: {k}\n"
         for json_file in alt_text_issues[k]:

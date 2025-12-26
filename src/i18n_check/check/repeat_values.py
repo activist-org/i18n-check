@@ -21,6 +21,7 @@ from rich import print as rprint
 from i18n_check.check.key_naming import audit_invalid_i18n_key_names, map_keys_to_files
 from i18n_check.utils import (
     config_i18n_src_file,
+    config_i18n_src_file_name,
     config_key_naming_regexes_to_ignore,
     config_src_directory,
     lower_and_remove_punctuation,
@@ -182,7 +183,7 @@ def repeat_values_check(
             value_or_values = "values"
 
         error_message = "\n[red]"
-        error_message += f"❌ repeat-values error: There {is_or_are} {len(json_repeat_value_counts)} repeat i18n {value_or_values} present in the i18n source file. Please follow the directions below to combine {it_or_them} into one key:"
+        error_message += f"❌ repeat-values error: There {is_or_are} {len(json_repeat_value_counts)} repeat i18n {value_or_values} present in the {config_i18n_src_file_name} i18n source file. Please follow the directions below to combine {it_or_them} into one key:"
         error_message += repeat_value_error_report
         error_message += "[/red]"
 
