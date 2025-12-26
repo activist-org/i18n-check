@@ -92,7 +92,8 @@ def test_validate_fail_i18n_keys(capsys) -> None:
         )
 
     msg = capsys.readouterr().out.replace("\n", "")
-    assert "Please check the validity of the following key:" in msg
+    assert "Please check the validity of" in msg
+    assert "the following key:" in msg
     assert (
         " There is 1 i18n key that is not in the test_i18n_src.json i18n source file."
         in msg
