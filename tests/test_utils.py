@@ -26,6 +26,8 @@ from i18n_check.utils import (
     replace_text_in_file,
 )
 
+# MARK: Test Variables
+
 checks_fail_dir = (
     Path(__file__).parent.parent
     / "src"
@@ -66,6 +68,8 @@ pass_checks_src_json = read_json_file(file_path=pass_checks_src_json_path)
 i18n_map_pass = map_keys_to_files(
     i18n_src_dict=pass_checks_src_json, src_directory=checks_pass_dir
 )
+
+# MARK: Utils Tests
 
 
 class TestUtils(unittest.TestCase):
