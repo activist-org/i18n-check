@@ -30,6 +30,8 @@ docutils==0.21.2
     # via
     #   sphinx
     #   sphinx-rtd-theme
+exceptiongroup==1.3.1
+    # via pytest
 filelock==3.20.3
     # via virtualenv
 identify==2.6.15
@@ -70,6 +72,7 @@ packaging==25.0
     #   build
     #   pytest
     #   sphinx
+    #   wheel
 pathspec==1.0.3
     # via mypy
 pip-tools==7.5.2
@@ -108,15 +111,11 @@ requests==2.32.5
     #   sphinx
 rich==14.2.0
     # via -r requirements.txt
-roman-numerals==4.1.0
-    # via roman-numerals-py
-roman-numerals-py==4.1.0
-    # via sphinx
 ruff==0.14.11
     # via -r requirements-dev.in
 snowballstemmer==3.0.1
     # via sphinx
-sphinx==8.2.3
+sphinx==8.1.3
     # via
     #   numpydoc
     #   sphinx-rtd-theme
@@ -137,12 +136,24 @@ sphinxcontrib-qthelp==2.0.0
     # via sphinx
 sphinxcontrib-serializinghtml==2.0.0
     # via sphinx
+tomli==2.4.0
+    # via
+    #   build
+    #   coverage
+    #   mypy
+    #   numpydoc
+    #   pip-tools
+    #   pytest
+    #   sphinx
 types-pyyaml==6.0.12.20250915
     # via -r requirements-dev.in
 types-requests==2.32.4.20260107
     # via -r requirements-dev.in
 typing-extensions==4.15.0
-    # via mypy
+    # via
+    #   exceptiongroup
+    #   mypy
+    #   virtualenv
 urllib3==2.6.3
     # via
     #   -r requirements.txt
@@ -150,7 +161,7 @@ urllib3==2.6.3
     #   types-requests
 virtualenv==20.36.1
     # via pre-commit
-wheel==0.45.1
+wheel==0.46.2
     # via pip-tools
 
 # The following packages are considered to be unsafe in a requirements file:
