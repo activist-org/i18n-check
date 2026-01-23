@@ -24,7 +24,7 @@ if on_rtd:
 
 setup_args = dict(
     name="i18n-check",
-    version="1.16.2",
+    version="1.17.0",
     package_dir={"": "src"},
     author="i18n-check developers",
     author_email="team@activist.org",
@@ -47,14 +47,12 @@ setup_args = dict(
         "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
         "Programming Language :: Python",
         "Programming Language :: Python :: 3",
-        "Programming Language :: Python :: 3.10",
-        "Programming Language :: Python :: 3.11",
         "Programming Language :: Python :: 3.12",
         "Programming Language :: Python :: 3.13",
         "Programming Language :: Python :: 3.14",
         "Operating System :: OS Independent",
     ],
-    python_requires=">=3.10",
+    python_requires=">=3.12",
 )
 
 if __name__ == "__main__":

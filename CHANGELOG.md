@@ -12,6 +12,13 @@ Emojis for the following are chosen based on [gitmoji](https://gitmoji.dev/).
 
 ## [Upcoming] i18n-check 1.x
 
+## i18n-check 1.17.0
+
+### ⬆️ Dependencies
+
+- Dependencies were updated given dependabot warnings.
+- The minimum Python version was set to 3.12 to assure that we're only deploying versions that are allowed for dependencies.
+
 ## i18n-check 1.16.2
 
 ### ⬆️ Dependencies

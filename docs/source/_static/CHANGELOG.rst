@@ -11,6 +11,23 @@ See the `releases for i18n-check <https://github.com/activist-org/i18n-check/rel
 
 Emojis for the following are chosen based on `gitmoji <https://gitmoji.dev/>`_.
 
+i18n-check 1.17.0
+-----------------
+
+⬆️ Dependencies
+^^^^^^^^^^^^^^
+
+- Dependencies were updated given dependabot warnings.
+- The minimum Python version was set to 3.12 to assure that we're only deploying versions that are allowed for dependencies.
+
+i18n-check 1.16.2
+-----------------
+
+⬆️ Dependencies
+^^^^^^^^^^^^^^
+
+- Dependencies were updated given dependabot warnings.
+
 i18n-check 1.16.1
 -----------------
 
