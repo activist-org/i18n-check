@@ -12,16 +12,16 @@ on:
     paths:
       - "src/**"
       - "tests/**"
-      - "requirements.txt"
-      - "requirements-dev.txt"
+      - "pyproject.toml"
+      - "uv.lock"
   push:
     branches:
       - main
     paths:
       - "src/**"
       - "tests/**"
-      - "requirements.txt"
-      - "requirements-dev.txt"
+      - "pyproject.toml"
+      - "uv.lock"
 
 jobs:
   build:
@@ -50,17 +50,11 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
 
-      - name: Create Environment and Install Dependencies
-        run: |
-          python -m venv venv
-          if [ "$RUNNER_OS" == "Windows" ]; then
-            source venv/Scripts/activate
-          else
-            source venv/bin/activate
-          fi
-          echo PATH=$PATH >> $GITHUB_ENV
-          python -m pip install --upgrade pip
-          pip install -r requirements-dev.txt
+      - name: Install uv
+        uses: astral-sh/setup-uv@v7
+
+      - name: Sync environment and install dependencies
+        run: uv sync --frozen --all-extras
 
       - name: Run pytest - Unit Tests
-        run: pytest . --cov=src --cov-report=term-missing --cov-fail-under=85 --cov-config=./pyproject.toml -v
+        run: uv run pytest . --cov=src --cov-report=term-missing --cov-fail-under=85 --cov-config=./pyproject.toml -v

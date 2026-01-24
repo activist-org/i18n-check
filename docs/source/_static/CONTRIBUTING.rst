@@ -1,3 +1,4 @@
+==========================
 Contributing to i18n-check
 ==========================
 
@@ -11,77 +12,82 @@ If you have questions or would like to communicate with the team, please `join u
 
 .. _contents:
 
-**Contents**
+Contents
+--------
 
-- `First steps as a contributor <#first-steps-as-a-contributor>`_
-- `Learning the tech stack <#learning-the-tech-stack>`_
-- `Development environment <#development-environment>`_
-- `Linting <#linting>`_
-- `Testing <#testing>`_
-- `Issues and projects <#issues-and-projects>`_
-- `Bug reports <#bug-reports>`_
-- `Feature requests <#feature-requests>`_
-- `Pull requests <#pull-requests>`_
-- `Documentation <#documentation>`_
+* `First steps as a contributor`_
+* `Learning the tech stack`_
+* `Development environment`_
+* `Linting`_
+* `Testing`_
+* `Issues and projects`_
+* `Bug reports`_
+* `Feature requests`_
+* `Pull requests`_
+* `Documentation`_
+
+.. _first-steps:
 
 First steps as a contributor
 ----------------------------
 
 Thank you for your interest in contributing to activist community projects! We look forward to welcoming you :) The following are some suggested steps for people interested in joining our community:
 
-- Please join the `public Matrix chat <https://matrix.to/#/#activist_community:matrix.org>`_ to connect with the community
-    - `Matrix <https://matrix.org/>`_ is a network for secure, decentralized communication
-    - We'd suggest that you use the `Element <https://element.io//>`_ client and `Element X <https://element.io/app/>`_ for a mobile app
-    - The `General <https://matrix.to/#/!uIGQUxlCnEzrPiRsRw:matrix.org?via=matrix.org&via=effektio.org&via=acter.global>`_ and `Development <https://matrix.to/#/!CRgLpGeOBNwxYCtqmK:matrix.org?via=matrix.org&via=acter.global&via=chat.0x7cd.xyz>`_ channels would be great places to start!
-    - Feel free to introduce yourself and tell us what your interests are if you're comfortable :)
-- Consider joining our `bi-weekly developer sync <https://etherpad.wikimedia.org/p/activist-dev-sync>`_!
+* Please join the `public Matrix chat <https://matrix.to/#/#activist_community:matrix.org>`_ to connect with the community
+    * `Matrix <https://matrix.org/>`_ is a network for secure, decentralized communication
+    * We'd suggest that you use the `Element <https://element.io/>`_ client and `Element X <https://element.io/app>`_ for a mobile app
+    * The `General <https://matrix.to/#/!uIGQUxlCnEzrPiRsRw:matrix.org?via=matrix.org&via=effektio.org&via=acter.global>`_ and `Development <https://matrix.to/#/!CRgLpGeOBNwxYCtqmK:matrix.org?via=matrix.org&via=acter.global&via=chat.0x7cd.xyz>`_ channels would be great places to start!
+    * Feel free to introduce yourself and tell us what your interests are if you're comfortable :)
+* Consider joining our `bi-weekly developer sync <https://etherpad.wikimedia.org/p/activist-dev-sync>`_!
+
+.. _learning-the-tech-stack:
 
 Learning the tech stack
 -----------------------
 
 ``i18n-check`` is very open to contributions from people in the early stages of their coding journey! The following is a select list of documentation pages to help you understand the technologies we use.
 
-**Docs for those new to programming**
+.. admonition:: Docs for those new to programming
 
-- `Mozilla Developer Network Learning Area <https://developer.mozilla.org/en-US/docs/Learn>`_
-    - Doing MDN sections for HTML, CSS and JavaScript is the best ways to get into web development!
-- `Open Source Guides <https://opensource.guide/>`_
-    - Guides from GitHub about open-source software including how to start and much more!
+   * `Mozilla Developer Network Learning Area <https://developer.mozilla.org/en-US/docs/Learn>`_
+      * Doing MDN sections for HTML, CSS and JavaScript is the best ways to get into web development!
+   * `Open Source Guides <https://opensource.guide/>`_
+      * Guides from GitHub about open-source software including how to start and much more!
 
-**Python learning docs**
+.. admonition:: Python learning docs
 
-- `Python getting started guide <https://docs.python.org/3/tutorial/introduction.html>`_
-- `Python getting started resources <https://www.python.org/about/gettingstarted/>`_
+   * `Python getting started guide <https://docs.python.org/3/tutorial/introduction.html>`_
+   * `Python getting started resources <https://www.python.org/about/gettingstarted/>`_
+
+.. _dev-env:
 
 Development environment
 -----------------------
 
 1. First and foremost, please see the suggested IDE setup in the dropdown below to make sure that your editor is ready for development.
 
-    | **Note**
+.. important::
+   **Suggested IDE setup**
 
-    **Suggested IDE setup**
+   VS Code
 
-    VS Code
+   Install the following extensions:
 
-    Install the following extensions:
-
-    - `charliermarsh.ruff <https://marketplace.visualstudio.com/items?itemName=charliermarsh.ruff>`_
-    - `streetsidesoftware.code-spell-checker <https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker>`_
+   * `charliermarsh.ruff <https://marketplace.visualstudio.com/items?itemName=charliermarsh.ruff>`_
+   * `streetsidesoftware.code-spell-checker <https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker>`_
 
 2. `Fork <https://docs.github.com/en/get-started/quickstart/fork-a-repo>`_ the `i18n-check repo <https://github.com/activist-org/i18n-check>`_, clone your fork, and configure the remotes:
 
-- **Consider using SSH**
+.. note::
+   **Consider using SSH**
 
-Alternatively to using HTTPS as in the instructions below, consider SSH to interact with GitHub from the terminal. SSH allows you to connect without a user-pass authentication flow.
+   Alternatively to using HTTPS as in the instructions below, consider SSH to interact with GitHub from the terminal. SSH allows you to connect without a user-pass authentication flow.
 
-To run git commands with SSH, remember then to substitute the HTTPS URL, ``https://github.com/...``, with the SSH one, ``git@github.com:...``.
+   To run git commands with SSH, remember then to substitute the HTTPS URL, ``https://github.com/...``, with the SSH one, ``git@github.com:...``.
 
-- e.g. Cloning now becomes ``git clone git@github.com:<your-username>/i18n-check.git``
+   * e.g. Cloning now becomes ``git clone git@github.com:<your-username>/i18n-check.git``
 
-GitHub also has their documentation on how to `Generate a new SSH key <https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent>`_ 🔑
-
-- **Using HTTPS**
+   GitHub also has their documentation on how to `Generate a new SSH key <https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent>`_ 🔑
 
 .. code-block:: bash
 
@@ -92,38 +98,54 @@ GitHub also has their documentation on how to `Generate a new SSH key <https://d
     # Assign the original repo to a remote called "upstream".
     git remote add upstream https://github.com/activist-org/i18n-check.git
 
-- Now, if you run ``git remote -v`` you should see two remote repositories named:
-    - ``origin`` (forked repository)
-    - ``upstream`` (``i18n-check`` repository)
+* Now, if you run ``git remote -v`` you should see two remote repositories named:
+    * ``origin`` (forked repository)
+    * ``upstream`` (``i18n-check`` repository)
 
-3. Create a virtual environment, activate it and install dependencies:
+3. Create a virtual environment for i18n-check (Python ``>=3.12``), activate it and install dependencies:
+
+.. note::
+   First, install ``uv`` if you don't already have it by following the `official installation guide <https://docs.astral.sh/uv/getting-started/installation/>`_.
 
 .. code-block:: bash
 
-    # Unix or MacOS:
-    python3 -m venv venv
-    source venv/bin/activate
+    uv sync --all-extras  # create .venv and install all dependencies from uv.lock
+
+    # Unix or macOS:
+    source .venv/bin/activate
 
     # Windows:
-    python -m venv venv
-    venv\Scripts\activate.bat
+    .venv\Scripts\activate.bat # .venv\Scripts\activate.ps1 (PowerShell)
 
-    # After activating venv:
-    pip install --upgrade pip
-    pip install -r requirements-dev.txt
+After activating the virtual environment, set up `pre-commit <https://pre-commit.com/>`_ by running:
 
-    # To install the CLI for local development:
-    pip install -e .
+.. code-block:: bash
+
+    pre-commit install
+    # uv run pre-commit run --all-files  # lint and fix common problems in the codebase
+
+.. note::
+   If you change dependencies in ``pyproject.toml``, regenerate the lock file with the following command:
+
+   .. code-block:: bash
+
+      uv lock  # refresh uv.lock for reproducible installs
 
 You're now ready to work on ``i18n-check``!
 
-    | **Note**
-    | Feel free to contact the team in the `Development room on Matrix <https://matrix.to/#/!CRgLpGeOBNwxYCtqmK:matrix.org?via=matrix.org&via=acter.global&via=chat.0x7cd.xyz>`_ if you're having problems getting your environment setup!
+.. note::
+   Feel free to contact the team in the `Development room on Matrix <https://matrix.to/#/!CRgLpGeOBNwxYCtqmK:matrix.org?via=matrix.org&via=acter.global&via=chat.0x7cd.xyz>`_ if you're having problems getting your environment setup!
+
+
+
+.. _linting:
 
 Linting
 -------
 
 `Ruff <https://github.com/astral-sh/ruff>`_ is installed via the required packages to assure that errors are reported correctly. We'd also suggest that VS Code users install the `Ruff extension <https://marketplace.visualstudio.com/items?itemName=charliermarsh.ruff>`_.
+
+.. _testing:
 
 Testing
 -------
@@ -146,10 +168,14 @@ Please run the following commands from the project root to test:
     # To run with a coverage report as is done in PRs:
     pytest . --cov=src --cov-report=term-missing --cov-config=./pyproject.toml
 
+.. _issues-projects:
+
 Issues and projects
 -------------------
 
-The `issue tracker for i18n-check <https://github.com/activist-org/i18n-check/issues>`_ is the preferred channel for `bug reports <#bug-reports>`_, `features requests <#feature-requests>`_ and `submitting pull requests <#pull-requests>`_. The activist community also organizes related issues into `projects <https://github.com/activist-org/i18n-check/projects>`_.
+The `issue tracker for i18n-check <https://github.com/activist-org/i18n-check/issues>`_ is the preferred channel for `Bug reports`_, `Feature requests`_ and `Pull requests`_. The activist community also organizes related issues into `projects <https://github.com/activist-org/i18n-check/projects>`_.
+
+.. _bug-reports:
 
 Bug reports
 -----------
@@ -166,25 +192,29 @@ Guidelines for bug reports:
 
 **Great Bug Reports** tend to have:
 
-- A quick summary
-- Steps to reproduce
-- What you expected would happen
-- What actually happens
-- Notes (why this might be happening, things tried that didn't work, etc)
+* A quick summary
+* Steps to reproduce
+* What you expected would happen
+* What actually happens
+* Notes (why this might be happening, things tried that didn't work, etc)
 
 To make the above steps easier, the ``i18n-check`` team asks that contributors report bugs using the `bug report template <https://github.com/activist-org/i18n-check/issues/new?assignees=&labels=bug&projects=activist-org%2F1&template=bug_report.yml>`_, with these issues further being marked with the `Bug <https://github.com/activist-org/i18n-check/issues?q=is%3Aissue%20state%3Aopen%20type%3ABug>`_ type.
 
 Again, thank you for your time in reporting issues!
+
+.. _feature-requests:
 
 Feature requests
 ----------------
 
 Feature requests are more than welcome! Please take a moment to find out whether your idea fits with the scope and aims of the project. When making a suggestion, provide as much detail and context as possible, and further make clear the degree to which you would like to contribute in its development. Feature requests are marked with the `Feature <https://github.com/activist-org/i18n-check/issues?q=is%3Aissue%20state%3Aopen%20type%3AFeature>`_ type in the `issues <https://github.com/activist-org/i18n-check/issues>`_.
 
+.. _pull-requests:
+
 Pull requests
 -------------
 
-Good pull requests — patches, improvements and new features — are the foundation of our community making ``i18n-check``. They should remain focused in scope and avoid containing unrelated commits. Note that all contributions to this project will be made under `the specified license <https://github.com/activist-org/i18n-check/tree/main/LICENSE.txt>`_ and should follow the coding indentation and style standards (contact us if unsure).
+Good pull requests — patches, improvements and new features — are the foundation of our community making ``i18n-check``. They should remain focused in scope and avoid containing unrelated commits. Note that all contributions to this project will be made under `the specified license <LICENSE.txt>`_ and should follow the coding indentation and style standards (contact us if unsure).
 
 **Please ask first** before embarking on any significant pull request (implementing features, refactoring code, etc), otherwise you risk spending a lot of time working on something that the developers might not want to merge into the project. With that being said, major additions are very appreciated!
 
@@ -192,67 +222,71 @@ When making a contribution, adhering to the `GitHub flow <https://docs.github.co
 
 1. If you cloned a while ago, get the latest changes from upstream:
 
-.. code-block:: bash
+   .. code-block:: bash
 
-    git checkout <dev-branch>
-    git pull upstream <dev-branch>
+       git checkout <dev-branch>
+       git pull upstream <dev-branch>
 
 2. Create a new topic branch (off the main project development branch) to contain your feature, change, or fix:
 
-.. code-block:: bash
+   .. code-block:: bash
 
-    git checkout -b <topic-branch-name>
+       git checkout -b <topic-branch-name>
 
 3. Install `pre-commit <https://pre-commit.com/>`_ to ensure that each of your commits is properly checked against our linter and formatters:
 
-.. code-block:: bash
+   .. code-block:: bash
 
-    # In the project root:
-    pre-commit install
+       # In the project root:
+       pre-commit install
 
-    # Then test the pre-commit hooks to see how it works:
-    pre-commit run --all-files
+       # Then test the pre-commit hooks to see how it works:
+       # uv run pre-commit run --all-files
 
-pre-commit is Python package that can be installed via pip or any other Python package manager. You can also find it in our `requirements-dev.txt <https://github.com/activist-org/i18n-check/tree/main/requirements-dev.txt>`_ file.
+.. note::
+   pre-commit is Python package that can be installed via pip or any other Python package manager. You can also find it in our `uv.lock <./uv.lock>`_ file.
 
-.. code-block:: bash
+   .. code-block:: bash
 
-    pip install pre-commit
+       pip install pre-commit
 
-If you are having issues with pre-commit and want to send along your changes regardless, you can ignore the pre-commit hooks via the following:
+.. note::
+   If you are having issues with pre-commit and want to send along your changes regardless, you can ignore the pre-commit hooks via the following:
 
-.. code-block:: bash
+   .. code-block:: bash
 
-    git commit --no-verify -m "COMMIT_MESSAGE"
+       git commit --no-verify -m "COMMIT_MESSAGE"
 
 4. Commit your changes in logical chunks, and please try to adhere to `Conventional Commits <https://www.conventionalcommits.org/en/v1.0.0/>`_.
 
-    | **Note**
-    | The following are tools and methods to help you write good commit messages ✨
-    | - `commitlint <https://commitlint.io/>`_ helps write `Conventional Commits <https://www.conventionalcommits.org/en/v1.0.0/>`_
-    | - Git's `interactive rebase <https://docs.github.com/en/github/getting-started-with-github/about-git-rebase>`_ cleans up commits
+.. note::
+   The following are tools and methods to help you write good commit messages ✨
+
+   * `commitlint <https://commitlint.io/>`_ helps write `Conventional Commits <https://www.conventionalcommits.org/en/v1.0.0/>`_
+   * Git's `interactive rebase <https://docs.github.com/en/github/getting-started-with-github/about-git-rebase>`_ cleans up commits
 
 5. Locally merge (or rebase) the upstream development branch into your topic branch:
 
-.. code-block:: bash
+   .. code-block:: bash
 
-    git pull --rebase upstream <dev-branch>
+       git pull --rebase upstream <dev-branch>
 
 6. Push your topic branch up to your fork:
 
-.. code-block:: bash
+   .. code-block:: bash
 
-    git push origin <topic-branch-name>
+       git push origin <topic-branch-name>
 
 7. `Open a Pull Request <https://help.github.com/articles/using-pull-requests/>`_ with a clear title and description.
 
 Thank you in advance for your contributions!
 
+.. _documentation:
+
 Documentation
 -------------
 
-The documentation for ``i18n-check`` can be found at `i18n-check.readthedocs.io <https://i18n-check.readthedocs.io/en/latest/>`__. Documentation is an invaluable way to contribute to coding projects as it allows others to more easily understand the project structure and contribute. Issues related to documentation are marked with the `documentation <https://github.com/activist-org/i18n-check/labels/documentation>`__ label.
-
+The documentation for ``i18n-check`` can be found at `i18n-check.readthedocs.io <https://i18n-check.readthedocs.io/en/latest/>`_. Documentation is an invaluable way to contribute to coding projects as it allows others to more easily understand the project structure and contribute. Issues related to documentation are marked with the `documentation <https://github.com/activist-org/i18n-check/labels/documentation>`_ label.
 
 Function Docstrings
 ~~~~~~~~~~~~~~~~~~~

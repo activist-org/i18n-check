@@ -66,18 +66,32 @@ Conventions
 Installation
 ============
 
-``i18n-check`` is available for installation via `pip <https://pypi.org/project/i18n-check/>`_:
+``i18n-check`` is available for installation via `uv <https://docs.astral.sh/uv/>`_ or `pip <https://pypi.org/project/i18n-check/>`_:
 
 .. code-block:: shell
 
+    # Using uv (recommended - fast, Rust-based installer):
+    uv pip install i18n-check
+
+    # Or using pip:
     pip install i18n-check
 
 The latest development version can further be installed via the `source code on GitHub <https://github.com/activist-org/i18n-check>`_:
 
 .. code-block:: shell
 
-    git clone https://github.com/activist-org/i18n-check.git  # or your fork
+    git clone https://github.com/activist-org/i18n-check.git
     cd i18n-check
+
+    # With uv (recommended):
+    uv sync --all-extras  # Install all dependencies
+    source .venv/bin/activate  # Activate venv (macOS/Linux)
+    # .venv\Scripts\activate  # Activate venv (Windows)
+
+    # Or with pip:
+    python -m venv .venv  # Create virtual environment
+    source .venv/bin/activate  # Activate venv (macOS/Linux)
+    # .venv\Scripts\activate  # Activate venv (Windows)
     pip install -e .
 
 Commands

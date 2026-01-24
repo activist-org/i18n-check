@@ -65,17 +65,33 @@ Developed by the [activist community](https://github.com/activist-org), this pac
 
 # Installation [`⇧`](#contents)
 
-`i18n-check` is available for installation via [pip](https://pypi.org/project/i18n-check/):
+`i18n-check` is available for installation via [uv](https://docs.astral.sh/uv/) (recommended) or [pip](https://pypi.org/project/i18n-check/).
+
+### For Users
 
 ```bash
+# Using uv (recommended - fast, Rust-based installer):
+uv pip install i18n-check
+
+# Or using pip:
 pip install i18n-check
 ```
 
-The latest development version can further be installed via the source code in the repository:
+### For Development Build
 
 ```bash
-git clone https://github.com/activist-org/i18n-check.git  # or your fork
+git clone https://github.com/activist-org/i18n-check.git  # or ideally your fork
 cd i18n-check
+
+# With uv (recommended):
+uv sync --all-extras  # Install all dependencies
+source .venv/bin/activate  # Activate venv (macOS/Linux)
+# .venv\Scripts\activate  # Activate venv (Windows)
+
+# Or with pip:
+python -m venv .venv  # Create virtual environment
+source .venv/bin/activate  # Activate venv (macOS/Linux)
+# .venv\Scripts\activate  # Activate venv (Windows)
 pip install -e .
 ```
 
@@ -402,24 +418,34 @@ git remote add upstream https://github.com/activist-org/i18n-check.git
   - `origin` (forked repository)
   - `upstream` (i18n-check repository)
 
-3. Create a virtual environment, activate it and install dependencies:
+3. Create a virtual environment for i18n-check (Python `>=3.12`), activate it and install dependencies:
+
+   > [!NOTE]
+   > First, install `uv` if you don't already have it by following the [official installation guide](https://docs.astral.sh/uv/getting-started/installation/).
 
    ```bash
-   # Unix or MacOS:
-   python3 -m venv venv
-   source venv/bin/activate
+   uv sync --all-extras  # create .venv and install all dependencies from uv.lock
+
+   # Unix or macOS:
+   source .venv/bin/activate
 
    # Windows:
-   python -m venv venv
-   venv\Scripts\activate.bat
-
-   # After activating venv:
-   pip install --upgrade pip
-   pip install -r requirements-dev.txt
-
-   # To install the CLI for local development:
-   pip install -e .
+   .venv\Scripts\activate.bat  # .venv\Scripts\activate.ps1 (PowerShell)
    ```
+
+> [!NOTE]
+> If you change dependencies in `pyproject.toml`, regenerate the lock file with the following command:
+>
+> ```bash
+> uv lock  # refresh uv.lock for reproducible installs
+> ```
+
+After activating the virtual environment, set up [pre-commit](https://pre-commit.com/) by running:
+
+```bash
+pre-commit install
+# uv run pre-commit run --all-files  # lint and fix common problems in the codebase
+```
 
 You're now ready to work on `i18n-check`!
 
