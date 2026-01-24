@@ -42,7 +42,7 @@ jobs:
         run: uv sync --frozen --all-extras
 
       - name: Run Ruff Format - Formatting Check
-        run: uv run ruff format ./src
+        run: uv run ruff format ./src --check
 
       - name: Run Ruff - Linting and Import Sorting Check
         if: always()
