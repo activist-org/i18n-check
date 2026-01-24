@@ -12,6 +12,12 @@ Emojis for the following are chosen based on [gitmoji](https://gitmoji.dev/).
 
 ## [Upcoming] i18n-check 1.x
 
+## i18n-check 1.18.0
+
+### ⬆️ Dependencies
+
+- Dependency management was switched over to using [uv](https://docs.astral.sh/uv/).
+
 ## i18n-check 1.17.0
 
 ### ⬆️ Dependencies
