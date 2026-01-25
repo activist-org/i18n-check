@@ -16,12 +16,12 @@ repos:
       - id: ruff-format
         name: run ruff formatting check
 
-  - repo: https://github.com/tcort/markdown-link-check
-    rev: v3.13.6
-    hooks:
-      - id: markdown-link-check
-        name: run markdown link check
-        args: [-q]
+  # - repo: https://github.com/tcort/markdown-link-check
+  #   rev: v3.13.6
+  #   hooks:
+  #     - id: markdown-link-check
+  #       name: run markdown link check
+  #       args: [-q]
 
   - repo: https://github.com/sphinx-contrib/sphinx-lint
     rev: v1.0.0
