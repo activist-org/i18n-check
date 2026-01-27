@@ -190,10 +190,7 @@ Directions for how to fix the i18n files are provided when errors are raised. Ch
 
 ### YAML File [`⇧`](#contents)
 
-The following details the `.i18n-check.yaml` configuration file, with a further example being the [configuration file for this repository](/.i18n-check.yaml) that we use in testing.
-
-> [!NOTE]
-> Both `.i18n-check.yaml` and `.i18n-check.yml` file extensions are supported. If both files exist, `.yaml` will be preferred.
+i18n-check is configured via an `.i18n-check.yaml` (or `.yml`) configuration file, with an example being the [configuration file for this repository](/.i18n-check.yaml) that we use in testing. The following details the potential contents of this file:
 
 > [!NOTE]
 > When `global.active` is set to `true`, all checks are enabled by default. You can then explicitly disable specific checks by setting their `active` value to `false`. This allows for more concise configuration files. For example:
@@ -325,18 +322,17 @@ jobs:
       - name: Setup Python
         uses: actions/setup-python@v5
         with:
-          python-version: "3.13"
+          python-version: "3.12"
 
-      - name: Create Environment and Install
-        run: |
-          python -m pip install --upgrade uv
-          uv venv
-          . .venv/bin/activate
-          uv pip install i18n-check
+      - name: Install uv
+        uses: astral-sh/setup-uv@v7
+
+      - name: Install Dependencies
+        run: uv sync --frozen --all-extras
 
       - name: Execute All i18n-check Key-Value Checks
         run: |
-          i18n-check -a
+          uv run i18n-check -a
 ```
 
 <a id="contributing"></a>

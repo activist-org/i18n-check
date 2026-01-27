@@ -283,18 +283,17 @@ The following is an example YAML file for a GitHub Action to check your i18n fil
           - name: Setup Python
             uses: actions/setup-python@v5
             with:
-              python-version: "3.13"
+              python-version: "3.12"
 
-          - name: Create Environment and Install
-            run: |
-              python -m pip install --upgrade uv
-              uv venv
-              . .venv/bin/activate
-              uv pip install i18n-check
+          - name: Install uv
+            uses: astral-sh/setup-uv@v7
+
+          - name: Install Dependencies
+            run: uv sync --frozen --all-extras
 
           - name: Execute All i18n-check Key-Value Checks
             run: |
-              i18n-check -a
+              uv run i18n-check -a
 
 Contents
 ========
