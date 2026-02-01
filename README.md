@@ -18,7 +18,7 @@
 - [About i18n-check](#about-i18n-check)
 - [Key Conventions](#key-conventions)
 - [Installation](#installation)
-  - [For Users](#for-users)
+  - [Users](#users)
   - [Development Build](#development-build)
 - [How It Works](#how-it-works)
   - [Commands](#commands)
@@ -64,12 +64,12 @@ Developed by the [activist community](https://github.com/activist-org), this pac
 
 # Installation
 
-## For Users
+## Users
 
 You can install `i18n-check` using [uv](https://docs.astral.sh/uv/) (recommended) or [pip](https://pypi.org/project/i18n-check/).
 
 ### uv 
-(recommended - fast, Rust-based installer)
+(Recommended - fast, Rust-based installer)
 ```bash
 uv pip install i18n-check
 ```
