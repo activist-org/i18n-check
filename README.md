@@ -141,6 +141,8 @@ i18n-check -mk -f -l ENTER_ISO_2_CODE
 
 ## Checks
 
+When `i18n-check` finds errors, it provides directions for resolving them. You can also disable checks in the workflow by modifying the configuration [YAML file](#yaml-file).
+
 You can run these checks across your codebase:
 
 
@@ -156,13 +158,8 @@ You can run these checks across your codebase:
 | Are the i18n source and target locale files sorted alphabetically? | `sorted-keys` (`sk`) | Sort them alphabetically to reduce merge conflicts from the files changing. | `--fix` (`-f`) to sort the i18n files automatically. <br> <br> **Note:** The `--fix` option for other checks will sort the keys if this check is active. <br> Sorting is done such that periods come before underscores (some JSON extensions do otherwise). |
 | Do the i18n files contain nested JSON structures? | `nested-files` (`nf`) | Flatten them to make replacing invalid keys easier with find-and-replace all. | n/a |
 | Are any keys from the source file missing in the locale files? | `missing-keys` (`mk`) | Add the missing keys to ensure all translations are complete. <br> Keys with empty string values are considered missing. | `--fix --locale ENTER_ISO_2_CODE` (`-f -l ENTER_ISO_2_CODE`) to interactively add missing keys. |
-| Do keys that end in `_aria_label` end in punctuation? | `aria-labels` (`al`) | Remove the punctuation, as it negatively affects screen reader experience. | `--fix` (`-f`) to remove punctuation automatically. |
-| Do keys that end in `_alt_text` lack proper punctuation? | `alt-texts` (`at`) | Add periods to the end to comply with alt text guidelines. | `--fix` (`-f`) to add periods automatically. |
-
-> [!NOTE]
-> The `aria-labels` and `alt-texts` checks function for LTR and RTL languages.
-
-Directions for how to fix the i18n files are provided when errors are raised. Checks can also be disabled in the workflow via options passed in the configuration YAML file.
+| For both LTR and RTL languages, do keys that end in `_aria_label` end in punctuation? | `aria-labels` (`al`) | Remove the punctuation, as it negatively affects screen reader experience. | `--fix` (`-f`) to remove punctuation automatically. |
+| For both LTR and RTL languages, are keys that end in `_alt_text` missing proper punctuation? | `alt-texts` (`at`) | Add periods to the end to comply with alt text guidelines. | `--fix` (`-f`) to add periods automatically. |
 
 ## Example Responses
 
@@ -187,7 +184,7 @@ For an example, see the [configuration file for this repository](/.i18n-check.ya
 The following details the potential contents of this file:
 
 > [!NOTE]
-> When `global.active` is set to `true`, all checks are enabled by default. You can then explicitly disable specific checks by setting their `active` value to `false`. This allows for more concise configuration files. For example:
+> When `global.active` is set to `true`, all checks are enabled by default. You can then disable specific checks by setting their `active` value to `false`. This allows for more concise configuration files. Example:
 >
 > ```yaml
 > checks:
@@ -293,7 +290,7 @@ This is an example [pre-commit](https://github.com/pre-commit/pre-commit) hook:
 
 ## GitHub Action
 
-This is an example YAML file for a GitHub Action to check your i18n files on PRs and commits:
+This is an example YAML file for a GitHub Action to check your `i18n-files` on PRs and commits:
 
 ```yaml
 name: pr_ci_i18n_check
