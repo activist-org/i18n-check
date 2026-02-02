@@ -4,7 +4,7 @@ Thank you for contributing to `i18n-check`!
 
 Please take a moment to review this document in order to make the contribution process easy and effective for everyone involved.
 
-Following these guidelines helps to communicate that you respect the time of the developers managing and developing this open-source project. In return, and in accordance with this project's [code of conduct](https://github.com/activist-org/i18n-check/tree/main/.github/CODE_OF_CONDUCT.md), other contributors will reciprocate that respect in addressing your issue or assessing patches and features.
+Following this guide helps to communicate that you respect the time of the developers managing and developing this open-source project. In return, and in accordance with this project's [code of conduct](https://github.com/activist-org/i18n-check/tree/main/.github/CODE_OF_CONDUCT.md), other contributors will reciprocate that respect in addressing your issue or assessing patches and features.
 
 If you have questions or would like to communicate with the team, please [join us in our public Matrix chat rooms](https://matrix.to/#/#activist_community:matrix.org). We'd be happy to hear from you!
 
@@ -13,6 +13,7 @@ If you have questions or would like to communicate with the team, please [join u
 ## **Contents**
 
 - [First steps as a contributor](#first-steps-)
+- [Mentorship and growth](#mentorship-and-growth-)
 - [Learning the tech stack](#learning-the-tech-stack-)
 - [Development environment](#dev-env-)
 - [Linting](#linting-)
@@ -34,7 +35,15 @@ Thank you for your interest in contributing to activist community projects! We l
   - We'd suggest that you use the [Element](https://element.io/) client and [Element X](https://element.io/app) for a mobile app
   - The [General](https://matrix.to/#/!uIGQUxlCnEzrPiRsRw:matrix.org?via=matrix.org&via=effektio.org&via=acter.global) and [Development](https://matrix.to/#/!CRgLpGeOBNwxYCtqmK:matrix.org?via=matrix.org&via=acter.global&via=chat.0x7cd.xyz) channels would be great places to start!
   - Feel free to introduce yourself and tell us what your interests are if you're comfortable :)
-- Consider joining our [bi-weekly developer sync](https://etherpad.wikimedia.org/p/activist-dev-sync)!
+- Consider joining our [bi-weekly developer sync](https://etherpad.wikimedia.org/p/activist-dev-sync) — new joiners are always welcome!
+
+<a id="mentorship-and-growth-"></a>
+
+## Mentorship and growth [`⇧`](#contents)
+
+Onboarding and mentoring new members are integral parts of any healthy open-source community. We need those who are onboarded to gain new skills and take on greater roles of triaging issues, reviewing contributions and maintaining the project. We also need them to help those who follow do the same. Please let us know if you have such goals and we'll work with you to achieve them.
+
+The above includes expectations on the behavior of those who want to grow with us. Mentorship is earned, not given. Very bluntly, if all you want to do is send AI generated contributions, then you are not demonstrating an interest in growing your skills and it doesn't make sense for us to invest into your development. Continued constructive contributions, new open issues and communication that provides context for maintainers help us do our work immensely. We would be happy to help such community members expand their skills and take on further responsibilities!
 
 <a id="learning-the-tech-stack-"></a>
 
