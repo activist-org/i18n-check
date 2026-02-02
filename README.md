@@ -55,7 +55,7 @@ Developed by the [activist community](https://github.com/activist-org), this pac
 - Separate directory / file name components and content references with underscores (`_`).
 - Repeated words in the file path, including the file name, must not be repeated in the key.
 
-> [!TIP]
+> [!NOTE]
 > Example of a valid file / key pair:
 >
 > **File:** `components/component/ComponentName.ext`
@@ -395,7 +395,7 @@ We recommend using the [Element](https://element.io/) client and [Element X](htt
 
 2. [Fork](https://docs.github.com/en/get-started/quickstart/fork-a-repo) the [i18n-check repo](https://github.com/activist-org/i18n-check), clone your fork, and configure the remotes:
 
-> [!NOTE]
+> [!TIP]
 >
 > <details><summary>Consider using SSH</summary>
 >
