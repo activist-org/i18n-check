@@ -357,7 +357,7 @@ Issues labelled [`good first issue`](https://github.com/activist-org/i18n-check/
 
 New to coding or our tech stack? We've collected [links to helpful documentation](CONTRIBUTING.md#learning-the-tech-stack).
 
-We would be happy to discuss granting you further rights as a contributor after your first pull requests, with a maintainer role then being possible after continued interest in the project. activist seeks to be an inclusive, diverse, and supportive organization. We'd love to have you on the team!
+We would be happy to discuss granting you further rights as a contributor after your first pull requests, with a maintainer role then being possible after continued interest in the project. activist seeks to be an inclusive, diverse, and supportive organization. We'd love to have you on the team! Please see the [mentorship and growth section of the contribution guide](CONTRIBUTING.md#mentorship-and-growth-) for further information.
 
 ## How to Help
 
