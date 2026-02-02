@@ -292,7 +292,7 @@ This is an example [pre-commit](https://github.com/pre-commit/pre-commit) hook:
     - id: run-i18n-check
       name: run i18n-check key-value checks
       files: ^src-dir/
-      entry: i18n-check -a
+      entry: uv run i18n-check -a
       language: python
       pass_filenames: false
       additional_dependencies:
