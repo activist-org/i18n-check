@@ -14,7 +14,7 @@ Emojis for the following are chosen based on [gitmoji](https://gitmoji.dev/).
 
 ### 📝 Documentation
 
-- All documentation of the package was updated to improve clarity ([#87](https://github.com/activist-org/i18n-check/issues/87)).
+- All documentation for the package was updated to improve clarity ([#87](https://github.com/activist-org/i18n-check/issues/87)).
 
 ## i18n-check 1.18.0
 
