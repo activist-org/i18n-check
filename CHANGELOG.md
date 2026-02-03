@@ -10,7 +10,11 @@ See the [releases for i18n-check](https://github.com/activist-org/i18n-check/rel
 
 Emojis for the following are chosen based on [gitmoji](https://gitmoji.dev/).
 
-## [Upcoming] i18n-check 1.x
+## [Upcoming] i18n-check 1.18.1
+
+### 📝 Documentation
+
+- All documentation for the package was updated to improve clarity ([#87](https://github.com/activist-org/i18n-check/issues/87)).
 
 ## i18n-check 1.18.0
 

@@ -1,5 +1,5 @@
 <div align="center">
-  <a href="https://github.com/activist-org/i18n-check"><img src="https://raw.githubusercontent.com/activist-org/i18n-check/main/.github/resources/images/i18nCheckGitHubBanner.png" width=1024 alt="i18n check logo"></a>
+  <a id="top" href="https://github.com/activist-org/i18n-check"><img src="https://raw.githubusercontent.com/activist-org/i18n-check/main/.github/resources/images/i18nCheckGitHubBanner.png" width=1024 alt="i18n check logo"></a>
 </div>
 
 [![rtd](https://img.shields.io/readthedocs/i18n-check.svg?label=%20&logo=read-the-docs&logoColor=ffffff)](http://i18n-check.readthedocs.io/en/latest/)
@@ -13,187 +13,198 @@
 [![coc](https://img.shields.io/badge/Contributor%20Covenant-ff69b4.svg)](https://github.com/activist-org/i18n-check/blob/main/.github/CODE_OF_CONDUCT.md)
 [![matrix](https://img.shields.io/badge/Matrix-000000.svg?logo=matrix&logoColor=ffffff)](https://matrix.to/#/#activist_community:matrix.org)
 
-### Check i18n/L10n keys and values
+# Contents
 
-`i18n-check` is a Python package to automate the validation of keys and values of your internationalization and localization processes.
-
-Developed by the [activist community](https://github.com/activist-org), this package is meant to assure that development and i18n/L10n teams are in sync when using JSON based localization processes. The checks can be expanded later to work for other file types as needed.
-
-<a id="contents"></a>
-
-# **Contents**
-
-- [Conventions](#contentions-)
-- [Installation](#installation-)
-- [How it works](#how-it-works-)
-  - [Commands](#commands-)
-  - [Previews](#previews-)
-  - [Arguments](#arguments-)
-  - [Checks](#checks-)
-- [Configuration](#configuration-)
-  - [YAML File](#yaml-file-)
-  - [Additional Arguments](#additional-arguments-)
-  - [pre-commit](#pre-commit-)
-  - [GitHub Action](#github-action-)
+- [About i18n-check](#about-i18n-check)
+- [Key Conventions](#key-conventions)
+- [Installation](#installation)
+  - [Users](#users)
+  - [Development Build](#development-build)
+- [How It Works](#how-it-works)
+  - [Commands](#commands)
+  - [Checks](#checks)
+  - [Example Responses](#example-responses)
+- [Configuration](#configuration)
+  - [YAML File](#yaml-file)
+  - [Arguments](#arguments)
+  - [Additional Arguments](#additional-arguments)
+  - [pre-commit](#pre-commit)
+  - [GitHub Action](#github-action)
 - [Contributing](#contributing)
-- [Environment setup](#environment-setup-)
-- [Contributors](#contributors-)
+  - [New Contributors](#new-contributors)
+  - [How to Help](#how-to-help)
+  - [Contact the Team](#contact-the-team)
+- [Environment setup](#environment-setup)
+- [Contributors](#contributors)
 
-<a id="conventions-"></a>
+# About i18n-check
 
-# Conventions [`⇧`](#contents)
+`i18n-check` is a Python package that automates the validation of keys and values for your internationalization and localization processes.
 
-[activist](https://github.com/activist-org/activist) i18n keys follow the following conventions that are enforced by `i18n-check`:
+Developed by the [activist community](https://github.com/activist-org), this package helps keep development and i18n/L10n teams in sync when using JSON-based localization processes.
 
-- All key base paths should be the file path where the key is used prepended with `i18n.`
-  - Starting i18n keys with a common identifier allows them to be found within checks
-- If a key is used in more than one file, then the lowest common directory followed by `_global` is the base path
-- Base paths should be followed by a minimally descriptive content reference
-  - Only the formatting of these content references is checked via `i18n-check`
-- Separate base directory paths by periods (`.`)
-- Separate all directory and file name components as well as content references by underscores (`_`)
-- Repeat words in file paths for sub directory organization should not be repeated in the key
+<sub><a href="#top">Back to top.</a></sub>
+
+# Key Conventions
+
+`i18n-check` enforces these conventions for all keys:
+
+- All keys must begin with `i18n.`.
+- The base path must be the file path where the key is used.
+- If a key is used in more than one file, the base path must be the lowest common directory and end with `_global`.
+- Base paths must be followed by a minimally descriptive content reference (`i18n-check` only checks content references for formatting).
+- Separate base paths with periods (`.`).
+- Separate directory / file name components and content references with underscores (`_`).
+- Repeated words in the file path, including the file name, must not be repeated in the key.
 
 > [!NOTE]
-> An example valid key is:
+> Example of a valid file / key pair:
 >
-> File: `components/component/ComponentName.ext`
+> **File:** `components/component/ComponentName.ext`
 >
-> Key: `"components.component_name.content_reference"`
+> **Key:** `"i18n.components.component_name.content_reference"`
 
-<a id="installation-"></a>
+<sub><a href="#top">Back to top.</a></sub>
 
-# Installation [`⇧`](#contents)
+# Installation
 
-`i18n-check` is available for installation via [uv](https://docs.astral.sh/uv/) (recommended) or [pip](https://pypi.org/project/i18n-check/).
+## Users
 
-### For Users
+You can install `i18n-check` using [uv](https://docs.astral.sh/uv/) (recommended) or [pip](https://pypi.org/project/i18n-check/).
+
+### uv
+
+(Recommended - fast, Rust-based installer)
 
 ```bash
-# Using uv (recommended - fast, Rust-based installer):
 uv pip install i18n-check
+```
 
-# Or using pip:
+### pip
+
+```bash
 pip install i18n-check
 ```
 
-### For Development Build
+## Development Build
+
+You can install the latest development build using uv, pip, or by cloning the repository.
+
+### Clone the Repository (Development Build)
 
 ```bash
 git clone https://github.com/activist-org/i18n-check.git  # or ideally your fork
 cd i18n-check
+```
 
-# With uv (recommended):
+### uv (Development Build)
+
+```bash
 uv sync --all-extras  # install all dependencies
 source .venv/bin/activate  # activate venv (macOS/Linux)
 # .venv\Scripts\activate  # activate venv (Windows)
+```
 
-# Or with pip:
+### pip (Development Build)
+
+```bash
 python -m venv .venv  # create virtual environment
 source .venv/bin/activate  # activate venv (macOS/Linux)
 # .venv\Scripts\activate  # activate venv (Windows)
 pip install -e .
 ```
 
-<a id="how-it-works-"></a>
+<sub><a href="#top">Back to top.</a></sub>
 
-# How it works [`⇧`](#contents)
+# How It Works
 
-<a id="commands-"></a>
+## Commands
 
-### Commands [`⇧`](#contents)
+These are some example commands:
 
-The following are example commands for `i18n-check`:
+**View Help**
 
 ```bash
-i18n-check -h  # view the help
-i18n-check -gcf  # generate a configuration file
-i18n-check -gtf  # generate test frontends to experiment with
-i18n-check -a  # run all checks
-i18n-check -CHECK_ID  # run a specific check (see options below)
-i18n-check -mk -f -l ENTER_ISO_2_CODE  # interactive mode to add missing keys
+i18n-check -h
 ```
 
-<a id="previews-"></a>
+**Generate a Configuration File**
 
-### Previews [`⇧`](#contents)
+```bash
+i18n-check -gcf
+```
 
-The following GIFs show the response to the command `i18n-check -a` when all checks fail and when all checks pass:
+**Generate Test Frontends**
+
+```bash
+i18n-check -gtf
+```
+
+**Run All Checks**
+
+```bash
+i18n-check -a
+```
+
+**Run a Specific [Check](#checks)**
+
+```bash
+i18n-check -CHECK_ID
+```
+
+**Interactive Mode - Add Missing Keys**
+
+```bash
+i18n-check -mk -f -l ENTER_ISO_2_CODE
+```
+
+## Checks
+
+When `i18n-check` finds errors, it provides directions for resolving them. You can also disable checks in the workflow by modifying the configuration [YAML file](#yaml-file).
+
+You can run these checks across your codebase:
+
+| Check                                                                                        | Command                   | Resolution                                                                                                                                                                              | Fix Command                                                                                                                                              |
+| -------------------------------------------------------------------------------------------- | ------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Does the source file contain keys that don't follow the required formatting rules?           | `key-formatting` (`kf`)   | Format the keys in the source file to match the conventions.                                                                                                                            | `--fix` (`-f`) to fix all formatting issues automatically.                                                                                               |
+| Are key names consistent with how and where they are used in the codebase?                   | `key-naming` (`kn`)       | Rename them so i18n key usage is consistent and their scope is communicated in their name.                                                                                              | `--fix` (`-f`) to fix all naming issues automatically.                                                                                                   |
+| Does the codebase include i18n keys that are not within the source file?                     | `nonexistent-keys` (`nk`) | Check their validity and resolve if they should be added to the i18n files or replaced.                                                                                                 | `--fix` (`-f`) to interactively add nonexistent keys.                                                                                                    |
+| Does the source file have keys that are not used in the codebase?                            | `unused-keys` (`uk`)      | Remove them so the localization team isn't working on strings that aren't used.                                                                                                         | n/a                                                                                                                                                      |
+| Do the target locale files have keys that are not in the source file?                        | `non-source-keys` (`nsk`) | Remove them as they won't be used in the application.                                                                                                                                   | n/a                                                                                                                                                      |
+| Do any of localization files have repeat keys?                                               | `repeat-keys` (`rk`)      | Separate them so that the values are not mixed when they're in production. <br> <br> **Note:** The existence of repeat keys prevents keys from being sorted by the `sorted-keys` check. | n/a                                                                                                                                                      |
+| Does the source file have repeat values that can be combined into a single key?              | `repeat-values` (`rv`)    | Combine them so the localization team only needs to localize one of them.                                                                                                               | n/a                                                                                                                                                      |
+| Are the i18n source and target locale files sorted alphabetically?                           | `sorted-keys` (`sk`)      | Sort them alphabetically to reduce merge conflicts from the files changing. Sorting is done such that periods come before underscores (some JSON extensions do otherwise).              | `--fix` (`-f`) to sort the i18n files automatically. <br> <br> **Note:** The `--fix` option for other checks will sort the keys if this check is active. |
+| Do the i18n files contain nested JSON structures?                                            | `nested-files` (`nf`)     | Flatten them to make replacing invalid keys easier with find-and-replace all.                                                                                                           | n/a                                                                                                                                                      |
+| Are any keys from the source file missing in the locale files?                               | `missing-keys` (`mk`)     | Add the missing keys to ensure all translations are complete. <br> Keys with empty string values are considered missing.                                                                | `--fix --locale ENTER_ISO_2_CODE` (`-f -l ENTER_ISO_2_CODE`) to interactively add missing keys.                                                          |
+| For both LTR and RTL languages, do keys that end in `_aria_label` end in punctuation?        | `aria-labels` (`al`)      | Remove the punctuation, as it negatively affects screen reader experience.                                                                                                              | `--fix` (`-f`) to remove punctuation automatically.                                                                                                      |
+| For both LTR and RTL languages, are keys that end in `_alt_text` missing proper punctuation? | `alt-texts` (`at`)        | Add periods to the end to comply with alt text guidelines.                                                                                                                              | `--fix` (`-f`) to add periods automatically.                                                                                                             |
+
+## Example Responses
+
+These GIFs show the response to the command `i18n-check -a` when all checks fail or pass.
+
+### All Checks Fail
 
 ![i18n_check_all_fail](https://github.com/user-attachments/assets/757a9f6f-7bde-40db-941d-c4e82855a453)
 
+### All Checks Pass
+
 ![i18n_check_all_pass](https://github.com/user-attachments/assets/c024c368-7691-4489-b8b8-a9844d386177)
 
-<a id="arguments-"></a>
+<sub><a href="#top">Back to top.</a></sub>
 
-### Arguments [`⇧`](#contents)
+# Configuration
 
-You provide `i18n-check` with the following arguments in the `.i18n-check.yaml` or `.i18n-check.yml` configuration file (see [configuration](#configuration-) below):
+## YAML File
 
-- `src-dir`: The path to the directory that has source code to check
-- `i18n-dir`: The directory path to your i18n files
-- `i18n-src`: The name of the i18n source file
-- `file-types-to-check`: The file types that the checks should be ran against
+You can configure `i18n-check` using the `.i18n-check.yaml` (or `.yml`) configuration file.
 
-<a id="checks-"></a>
+For an example, see the [configuration file for this repository](/.i18n-check.yaml) that we use in testing.
 
-### Checks [`⇧`](#contents)
-
-There the following checks can ran across your codebase:
-
-- `key-formatting` (`kf`): Does the i18n source file contain keys that don't follow the required formatting rules?
-  - Format the keys in the source file to match the conventions.
-  - Pass `--fix` (`-f`) to fix all formatting issues automatically.
-- `key-naming` (`kn`): Are key names consistent with how and where they are used in the codebase?
-  - Rename them so i18n key usage is consistent and their scope is communicated in their name.
-  - Pass `--fix` (`-f`) to fix all naming issues automatically.
-- `nonexistent-keys` (`nk`): Does the codebase include i18n keys that are not within the source file?
-  - Check their validity and resolve if they should be added to the i18n files or replaced.
-  - Pass `--fix` (`-f`) to interactively add nonexistent keys.
-- `unused-keys` (`uk`): Does the source file have keys that are not used in the codebase?
-  - Remove them so the localization team isn't working on strings that aren't used.
-- `non-source-keys` (`nsk`): Do the target locale files have keys that are not in the source file?
-  - Remove them as they won't be used in the application.
-- `repeat-keys` (`rk`): Do any of localization files have repeat keys?
-  - Separate them so that the values are not mixed when they're in production.
-  - Note: The existence of repeat keys prevents keys from being sorted.
-- `repeat-values` (`rv`): Does the source file have repeat values that can be combined into a single key?
-  - Combine them so the localization team only needs to localize one of them.
-- `sorted-keys` (`sk`): Are the i18n source and target locale files sorted alphabetically?
-  - Sort them alphabetically to reduce merge conflicts from the files changing.
-  - Pass `--fix` (`-f`) to sort the i18n files automatically.
-  - Note: The `--fix` option for other checks will sort the keys if this check is active.
-  - Note: Sorting is done such that periods come before underscores (some JSON extensions do otherwise).
-- `nested-files` (`nf`): Do the i18n files contain nested JSON structures?
-  - Flatten them to make replacing invalid keys easier with find-and-replace all.
-- `missing-keys` (`mk`): Are any keys from the source file missing in the locale files?
-  - Add the missing keys to ensure all translations are complete.
-  - Keys with empty string values are also considered missing.
-  - Pass `--fix --locale ENTER_ISO_2_CODE` (`-f -l ENTER_ISO_2_CODE`) to interactively add missing keys.
-- `aria-labels` (`al`): Do keys that end in `_aria_label` end in punctuation?
-  - Remove the punctuation as it negatively affects screen reader experience.
-  - Pass `--fix` (`-f`) to remove punctuation automatically.
-- `alt-texts` (`at`): Do keys that end in `_alt_text` lack proper punctuation?
-  - Add periods to the end to comply with alt text guidelines.
-  - Pass `--fix` (`-f`) to add periods automatically.
+The following details the potential contents of this file:
 
 > [!NOTE]
-> The `aria-labels` and `alt-texts` checks function for LTR and RTL languages.
-
-Directions for how to fix the i18n files are provided when errors are raised. Checks can also be disabled in the workflow via options passed in the configuration YAML file.
-
-<a id="configuration-"></a>
-
-# Configuration [`⇧`](#contents)
-
-<a id="yaml-file-"></a>
-
-### YAML File [`⇧`](#contents)
-
-i18n-check is configured via an `.i18n-check.yaml` (or `.yml`) configuration file, with an example being the [configuration file for this repository](/.i18n-check.yaml) that we use in testing. The following details the potential contents of this file:
-
-> [!NOTE]
-> When `global.active` is set to `true`, all checks are enabled by default. You can then explicitly disable specific checks by setting their `active` value to `false`. This allows for more concise configuration files. For example:
+> When `global.active` is set to `true`, all checks are enabled by default. You can then disable specific checks by setting their `active` value to `false`. This allows for more concise configuration files. Example:
 >
 > ```yaml
 > checks:
@@ -252,11 +263,18 @@ checks:
     active: true
 ```
 
-<a id="additional-arguments-"></a>
+## Arguments
 
-### Additional Arguments [`⇧`](#contents)
+In the `.i18n-check.yaml` or `.i18n-check.yml` [configuration](#configuration) file, provide these arguments:
 
-Common additional arguments for using specific web frameworks can be found in the dropdowns below:
+- `src-dir`: The directory path to your source code.
+- `i18n-dir`: The directory path to your i18n files.
+- `i18n-src`: The name of your i18n source file.
+- `file-types-to-check`: The file types to include in the check.
+
+## Additional Arguments
+
+You can find common additional arguments for using specific web frameworks here:
 
 <details><summary>Vue.js</summary>
 <p>
@@ -272,11 +290,9 @@ checks:
 </p>
 </details>
 
-<a id="pre-commit-"></a>
+## pre-commit
 
-### pre-commit [`⇧`](#contents)
-
-The following is an example [pre-commit](https://github.com/pre-commit/pre-commit) hook:
+This is an example [pre-commit](https://github.com/pre-commit/pre-commit) hook:
 
 ```yaml
 - repo: local
@@ -284,18 +300,16 @@ The following is an example [pre-commit](https://github.com/pre-commit/pre-commi
     - id: run-i18n-check
       name: run i18n-check key-value checks
       files: ^src-dir/
-      entry: i18n-check -a
+      entry: uv run i18n-check -a
       language: python
       pass_filenames: false
       additional_dependencies:
         - i18n-check
 ```
 
-<a id="github-action-"></a>
+## GitHub Action
 
-### GitHub Action [`⇧`](#contents)
-
-The following is an example YAML file for a GitHub Action to check your i18n files on PRs and commits:
+This is an example YAML file for a GitHub Action to check your `i18n-files` on PRs and commits:
 
 ```yaml
 name: pr_ci_i18n_check
@@ -335,34 +349,43 @@ jobs:
           uv run i18n-check -a
 ```
 
-<a id="contributing"></a>
+<sub><a href="#top">Back to top.</a></sub>
 
-# Contributing [`⇧`](#contents)
+# Contributing
+
+See the [contribution guidelines](CONTRIBUTING.md) before contributing.
+
+We track work that is in progress or might be implemented in the [issues](https://github.com/activist-org/i18n-check/issues) and [projects](https://github.com/activist-org/i18n-check/projects).
+
+Just because an issue is assigned doesn't mean you can't contribute. Write [in the issues](https://github.com/activist-org/i18n-check/issues) and we may reassign it to you.
+
+Check the [`-next release-`](https://github.com/activist-org/i18n-check/labels/-next%20release-) and [`-priority-`](https://github.com/activist-org/i18n-check/labels/-priority-) labels to find the most important [issues](https://github.com/activist-org/i18n-check/issues).
+
+## New Contributors
+
+Issues labelled [`good first issue`](https://github.com/activist-org/i18n-check/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22) are the best choice for new contributors.
+
+New to coding or our tech stack? We've collected [links to helpful documentation](CONTRIBUTING.md#learning-the-tech-stack).
+
+We would be happy to discuss granting you further rights as a contributor after your first pull requests, with a maintainer role then being possible after continued interest in the project. activist seeks to be an inclusive, diverse, and supportive organization. We'd love to have you on the team! Please see the [mentorship and growth section of the contribution guide](CONTRIBUTING.md#mentorship-and-growth-) for further information.
+
+## How to Help
+
+- 🐞 [Report bugs](https://github.com/activist-org/i18n-check/issues/new?assignees=&labels=bug&template=bug_report.yml) as they're found.
+- ✨ Work with us on [new features](https://github.com/activist-org/i18n-check/issues?q=is%3Aissue+is%3Aopen+label%3Afeature).
+- 📝 Improve the [documentation](https://github.com/activist-org/i18n-check/issues?q=is%3Aissue+is%3Aopen+label%3Adocumentation) to support onboarding and project uptake.
+
+## Contact the Team
 
 <a href="https://matrix.to/#/#activist_community:matrix.org"><img src="https://raw.githubusercontent.com/activist-org/Organization/main/resources/images/logos/MatrixLogoGrey.png" width="175" alt="Public Matrix Chat" align="right"></a>
 
-activist uses [Matrix](https://matrix.org/) for internal communication. You're more than welcome to [join us in our public chat rooms](https://matrix.to/#/#activist_community:matrix.org) to share ideas, ask questions or just say hi to the team :) We'd suggest that you use the [Element](https://element.io/) client and [Element X](https://element.io/app) for a mobile app.
+activist uses [Matrix](https://matrix.org/) for team communication. [Join us in our public chat rooms](https://matrix.to/#/#activist_community:matrix.org) to share ideas, ask questions, or just say hi to the team.
 
-Please see the [contribution guide](CONTRIBUTING.md) if you are interested in contributing. Work that is in progress or could be implemented is tracked in the [issues](https://github.com/activist-org/i18n-check/issues) and [projects](https://github.com/activist-org/i18n-check/projects).
+We recommend using the [Element](https://element.io/) client and [Element X](https://element.io/app) for a mobile app.
 
-> [!NOTE]
-> Just because an issue is assigned on GitHub doesn't mean the team isn't open to your contribution! Feel free to write [in the issues](https://github.com/activist-org/i18n-check/issues) and we can potentially reassign it to you.
+<sub><a href="#top">Back to top.</a></sub>
 
-Also check the [`-next release-`](https://github.com/activist-org/i18n-check/labels/-next%20release-) and [`-priority-`](https://github.com/activist-org/i18n-check/labels/-priority-) labels in the [issues](https://github.com/activist-org/i18n-check/issues) for those that are most important, as well as those marked [`good first issue`](https://github.com/activist-org/i18n-check/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22) that are tailored for first-time contributors. For those new to coding or our tech stack, we've collected [links to helpful documentation pages](CONTRIBUTING.md#learning-the-tech-stack-) in the [contribution guide](CONTRIBUTING.md).
-
-We would be happy to discuss granting you further rights as a contributor after your first pull requests, with a maintainer role then being possible after continued interest in the project. activist seeks to be an inclusive, diverse and supportive organization. We'd love to have you on the team! Please see the [mentorship and growth section of the contribution guide](CONTRIBUTING.md#mentorship-and-growth-) for further information.
-
-<a id="how-you-can-help"></a>
-
-## How you can help [`⇧`](#contents)
-
-- [Reporting bugs](https://github.com/activist-org/i18n-check/issues/new?assignees=&labels=bug&template=bug_report.yml) as they're found 🐞
-- Working with us on [new features](https://github.com/activist-org/i18n-check/issues?q=is%3Aissue+is%3Aopen+label%3Afeature) ✨
-- [Documentation](https://github.com/activist-org/i18n-check/issues?q=is%3Aissue+is%3Aopen+label%3Adocumentation) for onboarding and project cohesion 📝
-
-<a id="environment-setup-"></a>
-
-# Environment setup [`⇧`](#contents)
+# Environment setup
 
 1. First and foremost, please see the suggested IDE setup in the dropdown below to make sure that your editor is ready for development.
 
@@ -384,7 +407,7 @@ We would be happy to discuss granting you further rights as a contributor after 
 
 2. [Fork](https://docs.github.com/en/get-started/quickstart/fork-a-repo) the [i18n-check repo](https://github.com/activist-org/i18n-check), clone your fork, and configure the remotes:
 
-> [!NOTE]
+> [!TIP]
 >
 > <details><summary>Consider using SSH</summary>
 >
@@ -445,12 +468,12 @@ pre-commit install
 
 You're now ready to work on `i18n-check`!
 
-> [!NOTE]
-> Feel free to contact the team in the [Development room on Matrix](https://matrix.to/#/!CRgLpGeOBNwxYCtqmK:matrix.org?via=matrix.org&via=acter.global&via=chat.0x7cd.xyz) if you're having problems getting your environment setup!
+> [!TIP]
+> Contact the team in the [Development room on Matrix](https://matrix.to/#/!CRgLpGeOBNwxYCtqmK:matrix.org?via=matrix.org&via=acter.global&via=chat.0x7cd.xyz) if you need help setting up your environment.
 
-<a id="contributors-"></a>
+<sub><a href="#top">Back to top.</a></sub>
 
-# Contributors [`⇧`](#contents)
+# Contributors
 
 Thanks to all our amazing [contributors](https://github.com/activist-org/i18n-check/graphs/contributors)! ❤️
 
