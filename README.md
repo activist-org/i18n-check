@@ -1,5 +1,5 @@
 <div align="center">
-  <a href="https://github.com/activist-org/i18n-check"><img src="https://raw.githubusercontent.com/activist-org/i18n-check/main/.github/resources/images/i18nCheckGitHubBanner.png" width=1024 alt="i18n check logo"></a>
+  <a id="top" href="https://github.com/activist-org/i18n-check"><img src="https://raw.githubusercontent.com/activist-org/i18n-check/main/.github/resources/images/i18nCheckGitHubBanner.png" width=1024 alt="i18n check logo"></a>
 </div>
 
 [![rtd](https://img.shields.io/readthedocs/i18n-check.svg?label=%20&logo=read-the-docs&logoColor=ffffff)](http://i18n-check.readthedocs.io/en/latest/)
@@ -43,6 +43,8 @@
 
 Developed by the [activist community](https://github.com/activist-org), this package helps keep development and i18n/L10n teams in sync when using JSON-based localization processes.
 
+<sub><a href="#top">Back to top.</a></sub>
+
 # Key Conventions
 
 `i18n-check` enforces these conventions for all keys:
@@ -61,6 +63,8 @@ Developed by the [activist community](https://github.com/activist-org), this pac
 > **File:** `components/component/ComponentName.ext`
 >
 > **Key:** `"i18n.components.component_name.content_reference"`
+
+<sub><a href="#top">Back to top.</a></sub>
 
 # Installation
 
@@ -109,6 +113,8 @@ source .venv/bin/activate  # activate venv (macOS/Linux)
 # .venv\Scripts\activate  # activate venv (Windows)
 pip install -e .
 ```
+
+<sub><a href="#top">Back to top.</a></sub>
 
 # How It Works
 
@@ -184,6 +190,8 @@ These GIFs show the response to the command `i18n-check -a` when all checks fail
 ### All Checks Pass
 
 ![i18n_check_all_pass](https://github.com/user-attachments/assets/c024c368-7691-4489-b8b8-a9844d386177)
+
+<sub><a href="#top">Back to top.</a></sub>
 
 # Configuration
 
@@ -341,6 +349,8 @@ jobs:
           uv run i18n-check -a
 ```
 
+<sub><a href="#top">Back to top.</a></sub>
+
 # Contributing
 
 See the [contribution guidelines](CONTRIBUTING.md) before contributing.
@@ -372,6 +382,8 @@ We would be happy to discuss granting you further rights as a contributor after 
 activist uses [Matrix](https://matrix.org/) for team communication. [Join us in our public chat rooms](https://matrix.to/#/#activist_community:matrix.org) to share ideas, ask questions, or just say hi to the team.
 
 We recommend using the [Element](https://element.io/) client and [Element X](https://element.io/app) for a mobile app.
+
+<sub><a href="#top">Back to top.</a></sub>
 
 # Environment setup
 
@@ -458,6 +470,8 @@ You're now ready to work on `i18n-check`!
 
 > [!TIP]
 > Contact the team in the [Development room on Matrix](https://matrix.to/#/!CRgLpGeOBNwxYCtqmK:matrix.org?via=matrix.org&via=acter.global&via=chat.0x7cd.xyz) if you need help setting up your environment.
+
+<sub><a href="#top">Back to top.</a></sub>
 
 # Contributors
 
