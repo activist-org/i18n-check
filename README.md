@@ -439,10 +439,9 @@ git remote add upstream https://github.com/activist-org/i18n-check.git
   - `origin` (forked repository)
   - `upstream` (i18n-check repository)
 
-3. Create a virtual environment for i18n-check (Python `>=3.12`), activate it and install dependencies:
+3. Install `uv` if you don't already have it by following the [official installation guide](https://docs.astral.sh/uv/getting-started/installation/).
 
-   > [!NOTE]
-   > First, install `uv` if you don't already have it by following the [official installation guide](https://docs.astral.sh/uv/getting-started/installation/).
+4. Create a virtual environment for i18n-check (Python `>=3.12`), activate it and install dependencies:
 
    ```bash
    uv sync --all-extras  # create .venv and install all dependencies from uv.lock
