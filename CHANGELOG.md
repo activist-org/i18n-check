@@ -12,6 +12,10 @@ Emojis for the following are chosen based on [gitmoji](https://gitmoji.dev/).
 
 ## [Upcoming] i18n-check 1.18.1
 
+### ✅ Tests
+
+- Local pre-commit hooks are now ran with [prek](https://prek.j178.dev/) instead of `pre-commit`.
+
 ### 📝 Documentation
 
 - All documentation for the package was updated to improve clarity ([#87](https://github.com/activist-org/i18n-check/issues/87)).
