@@ -294,7 +294,7 @@ checks:
 
 ## pre-commit
 
-This is an example [pre-commit](https://github.com/pre-commit/pre-commit) hook:
+This is an example of a [prek](https://prek.j178.dev/) or [pre-commit](https://github.com/pre-commit/pre-commit) hook:
 
 ```yaml
 - repo: local
@@ -460,11 +460,11 @@ git remote add upstream https://github.com/activist-org/i18n-check.git
 > uv lock  # refresh uv.lock for reproducible installs
 > ```
 
-After activating the virtual environment, set up [pre-commit](https://pre-commit.com/) by running:
+After activating the virtual environment, set up [prek](https://prek.j178.dev/) by running:
 
 ```bash
-pre-commit install
-# uv run pre-commit run --all-files  # lint and fix common problems in the codebase
+prek install
+# uv run prek run --all-files  # lint and fix common problems in the codebase
 ```
 
 You're now ready to work on `i18n-check`!

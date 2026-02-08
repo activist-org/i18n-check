@@ -151,11 +151,11 @@ git remote add upstream https://github.com/activist-org/i18n-check.git
 > uv lock  # refresh uv.lock for reproducible installs
 > ```
 
-After activating the virtual environment, set up [pre-commit](https://pre-commit.com/) by running:
+4. After activating the virtual environment, set up [prek](https://prek.j178.dev/) by running:
 
 ```bash
-pre-commit install
-# uv run pre-commit run --all-files  # lint and fix common problems in the codebase
+prek install
+# uv run prek run --all-files  # lint and fix common problems in the codebase
 ```
 
 You're now ready to work on `i18n-check`!
@@ -252,25 +252,21 @@ When making a contribution, adhering to the [GitHub flow](https://docs.github.co
    git checkout -b <topic-branch-name>
    ```
 
-3. Install [pre-commit](https://pre-commit.com/) to ensure that each of your commits is properly checked against our linter and formatters:
+3. Install [prek](https://prek.j178.dev/) to ensure that each of your commits is properly checked against our linter and formatters:
 
    ```bash
    # In the project root:
-   pre-commit install
+   prek install
 
    # Then test the pre-commit hooks to see how it works:
-   # uv run pre-commit run --all-files
+   # uv run prek run --all-files
    ```
 
 > [!NOTE]
-> pre-commit is Python package that can be installed via pip or any other Python package manager. You can also find it in our [uv.lock](./uv.lock) file.
->
-> ```bash
-> pip install pre-commit
-> ```
+> prek is Python package that can be installed via pip or any other Python package manager. You can also find it in our [uv.lock](./uv.lock) file.
 
 > [!NOTE]
-> If you are having issues with pre-commit and want to send along your changes regardless, you can ignore the pre-commit hooks via the following:
+> If you are having issues with prek and want to send along your changes regardless, you can ignore the pre-commit hooks via the following:
 >
 > ```bash
 > git commit --no-verify -m "COMMIT_MESSAGE"
