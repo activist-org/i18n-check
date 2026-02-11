@@ -298,7 +298,7 @@ git commit --no-verify -m "COMMIT_MESSAGE"
 
 ### Commit Changes and Submit a Pull Request
 
-> [!NOTE]
+> [!TIP]
 > These are some tools and methods to help you write good commit messages:
 >
 > - [commitlint](https://commitlint.io/) helps write [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/).
