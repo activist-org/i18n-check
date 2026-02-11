@@ -33,11 +33,8 @@
   - [pre-commit](#pre-commit)
   - [GitHub Action](#github-action)
 - [Contributing](#contributing)
-  - [New Contributors](#new-contributors)
-  - [How to Help](#how-to-help)
   - [Contact the Team](#contact-the-team)
-- [Environment setup](#environment-setup)
-- [Contributors](#contributors)
+  - [Contributors](#contributors)
 
 # About i18n-check
 
@@ -355,27 +352,13 @@ jobs:
 
 # Contributing
 
-See the [contribution guidelines](CONTRIBUTING.md) before contributing.
+See the [contribution guidelines](CONTRIBUTING.md) before contributing. You can help by:
 
-We track work that is in progress or might be implemented in the [issues](https://github.com/activist-org/i18n-check/issues) and [projects](https://github.com/activist-org/i18n-check/projects).
+- 🐞 Reporting bugs.
+- ✨ Working with us on new features.
+- 📝 Improving the documentation.
 
-Just because an issue is assigned doesn't mean you can't contribute. Write [in the issues](https://github.com/activist-org/i18n-check/issues) and we may reassign it to you.
-
-Check the [`-next release-`](https://github.com/activist-org/i18n-check/labels/-next%20release-) and [`-priority-`](https://github.com/activist-org/i18n-check/labels/-priority-) labels to find the most important [issues](https://github.com/activist-org/i18n-check/issues).
-
-## New Contributors
-
-Issues labelled [`good first issue`](https://github.com/activist-org/i18n-check/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22) are the best choice for new contributors.
-
-New to coding or our tech stack? We've collected [links to helpful documentation](CONTRIBUTING.md#learning-the-tech-stack).
-
-We would be happy to discuss granting you further rights as a contributor after your first pull requests, with a maintainer role then being possible after continued interest in the project. activist seeks to be an inclusive, diverse, and supportive organization. We'd love to have you on the team! Please see the [mentorship and growth section of the contribution guide](CONTRIBUTING.md#mentorship-and-growth-) for further information.
-
-## How to Help
-
-- 🐞 [Report bugs](https://github.com/activist-org/i18n-check/issues/new?assignees=&labels=bug&template=bug_report.yml) as they're found.
-- ✨ Work with us on [new features](https://github.com/activist-org/i18n-check/issues?q=is%3Aissue+is%3Aopen+label%3Afeature).
-- 📝 Improve the [documentation](https://github.com/activist-org/i18n-check/issues?q=is%3Aissue+is%3Aopen+label%3Adocumentation) to support onboarding and project uptake.
+We track work that is in progress or may be implemented in the [issues](https://github.com/activist-org/i18n-check/issues) and [projects](https://github.com/activist-org/i18n-check/projects).
 
 ## Contact the Team
 
@@ -385,99 +368,12 @@ activist uses [Matrix](https://matrix.org/) for team communication. [Join us in 
 
 We recommend using the [Element](https://element.io/) client and [Element X](https://element.io/app) for a mobile app.
 
-<sub><a href="#top">Back to top.</a></sub>
-
-# Environment setup
-
-1. First and foremost, please see the suggested IDE setup in the dropdown below to make sure that your editor is ready for development.
-
-> [!IMPORTANT]
->
-> <details><summary>Suggested IDE setup</summary>
->
-> <p>
->
-> VS Code
->
-> Install the following extensions:
->
-> - [charliermarsh.ruff](https://marketplace.visualstudio.com/items?itemName=charliermarsh.ruff)
-> - [streetsidesoftware.code-spell-checker](https://marketplace.visualstudio.com/items?itemName=streetsidesoftware.code-spell-checker)
->
-> </p>
-> </details>
-
-2. [Fork](https://docs.github.com/en/get-started/quickstart/fork-a-repo) the [i18n-check repo](https://github.com/activist-org/i18n-check), clone your fork, and configure the remotes:
-
-> [!TIP]
->
-> <details><summary>Consider using SSH</summary>
->
-> <p>
->
-> Alternatively to using HTTPS as in the instructions below, consider SSH to interact with GitHub from the terminal. SSH allows you to connect without a user-pass authentication flow.
->
-> To run git commands with SSH, remember then to substitute the HTTPS URL, `https://github.com/...`, with the SSH one, `git@github.com:...`.
->
-> - e.g. Cloning now becomes `git clone git@github.com:<your-username>/i18n-check.git`
->
-> GitHub also has their documentation on how to [Generate a new SSH key](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent) 🔑
->
-> </p>
-> </details>
-
-```bash
-# Clone your fork of the repo into the current directory.
-git clone https://github.com/<your-username>/i18n-check.git
-# Navigate to the newly cloned directory.
-cd i18n-check
-# Assign the original repo to a remote called "upstream".
-git remote add upstream https://github.com/activist-org/i18n-check.git
-```
-
-- Now, if you run `git remote -v` you should see two remote repositories named:
-  - `origin` (forked repository)
-  - `upstream` (i18n-check repository)
-
-3. Install `uv` if you don't already have it by following the [official installation guide](https://docs.astral.sh/uv/getting-started/installation/).
-
-4. Create a virtual environment for i18n-check (Python `>=3.12`), activate it and install dependencies:
-
-   ```bash
-   uv sync --all-extras  # create .venv and install all dependencies from uv.lock
-
-   # Unix or macOS:
-   source .venv/bin/activate
-
-   # Windows:
-   .venv\Scripts\activate.bat  # .venv\Scripts\activate.ps1 (PowerShell)
-   ```
-
-> [!NOTE]
-> If you change dependencies in `pyproject.toml`, regenerate the lock file with the following command:
->
-> ```bash
-> uv lock  # refresh uv.lock for reproducible installs
-> ```
-
-After activating the virtual environment, set up [prek](https://prek.j178.dev/) by running:
-
-```bash
-prek install
-# uv run prek run --all-files  # lint and fix common problems in the codebase
-```
-
-You're now ready to work on `i18n-check`!
-
-> [!TIP]
-> Contact the team in the [Development room on Matrix](https://matrix.to/#/!CRgLpGeOBNwxYCtqmK:matrix.org?via=matrix.org&via=acter.global&via=chat.0x7cd.xyz) if you need help setting up your environment.
-
-<sub><a href="#top">Back to top.</a></sub>
-
-# Contributors
+## Contributors
 
 Thanks to all our amazing [contributors](https://github.com/activist-org/i18n-check/graphs/contributors)! ❤️
 
 <a href="https://github.com/activist-org/i18n-check/graphs/contributors">
   <img src="https://contrib.rocks/image?repo=activist-org/i18n-check" />
 </a>
+
+<sub><a href="#top">Back to top.</a></sub>
