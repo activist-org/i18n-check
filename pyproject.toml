@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "i18n-check"
-version = "1.18.0"
+version = "1.18.1"
 description = "Check i18n/L10n keys and values"
 readme = "README.md"
 requires-python = ">=3.12"
