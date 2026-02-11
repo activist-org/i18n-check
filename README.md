@@ -18,10 +18,10 @@
 # Contents
 
 - [About i18n-check](#about-i18n-check)
-- [Key Conventions](#key-conventions)
 - [Installation](#installation)
   - [Users](#users)
   - [Development Build](#development-build)
+- [Key Conventions](#key-conventions)
 - [How It Works](#how-it-works)
   - [Commands](#commands)
   - [Checks](#checks)
@@ -41,29 +41,6 @@
 `i18n-check` is a Python package that automates the validation of keys and values for your internationalization and localization processes.
 
 Developed by the [activist community](https://github.com/activist-org), this package helps keep development and i18n/L10n teams in sync when using JSON-based localization processes.
-
-<sub><a href="#top">Back to top.</a></sub>
-
-# Key Conventions
-
-`i18n-check` enforces these conventions for all keys:
-
-- All keys must begin with `i18n.`.
-- The base path must be the file path where the key is used.
-- If a key is used in more than one file, the base path must be the lowest common directory and end with `_global`.
-- Base paths must be followed by a minimally descriptive content reference (`i18n-check` only checks content references for formatting).
-- Separate base paths with periods (`.`).
-- Separate directory / file name components and content references with underscores (`_`).
-- Repeated words in the file path, including the file name, must not be repeated in the key.
-
-> [!NOTE]
-> Example of a valid file / key pair:
->
-> **File:** `components/component/ComponentName.ext`
->
-> **Key:** `"i18n.components.component_name.content_reference"`
-
-<sub><a href="#top">Back to top.</a></sub>
 
 # Installation
 
@@ -112,6 +89,27 @@ source .venv/bin/activate  # activate venv (macOS/Linux)
 # .venv\Scripts\activate  # activate venv (Windows)
 pip install -e .
 ```
+
+<sub><a href="#top">Back to top.</a></sub>
+
+# Key Conventions
+
+`i18n-check` enforces these conventions for all keys:
+
+- All keys must begin with `i18n.`.
+- The base path must be the file path where the key is used.
+- If a key is used in more than one file, the base path must be the lowest common directory and end with `_global`.
+- Base paths must be followed by a minimally descriptive content reference (`i18n-check` only checks content references for formatting).
+- Separate base paths with periods (`.`).
+- Separate directory / file name components and content references with underscores (`_`).
+- Repeated words in the file path, including the file name, must not be repeated in the key.
+
+> [!NOTE]
+> Example of a valid file / key pair:
+>
+> **File:** `components/component/ComponentName.ext`
+>
+> **Key:** `"i18n.components.component_name.content_reference"`
 
 <sub><a href="#top">Back to top.</a></sub>
 
