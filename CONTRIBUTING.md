@@ -6,7 +6,7 @@
 >
 > Please take a moment to review this document. Doing so will help make the contribution process easy and effective for everyone.
 >
-> By following this guide, you show respect for the time of those who manage and develop this open-source project. 
+> By following this guide, you show respect for the time of those who manage and develop this open-source project.
 >
 > In return, and in accordance with this project's [code of conduct](https://github.com/activist-org/i18n-check/tree/main/.github/CODE_OF_CONDUCT.md), other contributors will reciprocate that respect as they address your issue or assess patches / features.
 >
@@ -15,30 +15,30 @@
 # Contents
 
 - [Get Started as a Contributor](#get-started-as-a-contributor)
-    - [Choose Your First Issue](#choose-your-first-issue)
-    - [Mentorship and Growth](#mentorship-and-growth)
-    - [Learn the Tech Stack](#learn-the-tech-stack)
+  - [Choose Your First Issue](#choose-your-first-issue)
+  - [Mentorship and Growth](#mentorship-and-growth)
+  - [Learn the Tech Stack](#learn-the-tech-stack)
 - [Development Environment](#devolpment-environment)
-    - [Linting and Testing](#linting-and-testing)
+  - [Linting and Testing](#linting-and-testing)
 - [Creating Issues](#creating-issues)
-    - [Bug Reports](#bug-reports)
-    - [Feature Requests](#feature-requests)
-    - [Pull Requests](#pull-requests)
+  - [Bug Reports](#bug-reports)
+  - [Feature Requests](#feature-requests)
+  - [Pull Requests](#pull-requests)
 - [Documentation](#documentation)
-    - [Function Docstrings](#function-docstrings)
-    - [Build the Documentation Locally](#build-the-documentation-locally)
+  - [Function Docstrings](#function-docstrings)
+  - [Build the Documentation Locally](#build-the-documentation-locally)
 
 # Get Started as a Contributor
 
-The `i18n-check` community looks forward to welcoming you as a contributor! 
+The `i18n-check` community looks forward to welcoming you as a contributor!
 
 We recommend these first steps for anyone interested in joining us:
 
-1. Join the [public Matrix chat](https://matrix.to/#/#activist_community:matrix.org) to connect with the community. [Matrix](https://matrix.org/) is a network for secure, decentralized communication
-  - We recommend you use the [Element](https://element.io/) client and [Element X](https://element.io/app) for a mobile app.
+1. Join the [public Matrix chat](https://matrix.to/#/#activist_community:matrix.org) to connect with the community. [Matrix](https://matrix.org/) is a network for secure, decentralized communication.
+   - We recommend you use the [Element](https://element.io/) client and [Element X](https://element.io/app) for a mobile app.
 2. If you're comfortable, introduce yourself and tell us about your interests in the [General](https://matrix.to/#/!uIGQUxlCnEzrPiRsRw:matrix.org?via=matrix.org&via=effektio.org&via=acter.global) channel.
 3. Take a look at the [Development](https://matrix.to/#/!CRgLpGeOBNwxYCtqmK:matrix.org?via=matrix.org&via=acter.global&via=chat.0x7cd.xyz) channel for recent development discussions.
-4. Consider joining our [bi-weekly developer sync](https://etherpad.wikimedia.org/p/activist-dev-sync) Newcomers are always welcome!
+4. Consider joining our [bi-weekly developer sync](https://etherpad.wikimedia.org/p/activist-dev-sync). Newcomers are always welcome!
 
 ## Choose Your First Issue
 
@@ -52,13 +52,11 @@ We would be happy to discuss granting you further rights as a contributor after 
 
 ## Mentorship and Growth
 
-Onboarding and mentoring new members is vital to a healthy open-source community. 
+Onboarding and mentoring new members is vital to a healthy open-source community.
 
-We need contributors who are onboarded to gain new skills and take on greater roles by triaging issues, reviewing contributions, and maintaining the project. We also need them to help new contributors to grow as well.
+We need contributors who are onboarded to gain new skills and take on greater roles by triaging issues, reviewing contributions, and maintaining the project. We also need them to help new contributors to grow as well. Please let us know if you have goals to develop as an open-source contributor and we'll work with you to achieve them.
 
-Please let us know if you have mentorship goals and we'll work with you to achieve them.
-
-We also have expectations about the behavior of those who want to grow with us. Mentorship is earned, not given. 
+We also have expectations about the behavior of those who want to grow with us. Mentorship is earned, not given.
 
 To be blunt, those who are mainly sending AI generated contributions are not demonstrating an interest in growing their skills and are not helping to develop the project. This is not to say that all uses of AI for contributions are bad, but **AI should be a tool, not the contributor itself**.
 
@@ -68,7 +66,7 @@ If you like the sound of this, then we look forward to working with you!
 
 ## Learn the Tech Stack
 
-`i18n-check` is open to contributions from people in the early stages of their coding journey! 
+`i18n-check` is open to contributions from people in the early stages of their coding journey!
 
 This is a select list of documentation to help you understand the technologies we use:
 
@@ -167,7 +165,7 @@ git remote add upstream https://github.com/activist-org/i18n-check.git
 > uv lock  # refresh uv.lock for reproducible installs
 > ```
 
-After activating the virtual environment, set up [prek](https://prek.j178.dev/) by running:
+After activating the virtual environment, set up [prek](https://prek.j178.dev/) for pre-commit hooks by running:
 
 ```bash
 prek install
@@ -181,7 +179,7 @@ You're now ready to work on `i18n-check`!
 
 ## Linting and Testing
 
-To ensure errors are reported correctly, [Ruff](https://github.com/astral-sh/ruff) is included in the required packages. 
+To ensure errors are reported correctly, [Ruff](https://github.com/astral-sh/ruff), [mypy](https://mypy.readthedocs.io) and [pytest](https://docs.pytest.org/en/stable/) are included in the development packages.
 
 For VS Code users, we recommend you install the [Ruff extension](https://marketplace.visualstudio.com/items?itemName=charliermarsh.ruff).
 
@@ -227,26 +225,26 @@ pytest . --cov=src --cov-report=term-missing --cov-config=./pyproject.toml
 
 # Creating Issues
 
-The GitHub [issue tracker](https://github.com/activist-org/i18n-check/issues) is our preferred channel for [bug reports](#bug-reports), [features requests](#feature-requests) and [submitting pull requests](#pull-requests). 
+The GitHub [issue tracker](https://github.com/activist-org/i18n-check/issues) is our preferred channel for [bug reports](#bug-reports), [features requests](#feature-requests) and [submitting pull requests](#pull-requests).
 
 We also organize related issues into [projects](https://github.com/activist-org/i18n-check/projects).
 
 ## Bug Reports
 
 > [!IMPORTANT]
-> We define a bug as a demonstrable problem caused by code in the repository. 
+> We define a bug as a demonstrable problem caused by code in the repository.
 
 Good bug reports are extremely helpful, and we greatly appreciate them.
 
 To submit a bug report:
 
-1. Check if the bug has already been reported by searching issues on GitHub. Filter for issues marked with the marked with the [`Bug`](https://github.com/activist-org/i18n-check/issues?q=is%3Aissue%20state%3Aopen%20type%3ABug) label.
+1. Check if the bug has already been reported by searching issues on GitHub. Filter for issues marked with the marked with the [`Bug`](https://github.com/activist-org/i18n-check/issues?q=is%3Aissue%20state%3Aopen%20type%3ABug) type.
 
 2. Try to reproduce the bug using the latest `main` or development branch in the repository. This ensures it hasn't already been fixed.
 
 3. Isolate the problem to make sure that the code in the repository is definitely responsible for the bug.
 
-4. If you're confident you've found a bug, report it using the [bug report template](https://github.com/activist-org/i18n-check/issues/new?assignees=&labels=bug&projects=activist-org%2F1&template=bug_report.yml). 
+4. If you're confident you've found a bug, report it using the [bug report template](https://github.com/activist-org/i18n-check/issues/new?assignees=&labels=bug&projects=activist-org%2F1&template=bug_report.yml).
 
 We thank you for the time you take to report bugs!
 
@@ -255,20 +253,20 @@ We thank you for the time you take to report bugs!
 > [!IMPORTANT]
 > Before you submit a request, please take a moment to check whether your idea fits with the scope and aims of the project.
 
-Feature requests are welcome! 
+Feature requests are welcome!
 
-When you submit a feature request, provide as much detail and context as possible. Please also let us know whether you would like to contribute to the development. 
+When you submit a feature request, provide as much detail and context as possible. Please also let us know whether you would like to contribute to the development.
 
 Submit your request using the [issue tracker](https://github.com/activist-org/i18n-check/issues).
 
-We mark feature requests with the [`Feature`](https://github.com/activist-org/i18n-check/issues?q=is%3Aissue%20state%3Aopen%20type%3AFeature) label.
+We mark feature requests with the [`Feature`](https://github.com/activist-org/i18n-check/issues?q=is%3Aissue%20state%3Aopen%20type%3AFeature) type.
 
 ## Pull Requests
 
 > [!IMPORTANT]
-> All contributions to this project will be made under [the specified license](LICENSE.txt) and should follow the coding indentation and style standards (contact us if unsure). 
+> All contributions to this project will be made under [the specified license](LICENSE.txt) and should follow the coding formatting and style standards (contact the community if unsure).
 >
->The best way to get your work merged is to follow the [GitHub flow](https://docs.github.com/en/get-started/quickstart/github-flow) process.
+> The best way to get your work merged is to follow the [GitHub flow](https://docs.github.com/en/get-started/quickstart/github-flow) process.
 
 Good pull requests should remain focused in scope and avoid containing unrelated commits.
 
@@ -282,15 +280,15 @@ prek is Python package that you can install via pip or any other Python package 
 
 To install prek:
 
-   ```bash
-   # In the project root:
-   prek install
+```bash
+# In the project root:
+prek install
 
-   # Then test the pre-commit hooks to see how it works:
-   uv run prek run --all-files
-   ```
+# Then test the pre-commit hooks to see how it works:
+uv run prek run --all-files
+```
 
-If you're having difficulties with prek and you want to submit your changes anyway, you can ignore the pre-commit hook with:
+If you're having difficulties with prek and you want to submit your changes anyway, you can ignore the pre-commit hooks with:
 
 ```bash
 git commit --no-verify -m "COMMIT_MESSAGE"
@@ -321,7 +319,6 @@ To commit changes and submit a pull request:
 
 3. Commit your changes in logical chunks, and please try to adhere to [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/).
 
-
 4. Locally merge or rebase the upstream main development branch into your topic branch:
 
    ```bash
@@ -342,15 +339,15 @@ Thank you in advance for your contributions!
 
 # Documentation
 
-Find the `i18n-check` documentation at [i18n-check.readthedocs.io](https://i18n-check.readthedocs.io/en/latest/). 
+Find the `i18n-check` documentation at [i18n-check.readthedocs.io](https://i18n-check.readthedocs.io/en/latest/).
 
-Documentation is an invaluable way to contribute to coding projects. It enables others to better understand and contribute to the project. 
+Documentation is an invaluable way to contribute to coding projects. It enables others to better understand and contribute to the project.
 
 Search for open documentation issues on GitHub by filtering for the [`documentation`](https://github.com/activist-org/i18n-check/labels/documentation) label.
 
 ## Function Docstrings
 
-`i18n-check` follows [numpydoc conventions](https://numpydoc.readthedocs.io/en/latest/format.html) for documenting functions and Python code. 
+`i18n-check` follows [numpydoc conventions](https://numpydoc.readthedocs.io/en/latest/format.html) for documenting functions and Python code.
 
 Function docstrings should have this format:
 
