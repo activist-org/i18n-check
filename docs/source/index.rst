@@ -1,5 +1,3 @@
-.. _top:
-
 .. image:: https://raw.githubusercontent.com/activist-org/i18n-check/main/.github/resources/images/i18nCheckGitHubBanner.png
     :width: 100%
     :align: center
