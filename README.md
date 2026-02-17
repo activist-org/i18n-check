@@ -38,6 +38,9 @@
 
 # About i18n-check
 
+> [!IMPORTANT]
+> Before you contribute, read the [contributing guide](CONTRIBUTING.md).
+
 `i18n-check` is a Python package that automates the validation of keys and values for your internationalization and localization processes.
 
 Developed by the [activist community](https://github.com/activist-org), this package helps keep development and i18n/L10n teams in sync when using JSON-based localization processes.
