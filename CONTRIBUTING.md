@@ -1,3 +1,5 @@
+<a id="top"></a>
+
 # Contributing to i18n-check
 
 > [!IMPORTANT]
