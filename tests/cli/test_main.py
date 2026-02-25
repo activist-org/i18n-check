@@ -237,6 +237,30 @@ class TestCliMain(unittest.TestCase):
 
         mock_get_version.assert_called_once()
 
+    @patch("sys.exit")
+    @patch("i18n_check.check.unused_keys.unused_keys_check_and_delete")
+    def test_main_unused_keys_with_delete(self, mock_unused_keys_delete, mock_sys_exit):
+        """
+        Test that `unused_keys_check_and_delete` is called for --unused-keys --delete flags.
+        """
+        with patch("sys.argv", ["i18n-check", "--unused-keys", "--delete"]):
+            main()
+
+        mock_unused_keys_delete.assert_called_once()
+
+    @patch("sys.exit")
+    @patch("i18n_check.check.non_source_keys.non_source_keys_check_and_delete")
+    def test_main_non_source_keys_with_delete(
+        self, mock_non_source_keys_delete, mock_sys_exit
+    ):
+        """
+        Test that `non_source_keys_check_and_delete` is called for --non-source-keys --delete flags.
+        """
+        with patch("sys.argv", ["i18n-check", "--non-source-keys", "--delete"]):
+            main()
+
+        mock_non_source_keys_delete.assert_called_once()
+
 
 if __name__ == "__main__":
     unittest.main(argv=["first-arg-is-ignored"], exit=False)

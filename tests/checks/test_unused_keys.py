@@ -3,6 +3,8 @@
 Tests for the unused_keys.py.
 """
 
+from unittest.mock import patch
+
 import pytest
 
 from i18n_check.check.unused_keys import (
@@ -50,6 +52,53 @@ def test_unused_keys_check_fail_raises_value_error(capsys) -> None:
     )
     assert "i18n source file" in output
     assert "i18n._global.unused_i18n_key" in output
+
+
+def test_unused_keys_check_and_delete_function_exists():
+    """Test that the delete function exists and can be imported."""
+    from i18n_check.check.unused_keys import unused_keys_check_and_delete
+
+    assert callable(unused_keys_check_and_delete)
+
+
+def test_unused_keys_delete_removes_keys_from_json_files(tmp_path):
+    """Test that delete functionality removes unused keys from JSON files."""
+    from i18n_check.check.unused_keys import unused_keys_check_and_delete
+
+    # Create i18n directory
+    i18n_dir = tmp_path / "i18n"
+    i18n_dir.mkdir(parents=True)
+
+    # Create source file
+    src_file = i18n_dir / "test_src.json"
+    src_file.write_text(
+        '{\n  "i18n.used_key": "Used value",\n  "i18n.unused_key": "Unused value"\n}\n',
+        encoding="utf-8",
+    )
+
+    # Create target file
+    target_file = i18n_dir / "test_target.json"
+    target_file.write_text(
+        '{\n  "i18n.used_key": "Used value in target",\n  "i18n.unused_key": "Unused value in target"\n}\n',
+        encoding="utf-8",
+    )
+
+    # Mock configuration to use our temp files
+    with (
+        patch("i18n_check.check.unused_keys.config_i18n_src_file", src_file),
+        patch("i18n_check.check.unused_keys.config_i18n_directory", i18n_dir),
+    ):
+        unused_keys = ["i18n.unused_key"]
+        unused_keys_check_and_delete(unused_keys=unused_keys)
+
+        # Verify keys were removed
+        updated_src = read_json_file(src_file)
+        updated_target = read_json_file(target_file)
+
+        assert "i18n.used_key" in updated_src
+        assert "i18n.unused_key" not in updated_src
+        assert "i18n.used_key" in updated_target
+        assert "i18n.unused_key" not in updated_target
 
 
 if __name__ == "__main__":
