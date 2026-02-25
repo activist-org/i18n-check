@@ -38,22 +38,18 @@
 
 # About i18n-check
 
-> [!IMPORTANT] Before you contribute, read the
-> [contributing guide](CONTRIBUTING.md).
+> [!IMPORTANT]
+> Before you contribute, read the [contributing guide](CONTRIBUTING.md).
 
-`i18n-check` is a Python package that automates the validation of keys and
-values for your internationalization and localization processes.
+`i18n-check` is a Python package that automates the validation of keys and values for your internationalization and localization processes.
 
-Developed by the [activist community](https://github.com/activist-org), this
-package helps keep development and i18n/L10n teams in sync when using JSON-based
-localization processes.
+Developed by the [activist community](https://github.com/activist-org), this package helps keep development and i18n/L10n teams in sync when using JSON-based localization processes.
 
 # Installation
 
 ## Users
 
-You can install `i18n-check` using [uv](https://docs.astral.sh/uv/)
-(recommended) or [pip](https://pypi.org/project/i18n-check/).
+You can install `i18n-check` using [uv](https://docs.astral.sh/uv/) (recommended) or [pip](https://pypi.org/project/i18n-check/).
 
 ### uv
 
@@ -71,8 +67,7 @@ pip install i18n-check
 
 ## Development Build
 
-You can install the latest development build using uv, pip, or by cloning the
-repository.
+You can install the latest development build using uv, pip, or by cloning the repository.
 
 ### Clone the Repository (Development Build)
 
@@ -106,17 +101,14 @@ pip install -e .
 
 - All keys must begin with `i18n.`.
 - The base path must be the file path where the key is used.
-- If a key is used in more than one file, the base path must be the lowest
-  common directory and end with `_global`.
-- Base paths must be followed by a minimally descriptive content reference
-  (`i18n-check` only checks content references for formatting).
+- If a key is used in more than one file, the base path must be the lowest common directory and end with `_global`.
+- Base paths must be followed by a minimally descriptive content reference (`i18n-check` only checks content references for formatting).
 - Separate base paths with periods (`.`).
-- Separate directory / file name components and content references with
-  underscores (`_`).
-- Repeated words in the file path, including the file name, must not be repeated
-  in the key.
+- Separate directory / file name components and content references with underscores (`_`).
+- Repeated words in the file path, including the file name, must not be repeated in the key.
 
-> [!NOTE] Example of a valid file / key pair:
+> [!NOTE]
+> Example of a valid file / key pair:
 >
 > **File:** `components/component/ComponentName.ext`
 >
@@ -165,6 +157,7 @@ i18n-check -CHECK_ID
 ```bash
 i18n-check -mk -f -l ENTER_ISO_2_CODE
 ```
+```
 
 **Delete Unused Keys**
 
@@ -180,31 +173,27 @@ i18n-check -nsk -d
 
 ## Checks
 
-When `i18n-check` finds errors, it provides directions for resolving them. You
-can also disable checks in the workflow by modifying the configuration
-[YAML file](#yaml-file).
+When `i18n-check` finds errors, it provides directions for resolving them. You can also disable checks in the workflow by modifying the configuration [YAML file](#yaml-file).
 
 You can run these checks across your codebase:
 
-| Check                                                                                        | Command                   | Resolution                                                                                                                                                                              | Fix Command                                                                                                                                              |
-| -------------------------------------------------------------------------------------------- | ------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Does the source file contain keys that don't follow the required formatting rules?           | `key-formatting` (`kf`)   | Format the keys in the source file to match the conventions.                                                                                                                            | `--fix` (`-f`) to fix all formatting issues automatically.                                                                                               |
-| Are key names consistent with how and where they are used in the codebase?                   | `key-naming` (`kn`)       | Rename them so i18n key usage is consistent and their scope is communicated in their name.                                                                                              | `--fix` (`-f`) to fix all naming issues automatically.                                                                                                   |
-| Does the codebase include i18n keys that are not within the source file?                     | `nonexistent-keys` (`nk`) | Check their validity and resolve if they should be added to the i18n files or replaced.                                                                                                 | `--fix` (`-f`) to interactively add nonexistent keys.                                                                                                    |
-| Does the source file have keys that are not used in the codebase?                            | `unused-keys` (`uk`)      | Remove them so the localization team isn't working on strings that aren't used.                                                                                                         | `--delete` (`-d`) to delete unused keys from all JSON files automatically.                                                                               |
-| Do the target locale files have keys that are not in the source file?                        | `non-source-keys` (`nsk`) | Remove them as they won't be used in the application.                                                                                                                                   | `--delete` (`-d`) to delete non-source keys from target JSON files automatically.                                                                        |
-| Do any of localization files have repeat keys?                                               | `repeat-keys` (`rk`)      | Separate them so that the values are not mixed when they're in production. <br> <br> **Note:** The existence of repeat keys prevents keys from being sorted by the `sorted-keys` check. | n/a                                                                                                                                                      |
-| Does the source file have repeat values that can be combined into a single key?              | `repeat-values` (`rv`)    | Combine them so the localization team only needs to localize one of them.                                                                                                               | n/a                                                                                                                                                      |
-| Are the i18n source and target locale files sorted alphabetically?                           | `sorted-keys` (`sk`)      | Sort them alphabetically to reduce merge conflicts from the files changing. Sorting is done such that periods come before underscores (some JSON extensions do otherwise).              | `--fix` (`-f`) to sort the i18n files automatically. <br> <br> **Note:** The `--fix` option for other checks will sort the keys if this check is active. |
-| Do the i18n files contain nested JSON structures?                                            | `nested-files` (`nf`)     | Flatten them to make replacing invalid keys easier with find-and-replace all.                                                                                                           | n/a                                                                                                                                                      |
-| Are any keys from the source file missing in the locale files?                               | `missing-keys` (`mk`)     | Add the missing keys to ensure all translations are complete. <br> Keys with empty string values are considered missing.                                                                | `--fix --locale ENTER_ISO_2_CODE` (`-f -l ENTER_ISO_2_CODE`) to interactively add missing keys.                                                          |
-| For both LTR and RTL languages, do keys that end in `_aria_label` end in punctuation?        | `aria-labels` (`al`)      | Remove the punctuation, as it negatively affects screen reader experience.                                                                                                              | `--fix` (`-f`) to remove punctuation automatically.                                                                                                      |
-| For both LTR and RTL languages, are keys that end in `_alt_text` missing proper punctuation? | `alt-texts` (`at`)        | Add periods to the end to comply with alt text guidelines.                                                                                                                              | `--fix` (`-f`) to add periods automatically.                                                                                                             |
+| Check | Command | Resolution | Fix Command |
+|-------|---------|------------|-------------|
+| Does the source file contain keys that don't follow the required formatting rules? | `key-formatting` (`kf`) | Format the keys in the source file to match the conventions. | `--fix` (`-f`) to fix all formatting issues automatically. |
+| Are key names consistent with how and where they are used in the codebase? | `key-naming` (`kn`) | Rename them so i18n key usage is consistent and their scope is communicated in their name. | `--fix` (`-f`) to fix all naming issues automatically. |
+| Does the source file have keys that are not used in the codebase? | `unused-keys` (`uk`) | Remove them so the localization team isn't working on strings that aren't used. | `--delete` (`-d`) to delete unused keys from all JSON files automatically. |
+| Do the target locale files have keys that are not in the source file? | `non-source-keys` (`nsk`) | Remove them as they won't be used in the application. | `--delete` (`-d`) to delete non-source keys from target JSON files automatically. |
+| Do any localization files have repeat keys? | `repeat-keys` (`rk`) | Separate them so the values are not mixed when they're in production. **Note:** The existence of repeat keys prevents keys from being sorted by the `sorted-keys` check. | n/a |
+| Does the source file have repeat values that can be combined into a single key? | `repeat-values` (`rv`) | Combine them so the localization team only needs to localize one of them. | n/a |
+| Are the i18n source and target locale files sorted alphabetically? | `sorted-keys` (`sk`) | Sort them alphabetically to reduce merge conflicts from files changing. Sorting is done such that periods come before underscores (some JSON extensions do otherwise). | `--fix` (`-f`) to sort the i18n files automatically. **Note:** The `--fix` option for other checks will sort the keys if this check is active. |
+| Do the i18n files contain nested JSON structures? | `nested-files` (`nf`) | Flatten them to make replacing invalid keys easier with find-and-replace-all. | n/a |
+| Are any keys from the source file missing in the locale files? | `missing-keys` (`mk`) | Add the missing keys to ensure all translations are complete. Keys with empty string values are considered missing. | `--fix --locale ENTER_ISO_2_CODE` (`-f -l ENTER_ISO_2_CODE`) to interactively add missing keys. |
+| For both LTR and RTL languages, do keys that end in `_aria_label` end in punctuation? | `aria-labels` (`al`) | Remove the punctuation, as it negatively affects screen reader experience. | `--fix` (`-f`) to remove punctuation automatically. |
+| For both LTR and RTL languages, are keys that end in `_alt_text` missing proper punctuation? | `alt-texts` (`at`) | Add periods to the end to comply with alt text guidelines. | `--fix` (`-f`) to add punctuation automatically. |                                                                                                                         | `--fix` (`-f`) to add periods automatically.                                                                                                             |
 
 ## Example Responses
 
-These GIFs show the response to the command `i18n-check -a` when all checks fail
-or pass.
+These GIFs show the response to the command `i18n-check -a` when all checks fail or pass.
 
 ### All Checks Fail
 
@@ -220,18 +209,14 @@ or pass.
 
 ## YAML File
 
-You can configure `i18n-check` using the `.i18n-check.yaml` (or `.yml`)
-configuration file.
+You can configure `i18n-check` using the `.i18n-check.yaml` (or `.yml`) configuration file.
 
-For an example, see the
-[configuration file for this repository](/.i18n-check.yaml) that we use in
-testing.
+For an example, see the [configuration file for this repository](/.i18n-check.yaml) that we use in testing.
 
 The following details the potential contents of this file:
 
-> [!NOTE] When `global.active` is set to `true`, all checks are enabled by
-> default. You can then disable specific checks by setting their `active` value
-> to `false`. This allows for more concise configuration files. Example:
+> [!NOTE]
+> When `global.active` is set to `true`, all checks are enabled by default. You can then disable specific checks by setting their `active` value to `false`. This allows for more concise configuration files. Example:
 >
 > ```yaml
 > checks:
@@ -292,8 +277,7 @@ checks:
 
 ## Arguments
 
-In the `.i18n-check.yaml` or `.i18n-check.yml` [configuration](#configuration)
-file, provide these arguments:
+In the `.i18n-check.yaml` or `.i18n-check.yml` [configuration](#configuration) file, provide these arguments:
 
 - `src-dir`: The directory path to your source code.
 - `i18n-dir`: The directory path to your i18n files.
@@ -320,8 +304,7 @@ checks:
 
 ## pre-commit
 
-This is an example of a [prek](https://prek.j178.dev/) or
-[pre-commit](https://github.com/pre-commit/pre-commit) hook:
+This is an example of a [prek](https://prek.j178.dev/) or [pre-commit](https://github.com/pre-commit/pre-commit) hook:
 
 ```yaml
 - repo: local
@@ -338,8 +321,7 @@ This is an example of a [prek](https://prek.j178.dev/) or
 
 ## GitHub Action
 
-This is an example YAML file for a GitHub Action to check your `i18n-files` on
-PRs and commits:
+This is an example YAML file for a GitHub Action to check your `i18n-files` on PRs and commits:
 
 ```yaml
 name: pr_ci_i18n_check
@@ -383,33 +365,25 @@ jobs:
 
 # Contributing
 
-See the [contribution guidelines](CONTRIBUTING.md) before contributing. You can
-help by:
+See the [contribution guidelines](CONTRIBUTING.md) before contributing. You can help by:
 
 - 🐞 Reporting bugs.
 - ✨ Working with us on new features.
 - 📝 Improving the documentation.
 
-We track work that is in progress or may be implemented in the
-[issues](https://github.com/activist-org/i18n-check/issues) and
-[projects](https://github.com/activist-org/i18n-check/projects).
+We track work that is in progress or may be implemented in the [issues](https://github.com/activist-org/i18n-check/issues) and [projects](https://github.com/activist-org/i18n-check/projects).
 
 ## Contact the Team
 
 <a href="https://matrix.to/#/#activist_community:matrix.org"><img src="https://raw.githubusercontent.com/activist-org/Organization/main/resources/images/logos/MatrixLogoGrey.png" width="175" alt="Public Matrix Chat" align="right"></a>
 
-activist uses [Matrix](https://matrix.org/) for team communication.
-[Join us in our public chat rooms](https://matrix.to/#/#activist_community:matrix.org)
-to share ideas, ask questions, or just say hi to the team.
+activist uses [Matrix](https://matrix.org/) for team communication. [Join us in our public chat rooms](https://matrix.to/#/#activist_community:matrix.org) to share ideas, ask questions, or just say hi to the team.
 
-We recommend using the [Element](https://element.io/) client and
-[Element X](https://element.io/app) for a mobile app.
+We recommend using the [Element](https://element.io/) client and [Element X](https://element.io/app) for a mobile app.
 
 ## Contributors
 
-Thanks to all our amazing
-[contributors](https://github.com/activist-org/i18n-check/graphs/contributors)!
-❤️
+Thanks to all our amazing [contributors](https://github.com/activist-org/i18n-check/graphs/contributors)! ❤️
 
 <a href="https://github.com/activist-org/i18n-check/graphs/contributors">
   <img src="https://contrib.rocks/image?repo=activist-org/i18n-check" />
