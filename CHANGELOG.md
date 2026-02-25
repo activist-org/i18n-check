@@ -13,7 +13,7 @@ MAJOR.MINOR.PATCH version where increments are made of the:
 
 Emojis for the following are chosen based on [gitmoji](https://gitmoji.dev/).
 
-## [Upcoming] i18n-check 1.x
+## [Upcoming] i18n-check 1.19.0
 
 ### ✨ Features
 
