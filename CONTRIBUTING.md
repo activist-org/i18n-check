@@ -351,6 +351,12 @@ Search for open documentation issues on GitHub by filtering for the [`documentat
 
 `i18n-check` follows [numpydoc conventions](https://numpydoc.readthedocs.io/en/latest/format.html) for documenting functions and Python code.
 
+You can use [prek](https://prek.j178.dev/) to run the numpydoc docstring linting:
+
+```bash
+prek run numpydoc-validation --all-files
+```
+
 Function docstrings should have this format:
 
 ```py
