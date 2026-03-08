@@ -5,7 +5,7 @@
 </div>
 
 [![rtd](https://img.shields.io/readthedocs/i18n-check.svg?label=%20&logo=read-the-docs&logoColor=ffffff)](http://i18n-check.readthedocs.io/en/latest/)
-[![ci_static_analysis](https://img.shields.io/github/actions/workflow/status/activist-org/i18n-check/ci.yaml?branch=main&label=%20&logo=ruff&logoColor=ffffff)](https://github.com/activist-org/i18n-check/actions/workflows/ci_static_analysis.yaml)
+[![ci_static_analysis](https://img.shields.io/github/actions/workflow/status/activist-org/i18n-check/ci_static_analysis.yaml?branch=main&label=%20&logo=ruff&logoColor=ffffff)](https://github.com/activist-org/i18n-check/actions/workflows/ci_static_analysis.yaml)
 [![ci_pytest](https://img.shields.io/github/actions/workflow/status/activist-org/i18n-check/ci_pytest.yaml?branch=main&label=%20&logo=pytest&logoColor=ffffff)](https://github.com/activist-org/i18n-check/actions/workflows/ci_pytest.yaml)
 [![issues](https://img.shields.io/github/issues/activist-org/i18n-check?label=%20&logo=github)](https://github.com/activist-org/i18n-check/issues)
 [![python](https://img.shields.io/badge/Python-4B8BBE.svg?logo=python&logoColor=ffffff)](https://github.com/activist-org/i18n-check/blob/main/CONTRIBUTING.md)
