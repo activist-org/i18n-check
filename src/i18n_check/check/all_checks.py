@@ -94,7 +94,7 @@ def run_all_checks(args: argparse.Namespace) -> None:
     - Aria label punctuation validation
     - Alt text punctuation validation
     """
-    checks: list = []
+    checks: list[partial[bool]] = []
     check_names: list[str] = []
 
     if config_key_formatting_active:
