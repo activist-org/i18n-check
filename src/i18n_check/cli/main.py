@@ -315,7 +315,6 @@ def main() -> None:
 
     if args.sorted_keys:
         sorted_keys_check_and_fix(fix=args.fix)
-
         return
 
     if args.nested_files:
@@ -340,12 +339,10 @@ def main() -> None:
 
     if args.aria_labels:
         aria_labels_check_and_fix(fix=args.fix)
-
         return
 
     if args.alt_texts:
         alt_texts_check_and_fix(fix=args.fix)
-
         return
 
     parser.print_help()

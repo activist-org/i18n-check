@@ -54,7 +54,7 @@ def get_non_source_keys(
         A dictionary with non-source keys found in the JSON file.
     """
     all_src_keys = i18n_src_dict.keys()
-    non_source_keys_dict = {}
+    non_source_keys_dict: Dict[str, str] = {}
     for json_file in get_all_json_files(directory=i18n_directory):
         if (
             json_file.split(PATH_SEPARATOR)[-1]

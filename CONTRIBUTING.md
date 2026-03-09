@@ -40,7 +40,7 @@ We recommend these first steps for anyone interested in joining us:
    - We recommend you use the [Element](https://element.io/) client and [Element X](https://element.io/app) for a mobile app.
 2. If you're comfortable, introduce yourself and tell us about your interests in the [General](https://matrix.to/#/!uIGQUxlCnEzrPiRsRw:matrix.org?via=matrix.org&via=effektio.org&via=acter.global) channel.
 3. Take a look at the [Development](https://matrix.to/#/!CRgLpGeOBNwxYCtqmK:matrix.org?via=matrix.org&via=acter.global&via=chat.0x7cd.xyz) channel for recent development discussions.
-4. Consider joining our [bi-weekly developer sync](https://etherpad.wikimedia.org/p/activist-dev-sync). Newcomers are always welcome!
+4. Consider joining our bi-weekly developer sync. Newcomers are always welcome!
 
 ## Choose Your First Issue
 
@@ -350,6 +350,12 @@ Search for open documentation issues on GitHub by filtering for the [`documentat
 ## Function Docstrings
 
 `i18n-check` follows [numpydoc conventions](https://numpydoc.readthedocs.io/en/latest/format.html) for documenting functions and Python code.
+
+You can use [prek](https://prek.j178.dev/) to run the numpydoc docstring linting:
+
+```bash
+prek run numpydoc-validation --all-files
+```
 
 Function docstrings should have this format:
 
