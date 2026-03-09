@@ -77,7 +77,7 @@ def map_keys_to_files(
         files_to_skip=config_key_naming_files_to_skip,
     )
 
-    files_to_check_contents = {}
+    files_to_check_contents: dict[str, str] = {}
     for frontend_file in files_to_check:
         with open(frontend_file, "r", encoding="utf-8") as f:
             files_to_check_contents[frontend_file] = f.read()
@@ -162,7 +162,7 @@ def audit_invalid_i18n_key_names(
         else key_file_dict
     )
 
-    invalid_keys_by_name = {}
+    invalid_keys_by_name: Dict[str, str] = {}
     for k in filtered_key_file_dict:
         # Key is used in one file.
         if len(filtered_key_file_dict[k]) == 1:
