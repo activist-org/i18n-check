@@ -105,7 +105,7 @@ def audit_invalid_i18n_key_formats(
         else key_file_dict
     )
 
-    invalid_keys_by_format = {}
+    invalid_keys_by_format: Dict[str, str] = {}
     for k in filtered_key_file_dict:
         if not is_valid_key(k):
             # Convert hyphens to underscores and any other invalid characters.

@@ -95,8 +95,8 @@ config_file_types_to_check = config["file-types-to-check"]
 
 # Note: We initialize per-check active states with global defaults.
 config_global_active = False
-config_global_directories_to_skip = []
-config_global_files_to_skip = []
+config_global_directories_to_skip: list[Path] = []
+config_global_files_to_skip: list[Path] = []
 
 if "global" in config["checks"]:
     if "active" in config["checks"]["global"]:
@@ -120,8 +120,7 @@ if "global" in config["checks"]:
 
 # Note: We don't have skipped files or directories for non-source-keys.
 config_key_formatting_active = config_global_active
-config_key_formatting_regexes_to_ignore = []
-
+config_key_formatting_regexes_to_ignore: list[str] = []
 if "key-formatting" in config["checks"]:
     if "active" in config["checks"]["key-formatting"]:
         config_key_formatting_active = config["checks"]["key-formatting"]["active"]
@@ -143,7 +142,7 @@ config_key_naming_active = config_global_active
 
 config_key_naming_directories_to_skip = config_global_directories_to_skip.copy()
 config_key_naming_files_to_skip = config_global_files_to_skip.copy()
-config_key_naming_regexes_to_ignore = []
+config_key_naming_regexes_to_ignore: list[str] = []
 
 if "key-naming" in config["checks"]:
     if "active" in config["checks"]["key-naming"]:
@@ -233,7 +232,7 @@ if (
 config_unused_keys_active = config_global_active
 config_unused_keys_directories_to_skip = config_global_directories_to_skip.copy()
 config_unused_keys_files_to_skip = config_global_files_to_skip.copy()
-config_unused_keys_regexes_to_ignore = []
+config_unused_keys_regexes_to_ignore: list[str] = []
 
 if "unused-keys" in config["checks"]:
     if "active" in config["checks"]["unused-keys"]:
@@ -283,8 +282,7 @@ if "nested-files" in config["checks"] and "active" in config["checks"]["nested-f
 # MARK: Missing Keys
 
 config_missing_keys_active = config_global_active
-config_missing_keys_locales_to_check = []
-
+config_missing_keys_locales_to_check: list[str] = []
 if "missing-keys" in config["checks"]:
     if "active" in config["checks"]["missing-keys"]:
         config_missing_keys_active = config["checks"]["missing-keys"]["active"]
@@ -621,7 +619,7 @@ def read_files_to_dict(files: list[str]) -> Dict[str, str]:
     dict
         A dictionary where keys are file paths and values are file contents.
     """
-    file_contents = {}
+    file_contents: Dict[str, str] = {}
     for file in files:
         with open(file, "r", encoding="utf-8") as f:
             file_contents[file] = f.read()

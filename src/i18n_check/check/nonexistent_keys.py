@@ -81,7 +81,7 @@ def get_used_i18n_keys(
         directories_to_skip=config_nonexistent_keys_directories_to_skip,
         files_to_skip=config_nonexistent_keys_files_to_skip,
     )
-    files_to_check_contents = {}
+    files_to_check_contents: Dict[str, str] = {}
     for frontend_file in files_to_check:
         with open(frontend_file, "r", encoding="utf-8") as f:
             files_to_check_contents[frontend_file] = f.read()
