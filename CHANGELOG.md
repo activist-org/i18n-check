@@ -12,6 +12,12 @@ Emojis for the following are chosen based on [gitmoji](https://gitmoji.dev/).
 
 ## [Upcoming] i18n-check 1.x
 
+## i18n-check 1.19.0
+
+### ♻️ Code Refactoring
+
+- All empty lists and dictionaries were typed in the project ([#96](https://github.com/activist-org/i18n-check/issues/96)).
+
 ## i18n-check 1.18.1
 
 ### ✅ Tests
