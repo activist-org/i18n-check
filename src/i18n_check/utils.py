@@ -619,7 +619,7 @@ def read_files_to_dict(files: list[str]) -> Dict[str, str]:
     dict
         A dictionary where keys are file paths and values are file contents.
     """
-    file_contents: dict[str, str] = {}
+    file_contents: Dict[str, str] = {}
     for file in files:
         with open(file, "r", encoding="utf-8") as f:
             file_contents[file] = f.read()
