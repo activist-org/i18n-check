@@ -231,11 +231,13 @@ def unused_keys_check_and_delete(
             pass
 
         key_or_keys = "keys" if len(unused_keys) > 1 else "key"
-        file_or_files = "files" if target_files_updated > 1 else "file"
+        file_or_files = (
+            "files" if target_files_updated > 1 or target_files_updated == 0 else "file"
+        )
 
         rprint(
             f"[green]✅ unused-keys delete success: Removed {len(unused_keys)} unused {key_or_keys} "
-            f"from source file and {target_files_updated} target {file_or_files}.[/green]"
+            f"from the i18n source file and {target_files_updated} target {file_or_files}.[/green]"
         )
 
         return True
