@@ -56,14 +56,18 @@ def test_unused_keys_check_fail_raises_value_error(capsys) -> None:
 
 
 def test_unused_keys_check_and_delete_function_exists():
-    """Test that the delete function exists and can be imported."""
+    """
+    Test that the delete function exists and can be imported.
+    """
     from i18n_check.check.unused_keys import unused_keys_check_and_delete
 
     assert callable(unused_keys_check_and_delete)
 
 
 def test_unused_keys_delete_removes_keys_from_json_files(tmp_path):
-    """Test that delete functionality removes unused keys from JSON files."""
+    """
+    Test that delete functionality removes unused keys from JSON files.
+    """
     i18n_dir = tmp_path / "i18n"
     i18n_dir.mkdir(parents=True)
 
