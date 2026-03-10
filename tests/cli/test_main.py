@@ -237,9 +237,8 @@ class TestCliMain(unittest.TestCase):
 
         mock_get_version.assert_called_once()
 
-    @patch("sys.exit")
     @patch("i18n_check.check.unused_keys.unused_keys_check_and_delete")
-    def test_main_unused_keys_with_delete(self, mock_unused_keys_delete, mock_sys_exit):
+    def test_main_unused_keys_with_delete(self, mock_unused_keys_delete):
         """
         Test that `unused_keys_check_and_delete` is called for --unused-keys --delete flags.
         """
@@ -248,11 +247,8 @@ class TestCliMain(unittest.TestCase):
 
         mock_unused_keys_delete.assert_called_once()
 
-    @patch("sys.exit")
     @patch("i18n_check.check.non_source_keys.non_source_keys_check_and_delete")
-    def test_main_non_source_keys_with_delete(
-        self, mock_non_source_keys_delete, mock_sys_exit
-    ):
+    def test_main_non_source_keys_with_delete(self, mock_non_source_keys_delete):
         """
         Test that `non_source_keys_check_and_delete` is called for --non-source-keys --delete flags.
         """

@@ -21,11 +21,7 @@ from i18n_check.check.key_naming import (
 )
 from i18n_check.check.missing_keys import missing_keys_check_and_fix
 from i18n_check.check.nested_files import nested_files_check
-from i18n_check.check.non_source_keys import (
-    non_source_keys_check,
-    non_source_keys_check_and_delete,
-    non_source_keys_dict,
-)
+from i18n_check.check.non_source_keys import non_source_keys_check, non_source_keys_dict
 from i18n_check.check.nonexistent_keys import (
     all_used_i18n_keys,
     nonexistent_keys_check_and_fix,
@@ -37,11 +33,7 @@ from i18n_check.check.repeat_values import (
     repeat_values_check,
 )
 from i18n_check.check.sorted_keys import sorted_keys_check_and_fix
-from i18n_check.check.unused_keys import (
-    unused_keys,
-    unused_keys_check,
-    unused_keys_check_and_delete,
-)
+from i18n_check.check.unused_keys import unused_keys, unused_keys_check
 from i18n_check.cli.generate_config_file import generate_config_file
 from i18n_check.cli.generate_test_frontends import generate_test_frontends
 from i18n_check.cli.upgrade import upgrade_cli
@@ -293,6 +285,8 @@ def main() -> None:
 
     if args.unused_keys:
         if args.delete:
+            from i18n_check.check.unused_keys import unused_keys_check_and_delete
+
             unused_keys_check_and_delete(unused_keys=unused_keys)
 
         else:
@@ -302,6 +296,10 @@ def main() -> None:
 
     if args.non_source_keys:
         if args.delete:
+            from i18n_check.check.non_source_keys import (
+                non_source_keys_check_and_delete,
+            )
+
             non_source_keys_check_and_delete(non_source_keys_dict=non_source_keys_dict)
 
         else:
