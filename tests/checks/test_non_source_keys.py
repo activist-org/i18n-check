@@ -4,12 +4,14 @@ Tests for the non_source_keys.py.
 """
 
 from typing import Dict
+from unittest.mock import patch
 
 import pytest
 
 from i18n_check.check.non_source_keys import (
     get_non_source_keys,
     non_source_keys_check,
+    non_source_keys_check_and_delete,
 )
 
 from ..test_utils import (
@@ -74,6 +76,49 @@ def test_non_source_keys_check_fail_output(capsys):
     output_msg = capsys.readouterr().out
     assert "non-source-keys error:" in output_msg
     assert "i18n._global.not_in_i18n_src" in output_msg
+
+
+def test_non_source_keys_check_and_delete_function_exists():
+    """
+    Test that the delete function exists and can be imported.
+    """
+    from i18n_check.check.non_source_keys import non_source_keys_check_and_delete
+
+    assert callable(non_source_keys_check_and_delete)
+
+
+def test_non_source_keys_delete_removes_keys_from_target_files_only(tmp_path):
+    """
+    Test that delete functionality removes non-source keys from target files only.
+    """
+
+    i18n_dir = tmp_path / "i18n"
+    i18n_dir.mkdir(parents=True)
+
+    src_file = i18n_dir / "test_src.json"
+    src_file.write_text('{\n  "i18n.valid_key": "Valid value"\n}\n', encoding="utf-8")
+
+    # Create target file with extra key.
+    target_file = i18n_dir / "test_target.json"
+    target_file.write_text(
+        '{\n  "i18n.valid_key": "Valid value in target",\n  "i18n.non_source_key": "Should be removed"\n}\n',
+        encoding="utf-8",
+    )
+
+    # Use mock configuration.
+    with patch("i18n_check.check.non_source_keys.config_i18n_directory", i18n_dir):
+        non_source_keys_dict = {"test_target.json": {"i18n.non_source_key"}}
+        non_source_keys_check_and_delete(non_source_keys_dict=non_source_keys_dict)
+
+        # Verify source file unchanged, target file cleaned.
+        from i18n_check.utils import read_json_file
+
+        updated_src = read_json_file(src_file)
+        updated_target = read_json_file(target_file)
+
+        assert "i18n.valid_key" in updated_src  # source unchanged
+        assert "i18n.valid_key" in updated_target
+        assert "i18n.non_source_key" not in updated_target  # removed from target
 
 
 if __name__ == "__main__":

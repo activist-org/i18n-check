@@ -11,8 +11,10 @@ Run the following script in terminal:
 >>> i18n-check -uk
 """
 
+import json
 import re
 import sys
+from pathlib import Path
 from typing import Dict, List
 
 from rich import print as rprint
@@ -20,6 +22,7 @@ from rich import print as rprint
 from i18n_check.utils import (
     collect_files_to_check,
     config_file_types_to_check,
+    config_i18n_directory,
     config_i18n_src_file,
     config_i18n_src_file_name,
     config_src_directory,
@@ -131,6 +134,124 @@ def unused_keys_check(unused_keys: List[str], all_checks_enabled: bool = False) 
         )
 
     return True
+
+
+def unused_keys_check_and_delete(
+    unused_keys: List[str], all_checks_enabled: bool = False
+) -> bool:
+    """
+    Delete unused translation keys from source and target JSON files.
+
+    Parameters
+    ----------
+    unused_keys : List[str]
+        A list of keys that are unused in the project.
+
+    all_checks_enabled : bool, optional, default=False
+        Whether all checks are being ran by the CLI.
+
+    Returns
+    -------
+    bool
+        True if the operation is successful.
+
+    Raises
+    ------
+    ValueError, sys.exit(1)
+        An error is raised and the system prints error details if there are issues with file operations.
+    """
+    if not unused_keys:
+        rprint(
+            "[green]✅ unused-keys delete success: No unused keys to delete.[/green]"
+        )
+        return True
+
+    try:
+        src_data = read_json_file(file_path=config_i18n_src_file)
+
+        # Remove unused keys from source.
+        for key in unused_keys:
+            if key in src_data:
+                del src_data[key]
+
+        # Write updated source file.
+        with open(config_i18n_src_file, "w", encoding="utf-8") as f:
+            json.dump(src_data, f, indent=2, ensure_ascii=False)
+            f.write("\n")
+
+        # Get all target JSON files.
+        from i18n_check.utils import get_all_json_files
+
+        json_files = get_all_json_files(directory=config_i18n_directory)
+
+        # Remove unused keys from all target files.
+        target_files_updated = 0
+        for file_path in json_files:
+            # Skip the source file.
+            if Path(file_path).resolve() == Path(config_i18n_src_file).resolve():
+                continue
+
+            target_data = read_json_file(file_path=file_path)
+            keys_removed = False
+
+            for key in unused_keys:
+                if key in target_data:
+                    del target_data[key]
+                    keys_removed = True
+
+            if keys_removed:
+                with open(file_path, "w", encoding="utf-8") as f:
+                    json.dump(target_data, f, indent=2, ensure_ascii=False)
+                    f.write("\n")
+                target_files_updated += 1
+
+        # Check if sorted-keys is enabled and sort files if needed.
+        try:
+            from i18n_check.utils import config
+
+            if config.get("checks", {}).get("sorted-keys", {}).get("active", False):
+                from i18n_check.check.sorted_keys import fix_sorted_keys
+
+                # Sort source file.
+                fix_sorted_keys(config_i18n_src_file)
+
+                # Sort all target files.
+                for file_path in json_files:
+                    if (
+                        Path(file_path).resolve()
+                        != Path(config_i18n_src_file).resolve()
+                    ):
+                        fix_sorted_keys(file_path)
+
+                rprint(
+                    "[green]✨ Files sorted alphabetically as sorted-keys check is enabled.[/green]"
+                )
+        except Exception:
+            # If sorting fails, continue - deletion was successful.
+            pass
+
+        key_or_keys = "keys" if len(unused_keys) > 1 else "key"
+        file_or_files = (
+            "files" if target_files_updated > 1 or target_files_updated == 0 else "file"
+        )
+
+        rprint(
+            f"[green]✅ unused-keys delete success: Removed {len(unused_keys)} unused {key_or_keys} "
+            f"from the i18n source file and {target_files_updated} target {file_or_files}.[/green]"
+        )
+
+        return True
+
+    except Exception as e:
+        error_message = (
+            f"[red]❌ unused-keys delete error: Failed to delete keys. {str(e)}[/red]"
+        )
+        rprint(error_message)
+
+        if all_checks_enabled:
+            raise ValueError("The unused keys delete operation has failed.")
+        else:
+            sys.exit(1)
 
 
 # MARK: Variables

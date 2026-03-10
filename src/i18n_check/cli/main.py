@@ -75,6 +75,7 @@ def main() -> None:
     - --alt-texts (-at): Check for appropriate punctuation in alt text keys.
     - --fix (-f): Automatically fix key issues. Can be used with -kf, -kn, -nk, -sk, -mk, -al or -at.
     - --locale (-l): Specify locale for interactive key addition.
+    - --delete (-d): Delete unused keys or non-source keys from JSON files. Can be used with -uk or -nsk.
 
     Examples
     --------
@@ -230,6 +231,13 @@ def main() -> None:
         help="When using -mk -f, specify the locale to interactively add missing keys to.",
     )
 
+    parser.add_argument(
+        "-d",
+        "--delete",
+        action="store_true",
+        help="Delete unused keys or non-source keys from JSON files. Can be used with -uk or -nsk.",
+    )
+
     # MARK: Setup CLI
 
     args = parser.parse_args()
@@ -276,11 +284,27 @@ def main() -> None:
         return
 
     if args.unused_keys:
-        unused_keys_check(unused_keys=unused_keys)
+        if args.delete:
+            from i18n_check.check.unused_keys import unused_keys_check_and_delete
+
+            unused_keys_check_and_delete(unused_keys=unused_keys)
+
+        else:
+            unused_keys_check(unused_keys=unused_keys)
+
         return
 
     if args.non_source_keys:
-        non_source_keys_check(non_source_keys_dict=non_source_keys_dict)
+        if args.delete:
+            from i18n_check.check.non_source_keys import (
+                non_source_keys_check_and_delete,
+            )
+
+            non_source_keys_check_and_delete(non_source_keys_dict=non_source_keys_dict)
+
+        else:
+            non_source_keys_check(non_source_keys_dict=non_source_keys_dict)
+
         return
 
     if args.repeat_keys:
