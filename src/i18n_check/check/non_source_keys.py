@@ -11,6 +11,7 @@ Run the following script in terminal:
 >>> i18n-check -nsk
 """
 
+import json
 import sys
 from pathlib import Path
 from typing import Dict
@@ -159,8 +160,6 @@ def non_source_keys_check_and_delete(
     ValueError, sys.exit(1)
         An error is raised and the system prints error details if there are issues with file operations.
     """
-    import json
-
     if not non_source_keys_dict:
         rprint(
             "[green]✅ non-source-keys delete success: No non-source keys to delete.[/green]"
@@ -171,22 +170,22 @@ def non_source_keys_check_and_delete(
         files_updated = 0
         total_keys_removed = 0
 
-        # Process each file that has non-source keys
+        # Process each file that has non-source keys.
         for filename, keys_to_remove in non_source_keys_dict.items():
             file_path = config_i18n_directory / filename
 
-            # Load the target file
+            # Load the target file.
             target_data = read_json_file(file_path=file_path)
             keys_removed_from_file = 0
 
-            # Remove non-source keys
+            # Remove non-source keys.
             for key in keys_to_remove:
                 if key in target_data:
                     del target_data[key]
                     keys_removed_from_file += 1
 
             if keys_removed_from_file > 0:
-                # Write updated target file
+                # Write updated target file.
                 with open(file_path, "w", encoding="utf-8") as f:
                     json.dump(target_data, f, indent=2, ensure_ascii=False)
                     f.write("\n")
@@ -194,14 +193,14 @@ def non_source_keys_check_and_delete(
                 files_updated += 1
                 total_keys_removed += keys_removed_from_file
 
-        # Check if sorted-keys is enabled and sort target files if needed
+        # Check if sorted-keys is enabled and sort target files if needed.
         try:
             from i18n_check.utils import config
 
             if config.get("checks", {}).get("sorted-keys", {}).get("active", False):
                 from i18n_check.check.sorted_keys import fix_sorted_keys
 
-                # Sort only the target files that were updated
+                # Sort only the target files that were updated.
                 for filename in non_source_keys_dict.keys():
                     file_path = config_i18n_directory / filename
                     fix_sorted_keys(file_path)
@@ -210,10 +209,9 @@ def non_source_keys_check_and_delete(
                     "[green]✨ Target files sorted alphabetically as sorted-keys check is enabled.[/green]"
                 )
         except Exception:
-            # If sorting fails, continue - deletion was successful
+            # If sorting fails, continue - deletion was successful.
             pass
 
-        # Success message
         key_or_keys = "keys" if total_keys_removed > 1 else "key"
         file_or_files = "files" if files_updated > 1 else "file"
 
@@ -230,6 +228,7 @@ def non_source_keys_check_and_delete(
 
         if all_checks_enabled:
             raise ValueError("The non-source keys delete operation has failed.")
+
         else:
             sys.exit(1)
 

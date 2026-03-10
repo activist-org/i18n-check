@@ -11,8 +11,10 @@ Run the following script in terminal:
 >>> i18n-check -uk
 """
 
+import json
 import re
 import sys
+from pathlib import Path
 from typing import Dict, List
 
 from rich import print as rprint
@@ -158,9 +160,6 @@ def unused_keys_check_and_delete(
     ValueError, sys.exit(1)
         An error is raised and the system prints error details if there are issues with file operations.
     """
-    import json
-    from pathlib import Path
-
     if not unused_keys:
         rprint(
             "[green]✅ unused-keys delete success: No unused keys to delete.[/green]"
@@ -168,28 +167,27 @@ def unused_keys_check_and_delete(
         return True
 
     try:
-        # Load source file
         src_data = read_json_file(file_path=config_i18n_src_file)
 
-        # Remove unused keys from source
+        # Remove unused keys from source.
         for key in unused_keys:
             if key in src_data:
                 del src_data[key]
 
-        # Write updated source file
+        # Write updated source file.
         with open(config_i18n_src_file, "w", encoding="utf-8") as f:
             json.dump(src_data, f, indent=2, ensure_ascii=False)
             f.write("\n")
 
-        # Get all target JSON files
+        # Get all target JSON files.
         from i18n_check.utils import get_all_json_files
 
         json_files = get_all_json_files(directory=config_i18n_directory)
 
-        # Remove unused keys from all target files
+        # Remove unused keys from all target files.
         target_files_updated = 0
         for file_path in json_files:
-            # Skip the source file
+            # Skip the source file.
             if Path(file_path).resolve() == Path(config_i18n_src_file).resolve():
                 continue
 
@@ -207,17 +205,17 @@ def unused_keys_check_and_delete(
                     f.write("\n")
                 target_files_updated += 1
 
-        # Check if sorted-keys is enabled and sort files if needed
+        # Check if sorted-keys is enabled and sort files if needed.
         try:
             from i18n_check.utils import config
 
             if config.get("checks", {}).get("sorted-keys", {}).get("active", False):
                 from i18n_check.check.sorted_keys import fix_sorted_keys
 
-                # Sort source file
+                # Sort source file.
                 fix_sorted_keys(config_i18n_src_file)
 
-                # Sort all target files
+                # Sort all target files.
                 for file_path in json_files:
                     if (
                         Path(file_path).resolve()
@@ -229,10 +227,9 @@ def unused_keys_check_and_delete(
                     "[green]✨ Files sorted alphabetically as sorted-keys check is enabled.[/green]"
                 )
         except Exception:
-            # If sorting fails, continue - deletion was successful
+            # If sorting fails, continue - deletion was successful.
             pass
 
-        # Success message
         key_or_keys = "keys" if len(unused_keys) > 1 else "key"
         file_or_files = "files" if target_files_updated > 1 else "file"
 

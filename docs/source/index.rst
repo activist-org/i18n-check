@@ -172,6 +172,18 @@ These are some example commands:
 
    i18n-check -mk -f -l ENTER_ISO_2_CODE
 
+**Delete Unused Keys**
+
+.. code-block:: bash
+
+   i18n-check -uk -d
+
+**Delete Non-Source Keys**
+
+.. code-block:: bash
+
+   i18n-check -nsk -d
+
 Checks
 ------
 
@@ -194,13 +206,13 @@ You can run these checks across your codebase:
 | i18n keys that are not       | keys`` (``nk``)    | they should be added to the i18n files | add nonexistent keys.                  |
 | within the source file?      |                    | or replaced.                           |                                        |
 +------------------------------+--------------------+----------------------------------------+----------------------------------------+
-| Does the source file have    | ``unused-keys``    | Remove them so the localization team   | n/a                                    |
-| keys that are not used in    | (``uk``)           | isn't working on strings that aren't   |                                        |
-| the codebase?                |                    | used.                                  |                                        |
+| Does the source file have    | ``unused-keys``    | Remove them so the localization team   | `--delete` (`-d`) to delete unused     |
+| keys that are not used in    | (``uk``)           | isn't working on strings that aren't   | keys from all JSON files               |
+| the codebase?                |                    | used.                                  | automatically.                         |
 +------------------------------+--------------------+----------------------------------------+----------------------------------------+
-| Do the target locale files   | ``non-source-      | Remove them as they won't be used in   | n/a                                    |
-| have keys that are not in    | keys`` (``nsk``)   | the application.                       |                                        |
-| the source file?             |                    |                                        |                                        |
+| Do the target locale files   | ``non-source-      | Remove them as they won't be used in   | `--delete` (`-d`) to delete non-source |
+| have keys that are not in    | keys`` (``nsk``)   | the application.                       | keys from target JSON files            |
+| the source file?             |                    |                                        | automatically.                         |
 +------------------------------+--------------------+----------------------------------------+----------------------------------------+
 | Do any of localization files | ``repeat-keys``    | Separate them so that the values are   | n/a                                    |
 | have repeat keys?            | (``rk``)           | not mixed when they're in production.  |                                        |

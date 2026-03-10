@@ -11,6 +11,7 @@ from i18n_check.check.unused_keys import (
     files_to_check_contents,
     find_unused_keys,
     unused_keys_check,
+    unused_keys_check_and_delete,
 )
 from i18n_check.utils import read_json_file
 
@@ -63,27 +64,24 @@ def test_unused_keys_check_and_delete_function_exists():
 
 def test_unused_keys_delete_removes_keys_from_json_files(tmp_path):
     """Test that delete functionality removes unused keys from JSON files."""
-    from i18n_check.check.unused_keys import unused_keys_check_and_delete
-
-    # Create i18n directory
     i18n_dir = tmp_path / "i18n"
     i18n_dir.mkdir(parents=True)
 
-    # Create source file
+    # Create source file.
     src_file = i18n_dir / "test_src.json"
     src_file.write_text(
         '{\n  "i18n.used_key": "Used value",\n  "i18n.unused_key": "Unused value"\n}\n',
         encoding="utf-8",
     )
 
-    # Create target file
+    # Create target file.
     target_file = i18n_dir / "test_target.json"
     target_file.write_text(
         '{\n  "i18n.used_key": "Used value in target",\n  "i18n.unused_key": "Unused value in target"\n}\n',
         encoding="utf-8",
     )
 
-    # Mock configuration to use our temp files
+    # Mock configuration to use our temp files.
     with (
         patch("i18n_check.check.unused_keys.config_i18n_src_file", src_file),
         patch("i18n_check.check.unused_keys.config_i18n_directory", i18n_dir),
@@ -91,7 +89,7 @@ def test_unused_keys_delete_removes_keys_from_json_files(tmp_path):
         unused_keys = ["i18n.unused_key"]
         unused_keys_check_and_delete(unused_keys=unused_keys)
 
-        # Verify keys were removed
+        # Verify keys were removed.
         updated_src = read_json_file(src_file)
         updated_target = read_json_file(target_file)
 
