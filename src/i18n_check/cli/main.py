@@ -20,10 +20,7 @@ from i18n_check.check.key_naming import (
     invalid_keys_by_name,
 )
 from i18n_check.check.missing_keys import missing_keys_check_and_fix
-from i18n_check.check.nested_files import nested_files_check_and_fix
-
-# Backward compatibility alias
-nested_files_check = nested_files_check_and_fix
+from i18n_check.check.nested_files import nested_files_check, nested_files_check_and_fix
 from i18n_check.check.non_source_keys import non_source_keys_check, non_source_keys_dict
 from i18n_check.check.nonexistent_keys import (
     all_used_i18n_keys,
@@ -291,10 +288,8 @@ def main() -> None:
             from i18n_check.check.unused_keys import unused_keys_check_and_delete
 
             unused_keys_check_and_delete(unused_keys=unused_keys)
-
         else:
             unused_keys_check(unused_keys=unused_keys)
-
         return
 
     if args.non_source_keys:
@@ -304,10 +299,8 @@ def main() -> None:
             )
 
             non_source_keys_check_and_delete(non_source_keys_dict=non_source_keys_dict)
-
         else:
             non_source_keys_check(non_source_keys_dict=non_source_keys_dict)
-
         return
 
     if args.repeat_keys:
@@ -326,23 +319,23 @@ def main() -> None:
         return
 
     if args.nested_files:
-        nested_files_check_and_fix(fix=args.fix)
+        if args.fix:
+            nested_files_check_and_fix(fix=True)
+        else:
+            nested_files_check()
         return
 
     if args.missing_keys:
         if args.fix and args.locale:
             missing_keys_check_and_fix(fix_locale=args.locale)
-
         elif args.fix:
             rprint(
                 "[red]❌ Error: --locale (-l) is required when using --fix (-f) with --missing-keys (-mk)[/red]"
             )
             rprint("[yellow]💡 Example: i18n-check -mk -f -l ENTER_ISO_2_CODE[/yellow]")
             sys.exit(1)
-
         else:
             missing_keys_check_and_fix()
-
         return
 
     if args.aria_labels:
