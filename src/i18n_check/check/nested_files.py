@@ -95,11 +95,6 @@ def nested_files_check_and_fix(
         for f in nested_files:
             rprint(f"[red]Nested JSON in: {f}[/red]")
 
-        rprint(
-            "\n[yellow]💡 Tip: Use the --fix (-f) flag to automatically "
-            "flatten nested keys.[/yellow]\n"
-        )
-
         return True  # Return True to not fail run_all_checks
 
     elif nested_files and fix:
