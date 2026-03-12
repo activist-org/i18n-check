@@ -26,22 +26,39 @@ from i18n_check.utils import config_i18n_directory, read_json_file
 
 def flatten_json(
     data: Dict[str, Any], parent_key: str = "", sep: str = "."
-) -> Dict[str, Any]:
-    """Flatten a nested JSON dictionary by joining nested keys with a separator."""
+) -> tuple[Dict[str, Any], bool]:
+    """
+    Flatten a nested JSON dictionary by joining nested keys with a separator.
+    
+    Returns
+    -------
+    tuple
+        (flattened_dict, has_collision) - The flattened dict and whether there were duplicate keys.
+    """
     items = []
+    seen_keys = set()
+    has_collision = False
+    
     for key, value in data.items():
         new_key = f"{parent_key}{sep}{key}" if parent_key else key
         if isinstance(value, dict):
-            items.extend(flatten_json(value, new_key, sep=sep).items())
+            nested_result, nested_collision = flatten_json(value, new_key, sep=sep)
+            if nested_collision:
+                has_collision = True
+            items.extend(nested_result.items())
         else:
+            if new_key in seen_keys:
+                has_collision = True
+            seen_keys.add(new_key)
             items.append((new_key, value))
-    return dict(items)
+    
+    return dict(items), has_collision
 
 
 # MARK: Is Nested
 
 
-def is_nested_json(data: Dict[str, str]) -> bool:
+def is_nested_json(data: dict[str, Any]) -> bool:
     """Check if the JSON structure is nested."""
     if isinstance(data, dict):
         return any(isinstance(value, dict) for value in data.values())
@@ -97,9 +114,9 @@ def nested_files_check_and_fix(
             try:
                 data = read_json_file(file_path=file_path)
                 
-                # Check for key collisions
-                flattened = flatten_json(data)
-                if len(flattened) != len(data):
+                # Check for key collisions during flattening
+                flattened, has_collision = flatten_json(data)
+                if has_collision:
                     rprint(
                         f"[red]⚠️ Key collision detected in {file_path}. "
                         "Manual fix required.[/red]"
@@ -122,15 +139,10 @@ def nested_files_check_and_fix(
                 f"\n[yellow]⚠️ {len(failed)} file(s) failed to flatten.[/yellow]"
             )
             return False
+        
         return True
 
-    else:
-        rprint(
-            "[green]✅ nested-files success: No nested JSON structures "
-            "found.[/green]"
-        )
-
-    return True
+    # No nested files found - silent success (matching previous behavior)
 
 
 # Backward compatibility alias

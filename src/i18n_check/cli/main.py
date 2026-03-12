@@ -20,7 +20,7 @@ from i18n_check.check.key_naming import (
     invalid_keys_by_name,
 )
 from i18n_check.check.missing_keys import missing_keys_check_and_fix
-from i18n_check.check.nested_files import nested_files_check, nested_files_check_and_fix
+from i18n_check.check.nested_files import nested_files_check_and_fix
 from i18n_check.check.non_source_keys import non_source_keys_check, non_source_keys_dict
 from i18n_check.check.nonexistent_keys import (
     all_used_i18n_keys,
@@ -323,7 +323,6 @@ def main() -> None:
         return
 
     if args.nested_files:
-        from i18n_check.check.nested_files import nested_files_check_and_fix
         nested_files_check_and_fix(fix=args.fix)
         return
 
