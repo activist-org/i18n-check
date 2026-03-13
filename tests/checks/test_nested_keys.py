@@ -90,16 +90,16 @@ class TestCheckI18nFiles:
         """
         Test that flatten_json reports collisions for duplicate flattened keys.
         """
-        flattened, has_collision = flatten_json(
-            {"a": {"b": 1}, "a.b": 2}
-        )
+        flattened, has_collision = flatten_json({"a": {"b": 1}, "a.b": 2})
 
         assert has_collision is True
         assert flattened["a.b"] == 2
 
-    def test_nested_files_check_and_fix_flattens_nested_json(self, tmp_path, capsys) -> None:
+    def test_nested_files_check_and_fix_flattens_nested_json(
+        self, tmp_path, capsys
+    ) -> None:
         """
-        Test that nested_files_check_and_fix rewrites nested JSON when fix=True.
+        Test that nested_files_check_and_fix rewrites nested JSON.
         """
         nested_file = tmp_path / "nested.json"
         nested_file.write_text(
@@ -107,7 +107,7 @@ class TestCheckI18nFiles:
             encoding="utf-8",
         )
 
-        result = nested_files_check_and_fix(tmp_path, fix=True)
+        result = nested_files_check_and_fix(tmp_path)
         captured = capsys.readouterr()
 
         assert result is True
@@ -128,7 +128,7 @@ class TestCheckI18nFiles:
         original = {"auth": {"login": "Login"}, "auth.login": "Existing"}
         nested_file.write_text(json.dumps(original, indent=2), encoding="utf-8")
 
-        result = nested_files_check_and_fix(tmp_path, fix=True)
+        result = nested_files_check_and_fix(tmp_path)
         captured = capsys.readouterr()
 
         assert result is False

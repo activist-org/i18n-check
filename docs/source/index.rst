@@ -232,7 +232,7 @@ You can run these checks across your codebase:
 |                              |                    | JSON extensions do otherwise).         | checks will sort the keys if this      |
 |                              |                    |                                        | check is active.                       |
 +------------------------------+--------------------+----------------------------------------+----------------------------------------+
-| Do the i18n files contain    | ``nested-files``   | Flatten them to make replacing invalid | n/a                                    |
+| Do the i18n files contain    | ``nested-files``   | Flatten them to make replacing invalid | `--fix` (`-f`) to flatten JSON files   |
 | nested JSON structures?      | (``nf``)           | keys easier with find-and-replace all. |                                        |
 +------------------------------+--------------------+----------------------------------------+----------------------------------------+
 | Are any keys from the source | ``missing-keys``   | Add the missing keys to ensure all     | ``--fix --locale ENTER_ISO_2_CODE``    |

@@ -20,30 +20,62 @@ from rich import print as rprint
 
 from i18n_check.utils import config_i18n_directory, read_json_file
 
+# MARK: Is Nested
+
+
+def is_nested_json(data: dict[str, Any]) -> bool:
+    """
+    Check if the JSON structure is nested.
+
+    Parameters
+    ----------
+    data : dict
+        The JSON data to check.
+
+    Returns
+    -------
+    bool
+        True if the JSON structure is nested, False otherwise.
+    """
+    if isinstance(data, dict):
+        return any(isinstance(value, dict) for value in data.values())
+
+    return False
+
+
 # MARK: Flatten Nested JSON
 
 
 def flatten_json(
-    data: Dict[str, Any], parent_key: str = "", sep: str = "."
+    data: Dict[str, Any], parent_key: str = ""
 ) -> tuple[Dict[str, Any], bool]:
     """
-    Flatten a nested JSON dictionary by joining nested keys with a separator.
+    Flatten a nested JSON dictionary by joining nested keys with the period separator.
+
+    Parameters
+    ----------
+    data : Dict[str, Any]
+        The data JSON object to flatten.
+
+    parent_key : str, default=''
+        The parent key of a sub-object within the data.
 
     Returns
     -------
-    tuple
+    tuple[Dict[str, Any], bool]
         (flattened_dict, has_collision) - The flattened dict and whether there were duplicate keys.
     """
     items: list[tuple[str, Any]] = []
     has_collision = False
 
     for key, value in data.items():
-        new_key = f"{parent_key}{sep}{key}" if parent_key else key
+        new_key = f"{parent_key}.{key}" if parent_key else key
         if isinstance(value, dict):
-            nested_result, nested_collision = flatten_json(value, new_key, sep=sep)
+            nested_result, nested_collision = flatten_json(value, new_key)
             if nested_collision:
                 has_collision = True
             items.extend(nested_result.items())
+
         else:
             items.append((new_key, value))
 
@@ -54,23 +86,22 @@ def flatten_json(
     return flattened, has_collision
 
 
-# MARK: Is Nested
-
-
-def is_nested_json(data: dict[str, Any]) -> bool:
-    """Check if the JSON structure is nested."""
-    if isinstance(data, dict):
-        return any(isinstance(value, dict) for value in data.values())
-    return False
-
-
-# Backward compatibility alias
-
-
-def nested_files_check(
+def derive_nested_files(
     directory: Union[str, Path] = config_i18n_directory,
-) -> bool:
-    """Backward-compatible wrapper for nested file checks without fix mode."""
+) -> list[Path]:
+    """
+    Derive if nested files exist in the source and target JSON files.
+
+    Parameters
+    ----------
+    directory : str | Path, default=config_i18n_directory
+        The directory path to check for JSON files.
+
+    Returns
+    -------
+    list[Path]
+        The list of files that are nested or an empty list.
+    """
     if not Path(directory).exists():
         raise FileNotFoundError(f"Directory does not exist: {directory}")
 
@@ -81,10 +112,28 @@ def nested_files_check(
             data = read_json_file(file_path=file_path)
             if is_nested_json(data):
                 nested_files.append(file_path)
+
         except (json.JSONDecodeError, IOError) as e:
             print(f"Error processing {file_path}: {e}")
 
-    if nested_files:
+    return nested_files
+
+
+def nested_files_check(directory: Union[str, Path] = config_i18n_directory) -> bool:
+    """
+    Check all JSON files in the given directory for nested structures.
+
+    Parameters
+    ----------
+    directory : str | Path, default=config_i18n_directory
+        The directory path to check for JSON files.
+
+    Returns
+    -------
+    bool
+        True if the check is successful.
+    """
+    if nested_files := derive_nested_files(directory=directory):
         for file_path in nested_files:
             rprint(
                 f"\n[red]❌ nested-files error: Nested JSON structure detected in {file_path}[/red]"
@@ -98,61 +147,54 @@ def nested_files_check(
 
 
 def nested_files_check_and_fix(
-    directory: Union[str, Path] = config_i18n_directory, fix: bool = False
+    directory: Union[str, Path] = config_i18n_directory,
 ) -> bool:
-    """Check all JSON files in the given directory for nested structures."""
-    if not Path(directory).exists():
-        raise FileNotFoundError(f"Directory does not exist: {directory}")
+    """
+    Check all JSON files in the given directory for nested structures.
 
-    nested_files: list[Path] = []
+    Parameters
+    ----------
+    directory : str | Path, default=config_i18n_directory
+        The directory path to check for JSON files.
 
-    for file_path in Path(directory).rglob("*.json"):
+    Returns
+    -------
+    bool
+        True if the check is successful.
+    """
+    if not (nested_files := derive_nested_files(directory=directory)):
+        return False
+
+    file_or_files = "file" if len(nested_files) == 1 else "files"
+    rprint(
+        f"\n[yellow]Flattening nested JSON in {len(nested_files)} {file_or_files}:[/yellow]"
+    )
+
+    failed: list[Path] = []
+    for file_path in nested_files:
         try:
             data = read_json_file(file_path=file_path)
-            if is_nested_json(data):
-                nested_files.append(file_path)
-        except (json.JSONDecodeError, IOError) as e:
-            print(f"Error processing {file_path}: {e}")
 
-    if nested_files and not fix:
-        return nested_files_check(directory=directory)
-
-    if nested_files and fix:
-        file_or_files = "file" if len(nested_files) == 1 else "files"
-        rprint(
-            f"\n[green]Flattening nested JSON in {len(nested_files)} "
-            f"{file_or_files}:[/green]"
-        )
-
-        failed: list[Path] = []
-        for file_path in nested_files:
-            try:
-                data = read_json_file(file_path=file_path)
-
-                flattened, has_collision = flatten_json(data)
-                if has_collision:
-                    rprint(
-                        f"[red]⚠️ Key collision detected in {file_path}. "
-                        "Manual fix required.[/red]"
-                    )
-                    failed.append(file_path)
-                    continue
-
-                with file_path.open("w", encoding="utf-8") as file_obj:
-                    json.dump(flattened, file_obj, indent=2, ensure_ascii=False)
-                    file_obj.write("\n")
-
-                rprint(f"[green]✅ Flattened nested keys in {file_path}[/green]")
-
-            except Exception as e:
-                rprint(f"[red]Failed to flatten {file_path}: {e}[/red]")
+            flattened, has_collision = flatten_json(data)
+            if has_collision:
+                rprint(
+                    f"[yellow]⚠️ Key collision detected in {file_path}. Manual fix required.[/yellow]"
+                )
                 failed.append(file_path)
+                continue
 
-        if failed:
-            rprint(f"\n[yellow]⚠️ {len(failed)} file(s) failed to flatten.[/yellow]")
-            return False
+            with file_path.open("w", encoding="utf-8") as file_obj:
+                json.dump(flattened, file_obj, indent=2, ensure_ascii=False)
+                file_obj.write("\n")
 
-        return True
+            rprint(f"[green]✅ Flattened nested keys in {file_path}[/green]")
 
-    # No nested files found - silent success (matching previous behavior)
-    return False
+        except Exception as e:
+            rprint(f"[red]❌ Failed to flatten {file_path}: {e}[/red]")
+            failed.append(file_path)
+
+    if failed:
+        rprint(f"\n[red]❌ {len(failed)} file(s) failed to flatten.[/red]")
+        return False
+
+    return True
