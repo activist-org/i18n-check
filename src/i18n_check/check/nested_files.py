@@ -19,7 +19,11 @@ from typing import Any, Dict, Union
 from rich import print as rprint
 
 from i18n_check.check.repeat_keys import check_file_keys_repeated
-from i18n_check.utils import config_i18n_directory, read_json_file
+from i18n_check.utils import (
+    config_i18n_directory,
+    config_sorted_keys_active,
+    read_json_file,
+)
 
 # MARK: Is Nested
 
@@ -216,6 +220,9 @@ def nested_files_check_and_fix(
                 continue
 
             with file_path.open("w", encoding="utf-8") as file_obj:
+                if config_sorted_keys_active:
+                    flattened = dict(sorted(flattened.items()))
+
                 json.dump(flattened, file_obj, indent=2, ensure_ascii=False)
                 file_obj.write("\n")
 
