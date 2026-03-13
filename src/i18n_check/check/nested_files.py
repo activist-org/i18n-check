@@ -28,7 +28,7 @@ from i18n_check.utils import (
 # MARK: Is Nested
 
 
-def is_nested_json(data: dict[str, Any]) -> bool:
+def is_nested_json(data: Dict[str, Any]) -> bool:
     """
     Check if the JSON structure is nested.
 
