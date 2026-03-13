@@ -139,7 +139,10 @@ def nested_files_check(directory: Union[str, Path] = config_i18n_directory) -> b
                 f"\n[red]❌ nested-files error: Nested JSON structure detected in {file_path}[/red]"
             )
         rprint(
-            "[yellow]💡 i18n-check recommends using flat JSON files to make replacing invalid keys easier.[/yellow]"
+            "\n[yellow]💡 i18n-check recommends using flat JSON files to make replacing invalid keys easier.[/yellow]"
+        )
+        rprint(
+            "[yellow]⚠️  You can automatically flatten files by running the --nested-files (-nf) check with the --fix (-f) flag.[/yellow]"
         )
         return True
 
