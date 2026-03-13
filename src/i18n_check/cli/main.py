@@ -20,7 +20,7 @@ from i18n_check.check.key_naming import (
     invalid_keys_by_name,
 )
 from i18n_check.check.missing_keys import missing_keys_check_and_fix
-from i18n_check.check.nested_files import nested_files_check
+from i18n_check.check.nested_files import nested_files_check, nested_files_check_and_fix
 from i18n_check.check.non_source_keys import non_source_keys_check, non_source_keys_dict
 from i18n_check.check.nonexistent_keys import (
     all_used_i18n_keys,
@@ -69,11 +69,11 @@ def main() -> None:
     - --repeat-keys (-rk): Check for duplicate keys in i18n JSON files.
     - --repeat-values (-rv): Check if values in the i18n-src file have repeat strings.
     - --sorted-keys (-sk): Check if all i18n JSON files have keys sorted alphabetically.
-    - --nested-files (-nf): Check for nested i18n keys.
+    - --nested-files (-nf): Check for nested i18n source and translation keys.
     - --missing-keys (-mk): Check for missing keys in locale files.
     - --aria-labels (-al): Check for appropriate punctuation in aria label keys.
     - --alt-texts (-at): Check for appropriate punctuation in alt text keys.
-    - --fix (-f): Automatically fix key issues. Can be used with -kf, -kn, -nk, -sk, -mk, -al or -at.
+    - --fix (-f): Automatically fix key issues. Can be used with -kf, -kn, -nk, -sk, -mk, -al, -at or -nf.
     - --locale (-l): Specify locale for interactive key addition.
     - --delete (-d): Delete unused keys or non-source keys from JSON files. Can be used with -uk or -nsk.
 
@@ -221,7 +221,7 @@ def main() -> None:
         "-f",
         "--fix",
         action="store_true",
-        help="Automatically fix key issues. Can be used with -kf, -kn, -nk, -sk, -mk, -al or -at.",
+        help="Automatically fix key issues. Can be used with -kf, -kn, -nk, -sk, -mk, -al, -at or -nf.",
     )
 
     parser.add_argument(
@@ -323,7 +323,12 @@ def main() -> None:
         return
 
     if args.nested_files:
-        nested_files_check()
+        if args.fix:
+            nested_files_check_and_fix()
+
+        else:
+            nested_files_check()
+
         return
 
     if args.missing_keys:
