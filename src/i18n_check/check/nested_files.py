@@ -18,6 +18,7 @@ from typing import Any, Dict, Union
 
 from rich import print as rprint
 
+from i18n_check.check.repeat_keys import check_file_keys_repeated
 from i18n_check.utils import config_i18n_directory, read_json_file
 
 # MARK: Is Nested
@@ -86,6 +87,9 @@ def flatten_json(
     return flattened, has_collision
 
 
+# MARK: Derive
+
+
 def derive_nested_files(
     directory: Union[str, Path] = config_i18n_directory,
 ) -> list[Path]:
@@ -119,7 +123,12 @@ def derive_nested_files(
     return nested_files
 
 
-def nested_files_check(directory: Union[str, Path] = config_i18n_directory) -> bool:
+# MARK: Check
+
+
+def nested_files_check(
+    directory: Union[str, Path] = config_i18n_directory, fix: bool = False
+) -> bool:
     """
     Check all JSON files in the given directory for nested structures.
 
@@ -127,6 +136,9 @@ def nested_files_check(directory: Union[str, Path] = config_i18n_directory) -> b
     ----------
     directory : str | Path, default=config_i18n_directory
         The directory path to check for JSON files.
+
+    fix : bool, default=False
+        Whether the fix option for the check is being ran.
 
     Returns
     -------
@@ -138,15 +150,21 @@ def nested_files_check(directory: Union[str, Path] = config_i18n_directory) -> b
             rprint(
                 f"\n[red]❌ nested-files error: Nested JSON structure detected in {file_path}[/red]"
             )
-        rprint(
-            "\n[yellow]💡 i18n-check recommends using flat JSON files to make replacing invalid keys easier.[/yellow]"
-        )
-        rprint(
-            "[yellow]⚠️  You can automatically flatten files by running the --nested-files (-nf) check with the --fix (-f) flag.[/yellow]"
-        )
+
+        if not fix:
+            rprint(
+                "\n[yellow]💡 i18n-check recommends using flat JSON files to make replacing invalid keys easier.[/yellow]"
+            )
+            rprint(
+                "[yellow]⚠️  You can automatically flatten JSON files by running the --nested-files (-nf) check with the --fix (-f) flag.[/yellow]"
+            )
+
         return True
 
     return False
+
+
+# MARK: Fix
 
 
 def nested_files_check_and_fix(
@@ -165,6 +183,8 @@ def nested_files_check_and_fix(
     bool
         True if the check is successful.
     """
+    nested_files_check(directory=directory, fix=True)
+
     if not (nested_files := derive_nested_files(directory=directory)):
         return False
 
@@ -178,10 +198,19 @@ def nested_files_check_and_fix(
         try:
             data = read_json_file(file_path=file_path)
 
-            flattened, has_collision = flatten_json(data)
+            flattened, has_collision = flatten_json(data=data)
             if has_collision:
                 rprint(
-                    f"[yellow]⚠️ Key collision detected in {file_path}. Manual fix required.[/yellow]"
+                    f"[yellow]⚠️  Key collision detected in {file_path}. Manual fix required.[/yellow]"
+                )
+                failed.append(file_path)
+                continue
+
+            if check_file_keys_repeated(file_path=str(file_path))[
+                1
+            ]:  # repeat keys returned
+                rprint(
+                    f"[yellow]⚠️  Repeat keys detected in {file_path}. Please remove repeat keys first.[/yellow]"
                 )
                 failed.append(file_path)
                 continue
@@ -197,7 +226,8 @@ def nested_files_check_and_fix(
             failed.append(file_path)
 
     if failed:
-        rprint(f"\n[red]❌ {len(failed)} file(s) failed to flatten.[/red]")
+        file_or_files = "file" if len(failed) == 1 else "files"
+        rprint(f"\n[red]❌ Failed to flatten {len(failed)} JSON {file_or_files}.[/red]")
         return False
 
     return True

@@ -60,7 +60,7 @@ class TestCheckI18nFiles:
         Test that nested_files_check prints a warning for nested files.
         """
         # Test the failing case.
-        nested_files_check(checks_fail_json_dir)
+        nested_files_check(directory=checks_fail_json_dir)
         captured_fail = capsys.readouterr()
 
         # The output from `rich` might have extra newlines or formatting.
@@ -75,7 +75,7 @@ class TestCheckI18nFiles:
         )
 
         # Test the passing case.
-        nested_files_check(checks_pass_json_dir)
+        nested_files_check(directory=checks_pass_json_dir)
         captured_pass = capsys.readouterr()
         assert captured_pass.out == ""
 
@@ -84,7 +84,7 @@ class TestCheckI18nFiles:
         Test nested_files_check with a nonexistent directory.
         """
         with pytest.raises(FileNotFoundError):
-            nested_files_check("/nonexistent/directory")
+            nested_files_check(directory="/nonexistent/directory")
 
     def test_flatten_json_reports_key_collision(self) -> None:
         """
@@ -107,7 +107,7 @@ class TestCheckI18nFiles:
             encoding="utf-8",
         )
 
-        result = nested_files_check_and_fix(tmp_path)
+        result = nested_files_check_and_fix(directory=tmp_path)
         captured = capsys.readouterr()
 
         assert result is True
