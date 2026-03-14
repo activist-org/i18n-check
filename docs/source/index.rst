@@ -3,7 +3,7 @@
     :align: center
     :target: https://github.com/activist-org/i18n-check
 
-|rtd| |ci_static_analysis| |python_package_ci| |issues| |python| |pypi| |pypistatus| |license| |coc| |matrix|
+|rtd| |ci_static_analysis| |ci_pytest| |issues| |python| |pypi| |pypistatus| |license| |coc| |matrix|
 
 .. |rtd| image:: https://img.shields.io/readthedocs/i18n-check.svg?label=%20&logo=read-the-docs&logoColor=ffffff
     :target: http://i18n-check.readthedocs.io/en/latest/
