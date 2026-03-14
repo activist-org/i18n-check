@@ -146,8 +146,14 @@ def report_missing_keys(
             error_message += "\n"
 
         error_message += "Summary of missing keys by locale:\n"
-        for locale_file, (missing_keys, percentage) in missing_keys_by_locale.items():
-            error_message += f"  {locale_file}: {percentage:.1f}% missing\n"
+        error_lines = [
+            f"  {locale_file}: {percentage:.1f}% missing"
+            for locale_file, (
+                missing_keys,
+                percentage,
+            ) in missing_keys_by_locale.items()
+        ]
+        error_message += "\n".join(error_lines)
 
         error_message += "[/red]"
         rprint(error_message)

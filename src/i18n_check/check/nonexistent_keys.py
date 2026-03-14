@@ -146,7 +146,7 @@ def nonexistent_keys_check(
         rprint(error_message)
 
         rprint(
-            "\n[yellow]💡 Tip: You can interactively add nonexistent keys by running the --nonexistent-keys (-nk) check with the --fix (-f) flag.[/yellow]\n"
+            "\n[yellow]💡 Tip: You can interactively add nonexistent keys by running the --nonexistent-keys (-nk) check with the --fix (-f) flag.[/yellow]"
         )
 
         if all_checks_enabled:
