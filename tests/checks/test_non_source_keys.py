@@ -151,9 +151,9 @@ def test_non_source_keys_are_sorted_in_output(capsys):
 
     # Verify keys are sorted.
     expected_sorted_keys = ["i18n.a_key", "i18n.m_key", "i18n.z_key"]
-    assert key_lines == expected_sorted_keys, (
-        f"Keys not sorted. Expected: {expected_sorted_keys}, Got: {key_lines}"
-    )
+    assert (
+        key_lines == expected_sorted_keys
+    ), f"Keys not sorted. Expected: {expected_sorted_keys}, Got: {key_lines}"
 
 
 if __name__ == "__main__":

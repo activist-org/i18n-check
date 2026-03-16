@@ -129,7 +129,7 @@ def test_repeat_values_keys_are_sorted_in_output(capsys) -> None:
     }
 
     repeat_counts = get_repeat_value_counts(test_dict)
-    result, report = analyze_and_generate_repeat_value_report(test_dict, repeat_counts)
+    _, report = analyze_and_generate_repeat_value_report(test_dict, repeat_counts)
 
     # Check that keys appear in sorted order in the report.
     assert "Keys: i18n.a_key, i18n.m_key, i18n.z_key" in report
