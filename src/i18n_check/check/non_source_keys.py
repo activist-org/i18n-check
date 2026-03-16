@@ -104,7 +104,7 @@ def non_source_keys_check(
             (
                 f"Non-source keys in {k}:"
                 + " \n  "
-                + "\n  ".join(non_source_keys_dict[k])
+                + "\n  ".join(sorted(non_source_keys_dict[k]))
             )
             for k in non_source_keys_dict
         )

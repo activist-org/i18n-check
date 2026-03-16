@@ -94,7 +94,7 @@ def analyze_and_generate_repeat_value_report(
             repeat_value_error_report += (
                 f"\n\nRepeat value: '{repeat_value}'"
                 f"\nNumber of instances: {len(repeat_value_i18n_keys)}"
-                f"\nKeys: {', '.join(repeat_value_i18n_keys)}"
+                f"\nKeys: {', '.join(sorted(repeat_value_i18n_keys))}"
             )
 
             # Use the methods from the invalid keys check to assure that results are consistent.

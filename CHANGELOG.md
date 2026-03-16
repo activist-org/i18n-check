@@ -20,6 +20,14 @@ Emojis for the following are chosen based on [gitmoji](https://gitmoji.dev/).
   - Delete operations integrate with sorted-keys check for consistent file formatting.
 - Added the `--fix` (`-f`) flag for the nested files check to automatically flatten the files ([#99](https://github.com/activist-org/i18n-check/issues/99)).
 
+### 🐛 Bug Fixes
+
+- Fixed key sorting in error outputs to ensure keys are always displayed in alphabetical order for easier investigation.
+  - `unused-keys` check now displays unused keys in sorted order.
+  - `repeat-values` check now displays repeat value keys in sorted order.
+  - `non-source-keys` check now displays non-source keys in sorted order.
+  - Added comprehensive tests to verify sorted key outputs and prevent regression.
+
 ### ♻️ Code Refactoring
 
 - All empty lists and dictionaries were typed in the project ([#96](https://github.com/activist-org/i18n-check/issues/96)).

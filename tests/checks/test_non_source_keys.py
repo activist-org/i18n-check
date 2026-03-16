@@ -121,5 +121,40 @@ def test_non_source_keys_delete_removes_keys_from_target_files_only(tmp_path):
         assert "i18n.non_source_key" not in updated_target  # removed from target
 
 
+def test_non_source_keys_are_sorted_in_output(capsys):
+    """
+    Test that non-source keys are sorted alphabetically in error output.
+    """
+    # Create test data with keys that would be unsorted naturally
+    non_source_keys_dict = {
+        "test_file.json": {"i18n.z_key", "i18n.a_key", "i18n.m_key"}
+    }
+
+    with pytest.raises(SystemExit):
+        non_source_keys_check(non_source_keys_dict)
+
+    output = capsys.readouterr().out
+
+    # Find the section with the keys
+    lines = output.split("\n")
+    key_lines = []
+    in_key_section = False
+
+    for line in lines:
+        if "Non-source keys in test_file.json:" in line:
+            in_key_section = True
+            continue
+        if in_key_section and line.strip().startswith("i18n."):
+            key_lines.append(line.strip())
+        elif in_key_section and not line.strip().startswith("i18n.") and line.strip():
+            break
+
+    # Verify keys are sorted
+    expected_sorted_keys = ["i18n.a_key", "i18n.m_key", "i18n.z_key"]
+    assert key_lines == expected_sorted_keys, (
+        f"Keys not sorted. Expected: {expected_sorted_keys}, Got: {key_lines}"
+    )
+
+
 if __name__ == "__main__":
     pytest.main()
