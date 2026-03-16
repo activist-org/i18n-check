@@ -125,7 +125,7 @@ def test_non_source_keys_are_sorted_in_output(capsys):
     """
     Test that non-source keys are sorted alphabetically in error output.
     """
-    # Create test data with keys that would be unsorted naturally
+    # Create test data with keys that would be unsorted naturally.
     non_source_keys_dict = {
         "test_file.json": {"i18n.z_key", "i18n.a_key", "i18n.m_key"}
     }
@@ -135,7 +135,7 @@ def test_non_source_keys_are_sorted_in_output(capsys):
 
     output = capsys.readouterr().out
 
-    # Find the section with the keys
+    # Find the section with the keys.
     lines = output.split("\n")
     key_lines = []
     in_key_section = False
@@ -149,7 +149,7 @@ def test_non_source_keys_are_sorted_in_output(capsys):
         elif in_key_section and not line.strip().startswith("i18n.") and line.strip():
             break
 
-    # Verify keys are sorted
+    # Verify keys are sorted.
     expected_sorted_keys = ["i18n.a_key", "i18n.m_key", "i18n.z_key"]
     assert key_lines == expected_sorted_keys, (
         f"Keys not sorted. Expected: {expected_sorted_keys}, Got: {key_lines}"
