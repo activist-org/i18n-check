@@ -184,6 +184,9 @@ These are some example commands:
 
    i18n-check -nsk -d
 
+.. note::
+   We use ``--delete`` (``-d``) instead of ``--fix`` (``-f``) for unused and non-source keys so they're not deleted during ``i18n-check --all --fix``. Delete must be passed explicitly.
+
 Checks
 ------
 
