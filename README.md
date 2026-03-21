@@ -170,6 +170,9 @@ i18n-check -uk -d
 i18n-check -nsk -d
 ```
 
+> [!NOTE]
+> We use `--delete` (`-d`) instead of `--fix` (`-f`) for unused and non-source keys so they're not deleted during `i18n-check --all --fix`. Delete must be passed explicitly.
+
 ## Checks
 
 When `i18n-check` finds errors, it provides directions for resolving them. You can also disable checks in the workflow by modifying the configuration [YAML file](#yaml-file).
