@@ -239,6 +239,7 @@ checks:
     active: true
     directories-to-skip: []
     files-to-skip: []
+    search-dirs: [] # additional directories to search for key usage (e.g., test directories)
   unused-keys:
     active: true
     directories-to-skip: []
