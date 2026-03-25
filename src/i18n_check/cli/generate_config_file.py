@@ -75,7 +75,9 @@ def write_to_file(
                 checks_str += f"    locales-to-check: [{', '.join(checks[c]['locales-to-check'])}]\n"
 
             if "search-dirs" in checks[c]:
-                checks_str += f"    search-dirs: [{', '.join(checks[c]['search-dirs'])}]\n"
+                checks_str += (
+                    f"    search-dirs: [{', '.join(checks[c]['search-dirs'])}]\n"
+                )
 
         file_types_to_check_str = (
             ", ".join(file_types_to_check) if file_types_to_check else ""
