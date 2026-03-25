@@ -179,6 +179,7 @@ if "key-naming" in config["checks"]:
 config_nonexistent_keys_active = config_global_active
 config_nonexistent_keys_directories_to_skip = config_global_directories_to_skip.copy()
 config_nonexistent_keys_files_to_skip = config_global_files_to_skip.copy()
+config_nonexistent_keys_search_dirs = []
 
 if "nonexistent-keys" in config["checks"]:
     if "active" in config["checks"]["nonexistent-keys"]:
@@ -196,6 +197,13 @@ if "nonexistent-keys" in config["checks"]:
             CWD_PATH
             / Path(f.replace("/", PATH_SEPARATOR).replace("\\", PATH_SEPARATOR))
             for f in config["checks"]["global"]["files-to-skip"]
+        ]
+
+    if "search-dirs" in config["checks"]["nonexistent-keys"]:
+        config_nonexistent_keys_search_dirs = [
+            CWD_PATH
+            / Path(d.replace("/", PATH_SEPARATOR).replace("\\", PATH_SEPARATOR))
+            for d in config["checks"]["nonexistent-keys"]["search-dirs"]
         ]
 
 # MARK: Non-Source Keys
