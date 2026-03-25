@@ -44,7 +44,7 @@ We recommend these first steps for anyone interested in joining us:
    - We recommend you use the `Element <https://element.io/>`_ client and `Element X <https://element.io/app>`_ for a mobile app.
 2. If you're comfortable, introduce yourself and tell us about your interests in the `General <https://matrix.to/#/!uIGQUxlCnEzrPiRsRw:matrix.org?via=matrix.org&via=effektio.org&via=acter.global>`_ channel.
 3. Take a look at the `Development <https://matrix.to/#/!CRgLpGeOBNwxYCtqmK:matrix.org?via=matrix.org&via=acter.global&via=chat.0x7cd.xyz>`_ channel for recent development discussions.
-4. Consider joining our `bi-weekly developer sync <https://etherpad.wikimedia.org/p/activist-dev-sync>`_. Newcomers are always welcome!
+4. Consider joining our bi-weekly developer sync. Newcomers are always welcome!
 
 Choose Your First Issue
 -----------------------

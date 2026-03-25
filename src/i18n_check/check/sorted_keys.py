@@ -143,7 +143,7 @@ def sorted_keys_check_and_fix(
             f"No JSON files found in the i18n directory. Did you define i18n-dir incorrectly in {config_file_name}?"
         )
 
-    unsorted_files = []
+    unsorted_files: list[str] = []
     for file_path in json_files:
         is_sorted, sorted_keys = check_file_sorted(file_path)
 
@@ -163,7 +163,7 @@ def sorted_keys_check_and_fix(
             rprint(f"[red]Keys not sorted alphabetically in: {f}[/red]")
 
         rprint(
-            "\n[yellow]💡 Tip: Use the --fix (-f) flag to automatically sort the keys alphabetically.[/yellow]\n"
+            "\n[yellow]💡 Tip: Use the --fix (-f) flag to automatically sort the keys alphabetically.[/yellow]"
         )
 
         if all_checks_enabled:

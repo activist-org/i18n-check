@@ -68,7 +68,7 @@ def get_missing_keys_by_locale(
         - The percentage of missing keys (0-100)
     """
     all_src_keys = set(i18n_src_dict.keys())
-    missing_keys_by_locale = {}
+    missing_keys_by_locale: Dict[str, Tuple[List[str], float]] = {}
 
     for json_file in get_all_json_files(directory=i18n_directory):
         # Get just the filename without the extension.
@@ -146,8 +146,14 @@ def report_missing_keys(
             error_message += "\n"
 
         error_message += "Summary of missing keys by locale:\n"
-        for locale_file, (missing_keys, percentage) in missing_keys_by_locale.items():
-            error_message += f"  {locale_file}: {percentage:.1f}% missing\n"
+        error_lines = [
+            f"  {locale_file}: {percentage:.1f}% missing"
+            for locale_file, (
+                missing_keys,
+                percentage,
+            ) in missing_keys_by_locale.items()
+        ]
+        error_message += "\n".join(error_lines)
 
         error_message += "[/red]"
         rprint(error_message)
@@ -245,7 +251,7 @@ def add_missing_keys_interactively(
 
         sorted_missing_keys = sorted(missing_keys, key=get_source_value_length)
 
-        missing_keys_dict_for_mapping = {}
+        missing_keys_dict_for_mapping: Dict[str, str] = {}
         for key in sorted_missing_keys:
             source_value = i18n_src_dict.get(key, "")
             # Skip if the result is a nested key.

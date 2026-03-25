@@ -105,7 +105,7 @@ def audit_invalid_i18n_key_formats(
         else key_file_dict
     )
 
-    invalid_keys_by_format = {}
+    invalid_keys_by_format: Dict[str, str] = {}
     for k in filtered_key_file_dict:
         if not is_valid_key(k):
             # Convert hyphens to underscores and any other invalid characters.
@@ -174,7 +174,7 @@ Please reformat the following {format_key_or_keys} [current_key -> suggested_cor
 
         if not fix:
             rprint(
-                "\n[yellow]💡 Tip: You can automatically fix invalid key formats by running the --key-formatting (-kf) check with the --fix (-f) flag.[/yellow]\n"
+                "\n[yellow]💡 Tip: You can automatically fix invalid key formats by running the --key-formatting (-kf) check with the --fix (-f) flag.[/yellow]"
             )
 
             if all_checks_enabled:

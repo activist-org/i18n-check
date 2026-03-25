@@ -10,7 +10,19 @@ See the [releases for i18n-check](https://github.com/activist-org/i18n-check/rel
 
 Emojis for the following are chosen based on [gitmoji](https://gitmoji.dev/).
 
-## [Upcoming] i18n-check 1.x
+## [Upcoming] i18n-check 1.19.0
+
+### ✨ Features
+
+- Added the `--delete` (`-d`) flag for automatic deletion of unused keys and non-source keys from JSON files ([#92](https://github.com/activist-org/i18n-check/issues/92)).
+  - Users can now use `i18n-check -uk -d` to automatically remove unused keys from source and target files.
+  - Users can now use `i18n-check -nsk -d` to automatically remove non-source keys from target files only.
+  - Delete operations integrate with sorted-keys check for consistent file formatting.
+- Added the `--fix` (`-f`) flag for the nested files check to automatically flatten the files ([#99](https://github.com/activist-org/i18n-check/issues/99)).
+
+### ♻️ Code Refactoring
+
+- All empty lists and dictionaries were typed in the project ([#96](https://github.com/activist-org/i18n-check/issues/96)).
 
 ## i18n-check 1.18.1
 

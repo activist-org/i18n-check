@@ -3,16 +3,16 @@
     :align: center
     :target: https://github.com/activist-org/i18n-check
 
-|rtd| |pr_ci| |python_package_ci| |issues| |python| |pypi| |pypistatus| |license| |coc| |matrix|
+|rtd| |ci_static_analysis| |ci_pytest| |issues| |python| |pypi| |pypistatus| |license| |coc| |matrix|
 
 .. |rtd| image:: https://img.shields.io/readthedocs/i18n-check.svg?label=%20&logo=read-the-docs&logoColor=ffffff
     :target: http://i18n-check.readthedocs.io/en/latest/
 
-.. |pr_ci| image:: https://img.shields.io/github/actions/workflow/status/activist-org/i18n-check/pr_ci.yaml?branch=main&label=%20&logo=ruff&logoColor=ffffff
-    :target: https://github.com/activist-org/i18n-check/actions/workflows/pr_ci.yaml
+.. |ci_static_analysis| image:: https://img.shields.io/github/actions/workflow/status/activist-org/i18n-check/ci_static_analysis.yaml?branch=main&label=%20&logo=ruff&logoColor=ffffff
+    :target: https://github.com/activist-org/i18n-check/actions/workflows/ci_static_analysis.yaml
 
-.. |python_package_ci| image:: https://img.shields.io/github/actions/workflow/status/activist-org/i18n-check/pr_ci.yaml?branch=main&label=%20&logo=pytest&logoColor=ffffff
-    :target: https://github.com/activist-org/i18n-check/actions/workflows/python_package_ci.yaml
+.. |ci_pytest| image:: https://img.shields.io/github/actions/workflow/status/activist-org/i18n-check/ci_pytest.yaml?branch=main&label=%20&logo=pytest&logoColor=ffffff
+    :target: https://github.com/activist-org/i18n-check/actions/workflows/ci_pytest.yaml
 
 .. |issues| image:: https://img.shields.io/github/issues/activist-org/i18n-check?label=%20&logo=github
     :target: https://github.com/activist-org/i18n-check/issues
@@ -172,6 +172,21 @@ These are some example commands:
 
    i18n-check -mk -f -l ENTER_ISO_2_CODE
 
+**Delete Unused Keys**
+
+.. code-block:: bash
+
+   i18n-check -uk -d
+
+**Delete Non-Source Keys**
+
+.. code-block:: bash
+
+   i18n-check -nsk -d
+
+.. note::
+   We use ``--delete`` (``-d``) instead of ``--fix`` (``-f``) for unused and non-source keys so they're not deleted during ``i18n-check --all --fix``. Delete must be passed explicitly.
+
 Checks
 ------
 
@@ -194,13 +209,13 @@ You can run these checks across your codebase:
 | i18n keys that are not       | keys`` (``nk``)    | they should be added to the i18n files | add nonexistent keys.                  |
 | within the source file?      |                    | or replaced.                           |                                        |
 +------------------------------+--------------------+----------------------------------------+----------------------------------------+
-| Does the source file have    | ``unused-keys``    | Remove them so the localization team   | n/a                                    |
-| keys that are not used in    | (``uk``)           | isn't working on strings that aren't   |                                        |
-| the codebase?                |                    | used.                                  |                                        |
+| Does the source file have    | ``unused-keys``    | Remove them so the localization team   | `--delete` (`-d`) to delete unused     |
+| keys that are not used in    | (``uk``)           | isn't working on strings that aren't   | keys from all JSON files               |
+| the codebase?                |                    | used.                                  | automatically.                         |
 +------------------------------+--------------------+----------------------------------------+----------------------------------------+
-| Do the target locale files   | ``non-source-      | Remove them as they won't be used in   | n/a                                    |
-| have keys that are not in    | keys`` (``nsk``)   | the application.                       |                                        |
-| the source file?             |                    |                                        |                                        |
+| Do the target locale files   | ``non-source-      | Remove them as they won't be used in   | `--delete` (`-d`) to delete non-source |
+| have keys that are not in    | keys`` (``nsk``)   | the application.                       | keys from target JSON files            |
+| the source file?             |                    |                                        | automatically.                         |
 +------------------------------+--------------------+----------------------------------------+----------------------------------------+
 | Do any of localization files | ``repeat-keys``    | Separate them so that the values are   | n/a                                    |
 | have repeat keys?            | (``rk``)           | not mixed when they're in production.  |                                        |
@@ -220,7 +235,7 @@ You can run these checks across your codebase:
 |                              |                    | JSON extensions do otherwise).         | checks will sort the keys if this      |
 |                              |                    |                                        | check is active.                       |
 +------------------------------+--------------------+----------------------------------------+----------------------------------------+
-| Do the i18n files contain    | ``nested-files``   | Flatten them to make replacing invalid | n/a                                    |
+| Do the i18n files contain    | ``nested-files``   | Flatten them to make replacing invalid | `--fix` (`-f`) to flatten JSON files   |
 | nested JSON structures?      | (``nf``)           | keys easier with find-and-replace all. |                                        |
 +------------------------------+--------------------+----------------------------------------+----------------------------------------+
 | Are any keys from the source | ``missing-keys``   | Add the missing keys to ensure all     | ``--fix --locale ENTER_ISO_2_CODE``    |
@@ -387,7 +402,7 @@ This is an example YAML file for a GitHub Action to check your ``i18n-files`` on
 
 .. code-block:: yaml
 
-   name: pr_ci_i18n_check
+   name: ci_i18n_check
    on:
      workflow_dispatch:
      pull_request:

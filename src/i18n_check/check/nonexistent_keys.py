@@ -94,7 +94,8 @@ def get_used_i18n_keys(
             directories_to_skip=config_nonexistent_keys_directories_to_skip,
             files_to_skip=config_nonexistent_keys_files_to_skip,
         )
-    files_to_check_contents = {}
+
+    files_to_check_contents: Dict[str, str] = {}
     for frontend_file in files_to_check:
         with open(frontend_file, "r", encoding="utf-8") as f:
             files_to_check_contents[frontend_file] = f.read()
@@ -159,7 +160,7 @@ def nonexistent_keys_check(
         rprint(error_message)
 
         rprint(
-            "\n[yellow]💡 Tip: You can interactively add nonexistent keys by running the --nonexistent-keys (-nk) check with the --fix (-f) flag.[/yellow]\n"
+            "\n[yellow]💡 Tip: You can interactively add nonexistent keys by running the --nonexistent-keys (-nk) check with the --fix (-f) flag.[/yellow]"
         )
 
         if all_checks_enabled:

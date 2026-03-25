@@ -139,7 +139,7 @@ def report_and_fix_aria_labels(
 
     if not fix:
         rprint(
-            "[yellow]💡 Tip: You can automatically fix aria label punctuation by running the --aria-labels (-al) check with the --fix (-f) flag.[/yellow]\n"
+            "[yellow]💡 Tip: You can automatically fix aria label punctuation by running the --aria-labels (-al) check with the --fix (-f) flag.[/yellow]"
         )
 
         if all_checks_enabled:

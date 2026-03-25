@@ -80,7 +80,7 @@ def analyze_and_generate_repeat_value_report(
     """
     repeat_value_error_report = ""
 
-    keys_to_remove = []
+    keys_to_remove: list[str] = []
     for repeat_value in json_repeat_value_counts:
         repeat_value_i18n_keys = [
             k

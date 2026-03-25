@@ -172,7 +172,7 @@ def report_and_fix_alt_texts(
 
     if not fix:
         rprint(
-            "[yellow]💡 Tip: You can automatically fix alt text punctuation by running the --alt-texts (-at) check with the --fix (-f) flag.[/yellow]\n"
+            "[yellow]💡 Tip: You can automatically fix alt text punctuation by running the --alt-texts (-at) check with the --fix (-f) flag.[/yellow]"
         )
 
         if all_checks_enabled:

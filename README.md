@@ -5,8 +5,8 @@
 </div>
 
 [![rtd](https://img.shields.io/readthedocs/i18n-check.svg?label=%20&logo=read-the-docs&logoColor=ffffff)](http://i18n-check.readthedocs.io/en/latest/)
-[![pr_ci](https://img.shields.io/github/actions/workflow/status/activist-org/i18n-check/pr_ci.yaml?branch=main&label=%20&logo=ruff&logoColor=ffffff)](https://github.com/activist-org/i18n-check/actions/workflows/pr_ci.yaml)
-[![python_package_ci](https://img.shields.io/github/actions/workflow/status/activist-org/i18n-check/python_package_ci.yaml?branch=main&label=%20&logo=pytest&logoColor=ffffff)](https://github.com/activist-org/i18n-check/actions/workflows/python_package_ci.yaml)
+[![ci_static_analysis](https://img.shields.io/github/actions/workflow/status/activist-org/i18n-check/ci_static_analysis.yaml?branch=main&label=%20&logo=ruff&logoColor=ffffff)](https://github.com/activist-org/i18n-check/actions/workflows/ci_static_analysis.yaml)
+[![ci_pytest](https://img.shields.io/github/actions/workflow/status/activist-org/i18n-check/ci_pytest.yaml?branch=main&label=%20&logo=pytest&logoColor=ffffff)](https://github.com/activist-org/i18n-check/actions/workflows/ci_pytest.yaml)
 [![issues](https://img.shields.io/github/issues/activist-org/i18n-check?label=%20&logo=github)](https://github.com/activist-org/i18n-check/issues)
 [![python](https://img.shields.io/badge/Python-4B8BBE.svg?logo=python&logoColor=ffffff)](https://github.com/activist-org/i18n-check/blob/main/CONTRIBUTING.md)
 [![pypi](https://img.shields.io/pypi/v/i18n-check.svg?label=%20&color=4B8BBE)](https://pypi.org/project/i18n-check/)
@@ -158,6 +158,21 @@ i18n-check -CHECK_ID
 i18n-check -mk -f -l ENTER_ISO_2_CODE
 ```
 
+**Delete Unused Keys**
+
+```bash
+i18n-check -uk -d
+```
+
+**Delete Non-Source Keys**
+
+```bash
+i18n-check -nsk -d
+```
+
+> [!NOTE]
+> We use `--delete` (`-d`) instead of `--fix` (`-f`) for unused and non-source keys so they're not deleted during `i18n-check --all --fix`. Delete must be passed explicitly.
+
 ## Checks
 
 When `i18n-check` finds errors, it provides directions for resolving them. You can also disable checks in the workflow by modifying the configuration [YAML file](#yaml-file).
@@ -169,12 +184,12 @@ You can run these checks across your codebase:
 | Does the source file contain keys that don't follow the required formatting rules?           | `key-formatting` (`kf`)   | Format the keys in the source file to match the conventions.                                                                                                                            | `--fix` (`-f`) to fix all formatting issues automatically.                                                                                               |
 | Are key names consistent with how and where they are used in the codebase?                   | `key-naming` (`kn`)       | Rename them so i18n key usage is consistent and their scope is communicated in their name.                                                                                              | `--fix` (`-f`) to fix all naming issues automatically.                                                                                                   |
 | Does the codebase include i18n keys that are not within the source file?                     | `nonexistent-keys` (`nk`) | Check their validity and resolve if they should be added to the i18n files or replaced.                                                                                                 | `--fix` (`-f`) to interactively add nonexistent keys.                                                                                                    |
-| Does the source file have keys that are not used in the codebase?                            | `unused-keys` (`uk`)      | Remove them so the localization team isn't working on strings that aren't used.                                                                                                         | n/a                                                                                                                                                      |
-| Do the target locale files have keys that are not in the source file?                        | `non-source-keys` (`nsk`) | Remove them as they won't be used in the application.                                                                                                                                   | n/a                                                                                                                                                      |
+| Does the source file have keys that are not used in the codebase?                            | `unused-keys` (`uk`)      | Remove them so the localization team isn't working on strings that aren't used.                                                                                                         | `--delete` (`-d`) to delete unused keys from all JSON files automatically.                                                                               |
+| Do the target locale files have keys that are not in the source file?                        | `non-source-keys` (`nsk`) | Remove them as they won't be used in the application.                                                                                                                                   | `--delete` (`-d`) to delete non-source keys from target JSON files automatically.                                                                        |
 | Do any of localization files have repeat keys?                                               | `repeat-keys` (`rk`)      | Separate them so that the values are not mixed when they're in production. <br> <br> **Note:** The existence of repeat keys prevents keys from being sorted by the `sorted-keys` check. | n/a                                                                                                                                                      |
 | Does the source file have repeat values that can be combined into a single key?              | `repeat-values` (`rv`)    | Combine them so the localization team only needs to localize one of them.                                                                                                               | n/a                                                                                                                                                      |
 | Are the i18n source and target locale files sorted alphabetically?                           | `sorted-keys` (`sk`)      | Sort them alphabetically to reduce merge conflicts from the files changing. Sorting is done such that periods come before underscores (some JSON extensions do otherwise).              | `--fix` (`-f`) to sort the i18n files automatically. <br> <br> **Note:** The `--fix` option for other checks will sort the keys if this check is active. |
-| Do the i18n files contain nested JSON structures?                                            | `nested-files` (`nf`)     | Flatten them to make replacing invalid keys easier with find-and-replace all.                                                                                                           | n/a                                                                                                                                                      |
+| Do the i18n files contain nested JSON structures?                                            | `nested-files` (`nf`)     | Flatten them to make replacing invalid keys easier with find-and-replace all.                                                                                                           | `--fix` (`-f`) to flatten JSON files                                                                                                                     |
 | Are any keys from the source file missing in the locale files?                               | `missing-keys` (`mk`)     | Add the missing keys to ensure all translations are complete. <br> Keys with empty string values are considered missing.                                                                | `--fix --locale ENTER_ISO_2_CODE` (`-f -l ENTER_ISO_2_CODE`) to interactively add missing keys.                                                          |
 | For both LTR and RTL languages, do keys that end in `_aria_label` end in punctuation?        | `aria-labels` (`al`)      | Remove the punctuation, as it negatively affects screen reader experience.                                                                                                              | `--fix` (`-f`) to remove punctuation automatically.                                                                                                      |
 | For both LTR and RTL languages, are keys that end in `_alt_text` missing proper punctuation? | `alt-texts` (`at`)        | Add periods to the end to comply with alt text guidelines.                                                                                                                              | `--fix` (`-f`) to add periods automatically.                                                                                                             |
@@ -313,7 +328,7 @@ This is an example of a [prek](https://prek.j178.dev/) or [pre-commit](https://g
 This is an example YAML file for a GitHub Action to check your `i18n-files` on PRs and commits:
 
 ```yaml
-name: pr_ci_i18n_check
+name: ci_i18n_check
 on:
   workflow_dispatch:
   pull_request:

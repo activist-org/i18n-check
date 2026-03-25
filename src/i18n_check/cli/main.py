@@ -20,7 +20,7 @@ from i18n_check.check.key_naming import (
     invalid_keys_by_name,
 )
 from i18n_check.check.missing_keys import missing_keys_check_and_fix
-from i18n_check.check.nested_files import nested_files_check
+from i18n_check.check.nested_files import nested_files_check, nested_files_check_and_fix
 from i18n_check.check.non_source_keys import non_source_keys_check, non_source_keys_dict
 from i18n_check.check.nonexistent_keys import (
     all_used_i18n_keys,
@@ -69,12 +69,13 @@ def main() -> None:
     - --repeat-keys (-rk): Check for duplicate keys in i18n JSON files.
     - --repeat-values (-rv): Check if values in the i18n-src file have repeat strings.
     - --sorted-keys (-sk): Check if all i18n JSON files have keys sorted alphabetically.
-    - --nested-files (-nf): Check for nested i18n keys.
+    - --nested-files (-nf): Check for nested i18n source and translation keys.
     - --missing-keys (-mk): Check for missing keys in locale files.
     - --aria-labels (-al): Check for appropriate punctuation in aria label keys.
     - --alt-texts (-at): Check for appropriate punctuation in alt text keys.
-    - --fix (-f): Automatically fix key issues. Can be used with -kf, -kn, -nk, -sk, -mk, -al or -at.
+    - --fix (-f): Automatically fix key issues. Can be used with -kf, -kn, -nk, -sk, -mk, -al, -at or -nf.
     - --locale (-l): Specify locale for interactive key addition.
+    - --delete (-d): Delete unused keys or non-source keys from JSON files. Can be used with -uk or -nsk.
 
     Examples
     --------
@@ -220,7 +221,7 @@ def main() -> None:
         "-f",
         "--fix",
         action="store_true",
-        help="Automatically fix key issues. Can be used with -kf, -kn, -nk, -sk, -mk, -al or -at.",
+        help="Automatically fix key issues. Can be used with -kf, -kn, -nk, -sk, -mk, -al, -at or -nf.",
     )
 
     parser.add_argument(
@@ -228,6 +229,13 @@ def main() -> None:
         "--locale",
         type=str,
         help="When using -mk -f, specify the locale to interactively add missing keys to.",
+    )
+
+    parser.add_argument(
+        "-d",
+        "--delete",
+        action="store_true",
+        help="Delete unused keys or non-source keys from JSON files. Can be used with -uk or -nsk.",
     )
 
     # MARK: Setup CLI
@@ -276,11 +284,27 @@ def main() -> None:
         return
 
     if args.unused_keys:
-        unused_keys_check(unused_keys=unused_keys)
+        if args.delete:
+            from i18n_check.check.unused_keys import unused_keys_check_and_delete
+
+            unused_keys_check_and_delete(unused_keys=unused_keys)
+
+        else:
+            unused_keys_check(unused_keys=unused_keys)
+
         return
 
     if args.non_source_keys:
-        non_source_keys_check(non_source_keys_dict=non_source_keys_dict)
+        if args.delete:
+            from i18n_check.check.non_source_keys import (
+                non_source_keys_check_and_delete,
+            )
+
+            non_source_keys_check_and_delete(non_source_keys_dict=non_source_keys_dict)
+
+        else:
+            non_source_keys_check(non_source_keys_dict=non_source_keys_dict)
+
         return
 
     if args.repeat_keys:
@@ -296,11 +320,15 @@ def main() -> None:
 
     if args.sorted_keys:
         sorted_keys_check_and_fix(fix=args.fix)
-
         return
 
     if args.nested_files:
-        nested_files_check()
+        if args.fix:
+            nested_files_check_and_fix()
+
+        else:
+            nested_files_check()
+
         return
 
     if args.missing_keys:
@@ -321,12 +349,10 @@ def main() -> None:
 
     if args.aria_labels:
         aria_labels_check_and_fix(fix=args.fix)
-
         return
 
     if args.alt_texts:
         alt_texts_check_and_fix(fix=args.fix)
-
         return
 
     parser.print_help()
