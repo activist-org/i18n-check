@@ -20,6 +20,7 @@ from i18n_check.utils import read_json_file
 
 from ..test_utils import (
     checks_fail_dir,
+    checks_fail_search_dir,
     checks_pass_dir,
     fail_checks_src_json,
     pass_checks_src_json,
@@ -405,6 +406,95 @@ def test_add_nonexistent_keys_interactively_keyboard_interrupt(
 
     captured = capsys.readouterr()
     assert "Cancelled by user" in captured.out.replace("\n", "")
+
+
+def test_get_used_i18n_keys_search_dirs_empty() -> None:
+    """
+    Test that get_used_i18n_keys with an empty search_dirs list returns only keys from src_directory,
+    and does not include keys found in sub-directories like search_dir.
+    """
+    result = get_used_i18n_keys(
+        i18n_src_dict=fail_checks_src_json,
+        src_directory=checks_fail_dir,
+        search_dirs=[],
+    )
+
+    assert "i18n.search_dir_test_file.not_in_i18n_source_file" not in result
+
+
+def test_get_used_i18n_keys_search_dirs_includes_keys() -> None:
+    """
+    Test that keys found in a search_dir are included alongside keys from src_directory.
+    """
+    result_without = get_used_i18n_keys(
+        i18n_src_dict=fail_checks_src_json,
+        src_directory=checks_fail_dir,
+        search_dirs=[],
+    )
+
+    result_with = get_used_i18n_keys(
+        i18n_src_dict=fail_checks_src_json,
+        src_directory=checks_fail_dir,
+        search_dirs=[checks_fail_search_dir],
+    )
+
+    assert "i18n.search_dir_test_file.not_in_i18n_source_file" not in result_without
+    assert "i18n.search_dir_test_file.not_in_i18n_source_file" in result_with
+
+
+def test_get_used_i18n_keys_search_dirs_no_duplicate_keys() -> None:
+    """
+    Test that a key referenced in both src_directory and a search_dir is not duplicated in the result.
+    """
+    result = get_used_i18n_keys(
+        i18n_src_dict=fail_checks_src_json,
+        src_directory=checks_fail_dir,
+        search_dirs=[checks_fail_search_dir],
+    )
+
+    # i18n._global.hello_global appears in both the main src and the search_dir file.
+    assert list(result).count("i18n._global.hello_global") == 1
+
+
+def test_nonexistent_keys_check_fails_for_key_only_in_search_dir(capsys) -> None:
+    """
+    Test that nonexistent_keys_check catches a key used in a search_dir that doesn't exist in the i18n source.
+    This simulates the case where a key was renamed in the source but the test file still uses the old name.
+    """
+    used_keys = get_used_i18n_keys(
+        i18n_src_dict=fail_checks_src_json,
+        src_directory=checks_fail_dir,
+        search_dirs=[checks_fail_search_dir],
+    )
+
+    assert "i18n.search_dir_test_file.not_in_i18n_source_file" in used_keys
+
+    with pytest.raises(SystemExit):
+        nonexistent_keys_check(
+            all_used_i18n_keys=used_keys,
+            i18n_src_dict=fail_checks_src_json,
+        )
+
+    msg = capsys.readouterr().out
+    assert "i18n.search_dir_test_file.not_in_i18n_source_file" in msg
+
+
+def test_nonexistent_keys_check_passes_when_search_dir_keys_exist(capsys) -> None:
+    """
+    Test that nonexistent_keys_check passes when all keys from search_dirs exist in the i18n source.
+    The search_dir file also references i18n._global.hello_global which is in the source.
+    """
+    # Only use the key from search_dir that exists in the source.
+    used_keys = {"i18n._global.hello_global"}
+
+    result = nonexistent_keys_check(
+        all_used_i18n_keys=used_keys,
+        i18n_src_dict=fail_checks_src_json,
+    )
+
+    assert result is True
+    msg = capsys.readouterr().out
+    assert "nonexistent-keys success" in msg
 
 
 @patch("i18n_check.check.nonexistent_keys.nonexistent_keys_check")
