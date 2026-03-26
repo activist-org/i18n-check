@@ -29,20 +29,20 @@ dependencies = [
     # Keep docs dependencies formatted in this way with ruff to allow for upgrades via VS Code extension.
     "packaging>=26.0",
     "pyyaml>=6.0.3",
-    "requests>=2.32.5",
+    "requests>=2.33.0",
     "rich>=14.3.3",
 ]
 
 [project.optional-dependencies]
 dev = [
     "mypy>=1.19.1",
-    "prek>=0.3.5",
+    "prek>=0.3.8",
     "pytest>=9.0.2",
-    "pytest-cov>=7.0.0",
-    "ruff>=0.15.6",
+    "pytest-cov>=7.1.0",
+    "ruff>=0.15.8",
     "setuptools>=82.0.1",
     "types-PyYAML>=6.0.12.20250915",
-    "types-requests>=2.32.4.20260107",
+    "types-requests>=2.32.4.20260324",
 ]
 docs = [
     # Keep docs dependencies formatted in this way with ruff to allow for upgrades via VS Code extension.
