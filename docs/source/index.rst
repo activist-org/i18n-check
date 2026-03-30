@@ -421,10 +421,10 @@ This is an example YAML file for a GitHub Action to check your ``i18n-files`` on
        runs-on: ubuntu-latest
        steps:
          - name: Checkout Project
-           uses: actions/checkout@v4
+           uses: actions/checkout@v6
 
          - name: Setup Python
-           uses: actions/setup-python@v5
+           uses: actions/setup-python@v6
            with:
              python-version: "3.12"
 
