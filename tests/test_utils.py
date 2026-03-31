@@ -76,6 +76,14 @@ i18n_map_pass = map_keys_to_files(
     i18n_src_dict=pass_checks_src_json, src_directory=checks_pass_dir
 )
 
+nonexistent_keys_search_dir = (
+    Path(__file__).parent.parent
+    / "src"
+    / "i18n_check"
+    / "test_frontends"
+    / "search_dir"
+)
+
 # MARK: Utils Tests
 
 
