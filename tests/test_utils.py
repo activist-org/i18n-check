@@ -36,13 +36,6 @@ checks_fail_dir = (
     / "all_checks_fail"
 )
 checks_fail_json_dir = checks_fail_dir / "test_i18n"
-checks_fail_search_dir = (
-    Path(__file__).parent.parent
-    / "src"
-    / "i18n_check"
-    / "test_frontends"
-    / "search_dir"
-)
 
 fail_checks_src_json_path = checks_fail_json_dir / "test_i18n_src.json"
 fail_checks_src_locale_path = checks_fail_json_dir / "test_i18n_locale.json"

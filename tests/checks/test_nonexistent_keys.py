@@ -20,7 +20,6 @@ from i18n_check.utils import read_json_file
 
 from ..test_utils import (
     checks_fail_dir,
-    checks_fail_search_dir,
     checks_pass_dir,
     fail_checks_src_json,
     nonexistent_keys_search_dir,
@@ -432,7 +431,7 @@ def test_get_used_i18n_keys_search_dirs_includes_keys() -> None:
     result_with = get_used_i18n_keys(
         i18n_src_dict=fail_checks_src_json,
         src_directory=checks_fail_dir,
-        search_dirs=[checks_fail_search_dir],
+        search_dirs=[nonexistent_keys_search_dir],
     )
 
     assert "i18n.search_dir_test_file.not_in_i18n_source_file" in result_with
@@ -445,7 +444,7 @@ def test_get_used_i18n_keys_search_dirs_no_duplicate_keys() -> None:
     result = get_used_i18n_keys(
         i18n_src_dict=fail_checks_src_json,
         src_directory=checks_fail_dir,
-        search_dirs=[checks_fail_search_dir],
+        search_dirs=[nonexistent_keys_search_dir],
     )
 
     # i18n._global.hello_global appears in both the main src and the search_dir file.
@@ -460,7 +459,7 @@ def test_nonexistent_keys_check_fails_for_key_only_in_search_dir(capsys) -> None
     used_keys = get_used_i18n_keys(
         i18n_src_dict=fail_checks_src_json,
         src_directory=checks_fail_dir,
-        search_dirs=[checks_fail_search_dir],
+        search_dirs=[nonexistent_keys_search_dir],
     )
 
     assert "i18n.search_dir_test_file.not_in_i18n_source_file" in used_keys
