@@ -19,6 +19,8 @@ Emojis for the following are chosen based on [gitmoji](https://gitmoji.dev/).
   - Users can now use `i18n-check -nsk -d` to automatically remove non-source keys from target files only.
   - Delete operations integrate with sorted-keys check for consistent file formatting.
 - Added the `--fix` (`-f`) flag for the nested files check to automatically flatten the files ([#99](https://github.com/activist-org/i18n-check/issues/99)).
+- The `nonexistent-keys` check can now be configured with a `search-dirs` argument that adds directories will be searched for used keys ([#93](https://github.com/activist-org/i18n-check/issues/93)).
+  - This allows keys to be used in testing directories without the need to rename them to a `_global` context.
 
 ### 🐛 Bug Fixes
 
