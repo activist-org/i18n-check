@@ -74,6 +74,11 @@ def write_to_file(
             if "locales-to-check" in checks[c]:
                 checks_str += f"    locales-to-check: [{', '.join(checks[c]['locales-to-check'])}]\n"
 
+            if "search-dirs" in checks[c]:
+                checks_str += (
+                    f"    search-dirs: [{', '.join(checks[c]['search-dirs'])}]\n"
+                )
+
         file_types_to_check_str = (
             ", ".join(file_types_to_check) if file_types_to_check else ""
         )
@@ -135,6 +140,7 @@ def receive_data() -> None:
             "active": False,
             "directories-to-skip": [],
             "files-to-skip": [],
+            "search-dirs": [],
         },
         "unused_keys": {
             "title": "unused keys",
@@ -213,6 +219,18 @@ def receive_data() -> None:
 
             else:
                 checks[c]["locales-to-check"] = []
+
+        if "search-dirs" in checks[c]:
+            search_dirs = input(
+                f"Additional search directories for {checks[c]['title']} (comma-separated, e.g., frontend/test, frontend/test-e2e) [None]: "
+            )
+            if search_dirs.strip():
+                checks[c]["search-dirs"] = [
+                    dir.strip() for dir in search_dirs.split(",")
+                ]
+
+            else:
+                checks[c]["search-dirs"] = []
 
     write_to_file(
         src_dir=src_dir,

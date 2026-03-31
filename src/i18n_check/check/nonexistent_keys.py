@@ -31,6 +31,7 @@ from i18n_check.utils import (
     config_i18n_src_file_name,
     config_nonexistent_keys_directories_to_skip,
     config_nonexistent_keys_files_to_skip,
+    config_nonexistent_keys_search_dirs,
     config_repeat_keys_active,
     config_sorted_keys_active,
     config_src_directory,
@@ -48,6 +49,7 @@ i18n_src_dict = read_json_file(file_path=config_i18n_src_file)
 def get_used_i18n_keys(
     i18n_src_dict: Dict[str, str] = i18n_src_dict,
     src_directory: Path = config_src_directory,
+    search_dirs: List[Path] = [],
 ) -> Set[str]:
     """
     Get all i18n keys that are used in the project.
@@ -59,6 +61,9 @@ def get_used_i18n_keys(
 
     src_directory : Path
         The source directory where the files are located.
+
+    search_dirs : List[Path]
+        Additional directories to search for i18n key usage (e.g. test directories).
 
     Returns
     -------
@@ -81,6 +86,15 @@ def get_used_i18n_keys(
         directories_to_skip=config_nonexistent_keys_directories_to_skip,
         files_to_skip=config_nonexistent_keys_files_to_skip,
     )
+
+    for search_dir in search_dirs:
+        files_to_check += collect_files_to_check(
+            directory=search_dir,
+            file_types_to_check=config_file_types_to_check,
+            directories_to_skip=config_nonexistent_keys_directories_to_skip,
+            files_to_skip=config_nonexistent_keys_files_to_skip,
+        )
+
     files_to_check_contents: Dict[str, str] = {}
     for frontend_file in files_to_check:
         with open(frontend_file, "r", encoding="utf-8") as f:
@@ -343,5 +357,7 @@ def nonexistent_keys_check_and_fix(
 # MARK: Variables
 
 all_used_i18n_keys = get_used_i18n_keys(
-    i18n_src_dict=i18n_src_dict, src_directory=config_src_directory
+    i18n_src_dict=i18n_src_dict,
+    src_directory=config_src_directory,
+    search_dirs=config_nonexistent_keys_search_dirs,
 )

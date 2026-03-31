@@ -90,6 +90,7 @@ class TestGenerateConfigFile(unittest.TestCase):
             "n",  # nonexistent_keys
             "",  # nonexistent_keys directories_to_skip
             "",  # nonexistent_keys files_to_skip
+            "",  # nonexistent_keys search_dirs
             "y",  # unused_keys
             "",  # unused_keys directories_to_skip
             "",  # unused_keys files_to_skip
@@ -127,6 +128,7 @@ class TestGenerateConfigFile(unittest.TestCase):
                 "active": False,
                 "directories-to-skip": [],
                 "files-to-skip": [],
+                "search-dirs": [],
             },
             "unused_keys": {
                 "title": "unused keys",
