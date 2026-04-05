@@ -23,6 +23,14 @@ Emojis for the following are chosen based on [gitmoji](https://gitmoji.dev/).
   - This allows keys to be used in testing directories without the need to rename them to a `_global` context.
 - The user is prompted to write a configuration file for the test frontends on generation ([#105](https://github.com/activist-org/i18n-check/issues/105)).
 
+### 🐛 Bug Fixes
+
+- Fixed key sorting in error outputs to ensure keys are always displayed in alphabetical order for easier investigation.
+  - `unused-keys` check now displays unused keys in sorted order.
+  - `repeat-values` check now displays repeat value keys in sorted order.
+  - `non-source-keys` check now displays non-source keys in sorted order.
+  - Added comprehensive tests to verify sorted key outputs and prevent regression.
+
 ### ♻️ Code Refactoring
 
 - All empty lists and dictionaries were typed in the project ([#96](https://github.com/activist-org/i18n-check/issues/96)).

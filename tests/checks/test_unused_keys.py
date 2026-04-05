@@ -54,6 +54,20 @@ def test_unused_keys_check_fail_raises_value_error(capsys) -> None:
     assert "i18n source file" in output
     assert "i18n._global.unused_i18n_key" in output
 
+    # Test that keys are sorted in the output.
+    lines = output.split("\n")
+    key_lines = [line.strip() for line in lines if line.strip().startswith("i18n.")]
+    expected_sorted_keys = sorted(
+        [
+            "i18n._global.unused_i18n_key",
+            "i18n.repeat_value_multiple_files_repeat",
+            "i18n.repeat_value_single_file_repeat",
+        ]
+    )
+    assert key_lines == expected_sorted_keys, (
+        f"Keys not sorted. Expected: {expected_sorted_keys}, Got: {key_lines}"
+    )
+
 
 def test_unused_keys_check_and_delete_function_exists():
     """

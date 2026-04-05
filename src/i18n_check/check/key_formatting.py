@@ -150,7 +150,7 @@ def invalid_key_formats_check_and_fix(
         An error is raised and the system prints error details if there are invalid keys by format.
     """
     invalid_keys_by_format_string = "".join(
-        f"\n{k} -> {v}" for k, v in invalid_keys_by_format.items()
+        f"\n{k} -> {v}" for k, v in sorted(invalid_keys_by_format.items())
     )
     format_to_be = "are" if len(invalid_keys_by_format) > 1 else "is"
     format_key_to_be = (
