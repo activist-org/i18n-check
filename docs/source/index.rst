@@ -152,6 +152,7 @@ These are some example commands:
 
 .. code-block:: bash
 
+   # i18n-check includes test frontends for testing the functionalities.
    i18n-check -gtf
 
 **Run All Checks**

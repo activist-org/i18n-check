@@ -137,6 +137,7 @@ i18n-check -gcf
 **Generate Test Frontends**
 
 ```bash
+# i18n-check includes test frontends for testing the functionalities.
 i18n-check -gtf
 ```
 

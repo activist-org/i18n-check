@@ -242,16 +242,16 @@ def main() -> None:
 
     args = parser.parse_args()
 
+    if args.generate_test_frontends:
+        generate_test_frontends()
+        return
+
     if args.upgrade:
         upgrade_cli()
         return
 
     if args.generate_config_file:
         generate_config_file()
-        return
-
-    if args.generate_test_frontends:
-        generate_test_frontends()
         return
 
     # MARK: Run Checks
