@@ -251,7 +251,7 @@ def invalid_key_names_check_and_fix(
         An error is raised and the system prints error details if there are invalid keys by name.
     """
     invalid_keys_by_name_string = "".join(
-        f"\n{k} -> {v}" for k, v in invalid_keys_by_name.items()
+        f"\n{k} -> {v}" for k, v in sorted(invalid_keys_by_name.items())
     )
     name_to_be = "are" if len(invalid_keys_by_name) > 1 else "is"
     name_key_to_be = "keys that are" if len(invalid_keys_by_name) > 1 else "key that is"
