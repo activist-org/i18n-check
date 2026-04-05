@@ -7,7 +7,10 @@ import unittest
 from pathlib import Path
 from unittest.mock import call, patch
 
-from i18n_check.cli.generate_test_frontends import generate_test_frontends
+from i18n_check.cli.generate_test_frontends import (
+    generate_test_frontends,
+    get_test_frontend_config_file_text,
+)
 from i18n_check.utils import INTERNAL_TEST_FRONTENDS_DIR_PATH, PATH_SEPARATOR
 
 
@@ -16,12 +19,13 @@ class TestGenerateTestFrontends(unittest.TestCase):
     Test cases for the generate_test_frontends function.
     """
 
+    @patch("builtins.input", return_value="n")  # don't overwrite config file
     @patch("pathlib.Path.is_dir", return_value=False)
     @patch("shutil.copytree")
     @patch("builtins.print")
     @patch("pathlib.Path.is_file", return_value=False)
     def test_generate_when_directory_does_not_exist(
-        self, mock_is_file, mock_print, mock_copytree, mock_is_dir
+        self, mock_is_file, mock_print, mock_copytree, mock_is_dir, monkeypatch
     ):
         """
         Tests that the test frontends are generated when the destination directory does not exist.
@@ -45,9 +49,7 @@ class TestGenerateTestFrontends(unittest.TestCase):
             mock_print.call_args_list,
         )
         self.assertIn(
-            call(
-                "Please generate one with the 'i18n-check --generate-config-file' command."
-            ),
+            call("One passes all checks and one fails all checks."),
             mock_print.call_args_list,
         )
 
@@ -68,12 +70,13 @@ class TestGenerateTestFrontends(unittest.TestCase):
             f"Test frontends for i18n-check already exist in .{PATH_SEPARATOR}i18n_check_test_frontends{PATH_SEPARATOR} and will not be regenerated."
         )
 
+    @patch("builtins.input", return_value="n")  # don't overwrite config file
     @patch("pathlib.Path.is_dir", return_value=False)
     @patch("shutil.copytree")
     @patch("builtins.print")
     @patch("pathlib.Path.is_file", side_effect=[True, True])
     def test_prints_correct_message_when_yaml_exists(
-        self, mock_is_file, mock_print, mock_copytree, mock_is_dir
+        self, mock_is_file, mock_print, mock_copytree, mock_is_dir, monkeypatch
     ):
         """
         Tests the output message when a .i18n-check.yaml file exists.
@@ -83,12 +86,13 @@ class TestGenerateTestFrontends(unittest.TestCase):
             "You can set which one to test in the .i18n-check.yaml file."
         )
 
+    @patch("builtins.input", return_value="n")  # don't overwrite config file
     @patch("pathlib.Path.is_dir", return_value=False)
     @patch("shutil.copytree")
     @patch("builtins.print")
     @patch("pathlib.Path.is_file", side_effect=[False, True, False, True])
     def test_prints_correct_message_when_yml_exists(
-        self, mock_is_file, mock_print, mock_copytree, mock_is_dir
+        self, mock_is_file, mock_print, mock_copytree, mock_is_dir, monkeypatch
     ):
         """
         Tests the output message when a .i18n-check.yml file exists.
@@ -97,6 +101,28 @@ class TestGenerateTestFrontends(unittest.TestCase):
         mock_print.assert_any_call(
             "You can set which one to test in the .i18n-check.yml file."
         )
+
+    @patch("builtins.input", return_value="y")  # overwrite config file
+    @patch("pathlib.Path.is_dir", return_value=False)
+    @patch("shutil.copytree")
+    @patch("builtins.print")
+    @patch("pathlib.Path.is_file", side_effect=[True, True])
+    def test_configuration_file_overwrite_for_test_project(
+        self, mock_is_file, mock_print, mock_copytree, mock_is_dir, monkeypatch
+    ):
+        """
+        Tests the output message when a .i18n-check.yaml file exists.
+        """
+        repo_config_file = Path() / ".i18n-check.yaml"
+        original_config_file_text = repo_config_file.read_text()
+
+        generate_test_frontends()
+
+        new_config_file_text = repo_config_file.read_text()
+        assert new_config_file_text == get_test_frontend_config_file_text()
+
+        with open(".i18n-check.yaml", "w") as file:
+            file.write(original_config_file_text)
 
 
 if __name__ == "__main__":
