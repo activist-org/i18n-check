@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "i18n-check"
-version = "1.18.1"
+version = "1.19.0"
 description = "Check i18n/L10n keys and values"
 readme = "README.md"
 requires-python = ">=3.12"
@@ -12,6 +12,7 @@ keywords = ["i18n", "l10n", "internationalization", "localization", "ci", "cli"]
 authors = [
     { name = "i18n-check developers", email = "engineering@activist.org" },
 ]
+
 classifiers = [
     "Development Status :: 5 - Production/Stable",
     "Intended Audience :: Developers",
@@ -25,6 +26,7 @@ classifiers = [
     "Programming Language :: Python :: 3.14",
     "Operating System :: OS Independent",
 ]
+
 dependencies = [
     # Keep docs dependencies formatted in this way with ruff to allow for upgrades via VS Code extension.
     "packaging>=26.0",
