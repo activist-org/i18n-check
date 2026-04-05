@@ -64,9 +64,9 @@ def test_unused_keys_check_fail_raises_value_error(capsys) -> None:
             "i18n.repeat_value_single_file_repeat",
         ]
     )
-    assert (
-        key_lines == expected_sorted_keys
-    ), f"Keys not sorted. Expected: {expected_sorted_keys}, Got: {key_lines}"
+    assert key_lines == expected_sorted_keys, (
+        f"Keys not sorted. Expected: {expected_sorted_keys}, Got: {key_lines}"
+    )
 
 
 def test_unused_keys_check_and_delete_function_exists():
