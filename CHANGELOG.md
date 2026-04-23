@@ -18,6 +18,10 @@ Emojis for the following are chosen based on [gitmoji](https://gitmoji.dev/).
 
 - The GIFs in the readme were updated to show the current state of the package ([#107](https://github.com/activist-org/i18n-check/issues/107)).
 
+### ⬆️ Dependencies
+
+- All production and development dependencies were updated.
+
 ## i18n-check 1.19.0
 
 ### ✨ Features
