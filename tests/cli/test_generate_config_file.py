@@ -228,5 +228,175 @@ class TestGenerateConfigFile(unittest.TestCase):
                 self.assertEqual(result.name, ".i18n-check.yaml")
 
 
+def test_config_file_is_valid_empty_file_returns_false(tmp_path, monkeypatch, capsys):
+    config_path = tmp_path / ".i18n-check.yaml"
+    config_path.write_text("")
+
+    monkeypatch.setattr("i18n_check.utils.YAML_CONFIG_FILE_PATH", config_path)
+
+    from i18n_check.cli.generate_config_file import config_file_is_valid
+
+    result = config_file_is_valid()
+    assert result is False
+
+    out = capsys.readouterr().out.replace("\n", " ")
+    assert "empty" in out
+
+
+def test_config_file_is_valid_src_dir_returns_false(tmp_path, monkeypatch, capsys):
+    config_path = tmp_path / ".i18n-check.yaml"
+    config_path.write_text("random_identifier: just_a_string\n")
+
+    monkeypatch.setattr("i18n_check.utils.YAML_CONFIG_FILE_PATH", config_path)
+
+    from i18n_check.cli.generate_config_file import config_file_is_valid
+
+    result = config_file_is_valid()
+    assert result is False
+
+    out = capsys.readouterr().out.replace("\n", " ")
+    assert "'src-dir' argument" in out
+
+
+def test_config_file_is_valid_i18n_dir_returns_false(tmp_path, monkeypatch, capsys):
+    config_path = tmp_path / ".i18n-check.yaml"
+    config_path.write_text("src-dir: path/to/src/dir\n")
+
+    monkeypatch.setattr("i18n_check.utils.YAML_CONFIG_FILE_PATH", config_path)
+
+    from i18n_check.cli.generate_config_file import config_file_is_valid
+
+    result = config_file_is_valid()
+    assert result is False
+
+    out = capsys.readouterr().out.replace("\n", " ")
+    assert "'i18n-dir' argument" in out
+
+
+def test_config_file_is_valid_i18n_src_returns_false(tmp_path, monkeypatch, capsys):
+    config_path = tmp_path / ".i18n-check.yaml"
+    config_path.write_text("src-dir: path/to/src/dir\ni18n-dir: path/to/i18n/dir\n")
+
+    monkeypatch.setattr("i18n_check.utils.YAML_CONFIG_FILE_PATH", config_path)
+
+    from i18n_check.cli.generate_config_file import config_file_is_valid
+
+    result = config_file_is_valid()
+    assert result is False
+
+    out = capsys.readouterr().out.replace("\n", " ")
+    assert "'i18n-src' argument" in out
+
+
+def test_config_file_is_valid_file_types_to_check_returns_false(
+    tmp_path, monkeypatch, capsys
+):
+    config_path = tmp_path / ".i18n-check.yaml"
+    config_path.write_text(
+        "src-dir: path/to/src/dir\n"
+        "i18n-dir: path/to/i18n/dir\n"
+        "i18n-src: path/to/i18n/dir/src.json\n"
+    )
+
+    monkeypatch.setattr("i18n_check.utils.YAML_CONFIG_FILE_PATH", config_path)
+
+    from i18n_check.cli.generate_config_file import config_file_is_valid
+
+    result = config_file_is_valid()
+    assert result is False
+
+    out = capsys.readouterr().out.replace("\n", " ")
+    assert "'file-types-to-check' argument" in out
+
+
+def test_config_file_is_valid_checks_undefined_returns_false(
+    tmp_path, monkeypatch, capsys
+):
+    config_path = tmp_path / ".i18n-check.yaml"
+    config_path.write_text(
+        "src-dir: path/to/src/dir\n"
+        "i18n-dir: path/to/i18n/dir\n"
+        "i18n-src: path/to/i18n/dir/src.json\n"
+        "file-types-to-check: [.ts]\n"
+    )
+
+    monkeypatch.setattr("i18n_check.utils.YAML_CONFIG_FILE_PATH", config_path)
+
+    from i18n_check.cli.generate_config_file import config_file_is_valid
+
+    result = config_file_is_valid()
+    assert result is False
+
+    out = capsys.readouterr().out.replace("\n", " ")
+    assert "'checks' argument" in out
+
+
+def test_config_file_is_valid_checks_not_dict_returns_false(
+    tmp_path, monkeypatch, capsys
+):
+    config_path = tmp_path / ".i18n-check.yaml"
+    config_path.write_text(
+        "src-dir: path/to/src/dir\n"
+        "i18n-dir: path/to/i18n/dir\n"
+        "i18n-src: path/to/i18n/dir/src.json\n"
+        "file-types-to-check: [.ts]\n"
+        "checks: 'not a dictionary'\n"
+    )
+
+    monkeypatch.setattr("i18n_check.utils.YAML_CONFIG_FILE_PATH", config_path)
+
+    from i18n_check.cli.generate_config_file import config_file_is_valid
+
+    result = config_file_is_valid()
+    assert result is False
+
+    out = capsys.readouterr().out.replace("\n", " ")
+    assert "'checks' argument" in out
+
+
+def test_config_file_is_valid_checks_missing_args_returns_false(
+    tmp_path, monkeypatch, capsys
+):
+    config_path = tmp_path / ".i18n-check.yaml"
+    config_path.write_text(
+        "src-dir: path/to/src/dir\n"
+        "i18n-dir: path/to/i18n/dir\n"
+        "i18n-src: path/to/i18n/dir/src.json\n"
+        "file-types-to-check: [.ts]\n"
+        "checks:\n"
+        "  not-a-check: true\n"
+    )
+
+    monkeypatch.setattr("i18n_check.utils.YAML_CONFIG_FILE_PATH", config_path)
+
+    from i18n_check.cli.generate_config_file import config_file_is_valid
+
+    result = config_file_is_valid()
+    assert result is False
+
+    out = capsys.readouterr().out.replace("\n", " ")
+    assert "'checks' argument" in out
+
+
+def test_config_file_is_valid_returns_true(tmp_path, monkeypatch, capsys):
+    config_path = tmp_path / ".i18n-check.yaml"
+    config_path.write_text(
+        "src-dir: path/to/src/dir\n"
+        "i18n-dir: path/to/i18n/dir\n"
+        "i18n-src: path/to/i18n/dir/src.json\n"
+        "file-types-to-check: [.ts]\n"
+        "checks:\n"
+        "  global:\n"
+        "    active: true\n"
+    )
+
+    monkeypatch.setattr("i18n_check.utils.YAML_CONFIG_FILE_PATH", config_path)
+
+    from i18n_check.cli.generate_config_file import config_file_is_valid
+
+    result = config_file_is_valid()
+    assert result is True
+
+
 if __name__ == "__main__":
     unittest.main()

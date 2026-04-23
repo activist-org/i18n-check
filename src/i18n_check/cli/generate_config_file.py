@@ -7,12 +7,97 @@ import os
 from pathlib import Path
 from typing import Dict
 
+from rich import print as rprint
+from yaml import safe_load
+
 from i18n_check.cli.generate_test_frontends import generate_test_frontends
 
 EXTERNAL_TEST_FRONTENDS_DIR_PATH = Path.cwd() / "i18n_check_test_frontends"
 
 # Note: Repeat from utils to avoid circular import.
 PATH_SEPARATOR = "\\" if os.name == "nt" else "/"
+
+
+def config_file_is_valid() -> bool:
+    """
+    Check that the configuration file for i18n-check is not empty and has the necessary keys.
+
+    Returns
+    -------
+    bool
+        True if the i18n-check configuration file is valid. False otherwise.
+    """
+    from i18n_check.utils import YAML_CONFIG_FILE_PATH
+
+    with open(YAML_CONFIG_FILE_PATH, "r", encoding="utf-8") as file:
+        config = safe_load(file)
+
+        if config is not None:
+            config_keys = config.keys()
+            if "src-dir" not in config_keys or not isinstance(config["src-dir"], str):
+                rprint(
+                    "[red]The i18n-check 'src-dir' argument has not been defined properly. Please check the configuration file and try again.[/red]"
+                )
+                return False
+
+            if "i18n-dir" not in config_keys or not isinstance(config["i18n-dir"], str):
+                rprint(
+                    "[red]The i18n-check 'i18n-dir' argument has not been defined properly. Please check the configuration file and try again.[/red]"
+                )
+                return False
+
+            if "i18n-src" not in config_keys or not isinstance(config["i18n-src"], str):
+                rprint(
+                    "[red]The i18n-check 'i18n-src' argument has not been defined properly. Please check the configuration file and try again.[/red]"
+                )
+                return False
+
+            if "file-types-to-check" not in config_keys or not isinstance(
+                config["file-types-to-check"], list
+            ):
+                rprint(
+                    "[red]The i18n-check 'file-types-to-check' argument has not been defined properly. Please check the configuration file and try again.[/red]"
+                )
+                return False
+
+            if (
+                "checks" not in config_keys
+                or not isinstance(config["checks"], dict)
+                # No checks including global have been found in the config file.
+                or len(
+                    set(config["checks"].keys())
+                    & set(
+                        [
+                            "global",
+                            "key-formatting",
+                            "key-naming",
+                            "nonexistent-keys",
+                            "unused-keys",
+                            "non-source-keys",
+                            "repeat-keys",
+                            "repeat-values",
+                            "sorted-keys",
+                            "nested-files",
+                            "missing-keys",
+                            "aria-labels",
+                            "alt-texts",
+                        ]
+                    )
+                )
+                == 0
+            ):
+                rprint(
+                    "[red]The i18n-check 'checks' argument has not been defined properly. Please check the configuration file and try again.[/red]"
+                )
+                return False
+
+            return True
+
+        else:
+            rprint(
+                "[red]The i18n-check configuration file is empty. Please regenerate your config file with i18n-check -gcf.[/red]"
+            )
+            return False
 
 
 def write_to_file(

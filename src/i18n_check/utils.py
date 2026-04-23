@@ -40,8 +40,10 @@ def get_config_file_path() -> Path:
     # Prefer .yaml if it exists, otherwise check for .yml.
     if yaml_path.is_file():
         return yaml_path
+
     elif yml_path.is_file():
         return yml_path
+
     else:
         # Default to .yaml for new files.
         return yaml_path

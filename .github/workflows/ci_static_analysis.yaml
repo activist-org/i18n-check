@@ -51,3 +51,7 @@ jobs:
       - name: Run mypy - Static Type Checking
         if: always()
         run: uv run mypy ./src --config-file ./pyproject.toml
+
+      - name: Run numpydoc Documentation Check
+        if: always()
+        run: uv run numpydoc lint ./src/**/*.py

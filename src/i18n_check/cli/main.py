@@ -34,7 +34,10 @@ from i18n_check.check.repeat_values import (
 )
 from i18n_check.check.sorted_keys import sorted_keys_check_and_fix
 from i18n_check.check.unused_keys import unused_keys, unused_keys_check
-from i18n_check.cli.generate_config_file import generate_config_file
+from i18n_check.cli.generate_config_file import (
+    config_file_is_valid,
+    generate_config_file,
+)
 from i18n_check.cli.generate_test_frontends import generate_test_frontends
 from i18n_check.cli.upgrade import upgrade_cli
 from i18n_check.cli.version import get_version_message
@@ -253,6 +256,9 @@ def main() -> None:
     if args.generate_config_file:
         generate_config_file()
         return
+
+    if not config_file_is_valid():
+        sys.exit(1)
 
     # MARK: Run Checks
 
