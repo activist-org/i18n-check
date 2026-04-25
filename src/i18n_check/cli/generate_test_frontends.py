@@ -29,6 +29,7 @@ i18n-dir: i18n_check_test_frontends/test_frontends/all_checks_fail/test_i18n
 i18n-src: i18n_check_test_frontends/test_frontends/all_checks_fail/test_i18n/test_i18n_src.json
 
 # Note: Comment out the above lines and uncomment these to check functionality with a passing frontend.
+# Note: You also need to remove the 'search-dirs' argument for 'nonexistent-keys' for all checks to pass.
 # src-dir: i18n_check_test_frontends/test_frontends/all_checks_pass
 # i18n-dir: i18n_check_test_frontends/test_frontends/all_checks_pass/test_i18n
 # i18n-src: i18n_check_test_frontends/test_frontends/all_checks_pass/test_i18n/test_i18n_src.json
