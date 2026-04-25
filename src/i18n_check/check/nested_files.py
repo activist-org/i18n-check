@@ -163,9 +163,9 @@ def nested_files_check(
                 "[yellow]⚠️  You can automatically flatten JSON files by running the --nested-files (-nf) check with the --fix (-f) flag.[/yellow]"
             )
 
-        return True
+        return False
 
-    return False
+    return True
 
 
 # MARK: Fix
