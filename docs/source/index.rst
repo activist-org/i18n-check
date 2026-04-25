@@ -270,7 +270,7 @@ All Checks Pass
 All Checks Fail
 ^^^^^^^^^^^^^^^
 
-.. image:: https://github.com/user-attachments/assets/757a9f6f-7bde-40db-941d-c4e82855a453
+.. image:: https://github.com/user-attachments/assets/aaec959b-daf5-4269-872c-2ca8c929524a
    :alt: i18n_check_all_fail
 
 Configuration
