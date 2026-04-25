@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "i18n-check"
-version = "1.19.0"
+version = "1.19.1"
 description = "Check i18n/L10n keys and values"
 readme = "README.md"
 requires-python = ">=3.12"
@@ -29,7 +29,7 @@ classifiers = [
 
 dependencies = [
     # Keep docs dependencies formatted in this way with ruff to allow for upgrades via VS Code extension.
-    "packaging>=26.1",
+    "packaging>=26.2",
     "pyyaml>=6.0.3",
     "requests>=2.33.1",
     "rich>=15.0.0",
@@ -41,7 +41,7 @@ dev = [
     "prek>=0.3.10",
     "pytest>=9.0.3",
     "pytest-cov>=7.1.0",
-    "ruff>=0.15.11",
+    "ruff>=0.15.12",
     "setuptools>=82.0.1",
     "types-PyYAML>=6.0.12.20250915",
     "types-requests>=2.33.0.20260408",

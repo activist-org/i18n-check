@@ -10,7 +10,9 @@ See the [releases for i18n-check](https://github.com/activist-org/i18n-check/rel
 
 Emojis for the following are chosen based on [gitmoji](https://gitmoji.dev/).
 
-## [Upcoming] i18n-check 1.19.1
+## i18n-check 1.19.1
+
+### ✨ Features
 
 - The user is prompted to regenerate their `.i18n-check.yaml` if the file is found to be empty or is missing required arguments ([#106](https://github.com/activist-org/i18n-check/issues/106)).
 
