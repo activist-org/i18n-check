@@ -73,9 +73,10 @@ def test_non_source_keys_check_fail_output(capsys):
     with pytest.raises(SystemExit):
         non_source_keys_check(non_source_keys_fail)
 
-    output_msg = capsys.readouterr().out
-    assert "non-source-keys error:" in output_msg
-    assert "i18n._global.not_in_i18n_src" in output_msg
+    output = capsys.readouterr().out
+    assert "non-source-keys error:" in output
+    assert "i18n._global.not_in_i18n_src" in output
+    assert "💡 Tip: You can automatically delete non-source keys" in output
 
 
 def test_non_source_keys_check_and_delete_function_exists():

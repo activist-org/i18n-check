@@ -291,7 +291,9 @@ def main() -> None:
 
     if args.unused_keys:
         if args.delete:
-            from i18n_check.check.unused_keys import unused_keys_check_and_delete
+            from i18n_check.check.unused_keys import (
+                unused_keys_check_and_delete,  # needed for tests
+            )
 
             unused_keys_check_and_delete(unused_keys=unused_keys)
 
@@ -303,7 +305,7 @@ def main() -> None:
     if args.non_source_keys:
         if args.delete:
             from i18n_check.check.non_source_keys import (
-                non_source_keys_check_and_delete,
+                non_source_keys_check_and_delete,  # needed for tests
             )
 
             non_source_keys_check_and_delete(non_source_keys_dict=non_source_keys_dict)

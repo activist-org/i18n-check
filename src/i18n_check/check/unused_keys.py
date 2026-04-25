@@ -9,6 +9,7 @@ Examples
 Run the following script in terminal:
 
 >>> i18n-check -uk
+We need the message for the option to delete the keys.
 """
 
 import json
@@ -121,6 +122,10 @@ def unused_keys_check(unused_keys: List[str], all_checks_enabled: bool = False) 
             + "[/red]"
         )
         rprint(error_message)
+
+        rprint(
+            "\n[yellow]💡 Tip: You can automatically delete unused keys by running the --unused-keys (-uk) check with the --delete (-d) flag.[/yellow]"
+        )
 
         if all_checks_enabled:
             raise ValueError("The unused keys i18n check has failed.")

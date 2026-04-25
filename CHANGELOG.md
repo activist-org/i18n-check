@@ -10,6 +10,12 @@ See the [releases for i18n-check](https://github.com/activist-org/i18n-check/rel
 
 Emojis for the following are chosen based on [gitmoji](https://gitmoji.dev/).
 
+## i18n-check 1.19.2
+
+### ✨ Features
+
+The `non-source-keys` and `unused-keys` checks now notify the user that these keys can be automatically deleted with the `--delete` flag.
+
 ## i18n-check 1.19.1
 
 ### ✨ Features

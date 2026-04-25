@@ -122,6 +122,10 @@ def non_source_keys_check(
         )
         rprint(error_message)
 
+        rprint(
+            "\n[yellow]💡 Tip: You can automatically delete non-source keys by running the --non-source-keys (-nsk) check with the --delete (-d) flag.[/yellow]"
+        )
+
         if all_checks_enabled:
             raise ValueError("The non source keys i18n check has failed.")
 

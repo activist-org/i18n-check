@@ -53,6 +53,7 @@ def test_unused_keys_check_fail_raises_value_error(capsys) -> None:
     )
     assert "i18n source file" in output
     assert "i18n._global.unused_i18n_key" in output
+    assert "💡 Tip: You can automatically delete unused keys" in output
 
     # Test that keys are sorted in the output.
     lines = output.split("\n")
