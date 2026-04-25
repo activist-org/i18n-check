@@ -205,7 +205,7 @@ These GIFs show the response to the command `i18n-check -a` when all checks pass
 
 ### All Checks Fail
 
-![i18n_check_all_fail][https://github.com/user-attachments/assets/757a9f6f-7bde-40db-941d-c4e82855a453)
+![i18n_check_all_fail](https://github.com/user-attachments/assets/757a9f6f-7bde-40db-941d-c4e82855a453)
 
 <sub><a href="#top">Back to top.</a></sub>
 

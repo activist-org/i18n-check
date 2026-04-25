@@ -259,19 +259,19 @@ You can run these checks across your codebase:
 Example Responses
 -----------------
 
-These GIFs show the response to the command ``i18n-check -a`` when all checks fail or pass.
+These GIFs show the response to the command ``i18n-check -a`` when all checks pass or fail.
+
+All Checks Pass
+^^^^^^^^^^^^^^^
+
+.. image:: https://github.com/user-attachments/assets/09783690-ff3a-47d1-affd-438b3d394dd4
+   :alt: i18n_check_all_pass
 
 All Checks Fail
 ^^^^^^^^^^^^^^^
 
 .. image:: https://github.com/user-attachments/assets/757a9f6f-7bde-40db-941d-c4e82855a453
    :alt: i18n_check_all_fail
-
-All Checks Pass
-^^^^^^^^^^^^^^^
-
-.. image:: https://github.com/user-attachments/assets/c024c368-7691-4489-b8b8-a9844d386177
-   :alt: i18n_check_all_pass
 
 Configuration
 =============
