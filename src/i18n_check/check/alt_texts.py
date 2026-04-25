@@ -15,7 +15,6 @@ Run the following script in terminal:
 
 import string
 import sys
-import unicodedata
 from pathlib import Path
 from typing import Dict
 
@@ -25,42 +24,11 @@ from i18n_check.utils import (
     PATH_SEPARATOR,
     config_i18n_directory,
     get_all_json_files,
+    is_chinese_or_japanese_text,
+    is_rtl_text,
     read_json_file,
     replace_text_in_file,
 )
-
-# MARK: Text Direction
-
-
-def is_rtl_text(text: str) -> bool:
-    """
-    Check if the text contains RTL (right-to-left) characters.
-
-    Parameters
-    ----------
-    text : str
-        The text to check.
-
-    Returns
-    -------
-    bool
-        True if the text contains RTL characters, False otherwise.
-    """
-    if not text:
-        return False
-
-    rtl_categories = [
-        "R",  # right-to-left (e.g. Arabic, Hebrew)
-        "AL",  # right-to-left Arabic
-    ]
-
-    for char in text:
-        bc = unicodedata.bidirectional(char)
-        if bc in rtl_categories:
-            return True
-
-    return False
-
 
 # MARK: Find Issues
 
@@ -83,7 +51,7 @@ def find_alt_text_punctuation_issues(
     """
     json_files = get_all_json_files(directory=i18n_directory)
 
-    punctuation_to_check = f"{string.punctuation}؟"
+    punctuation_to_check = f"{string.punctuation}؟。"
 
     alt_text_issues: Dict[str, Dict[str, Dict[str, str]]] = {}
     for json_file in json_files:
@@ -99,6 +67,19 @@ def find_alt_text_punctuation_issues(
                     # The period should be at position 0 for RTL text.
                     if stripped_value[0] not in punctuation_to_check:
                         corrected_value = f".{stripped_value}"
+
+                        if key not in alt_text_issues:
+                            alt_text_issues[key] = {}
+
+                        alt_text_issues[key][str(json_file)] = {
+                            "current_value": value,
+                            "correct_value": corrected_value,
+                        }
+
+                elif is_chinese_or_japanese_text(stripped_value):
+                    # The period needs to be U+3002 (。).
+                    if stripped_value[-1] not in punctuation_to_check:
+                        corrected_value = f"{stripped_value}。"
 
                         if key not in alt_text_issues:
                             alt_text_issues[key] = {}

@@ -10,6 +10,12 @@ See the [releases for i18n-check](https://github.com/activist-org/i18n-check/rel
 
 Emojis for the following are chosen based on [gitmoji](https://gitmoji.dev/).
 
+## i18n-check 1.19.3
+
+### ✨ Features
+
+The `aria-labels` and `alt-texts` checks now check for U+3002 (`。`) periods for Chinese and Japanese characters and suggest fixes accordingly.
+
 ## i18n-check 1.19.2
 
 ### ✨ Features

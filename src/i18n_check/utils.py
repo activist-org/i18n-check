@@ -8,6 +8,7 @@ import json
 import os
 import re
 import string
+import unicodedata
 from functools import lru_cache
 from pathlib import Path
 from typing import Any, Dict, List
@@ -664,3 +665,65 @@ def replace_text_in_file(path: str | Path, old: str, new: str) -> None:
             file.write(content)
 
         rprint(f"[yellow]\n✨ Replaced '{old}' with '{new}' in {path}[/yellow]")
+
+
+# MARK: Text Characteristics
+
+
+def is_rtl_text(text: str) -> bool:
+    """
+    Check if the text contains RTL (right-to-left) characters.
+
+    Parameters
+    ----------
+    text : str
+        The text to check.
+
+    Returns
+    -------
+    bool
+        True if the text contains RTL characters, False otherwise.
+    """
+    if not text:
+        return False
+
+    rtl_categories = [
+        "R",  # right-to-left (e.g. Arabic, Hebrew)
+        "AL",  # right-to-left Arabic
+    ]
+
+    for char in text:
+        bc = unicodedata.bidirectional(char)
+        if bc in rtl_categories:
+            return True
+
+    return False
+
+
+def is_chinese_or_japanese_text(text: str) -> bool:
+    """
+    Check if the text contains Chinese or Japanese characters.
+
+    Parameters
+    ----------
+    text : str
+        The text to check.
+
+    Returns
+    -------
+    bool
+        True if the text contains Chinese or Japanese  characters, False otherwise.
+    """
+    if not text:
+        return False
+
+    for char in text:
+        char_name = unicodedata.name(char)
+        if (
+            "CJK UNIFIED IDEOGRAPH" in char_name
+            or "HIRAGANA" in char_name
+            or "KATAKANA" in char_name
+        ):
+            return True
+
+    return False

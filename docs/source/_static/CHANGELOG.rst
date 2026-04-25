@@ -13,32 +13,45 @@ See the `releases for i18n-check <https://github.com/activist-org/i18n-check/rel
 
 Emojis for the following are chosen based on `gitmoji <https://gitmoji.dev/>`_.
 
+i18n-check 1.19.3
+-----------------
+
+✨ Features
+~~~~~~~~~~~
+
+The ``aria-labels`` and ``alt-texts`` checks now check for U+3002 (``。``) periods for Chinese and Japanese characters and suggest fixes accordingly.
+
 i18n-check 1.19.2
 -----------------
 
-### ✨ Features
+✨ Features
+~~~~~~~~~~~
 
 The ``non-source-keys`` and ``unused-keys`` checks now notify the user that these keys can be automatically deleted with the ``--delete`` flag.
 
 i18n-check 1.19.1
 -----------------
 
-### ✨ Features
+✨ Features
+~~~~~~~~~~~
 
 * The user is prompted to regenerate their ``.i18n-check.yaml`` if the file is found to be empty or is missing required arguments (`#106 <https://github.com/activist-org/i18n-check/issues/106>`_).
 
-### 📝 Documentation
+📝 Documentation
+~~~~~~~~~~~~~~~~
 
 * The GIFs in the readme were updated to show the current state of the package (`#107 <https://github.com/activist-org/i18n-check/issues/107>`_).
 
-### ⬆️ Dependencies
+⬆️ Dependencies
+~~~~~~~~~~~~~~~
 
 * All production and development dependencies were updated.
 
 i18n-check 1.19.0
 -----------------
 
-### ✨ Features
+✨ Features
+~~~~~~~~~~~
 
 * Added the ``--delete`` (``-d``) flag for automatic deletion of unused keys and non-source keys from JSON files (`#92 <https://github.com/activist-org/i18n-check/issues/92>`_).
     * Users can now use ``i18n-check -uk -d`` to automatically remove unused keys from source and target files.
@@ -49,7 +62,8 @@ i18n-check 1.19.0
     * This allows keys to be used in testing directories without the need to rename them to a ``_global`` context.
 * The user is prompted to write a configuration file for the test frontends on generation (`#105 <https://github.com/activist-org/i18n-check/issues/105>`_).
 
-### 🐛 Bug Fixes
+🐛 Bug Fixes
+~~~~~~~~~~~~
 
 * Fixed key sorting in error outputs to ensure keys are always displayed in alphabetical order for easier investigation.
     * ``unused-keys`` check now displays unused keys in sorted order.
@@ -57,7 +71,8 @@ i18n-check 1.19.0
     * ``non-source-keys`` check now displays non-source keys in sorted order.
     * Added comprehensive tests to verify sorted key outputs and prevent regression.
 
-### ♻️ Code Refactoring
+♻️ Code Refactoring
+~~~~~~~~~~~~~~~~~~~
 
 * All empty lists and dictionaries were typed in the project (`#96 <https://github.com/activist-org/i18n-check/issues/96>`_).
 
