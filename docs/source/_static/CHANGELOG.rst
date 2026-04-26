@@ -18,7 +18,7 @@ i18n-check 1.19.4
 ✨ Features
 -----------
 
-The ``aria-labels`` and ``alt-texts`` checks now use unicode characters in their strings to assure that the checks work across environments (there were issues with prek/pre-commit).
+The ``aria-labels`` and ``alt-texts`` checks now use Unicode characters in their strings to assure that the checks work across environments (there were issues with prek/pre-commit).
 
 i18n-check 1.19.3
 =================
