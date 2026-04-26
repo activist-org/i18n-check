@@ -207,7 +207,6 @@ These GIFs show the response to the command `i18n-check -a` when all checks pass
 
 ![i18n_check_all_fail](https://github.com/user-attachments/assets/aaec959b-daf5-4269-872c-2ca8c929524a)
 
-
 <sub><a href="#top">Back to top.</a></sub>
 
 # Configuration
@@ -321,8 +320,6 @@ This is an example of a [prek](https://prek.j178.dev/) or [pre-commit](https://g
       entry: uv run i18n-check -a
       language: python
       pass_filenames: false
-      additional_dependencies:
-        - i18n-check
 ```
 
 ## GitHub Action

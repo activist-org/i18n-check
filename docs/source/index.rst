@@ -394,8 +394,6 @@ This is an example of a `prek <https://prek.j178.dev/>`_ or `pre-commit <https:/
          entry: uv run i18n-check -a
          language: python
          pass_filenames: false
-         additional_dependencies:
-           - i18n-check
 
 GitHub Action
 -------------
