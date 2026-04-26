@@ -51,7 +51,7 @@ def find_alt_text_punctuation_issues(
     """
     json_files = get_all_json_files(directory=i18n_directory)
 
-    punctuation_to_check = f"{string.punctuation}؟。"
+    punctuation_to_check = f"{string.punctuation}\u061f\u3002"
 
     alt_text_issues: Dict[str, Dict[str, Dict[str, str]]] = {}
     for json_file in json_files:
@@ -79,7 +79,7 @@ def find_alt_text_punctuation_issues(
                 elif is_chinese_or_japanese_text(stripped_value):
                     # The period needs to be U+3002 (。).
                     if stripped_value[-1] not in punctuation_to_check:
-                        corrected_value = f"{stripped_value}。"
+                        corrected_value = f"{stripped_value}\u3002"
 
                         if key not in alt_text_issues:
                             alt_text_issues[key] = {}

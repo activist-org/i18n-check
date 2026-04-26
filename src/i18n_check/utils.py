@@ -336,7 +336,7 @@ def read_json_file(file_path: str | Path) -> Any:
     dict
         The content of the JSON file.
     """
-    with open(file_path, encoding="utf-8") as f:
+    with open(file_path, "r", encoding="utf-8") as f:
         return json.loads(f.read())
 
 

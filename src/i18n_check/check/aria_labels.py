@@ -49,7 +49,7 @@ def find_aria_label_punctuation_issues(
     """
     json_files = get_all_json_files(directory=i18n_directory)
 
-    punctuation_to_check = f"{string.punctuation}؟。"
+    punctuation_to_check = f"{string.punctuation}\u061f\u3002"
 
     aria_label_issues: Dict[str, Dict[str, Dict[str, str]]] = {}
     for json_file in json_files:
