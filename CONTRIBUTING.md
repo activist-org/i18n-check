@@ -181,7 +181,7 @@ You're now ready to work on `i18n-check`!
 
 ## Linting and Testing
 
-To ensure errors are reported correctly, [Ruff](https://github.com/astral-sh/ruff), [mypy](https://mypy.readthedocs.io) and [pytest](https://docs.pytest.org/en/stable/) are included in the development packages.
+To ensure errors are reported correctly, [Ruff](https://github.com/astral-sh/ruff), [ty](https://github.com/astral-sh/ty) and [pytest](https://docs.pytest.org/en/stable/) are included in the development packages.
 
 For VS Code users, we recommend you install the [Ruff extension](https://marketplace.visualstudio.com/items?itemName=charliermarsh.ruff).
 
@@ -202,7 +202,7 @@ ruff check ./src
 **Run Static Type Tests**
 
 ```bash
-mypy ./src --config-file ./pyproject.toml
+uv run ty check ./src
 ```
 
 **Run Tests**

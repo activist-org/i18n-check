@@ -149,9 +149,6 @@ def audit_invalid_i18n_key_names(
     if keys_to_ignore_regex is None:
         keys_to_ignore_regex = []
 
-    if isinstance(keys_to_ignore_regex, str):
-        keys_to_ignore_regex = [keys_to_ignore_regex] if keys_to_ignore_regex else []
-
     filtered_key_file_dict = (
         {
             k: v
