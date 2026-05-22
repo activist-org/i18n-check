@@ -216,9 +216,9 @@ def test_audit_invalid_i18n_keys_regex_ignore_list() -> None:
     invalid_name_filtered = audit_invalid_i18n_key_names(
         key_file_dict=test_key_file_dict,
         keys_to_ignore_regex=[
-            [r"i18n\.legacy\."],
-            [r"i18n\.temp\."],
-            [r"i18n\.deprecated\."],
+            r"i18n\.legacy\.",
+            r"i18n\.temp\.",
+            r"i18n\.deprecated\.",
         ],
     )
 

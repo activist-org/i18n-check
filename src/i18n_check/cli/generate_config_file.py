@@ -4,6 +4,7 @@ Functionality to generate a configuration file for i18n-check.
 """
 
 import os
+from typing import Any
 from pathlib import Path
 from typing import Dict
 
@@ -206,7 +207,7 @@ def receive_data() -> None:
 
     print("Answer using y or n to select your required checks.")
 
-    checks = {
+    checks: dict[str, dict[str, Any]] = {
         "global": {
             "title": "all checks",
             "active": False,
@@ -248,7 +249,7 @@ def receive_data() -> None:
     for c, v in checks.items():
         if not checks["global"]["active"]:
             check_prompt = input(
-                f"{checks[c]['title'].capitalize()} check [y]: "  # type: ignore [attr-defined]
+                f"{str(checks[c]['title']).capitalize()} check [y]: "  # type: ignore [attr-defined]
             ).lower()
 
         if checks["global"]["active"] or check_prompt in ["y", ""]:
