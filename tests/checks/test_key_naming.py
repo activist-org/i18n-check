@@ -21,11 +21,11 @@ from ..test_utils import (
 )
 
 invalid_name_fail = audit_invalid_i18n_key_names(
-    key_file_dict=i18n_map_fail, keys_to_ignore_regex=""
+    key_file_dict=i18n_map_fail, keys_to_ignore_regex=[]
 )
 
 invalid_name_pass = audit_invalid_i18n_key_names(
-    key_file_dict=i18n_map_pass, keys_to_ignore_regex=""
+    key_file_dict=i18n_map_pass, keys_to_ignore_regex=[]
 )
 
 
@@ -158,12 +158,12 @@ def test_audit_invalid_i18n_keys_regex_ignore() -> None:
     }
 
     invalid_name_all = audit_invalid_i18n_key_names(
-        key_file_dict=test_key_file_dict, keys_to_ignore_regex=""
+        key_file_dict=test_key_file_dict, keys_to_ignore_regex=[]
     )
 
     invalid_name_filtered = audit_invalid_i18n_key_names(
         key_file_dict=test_key_file_dict,
-        keys_to_ignore_regex=r"i18n\.(legacy|temp)\.",
+        keys_to_ignore_regex=[r"i18n\.(legacy|temp)\."],
     )
 
     assert len(invalid_name_filtered) < len(invalid_name_all)
@@ -175,7 +175,7 @@ def test_audit_invalid_i18n_keys_regex_ignore() -> None:
         )
 
     invalid_name_legacy_only = audit_invalid_i18n_key_names(
-        key_file_dict=test_key_file_dict, keys_to_ignore_regex=r"i18n\.legacy\."
+        key_file_dict=test_key_file_dict, keys_to_ignore_regex=[r"i18n\.legacy\."]
     )
 
     legacy_keys = [k for k in test_key_file_dict if "legacy" in k]
@@ -216,9 +216,9 @@ def test_audit_invalid_i18n_keys_regex_ignore_list() -> None:
     invalid_name_filtered = audit_invalid_i18n_key_names(
         key_file_dict=test_key_file_dict,
         keys_to_ignore_regex=[
-            r"i18n\.legacy\.",
-            r"i18n\.temp\.",
-            r"i18n\.deprecated\.",
+            [r"i18n\.legacy\."],
+            [r"i18n\.temp\."],
+            [r"i18n\.deprecated\."],
         ],
     )
 
@@ -269,7 +269,7 @@ def test_audit_invalid_i18n_keys_regex_ignore_backward_compatibility() -> None:
 
     invalid_name_string = audit_invalid_i18n_key_names(
         key_file_dict=test_key_file_dict,
-        keys_to_ignore_regex=r"i18n\.(legacy|temp)\.",
+        keys_to_ignore_regex=[r"i18n\.(legacy|temp)\.",]
     )
 
     invalid_name_list = audit_invalid_i18n_key_names(
