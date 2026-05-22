@@ -37,7 +37,7 @@ i18n_src_dict = read_json_file(file_path=config_i18n_src_file)
 def get_non_source_keys(
     i18n_src_dict: Dict[str, str] = i18n_src_dict,
     i18n_directory: Path = config_i18n_directory,
-) -> Dict[str, str]:
+) -> Dict[str, set[str]]:
     """
     Get non-source keys from a JSON file compared to the source dictionary.
 
@@ -55,7 +55,7 @@ def get_non_source_keys(
         A dictionary with non-source keys found in the JSON file.
     """
     all_src_keys = i18n_src_dict.keys()
-    non_source_keys_dict: Dict[str, str] = {}
+    non_source_keys_dict: Dict[str, set[str]] = {}
     for json_file in get_all_json_files(directory=i18n_directory):
         if (
             json_file.split(PATH_SEPARATOR)[-1]
@@ -76,7 +76,7 @@ def get_non_source_keys(
 
 
 def non_source_keys_check(
-    non_source_keys_dict: Dict[str, str], all_checks_enabled: bool = False
+    non_source_keys_dict: Dict[str, set[str]], all_checks_enabled: bool = False
 ) -> bool:
     """
     Report non-source keys found in the JSON file.
@@ -141,14 +141,14 @@ def non_source_keys_check(
 
 
 def non_source_keys_check_and_delete(
-    non_source_keys_dict: Dict[str, str], all_checks_enabled: bool = False
+    non_source_keys_dict: Dict[str, set[str]], all_checks_enabled: bool = False
 ) -> bool:
     """
     Delete non-source keys from target JSON files.
 
     Parameters
     ----------
-    non_source_keys_dict : Dict[str, str]
+    non_source_keys_dict : Dict[str, set[str]]
         A dictionary with non-source keys found in the JSON files.
 
     all_checks_enabled : bool, optional, default=False
