@@ -37,7 +37,6 @@ dependencies = [
 
 [project.optional-dependencies]
 dev = [
-    "mypy>=2.1.0",
     "prek>=0.4.1",
     "pytest>=9.0.3",
     "pytest-cov>=7.1.0",
@@ -45,7 +44,7 @@ dev = [
     "setuptools>=82.0.1",
     "types-PyYAML>=6.0.12.20250915",
     "types-requests>=2.33.0.20260518",
-    # "ty>=0.0.38",
+    "ty>=0.0.38",
 ]
 docs = [
     # Keep docs dependencies formatted in this way with ruff to allow for upgrades via VS Code extension.
@@ -79,7 +78,6 @@ exclude = [
     ".eggs",
     ".git",
     ".git-rewrite",
-    ".mypy_cache",
     ".nox",
     ".pants.d",
     ".pytype",
@@ -116,10 +114,6 @@ line_length = 88
 [tool.coverage.run]
 omit = ["*/tests/*", "*/__init__.py"]
 
-[tool.mypy]
-mypy_path = "src"
-strict = true
-exclude = ["^tests/.*\\.py$", "docs"]
 
 [tool.numpydoc_validation]
 checks = [

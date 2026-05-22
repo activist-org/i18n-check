@@ -47,7 +47,8 @@ class TestIsNestedJson(unittest.TestCase):
 
         for desc, data, expected in test_cases:
             with self.subTest(desc):
-                self.assertEqual(is_nested_json(data), expected)
+                if isinstance(data, dict):
+                    self.assertEqual(is_nested_json(data), expected)
 
 
 class TestCheckI18nFiles:

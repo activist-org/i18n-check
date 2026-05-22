@@ -44,9 +44,9 @@ class TestGenerateConfigFile(unittest.TestCase):
         file_types_to_check = [".ts", ".js"]
 
         write_to_file(
-            src_dir=src_dir,
-            i18n_dir=i18n_dir,
-            i18n_src_file=i18n_src_file,
+            src_dir=str(src_dir),
+            i18n_dir=str(i18n_dir),
+            i18n_src_file=str(i18n_src_file),
             file_types_to_check=file_types_to_check,
             checks=checks,
         )
