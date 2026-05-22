@@ -47,10 +47,15 @@ repos:
 
   - repo: local
     hooks:
-      - id: mypy-check
-        name: run mypy static type checking
+      - id: ty-check
+        name: run ty static type checking
         files: ^src/
-        entry: mypy ./src --config-file ./pyproject.toml
+        entry: ty check ./src
         language: python
+        additional_dependencies:
+          - rich
+          - pyyaml
+          - requests
+          - packaging
         types: [python]
         pass_filenames: false
