@@ -12,13 +12,26 @@ See the `releases for i18n-check <https://github.com/activist-org/i18n-check/rel
 
 Emojis for the following are chosen based on `gitmoji <https://gitmoji.dev/>`_.
 
+i18n-check 1.19.5
+=================
+
+♻️ Code Refactoring
+-------------------
+
+* The project was switched over to use `ty` for linting instead of `mypy` `#109 <https://github.com/activist-org/i18n-check/issues/109>`_.
+
+⬆️ Dependencies
+---------------
+
+* All production and development dependencies were updated.
+
 i18n-check 1.19.4
 =================
 
 ✨ Features
 -----------
 
-The ``aria-labels`` and ``alt-texts`` checks now use Unicode characters in their strings to assure that the checks work across environments (there were issues with prek/pre-commit).
+* The ``aria-labels`` and ``alt-texts`` checks now use Unicode characters in their strings to assure that the checks work across environments (there were issues with prek/pre-commit).
 
 i18n-check 1.19.3
 =================
@@ -26,7 +39,7 @@ i18n-check 1.19.3
 ✨ Features
 -----------
 
-The ``aria-labels`` and ``alt-texts`` checks now check for U+3002 (``。``) periods for Chinese and Japanese characters and suggest fixes accordingly.
+* The ``aria-labels`` and ``alt-texts`` checks now check for U+3002 (``。``) periods for Chinese and Japanese characters and suggest fixes accordingly.
 
 i18n-check 1.19.2
 =================
@@ -34,7 +47,7 @@ i18n-check 1.19.2
 ✨ Features
 -----------
 
-The ``non-source-keys`` and ``unused-keys`` checks now notify the user that these keys can be automatically deleted with the ``--delete`` flag.
+* The ``non-source-keys`` and ``unused-keys`` checks now notify the user that these keys can be automatically deleted with the ``--delete`` flag.
 
 i18n-check 1.19.1
 =================

@@ -10,6 +10,16 @@ See the [releases for i18n-check](https://github.com/activist-org/i18n-check/rel
 
 Emojis for the following are chosen based on [gitmoji](https://gitmoji.dev/).
 
+## i18n-check 1.19.5
+
+### ♻️ Code Refactoring
+
+- The project was switched over to use `ty` for linting instead of `mypy` [#109](https://github.com/activist-org/i18n-check/issues/109).
+
+### ⬆️ Dependencies
+
+- All production and development dependencies were updated.
+
 ## i18n-check 1.19.4
 
 ### ✨ Features
