@@ -4,9 +4,8 @@ Functionality to generate a configuration file for i18n-check.
 """
 
 import os
-from typing import Any
 from pathlib import Path
-from typing import Dict
+from typing import Any, Dict
 
 from rich import print as rprint
 from yaml import safe_load

@@ -269,7 +269,9 @@ def test_audit_invalid_i18n_keys_regex_ignore_backward_compatibility() -> None:
 
     invalid_name_string = audit_invalid_i18n_key_names(
         key_file_dict=test_key_file_dict,
-        keys_to_ignore_regex=[r"i18n\.(legacy|temp)\.",]
+        keys_to_ignore_regex=[
+            r"i18n\.(legacy|temp)\.",
+        ],
     )
 
     invalid_name_list = audit_invalid_i18n_key_names(
