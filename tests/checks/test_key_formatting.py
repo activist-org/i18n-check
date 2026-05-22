@@ -22,11 +22,11 @@ from ..test_utils import (
 )
 
 invalid_format_fail = audit_invalid_i18n_key_formats(
-    key_file_dict=i18n_map_fail, keys_to_ignore_regex=[]
+    key_file_dict=i18n_map_fail, keys_to_ignore_regex=None
 )
 
 invalid_format_pass = audit_invalid_i18n_key_formats(
-    key_file_dict=i18n_map_pass, keys_to_ignore_regex=[]
+    key_file_dict=i18n_map_pass, keys_to_ignore_regex=None
 )
 
 
