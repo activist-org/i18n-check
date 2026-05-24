@@ -14,13 +14,13 @@
 >
 > To contact us, [join our public Matrix chat rooms](https://matrix.to/#/#activist_community:matrix.org). We'd be happy to hear from you!
 
-# Contents
+## Contents
 
 - [Get Started as a Contributor](#get-started-as-a-contributor)
   - [Choose Your First Issue](#choose-your-first-issue)
   - [Mentorship and Growth](#mentorship-and-growth)
   - [Learn the Tech Stack](#learn-the-tech-stack)
-- [Development Environment](#devolpment-environment)
+- [Development Environment](#development-environment)
   - [Linting and Testing](#linting-and-testing)
 - [Creating Issues](#creating-issues)
   - [Bug Reports](#bug-reports)
@@ -30,7 +30,7 @@
   - [Function Docstrings](#function-docstrings)
   - [Build the Documentation Locally](#build-the-documentation-locally)
 
-# Get Started as a Contributor
+## Get Started as a Contributor
 
 The `i18n-check` community looks forward to welcoming you as a contributor!
 
@@ -42,7 +42,7 @@ We recommend these first steps for anyone interested in joining us:
 3. Take a look at the [Development](https://matrix.to/#/!CRgLpGeOBNwxYCtqmK:matrix.org?via=matrix.org&via=acter.global&via=chat.0x7cd.xyz) channel for recent development discussions.
 4. Consider joining our bi-weekly developer sync. Newcomers are always welcome!
 
-## Choose Your First Issue
+### Choose Your First Issue
 
 Issues labelled [`good first issue`](https://github.com/activist-org/i18n-check/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22) are the best choice for new contributors.
 
@@ -52,7 +52,7 @@ Check the [`-next release-`](https://github.com/activist-org/i18n-check/labels/-
 
 We would be happy to discuss granting you further rights as a contributor after your first pull requests, with a maintainer role then being possible after continued interest in the project. activist seeks to be an inclusive, diverse, and supportive organization. We'd love to have you on the team!
 
-## Mentorship and Growth
+### Mentorship and Growth
 
 Onboarding and mentoring new members is vital to a healthy open-source community.
 
@@ -66,7 +66,7 @@ Continued constructive contributions, new open issues, and clear communication h
 
 If you like the sound of this, then we look forward to working with you!
 
-## Learn the Tech Stack
+### Learn the Tech Stack
 
 `i18n-check` is open to contributions from people in the early stages of their coding journey!
 
@@ -94,7 +94,7 @@ This is a select list of documentation to help you understand the technologies w
 
 <sub><a href="#top">Back to top.</a></sub>
 
-# Development Environment
+## Development Environment
 
 1. First and foremost, please see the suggested IDE setup in the dropdown below to make sure that your editor is ready for development.
 
@@ -179,7 +179,7 @@ You're now ready to work on `i18n-check`!
 > [!TIP]
 > Contact the team in the [Development room on Matrix](https://matrix.to/#/!CRgLpGeOBNwxYCtqmK:matrix.org?via=matrix.org&via=acter.global&via=chat.0x7cd.xyz) if you need help setting up your environment.
 
-## Linting and Testing
+### Linting and Testing
 
 To ensure errors are reported correctly, [Ruff](https://github.com/astral-sh/ruff), [ty](https://github.com/astral-sh/ty) and [pytest](https://docs.pytest.org/en/stable/) are included in the development packages.
 
@@ -225,13 +225,13 @@ pytest . --cov=src --cov-report=term-missing --cov-config=./pyproject.toml
 
 <sub><a href="#top">Back to top.</a></sub>
 
-# Creating Issues
+## Creating Issues
 
 The GitHub [issue tracker](https://github.com/activist-org/i18n-check/issues) is our preferred channel for [bug reports](#bug-reports), [features requests](#feature-requests) and [submitting pull requests](#pull-requests).
 
 We also organize related issues into [projects](https://github.com/activist-org/i18n-check/projects).
 
-## Bug Reports
+### Bug Reports
 
 > [!IMPORTANT]
 > We define a bug as a demonstrable problem caused by code in the repository.
@@ -250,7 +250,7 @@ To submit a bug report:
 
 We thank you for the time you take to report bugs!
 
-## Feature Requests
+### Feature Requests
 
 > [!IMPORTANT]
 > Before you submit a request, please take a moment to check whether your idea fits with the scope and aims of the project.
@@ -263,10 +263,10 @@ Submit your request using the [issue tracker](https://github.com/activist-org/i1
 
 We mark feature requests with the [`Feature`](https://github.com/activist-org/i18n-check/issues?q=is%3Aissue%20state%3Aopen%20type%3AFeature) type.
 
-## Pull Requests
+### Pull Requests
 
 > [!IMPORTANT]
-> All contributions to this project will be made under [the specified license](LICENSE.txt) and should follow the coding formatting and style standards (contact the community if unsure).
+> All contributions to this project will be made under [the specified license](https://github.com/activist-org/i18n-check/blob/main/LICENSE.txt) and should follow the coding formatting and style standards (contact the community if unsure).
 >
 > The best way to get your work merged is to follow the [GitHub flow](https://docs.github.com/en/get-started/quickstart/github-flow) process.
 
@@ -274,11 +274,11 @@ Good pull requests should remain focused in scope and avoid containing unrelated
 
 **Please ask first** before embarking on any significant pull request, otherwise you risk spending a lot of time working on something that the developers might not want to merge into the project. With that being said, major additions are very appreciated!
 
-### Install prek
+#### Install prek
 
 Before you submit a pull request, install [prek](https://prek.j178.dev/) to ensure your commits are properly checked by our linter and formatters.
 
-prek is Python package that you can install via pip or any other Python package manager. You can also find it in our [uv.lock](./uv.lock) file.
+prek is Python package that you can install via pip or any other Python package manager. You can also find it in our `uv.lock` file.
 
 To install prek:
 
@@ -296,7 +296,7 @@ If you're having difficulties with prek and you want to submit your changes anyw
 git commit --no-verify -m "COMMIT_MESSAGE"
 ```
 
-### Commit Changes and Submit a Pull Request
+#### Commit Changes and Submit a Pull Request
 
 > [!TIP]
 > These are some tools and methods to help you write good commit messages:
@@ -339,7 +339,7 @@ Thank you in advance for your contributions!
 
 <sub><a href="#top">Back to top.</a></sub>
 
-# Documentation
+## Documentation
 
 Find the `i18n-check` documentation at [i18n-check.readthedocs.io](https://i18n-check.readthedocs.io/en/latest/).
 
@@ -347,7 +347,7 @@ Documentation is an invaluable way to contribute to coding projects. It enables 
 
 Search for open documentation issues on GitHub by filtering for the [`documentation`](https://github.com/activist-org/i18n-check/labels/documentation) label.
 
-## Function Docstrings
+### Function Docstrings
 
 `i18n-check` follows [numpydoc conventions](https://numpydoc.readthedocs.io/en/latest/format.html) for documenting functions and Python code.
 
@@ -385,7 +385,7 @@ def example_function(argument: argument_type) -> return_type:
     return return_value
 ```
 
-## Build the Documentation Locally
+### Build the Documentation Locally
 
 To build the documentation locally, run these commands:
 
