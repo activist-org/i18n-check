@@ -15,7 +15,7 @@ import json
 import sys
 from collections import defaultdict
 from pathlib import Path
-from typing import Any, Dict, List, Tuple, Union
+from typing import Any
 
 from rich import print as rprint
 
@@ -24,18 +24,18 @@ from i18n_check.utils import config_i18n_directory, get_all_json_files
 # MARK: Repeat Keys
 
 
-def find_repeat_keys(json_input: Union[str, Path]) -> Dict[str, List[str]]:
+def find_repeat_keys(json_input: str | Path) -> dict[str, list[str]]:
     """
     Identify duplicate keys in a JSON string using a custom JSON parser hook.
 
     Parameters
     ----------
-    json_input : Union[str, Path]
+    json_input : str | Path
         A JSON string or a Path to a JSON file to analyze for duplicate keys.
 
     Returns
     -------
-    Dict[str, List[str]]
+    dict[str, list[str]]
         A dictionary where keys are the duplicate keys found in the JSON and values
         are lists of string representations of all corresponding values.
 
@@ -57,18 +57,18 @@ def find_repeat_keys(json_input: Union[str, Path]) -> Dict[str, List[str]]:
     """
     grouped = defaultdict(list)
 
-    def create_key_values_dict(pairs: List[Tuple[Any, Any]]) -> Dict[str, Any]:
+    def create_key_values_dict(pairs: list[tuple[Any, Any]]) -> dict[str, Any]:
         """
         Create a dictionary while tracking all key-value pairs for duplicate detection.
 
         Parameters
         ----------
-        pairs : List[Tuple[Any, Any]]
+        pairs : list[tuple[Any, Any]]
             List of key-value pairs from the JSON parser.
 
         Returns
         -------
-        Dict[str, Any]
+        dict[str, Any]
             A standard dictionary constructed from the pairs (last value wins for duplicates).
         """
         for key, value in pairs:
@@ -101,7 +101,7 @@ def find_repeat_keys(json_input: Union[str, Path]) -> Dict[str, List[str]]:
 # MARK: Check File
 
 
-def check_file_keys_repeated(file_path: str) -> Tuple[str, Dict[str, List[str]]]:
+def check_file_keys_repeated(file_path: str) -> tuple[str, dict[str, list[str]]]:
     """
     Check a single JSON file for duplicate keys.
 
@@ -112,10 +112,10 @@ def check_file_keys_repeated(file_path: str) -> Tuple[str, Dict[str, List[str]]]
 
     Returns
     -------
-    Tuple[str, Dict[str, List[str]]]
+    tuple[str, dict[str, list[str]]]
         A tuple containing:
         - The filename (str)
-        - A dictionary of duplicate keys with their values (Dict[str, List[str]])
+        - A dictionary of duplicate keys with their values (dict[str, list[str]])
 
     Raises
     ------

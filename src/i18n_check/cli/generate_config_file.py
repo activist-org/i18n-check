@@ -5,7 +5,7 @@ Functionality to generate a configuration file for i18n-check.
 
 import os
 from pathlib import Path
-from typing import Any, Dict
+from typing import Any
 
 from rich import print as rprint
 from yaml import safe_load
@@ -105,7 +105,7 @@ def write_to_file(
     i18n_dir: str,
     i18n_src_file: str,
     file_types_to_check: list[str] | None,
-    checks: Dict[str, dict],
+    checks: dict[str, dict],
 ) -> None:
     """
     Writing to the i18n source JSON file.
@@ -206,7 +206,7 @@ def receive_data() -> None:
 
     print("Answer using y or n to select your required checks.")
 
-    checks: Dict[str, Dict[str, Any]] = {
+    checks: dict[str, dict[str, Any]] = {
         "global": {
             "title": "all checks",
             "active": False,

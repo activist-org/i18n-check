@@ -11,7 +11,7 @@ import string
 import unicodedata
 from functools import lru_cache
 from pathlib import Path
-from typing import Any, Dict, List
+from typing import Any
 
 import yaml
 from rich import print as rprint
@@ -377,7 +377,7 @@ def _collect_files_to_check_cached(
     directory_path = Path(directory).resolve()
     skip_dirs_resolved = [Path(d).resolve() for d in directories_to_skip]
     skip_files_resolved = [Path(f).resolve() for f in files_to_skip]
-    files_to_check: List[str] = []
+    files_to_check: list[str] = []
 
     for root, dirs, files in os.walk(directory_path):
         root_path = Path(root).resolve()
@@ -408,7 +408,7 @@ def collect_files_to_check(
     file_types_to_check: list[str],
     directories_to_skip: list[Path],
     files_to_skip: list[Path],
-) -> List[str]:
+) -> list[str]:
     """
     Collect all files with a given extension from a directory and its subdirectories.
 
@@ -566,7 +566,7 @@ def _get_all_json_files_cached(directory: str) -> tuple[str, ...]:
     return tuple(json_files)
 
 
-def get_all_json_files(directory: str | Path) -> List[str]:
+def get_all_json_files(directory: str | Path) -> list[str]:
     """
     Get all JSON files in the specified directory.
 
@@ -616,7 +616,7 @@ def lower_and_remove_punctuation(text: str) -> str:
 # MARK: Reading to Dicts
 
 
-def read_files_to_dict(files: list[str]) -> Dict[str, str]:
+def read_files_to_dict(files: list[str]) -> dict[str, str]:
     """
     Read multiple files and store their content in a dictionary.
 
@@ -630,7 +630,7 @@ def read_files_to_dict(files: list[str]) -> Dict[str, str]:
     dict
         A dictionary where keys are file paths and values are file contents.
     """
-    file_contents: Dict[str, str] = {}
+    file_contents: dict[str, str] = {}
     for file in files:
         with open(file, "r", encoding="utf-8") as f:
             file_contents[file] = f.read()

@@ -14,7 +14,6 @@ Run the following script in terminal:
 import itertools
 import sys
 from collections import Counter
-from typing import Dict
 
 from rich import print as rprint
 
@@ -35,18 +34,18 @@ i18n_src_dict = read_json_file(file_path=config_i18n_src_file)
 # MARK: Repeat Values
 
 
-def get_repeat_value_counts(i18n_src_dict: Dict[str, str]) -> Dict[str, int]:
+def get_repeat_value_counts(i18n_src_dict: dict[str, str]) -> dict[str, int]:
     """
     Count repeated values in the i18n source dictionary.
 
     Parameters
     ----------
-    i18n_src_dict : Dict[str, str]
+    i18n_src_dict : dict[str, str]
         The dictionary containing i18n keys and their associated values.
 
     Returns
     -------
-    Dict[str, int]
+    dict[str, int]
         A dictionary with values that appear more than once, mapped to their count.
     """
     # Note: The following automatically removes repeat keys from i18n_src_dict.
@@ -60,22 +59,22 @@ def get_repeat_value_counts(i18n_src_dict: Dict[str, str]) -> Dict[str, int]:
 
 
 def analyze_and_generate_repeat_value_report(
-    i18n_src_dict: Dict[str, str], json_repeat_value_counts: Dict[str, int]
-) -> tuple[Dict[str, int], str]:
+    i18n_src_dict: dict[str, str], json_repeat_value_counts: dict[str, int]
+) -> tuple[dict[str, int], str]:
     """
     Analyze repeated values and generates a report of repeat values with changes that should be made.
 
     Parameters
     ----------
-    i18n_src_dict : Dict[str, str]
+    i18n_src_dict : dict[str, str]
         A dictionary of i18n keys and their corresponding translation strings.
 
-    json_repeat_value_counts : Dict[str, int]
+    json_repeat_value_counts : dict[str, int]
         A dictionary of repeated values and their occurrence counts.
 
     Returns
     -------
-    Dict[str, int], str
+    dict[str, int], str
         The updated dictionary of repeat value counts after suggested changes and a report to be added to the error.
     """
     repeat_value_error_report = ""
@@ -145,7 +144,7 @@ def analyze_and_generate_repeat_value_report(
 
 
 def repeat_values_check(
-    json_repeat_value_counts: Dict[str, int],
+    json_repeat_value_counts: dict[str, int],
     repeat_value_error_report: str,
     all_checks_enabled: bool = False,
 ) -> bool:
@@ -154,7 +153,7 @@ def repeat_values_check(
 
     Parameters
     ----------
-    json_repeat_value_counts : Dict[str, int]
+    json_repeat_value_counts : dict[str, int]
         A dictionary with repeat i18n values and their counts.
 
     repeat_value_error_report : str

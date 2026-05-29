@@ -3,7 +3,6 @@
 Tests for the non_source_keys.py.
 """
 
-from typing import Dict
 from unittest.mock import patch
 
 import pytest
@@ -54,8 +53,8 @@ non_source_keys_pass = get_non_source_keys(
     ],
 )
 def test_get_non_source_keys(
-    non_source_keys: Dict[str, Dict[str, str]],
-    expected_output: Dict[str, Dict[str, str]],
+    non_source_keys: dict[str, dict[str, str]],
+    expected_output: dict[str, dict[str, str]],
 ) -> None:
     """
     Test get_non_source_keys with various scenarios.

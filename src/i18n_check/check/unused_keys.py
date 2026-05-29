@@ -16,7 +16,6 @@ import json
 import re
 import sys
 from pathlib import Path
-from typing import Dict, List
 
 from rich import print as rprint
 
@@ -49,26 +48,26 @@ files_to_check_contents = read_files_to_dict(files=files_to_check)
 
 
 def find_unused_keys(
-    i18n_src_dict: Dict[str, str], files_to_check_contents: Dict[str, str]
-) -> List[str]:
+    i18n_src_dict: dict[str, str], files_to_check_contents: dict[str, str]
+) -> list[str]:
     """
     Identify unused translation keys from the i18n source dictionary.
 
     Parameters
     ----------
-    i18n_src_dict : Dict[str, str]
+    i18n_src_dict : dict[str, str]
         A dictionary of all translation keys and their corresponding strings.
 
-    files_to_check_contents : Dict[str, str]
+    files_to_check_contents : dict[str, str]
         A mapping of filenames to their contents, used to search for key usage.
 
     Returns
     -------
-    List[str]
+    list[str]
         A list of keys that are not used in any of the provided file contents.
     """
     all_keys = list(i18n_src_dict.keys())
-    used_keys: List[str] = []
+    used_keys: list[str] = []
 
     for k in all_keys:
         key_search_pattern = r"[\S]*\.".join(k.split("."))
@@ -88,13 +87,13 @@ def find_unused_keys(
 # MARK: Error Outputs
 
 
-def unused_keys_check(unused_keys: List[str], all_checks_enabled: bool = False) -> bool:
+def unused_keys_check(unused_keys: list[str], all_checks_enabled: bool = False) -> bool:
     """
     Print a message reporting unused translation keys or success.
 
     Parameters
     ----------
-    unused_keys : List[str]
+    unused_keys : list[str]
         A list of keys that are unused in the project.
 
     all_checks_enabled : bool, optional, default=False
@@ -142,14 +141,14 @@ def unused_keys_check(unused_keys: List[str], all_checks_enabled: bool = False) 
 
 
 def unused_keys_check_and_delete(
-    unused_keys: List[str], all_checks_enabled: bool = False
+    unused_keys: list[str], all_checks_enabled: bool = False
 ) -> bool:
     """
     Delete unused translation keys from source and target JSON files.
 
     Parameters
     ----------
-    unused_keys : List[str]
+    unused_keys : list[str]
         A list of keys that are unused in the project.
 
     all_checks_enabled : bool, optional, default=False
