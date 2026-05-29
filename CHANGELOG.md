@@ -10,6 +10,12 @@ See the [releases for i18n-check](https://github.com/activist-org/i18n-check/rel
 
 Emojis for the following are chosen based on [gitmoji](https://gitmoji.dev/).
 
+## [Upcoming] i18n-check 1.19.6
+
+### ♻️ Code Refactoring
+
+- The legacy Python typing system was removed in favor of the more modern approach ([#113](https://github.com/activist-org/i18n-check/issues/113)).
+
 ## i18n-check 1.19.5
 
 ### ♻️ Code Refactoring
