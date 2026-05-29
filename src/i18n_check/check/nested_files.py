@@ -14,7 +14,7 @@ Run the following script in terminal:
 
 import json
 from pathlib import Path
-from typing import Any, Dict, Union
+from typing import Any
 
 from rich import print as rprint
 
@@ -28,7 +28,7 @@ from i18n_check.utils import (
 # MARK: Is Nested
 
 
-def is_nested_json(data: Dict[str, Any]) -> bool:
+def is_nested_json(data: dict[str, Any]) -> bool:
     """
     Check if the JSON structure is nested.
 
@@ -52,14 +52,14 @@ def is_nested_json(data: Dict[str, Any]) -> bool:
 
 
 def flatten_json(
-    data: Dict[str, Any], parent_key: str = ""
-) -> tuple[Dict[str, Any], bool]:
+    data: dict[str, Any], parent_key: str = ""
+) -> tuple[dict[str, Any], bool]:
     """
     Flatten a nested JSON dictionary by joining nested keys with the period separator.
 
     Parameters
     ----------
-    data : Dict[str, Any]
+    data : dict[str, Any]
         The data JSON object to flatten.
 
     parent_key : str, default=''
@@ -67,7 +67,7 @@ def flatten_json(
 
     Returns
     -------
-    tuple[Dict[str, Any], bool]
+    tuple[dict[str, Any], bool]
         (flattened_dict, has_collision) - The flattened dict and whether there were duplicate keys.
     """
     items: list[tuple[str, Any]] = []
@@ -95,7 +95,7 @@ def flatten_json(
 
 
 def derive_nested_files(
-    directory: Union[str, Path] = config_i18n_directory,
+    directory: str | Path = config_i18n_directory,
 ) -> list[Path]:
     """
     Derive if nested files exist in the source and target JSON files.
@@ -131,7 +131,7 @@ def derive_nested_files(
 
 
 def nested_files_check(
-    directory: Union[str, Path] = config_i18n_directory, fix: bool = False
+    directory: str | Path = config_i18n_directory, fix: bool = False
 ) -> bool:
     """
     Check all JSON files in the given directory for nested structures.
@@ -172,7 +172,7 @@ def nested_files_check(
 
 
 def nested_files_check_and_fix(
-    directory: Union[str, Path] = config_i18n_directory,
+    directory: str | Path = config_i18n_directory,
 ) -> bool:
     """
     Check all JSON files in the given directory for nested structures.

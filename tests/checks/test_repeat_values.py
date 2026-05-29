@@ -3,8 +3,6 @@
 Tests for the repeat_values.py.
 """
 
-from typing import Dict
-
 import pytest
 
 from i18n_check.check.repeat_values import (
@@ -43,7 +41,7 @@ json_repeat_value_counts = get_repeat_value_counts(i18n_src_dict)
     ],
 )
 def test_get_repeat_value_counts(
-    input_dict: Dict[str, str], expected_output: Dict[str, int]
+    input_dict: dict[str, str], expected_output: dict[str, int]
 ) -> None:
     """
     Test get_repeat_value_counts with various scenarios.

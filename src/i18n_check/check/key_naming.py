@@ -17,7 +17,6 @@ import re
 import sys
 from collections import defaultdict
 from pathlib import Path
-from typing import Dict, List, Optional
 
 from rich import print as rprint
 
@@ -51,15 +50,15 @@ i18n_src_dict = read_json_file(file_path=config_i18n_src_file)
 
 
 def map_keys_to_files(
-    i18n_src_dict: Dict[str, str] = i18n_src_dict,
+    i18n_src_dict: dict[str, str] = i18n_src_dict,
     src_directory: Path = config_src_directory,
-) -> Dict[str, List[str]]:
+) -> dict[str, list[str]]:
     """
     Map i18n keys to the files they are used in.
 
     Parameters
     ----------
-    i18n_src_dict : Dict[str, str]
+    i18n_src_dict : dict[str, str]
         The dictionary containing i18n source keys and their associated values.
 
     src_directory : Path
@@ -67,7 +66,7 @@ def map_keys_to_files(
 
     Returns
     -------
-    Dict[str, List[str]]
+    dict[str, list[str]]
         A dictionary where keys are i18n keys and values are lists of file paths where those keys are used.
     """
     files_to_check = collect_files_to_check(
@@ -77,13 +76,13 @@ def map_keys_to_files(
         files_to_skip=config_key_naming_files_to_skip,
     )
 
-    files_to_check_contents: Dict[str, str] = {}
+    files_to_check_contents: dict[str, str] = {}
     for frontend_file in files_to_check:
         with open(frontend_file, "r", encoding="utf-8") as f:
             files_to_check_contents[frontend_file] = f.read()
 
     all_keys = list(i18n_src_dict.keys())
-    key_file_dict: Dict[str, List[str]] = defaultdict(list)
+    key_file_dict: dict[str, list[str]] = defaultdict(list)
     for k in all_keys:
         key_file_dict[k] = []
         for i, v in files_to_check_contents.items():
@@ -102,7 +101,7 @@ def map_keys_to_files(
 # MARK: Reduce Keys
 
 
-def _ignore_key(key: str, keys_to_ignore_regex: List[str]) -> bool:
+def _ignore_key(key: str, keys_to_ignore_regex: list[str]) -> bool:
     """
     Derive whether the key being checked is within the patterns to ignore.
 
@@ -111,7 +110,7 @@ def _ignore_key(key: str, keys_to_ignore_regex: List[str]) -> bool:
     key : str
         The key to that might be ignored if it matches the patterns to skip.
 
-    keys_to_ignore_regex : List[str]
+    keys_to_ignore_regex : list[str]
         A list of regex patterns to match with keys that should be ignored during validation.
         Keys matching any of these patterns will be skipped during the audit.
         For backward compatibility, a single string is also accepted and will be converted to a list.
@@ -125,25 +124,25 @@ def _ignore_key(key: str, keys_to_ignore_regex: List[str]) -> bool:
 
 
 def audit_invalid_i18n_key_names(
-    key_file_dict: Dict[str, List[str]],
-    keys_to_ignore_regex: Optional[List[str]] = None,
-) -> Dict[str, str]:
+    key_file_dict: dict[str, list[str]],
+    keys_to_ignore_regex: list[str] | None = None,
+) -> dict[str, str]:
     """
     Audit i18n keys for naming conventions.
 
     Parameters
     ----------
-    key_file_dict : Dict[str, List[str]]
+    key_file_dict : dict[str, list[str]]
         A dictionary where keys are i18n keys and values are lists of file paths where those keys are used.
 
-    keys_to_ignore_regex : List[str], optional, default=None
+    keys_to_ignore_regex : list[str], optional, default=None
         A list of regex patterns to match with keys that should be ignored during validation.
         Keys matching any of these patterns will be skipped during the audit.
         For backward compatibility, a single string is also accepted and will be converted to a list.
 
     Returns
     -------
-    Dict[str, str]
+    dict[str, str]
         A dictionary mapping keys that are not named correctly to their suggested corrections.
     """
     if keys_to_ignore_regex is None:
@@ -159,12 +158,12 @@ def audit_invalid_i18n_key_names(
         else key_file_dict
     )
 
-    invalid_keys_by_name: Dict[str, str] = {}
+    invalid_keys_by_name: dict[str, str] = {}
     for k in filtered_key_file_dict:
         # Key is used in one file.
         if len(filtered_key_file_dict[k]) == 1:
             formatted_potential_key = path_to_valid_key(filtered_key_file_dict[k][0])
-            potential_key_parts: List[str] = formatted_potential_key.split(".")
+            potential_key_parts: list[str] = formatted_potential_key.split(".")
             # Is the part in the last key part such that it's a parent directory that's included in the file name.
             valid_key_parts = filter_valid_key_parts(potential_key_parts)
 
@@ -219,7 +218,7 @@ def audit_invalid_i18n_key_names(
 
 
 def invalid_key_names_check_and_fix(
-    invalid_keys_by_name: Dict[str, str],
+    invalid_keys_by_name: dict[str, str],
     all_checks_enabled: bool = False,
     fix: bool = False,
 ) -> bool:
@@ -228,7 +227,7 @@ def invalid_key_names_check_and_fix(
 
     Parameters
     ----------
-    invalid_keys_by_name : Dict[str, str]
+    invalid_keys_by_name : dict[str, str]
         A dictionary mapping i18n keys that are not named correctly to their suggested corrections.
 
     all_checks_enabled : bool, optional, default=False

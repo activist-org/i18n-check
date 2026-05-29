@@ -16,7 +16,6 @@ Run the following script in terminal:
 import string
 import sys
 from pathlib import Path
-from typing import Dict
 
 from rich import print as rprint
 
@@ -33,7 +32,7 @@ from i18n_check.utils import (
 
 def find_aria_label_punctuation_issues(
     i18n_directory: Path = config_i18n_directory,
-) -> Dict[str, Dict[str, Dict[str, str]]]:
+) -> dict[str, dict[str, dict[str, str]]]:
     """
     Find aria label keys that end with inappropriate punctuation.
 
@@ -44,14 +43,14 @@ def find_aria_label_punctuation_issues(
 
     Returns
     -------
-    Dict[str, Dict[str, Dict[str, str]]]
+    dict[str, dict[str, dict[str, str]]]
         A dictionary mapping incorrect aria label values to their corrected versions.
     """
     json_files = get_all_json_files(directory=i18n_directory)
 
     punctuation_to_check = f"{string.punctuation}\u061f\u3002"
 
-    aria_label_issues: Dict[str, Dict[str, Dict[str, str]]] = {}
+    aria_label_issues: dict[str, dict[str, dict[str, str]]] = {}
     for json_file in json_files:
         json_file_dict = read_json_file(file_path=json_file)
 
@@ -93,7 +92,7 @@ def find_aria_label_punctuation_issues(
 
 
 def report_and_fix_aria_labels(
-    aria_label_issues: Dict[str, Dict[str, Dict[str, str]]],
+    aria_label_issues: dict[str, dict[str, dict[str, str]]],
     all_checks_enabled: bool = False,
     fix: bool = False,
 ) -> None:
@@ -102,7 +101,7 @@ def report_and_fix_aria_labels(
 
     Parameters
     ----------
-    aria_label_issues : Dict[str, Dict[str, Dict[str, str]]]
+    aria_label_issues : dict[str, dict[str, dict[str, str]]]
         Dictionary mapping keys with issues to their corrected values.
 
     all_checks_enabled : bool, optional, default=False

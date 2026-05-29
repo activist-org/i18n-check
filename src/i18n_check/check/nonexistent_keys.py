@@ -16,7 +16,7 @@ import json
 import re
 import sys
 from pathlib import Path
-from typing import Any, Dict, List, Set
+from typing import Any
 
 from rich import print as rprint
 from rich.prompt import Prompt
@@ -47,27 +47,27 @@ i18n_src_dict = read_json_file(file_path=config_i18n_src_file)
 
 
 def get_used_i18n_keys(
-    i18n_src_dict: Dict[str, str] = i18n_src_dict,
+    i18n_src_dict: dict[str, str] = i18n_src_dict,
     src_directory: Path = config_src_directory,
-    search_dirs: List[Path] = [],
-) -> Set[str]:
+    search_dirs: list[Path] = [],
+) -> set[str]:
     """
     Get all i18n keys that are used in the project.
 
     Parameters
     ----------
-    i18n_src_dict : Dict[str, str]
+    i18n_src_dict : dict[str, str]
         The dictionary containing i18n source keys and their associated values.
 
     src_directory : Path
         The source directory where the files are located.
 
-    search_dirs : List[Path]
+    search_dirs : list[Path]
         Additional directories to search for i18n key usage (e.g. test directories).
 
     Returns
     -------
-    Set[str]
+    set[str]
         A set of all i18n keys that are used in the project.
     """
 
@@ -95,14 +95,14 @@ def get_used_i18n_keys(
             files_to_skip=config_nonexistent_keys_files_to_skip,
         )
 
-    files_to_check_contents: Dict[str, str] = {}
+    files_to_check_contents: dict[str, str] = {}
     for frontend_file in files_to_check:
         with open(frontend_file, "r", encoding="utf-8") as f:
             files_to_check_contents[frontend_file] = f.read()
 
-    all_used_i18n_keys: Set[Any] = set()
+    all_used_i18n_keys: set[Any] = set()
     for v in files_to_check_contents.values():
-        all_file_i18n_keys: List[Any] = []
+        all_file_i18n_keys: list[Any] = []
         all_file_i18n_keys.extend(
             re.findall(i18n_kp, v) for i18n_kp in all_i18n_key_patterns
         )
@@ -118,8 +118,8 @@ def get_used_i18n_keys(
 
 
 def nonexistent_keys_check(
-    all_used_i18n_keys: Set[str],
-    i18n_src_dict: Dict[str, str] = i18n_src_dict,
+    all_used_i18n_keys: set[str],
+    i18n_src_dict: dict[str, str] = i18n_src_dict,
     all_checks_enabled: bool = False,
 ) -> bool:
     """
@@ -127,10 +127,10 @@ def nonexistent_keys_check(
 
     Parameters
     ----------
-    all_used_i18n_keys : Set[str]
+    all_used_i18n_keys : set[str]
         A set of all i18n keys that are used in the project.
 
-    i18n_src_dict : Dict[str, str], default=i18n_src_dict
+    i18n_src_dict : dict[str, str], default=i18n_src_dict
         The dictionary containing i18n source keys and their associated values.
 
     all_checks_enabled : bool, optional, default=False
@@ -181,8 +181,8 @@ def nonexistent_keys_check(
 
 
 def add_nonexistent_keys_interactively(
-    all_used_i18n_keys: Set[str],
-    i18n_src_dict: Dict[str, str] = i18n_src_dict,
+    all_used_i18n_keys: set[str],
+    i18n_src_dict: dict[str, str] = i18n_src_dict,
     i18n_src_file: Path = config_i18n_src_file,
     src_directory: Path = config_src_directory,
 ) -> None:
@@ -191,10 +191,10 @@ def add_nonexistent_keys_interactively(
 
     Parameters
     ----------
-    all_used_i18n_keys : Set[str]
+    all_used_i18n_keys : set[str]
         A set of all i18n keys that are used in the project.
 
-    i18n_src_dict : Dict[str, str], default=i18n_src_dict
+    i18n_src_dict : dict[str, str], default=i18n_src_dict
         The dictionary containing i18n source keys and their associated values.
 
     i18n_src_file : Path, default=config_i18n_src_file
@@ -303,8 +303,8 @@ def add_nonexistent_keys_interactively(
 
 
 def nonexistent_keys_check_and_fix(
-    all_used_i18n_keys: Set[str],
-    i18n_src_dict: Dict[str, str] = i18n_src_dict,
+    all_used_i18n_keys: set[str],
+    i18n_src_dict: dict[str, str] = i18n_src_dict,
     i18n_src_file: Path = config_i18n_src_file,
     src_directory: Path = config_src_directory,
     all_checks_enabled: bool = False,
@@ -315,10 +315,10 @@ def nonexistent_keys_check_and_fix(
 
     Parameters
     ----------
-    all_used_i18n_keys : Set[str]
+    all_used_i18n_keys : set[str]
         A set of all i18n keys that are used in the project.
 
-    i18n_src_dict : Dict[str, str], default=i18n_src_dict
+    i18n_src_dict : dict[str, str], default=i18n_src_dict
         The dictionary containing i18n source keys and their associated values.
 
     i18n_src_file : Path, default=config_i18n_src_file

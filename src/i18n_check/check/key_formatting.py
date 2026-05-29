@@ -13,7 +13,6 @@ Run the following script in terminal:
 import json
 import re
 import sys
-from typing import Dict, List, Optional
 
 from rich import print as rprint
 
@@ -45,7 +44,7 @@ i18n_src_dict = read_json_file(file_path=config_i18n_src_file)
 # MARK: Reduce Keys
 
 
-def _ignore_key(key: str, keys_to_ignore_regex: List[str]) -> bool:
+def _ignore_key(key: str, keys_to_ignore_regex: list[str]) -> bool:
     """
     Derive whether the key being checked is within the patterns to ignore.
 
@@ -54,7 +53,7 @@ def _ignore_key(key: str, keys_to_ignore_regex: List[str]) -> bool:
     key : str
         The key to that might be ignored if it matches the patterns to skip.
 
-    keys_to_ignore_regex : List[str]
+    keys_to_ignore_regex : list[str]
         A list of regex patterns to match with keys that should be ignored during validation.
         Keys matching any of these patterns will be skipped during the audit.
         For backward compatibility, a single string is also accepted and will be converted to a list.
@@ -68,25 +67,25 @@ def _ignore_key(key: str, keys_to_ignore_regex: List[str]) -> bool:
 
 
 def audit_invalid_i18n_key_formats(
-    key_file_dict: Dict[str, List[str]],
-    keys_to_ignore_regex: Optional[List[str]] = None,
-) -> Dict[str, str]:
+    key_file_dict: dict[str, list[str]],
+    keys_to_ignore_regex: list[str] | None = None,
+) -> dict[str, str]:
     """
     Audit i18n keys for formatting conventions.
 
     Parameters
     ----------
-    key_file_dict : Dict[str, List[str]]
+    key_file_dict : dict[str, list[str]]
         A dictionary where keys are i18n keys and values are lists of file paths where those keys are used.
 
-    keys_to_ignore_regex : List[str], optional, default=None
+    keys_to_ignore_regex : list[str], optional, default=None
         A list of regex patterns to match with keys that should be ignored during validation.
         Keys matching any of these patterns will be skipped during the audit.
         For backward compatibility, a single string is also accepted and will be converted to a list.
 
     Returns
     -------
-    Dict[str, str]
+    dict[str, str]
         A dictionary mapping invalid keys to their corrected format.
     """
     if keys_to_ignore_regex is None:
@@ -105,7 +104,7 @@ def audit_invalid_i18n_key_formats(
         else key_file_dict
     )
 
-    invalid_keys_by_format: Dict[str, str] = {}
+    invalid_keys_by_format: dict[str, str] = {}
     for k in filtered_key_file_dict:
         if not is_valid_key(k):
             # Convert hyphens to underscores and any other invalid characters.
@@ -121,7 +120,7 @@ def audit_invalid_i18n_key_formats(
 
 
 def invalid_key_formats_check_and_fix(
-    invalid_keys_by_format: Dict[str, str],
+    invalid_keys_by_format: dict[str, str],
     all_checks_enabled: bool = False,
     fix: bool = False,
 ) -> bool:
@@ -130,7 +129,7 @@ def invalid_key_formats_check_and_fix(
 
     Parameters
     ----------
-    invalid_keys_by_format : Dict[str, str]
+    invalid_keys_by_format : dict[str, str]
         A dictionary mapping i18n keys that are not formatted correctly to their suggested corrections.
 
     all_checks_enabled : bool, optional, default=False

@@ -15,7 +15,7 @@ Run the following script in terminal:
 import json
 import sys
 from pathlib import Path
-from typing import Any, Dict, List, Tuple
+from typing import Any
 
 from rich import print as rprint
 
@@ -28,21 +28,21 @@ from i18n_check.utils import (
 # MARK: Check Sorted Keys
 
 
-def check_file_keys_sorted(json_data: Dict[str, Any]) -> Tuple[bool, List[str]]:
+def check_file_keys_sorted(json_data: dict[str, Any]) -> tuple[bool, list[str]]:
     """
     Check if the keys in a JSON dictionary are sorted alphabetically.
 
     Parameters
     ----------
-    json_data : Dict[str, any]
+    json_data : dict[str, any]
         The JSON data to check for sorted keys.
 
     Returns
     -------
-    Tuple[bool, List[str]]
+    tuple[bool, list[str]]
         A tuple containing:
         - bool: True if keys are sorted, False otherwise
-        - List[str]: List of keys in their correct alphabetical order for testing
+        - list[str]: List of keys in their correct alphabetical order for testing
     """
     keys = list(json_data.keys())
     sorted_keys = sorted(keys)
@@ -50,7 +50,7 @@ def check_file_keys_sorted(json_data: Dict[str, Any]) -> Tuple[bool, List[str]]:
     return keys == sorted_keys, sorted_keys
 
 
-def check_file_sorted(file_path: str | Path) -> Tuple[bool, List[str]]:
+def check_file_sorted(file_path: str | Path) -> tuple[bool, list[str]]:
     """
     Check if keys in a specific JSON file are sorted alphabetically.
 
@@ -61,10 +61,10 @@ def check_file_sorted(file_path: str | Path) -> Tuple[bool, List[str]]:
 
     Returns
     -------
-    Tuple[bool, List[str]]
+    tuple[bool, list[str]]
         A tuple containing:
         - bool: True if keys are sorted, False otherwise
-        - List[str]: List of keys in their correct alphabetical order
+        - list[str]: List of keys in their correct alphabetical order
     """
     try:
         json_data = read_json_file(file_path)

@@ -15,7 +15,6 @@ Run the following script in terminal:
 import json
 import sys
 from pathlib import Path
-from typing import Dict, List, Optional, Tuple
 
 from rich import print as rprint
 from rich.prompt import Prompt
@@ -42,10 +41,10 @@ i18n_src_dict = read_json_file(file_path=config_i18n_src_file)
 
 
 def get_missing_keys_by_locale(
-    i18n_src_dict: Dict[str, str] = i18n_src_dict,
+    i18n_src_dict: dict[str, str] = i18n_src_dict,
     i18n_directory: Path = config_i18n_directory,
-    locales_to_check: List[str] = config_missing_keys_locales_to_check,
-) -> Dict[str, Tuple[List[str], float]]:
+    locales_to_check: list[str] = config_missing_keys_locales_to_check,
+) -> dict[str, tuple[list[str], float]]:
     """
     Get missing keys for each locale file compared to the source dictionary.
 
@@ -68,7 +67,7 @@ def get_missing_keys_by_locale(
         - The percentage of missing keys (0-100)
     """
     all_src_keys = set(i18n_src_dict.keys())
-    missing_keys_by_locale: Dict[str, Tuple[List[str], float]] = {}
+    missing_keys_by_locale: dict[str, tuple[list[str], float]] = {}
 
     for json_file in get_all_json_files(directory=i18n_directory):
         # Get just the filename without the extension.
@@ -112,7 +111,7 @@ def get_missing_keys_by_locale(
 
 
 def report_missing_keys(
-    missing_keys_by_locale: Dict[str, Tuple[List[str], float]],
+    missing_keys_by_locale: dict[str, tuple[list[str], float]],
     all_checks_enabled: bool = False,
 ) -> None:
     """
@@ -175,7 +174,7 @@ def report_missing_keys(
 
 def add_missing_keys_interactively(
     locale: str,
-    i18n_src_dict: Dict[str, str] = i18n_src_dict,
+    i18n_src_dict: dict[str, str] = i18n_src_dict,
     i18n_directory: Path = config_i18n_directory,
 ) -> None:
     """
@@ -251,7 +250,7 @@ def add_missing_keys_interactively(
 
         sorted_missing_keys = sorted(missing_keys, key=get_source_value_length)
 
-        missing_keys_dict_for_mapping: Dict[str, str] = {}
+        missing_keys_dict_for_mapping: dict[str, str] = {}
         for key in sorted_missing_keys:
             source_value = i18n_src_dict.get(key, "")
             # Skip if the result is a nested key.
@@ -341,11 +340,11 @@ def add_missing_keys_interactively(
 
 
 def missing_keys_check_and_fix(
-    i18n_src_dict: Dict[str, str] = i18n_src_dict,
+    i18n_src_dict: dict[str, str] = i18n_src_dict,
     i18n_directory: Path = config_i18n_directory,
-    locales_to_check: List[str] = config_missing_keys_locales_to_check,
+    locales_to_check: list[str] = config_missing_keys_locales_to_check,
     all_checks_enabled: bool = False,
-    fix_locale: Optional[str] = None,
+    fix_locale: str | None = None,
 ) -> bool:
     """
     Check missing keys and optionally enter interactive mode to fix them.
