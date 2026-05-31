@@ -24,7 +24,7 @@ on:
 
 jobs:
   ci:
-    name: Run PR Check
+    name: Run CI Static Check
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Project
@@ -55,3 +55,7 @@ jobs:
       - name: Run numpydoc Documentation Check
         if: always()
         run: uv run numpydoc lint ./src/**/*.py
+
+      - name: Run complexipy - Cognitive Complexity Check
+        if: always()
+        run: uv run --group complexity complexipy .

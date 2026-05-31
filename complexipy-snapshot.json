@@ -1,0 +1,154 @@
+[
+  {
+    "path": "i18n-check/src/i18n_check/check/all_checks.py",
+    "file_name": "all_checks.py",
+    "functions": [
+      {
+        "name": "run_all_checks",
+        "complexity": 20
+      }
+    ]
+  },
+  {
+    "path": "i18n-check/src/i18n_check/check/alt_texts.py",
+    "file_name": "alt_texts.py",
+    "functions": [
+      {
+        "name": "find_alt_text_punctuation_issues",
+        "complexity": 44
+      }
+    ]
+  },
+  {
+    "path": "i18n-check/src/i18n_check/check/aria_labels.py",
+    "file_name": "aria_labels.py",
+    "functions": [
+      {
+        "name": "find_aria_label_punctuation_issues",
+        "complexity": 30
+      }
+    ]
+  },
+  {
+    "path": "i18n-check/src/i18n_check/check/key_formatting.py",
+    "file_name": "key_formatting.py",
+    "functions": [
+      {
+        "name": "invalid_key_formats_check_and_fix",
+        "complexity": 37
+      }
+    ]
+  },
+  {
+    "path": "i18n-check/src/i18n_check/check/key_naming.py",
+    "file_name": "key_naming.py",
+    "functions": [
+      {
+        "name": "audit_invalid_i18n_key_names",
+        "complexity": 20
+      },
+      {
+        "name": "invalid_key_names_check_and_fix",
+        "complexity": 37
+      }
+    ]
+  },
+  {
+    "path": "i18n-check/src/i18n_check/check/missing_keys.py",
+    "file_name": "missing_keys.py",
+    "functions": [
+      {
+        "name": "add_missing_keys_interactively",
+        "complexity": 45
+      }
+    ]
+  },
+  {
+    "path": "i18n-check/src/i18n_check/check/nested_files.py",
+    "file_name": "nested_files.py",
+    "functions": [
+      {
+        "name": "nested_files_check_and_fix",
+        "complexity": 17
+      }
+    ]
+  },
+  {
+    "path": "i18n-check/src/i18n_check/check/non_source_keys.py",
+    "file_name": "non_source_keys.py",
+    "functions": [
+      {
+        "name": "non_source_keys_check_and_delete",
+        "complexity": 29
+      }
+    ]
+  },
+  {
+    "path": "i18n-check/src/i18n_check/check/nonexistent_keys.py",
+    "file_name": "nonexistent_keys.py",
+    "functions": [
+      {
+        "name": "add_nonexistent_keys_interactively",
+        "complexity": 23
+      }
+    ]
+  },
+  {
+    "path": "i18n-check/src/i18n_check/check/sorted_keys.py",
+    "file_name": "sorted_keys.py",
+    "functions": [
+      {
+        "name": "sorted_keys_check_and_fix",
+        "complexity": 28
+      }
+    ]
+  },
+  {
+    "path": "i18n-check/src/i18n_check/check/unused_keys.py",
+    "file_name": "unused_keys.py",
+    "functions": [
+      {
+        "name": "unused_keys_check_and_delete",
+        "complexity": 43
+      }
+    ]
+  },
+  {
+    "path": "i18n-check/src/i18n_check/cli/generate_config_file.py",
+    "file_name": "generate_config_file.py",
+    "functions": [
+      {
+        "name": "config_file_is_valid",
+        "complexity": 23
+      },
+      {
+        "name": "write_to_file",
+        "complexity": 24
+      },
+      {
+        "name": "receive_data",
+        "complexity": 47
+      }
+    ]
+  },
+  {
+    "path": "i18n-check/src/i18n_check/cli/generate_test_frontends.py",
+    "file_name": "generate_test_frontends.py",
+    "functions": [
+      {
+        "name": "generate_test_frontends",
+        "complexity": 22
+      }
+    ]
+  },
+  {
+    "path": "i18n-check/src/i18n_check/cli/main.py",
+    "file_name": "main.py",
+    "functions": [
+      {
+        "name": "main",
+        "complexity": 31
+      }
+    ]
+  }
+]

@@ -37,14 +37,14 @@ dependencies = [
 
 [project.optional-dependencies]
 dev = [
-    "prek>=0.4.1",
+    "prek>=0.4.3",
     "pytest>=9.0.3",
     "pytest-cov>=7.1.0",
-    "ruff>=0.15.14",
+    "ruff>=0.15.15",
     "setuptools>=82.0.1",
     "types-PyYAML>=6.0.12.20250915",
     "types-requests>=2.33.0.20260518",
-    "ty>=0.0.39",
+    "ty>=0.0.40",
 ]
 docs = [
     # Keep docs dependencies formatted in this way with ruff to allow for upgrades via VS Code extension.
@@ -52,6 +52,8 @@ docs = [
     "numpydoc>=1.10.0",
     "sphinx-rtd-theme>=3.1.0",
 ]
+# Install it explicitly with `--group complexity` where needed.
+complexity = ["complexipy>=4.2.0"]
 
 [project.scripts]
 i18n-check = "i18n_check.cli.main:main"
@@ -128,3 +130,6 @@ exclude = [
     "^.*\\.__str__$", # __str__ methods
     "^__init__$",     # __init__ files
 ]
+
+[tool.complexipy]
+max-complexity-allowed = 15
