@@ -151,7 +151,7 @@ git remote add upstream https://github.com/activist-org/i18n-check.git
 4. Create a virtual environment for i18n-check (Python `>=3.12`), activate it and install dependencies:
 
    ```bash
-   uv sync --all-extras  # create .venv and install all dependencies from uv.lock
+   uv sync --all-groups  # create .venv and install all dependencies from uv.lock
 
    # Unix or macOS:
    source .venv/bin/activate

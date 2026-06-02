@@ -94,7 +94,7 @@ uv (Development Build)
 
 .. code-block:: bash
 
-   uv sync --all-extras  # install all dependencies
+   uv sync --all-groups  # install all dependencies
    source .venv/bin/activate  # activate venv (macOS/Linux)
    # .venv\Scripts\activate  # activate venv (Windows)
 
@@ -432,7 +432,7 @@ This is an example YAML file for a GitHub Action to check your ``i18n-files`` on
            uses: astral-sh/setup-uv@v7
 
          - name: Install Dependencies
-           run: uv sync --frozen --all-extras
+           run: uv sync --frozen --all-groups
 
          - name: Execute All i18n-check Key-Value Checks
            run: |
