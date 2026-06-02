@@ -53,7 +53,10 @@ docs = [
     "sphinx-rtd-theme>=3.1.0",
 ]
 # Install it explicitly with `--group complexity` where needed.
-complexity = ["complexipy>=4.2.0"]
+complexity = [
+    # Keep docs dependencies formatted in this way with ruff to allow for upgrades via VS Code extension.
+    "complexipy>=4.2.0",
+]
 
 [project.scripts]
 i18n-check = "i18n_check.cli.main:main"
