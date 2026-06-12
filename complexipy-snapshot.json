@@ -112,16 +112,6 @@
     ]
   },
   {
-    "path": "i18n-check/src/i18n_check/cli/generate_test_frontends.py",
-    "file_name": "generate_test_frontends.py",
-    "functions": [
-      {
-        "name": "generate_test_frontends",
-        "complexity": 22
-      }
-    ]
-  },
-  {
     "path": "i18n-check/src/i18n_check/cli/main.py",
     "file_name": "main.py",
     "functions": [
