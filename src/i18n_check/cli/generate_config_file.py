@@ -4,6 +4,7 @@ Functionality to generate a configuration file for i18n-check.
 """
 
 import os
+from collections.abc import Callable
 from pathlib import Path
 from typing import Any
 
@@ -18,6 +19,54 @@ EXTERNAL_TEST_FRONTENDS_DIR_PATH = Path.cwd() / "i18n_check_test_frontends"
 PATH_SEPARATOR = "\\" if os.name == "nt" else "/"
 
 
+def check_config_and_validate(
+    config: dict[str, Any],
+    validators: dict[str, Callable[[Any], bool]],
+    VALID_CHECK_KEYS: set[str],
+) -> bool:
+    """
+    Check configuration files and validate.
+
+    Parameters
+    ----------
+    config : dict[str,Any]
+        A dictionary representing the configuration file.
+    validators : dict[str,Callable[[Any],bool]]
+        A dictionary containing necessary paths and it's instance types as Callable functions.
+    VALID_CHECK_KEYS : set[str]
+        A set of necessary keys to be checked.
+
+    Returns
+    -------
+    bool
+        Returns True if all the check has been passed otherwise False.
+    """
+    if config is None:
+        rprint(
+            "[red]The i18n-check configuration file is empty. Please regenerate your config file with i18n-check -gcf.[/red]"
+        )
+        return False
+
+    for key, validator in validators.items():
+        if key == "checks":
+            if (
+                key not in config
+                or not validator(config[key])
+                or len(set(config["checks"].keys()) & VALID_CHECK_KEYS) == 0
+            ):
+                rprint(
+                    f"[red]The i18n-check '{key}' argument has not been defined properly. Please check the configuration file and try again.[/red]"
+                )
+                return False
+            continue
+        if key not in config or not validator(config[key]):
+            rprint(
+                f"[red]The i18n-check '{key}' argument has not been defined properly. Please check the configuration file and try again.[/red]"
+            )
+            return False
+    return True
+
+
 def config_file_is_valid() -> bool:
     """
     Check that the configuration file for i18n-check is not empty and has the necessary keys.
@@ -29,75 +78,33 @@ def config_file_is_valid() -> bool:
     """
     from i18n_check.utils import YAML_CONFIG_FILE_PATH
 
+    VALID_CHECK_KEYS = {
+        "global",
+        "key-formatting",
+        "key-naming",
+        "nonexistent-keys",
+        "unused-keys",
+        "non-source-keys",
+        "repeat-keys",
+        "repeat-values",
+        "sorted-keys",
+        "nested-files",
+        "missing-keys",
+        "aria-labels",
+        "alt-texts",
+    }
+
+    VALIDATORS: dict[str, Callable[[Any], bool]] = {
+        "src-dir": lambda v: isinstance(v, str),
+        "i18n-dir": lambda v: isinstance(v, str),
+        "i18n-src": lambda v: isinstance(v, str),
+        "file-types-to-check": lambda v: isinstance(v, list),
+        "checks": lambda v: isinstance(v, dict),
+    }
+
     with open(YAML_CONFIG_FILE_PATH, "r", encoding="utf-8") as file:
         config = safe_load(file)
-
-        if config is not None:
-            config_keys = config.keys()
-            if "src-dir" not in config_keys or not isinstance(config["src-dir"], str):
-                rprint(
-                    "[red]The i18n-check 'src-dir' argument has not been defined properly. Please check the configuration file and try again.[/red]"
-                )
-                return False
-
-            if "i18n-dir" not in config_keys or not isinstance(config["i18n-dir"], str):
-                rprint(
-                    "[red]The i18n-check 'i18n-dir' argument has not been defined properly. Please check the configuration file and try again.[/red]"
-                )
-                return False
-
-            if "i18n-src" not in config_keys or not isinstance(config["i18n-src"], str):
-                rprint(
-                    "[red]The i18n-check 'i18n-src' argument has not been defined properly. Please check the configuration file and try again.[/red]"
-                )
-                return False
-
-            if "file-types-to-check" not in config_keys or not isinstance(
-                config["file-types-to-check"], list
-            ):
-                rprint(
-                    "[red]The i18n-check 'file-types-to-check' argument has not been defined properly. Please check the configuration file and try again.[/red]"
-                )
-                return False
-
-            if (
-                "checks" not in config_keys
-                or not isinstance(config["checks"], dict)
-                # No checks including global have been found in the config file.
-                or len(
-                    set(config["checks"].keys())
-                    & set(
-                        [
-                            "global",
-                            "key-formatting",
-                            "key-naming",
-                            "nonexistent-keys",
-                            "unused-keys",
-                            "non-source-keys",
-                            "repeat-keys",
-                            "repeat-values",
-                            "sorted-keys",
-                            "nested-files",
-                            "missing-keys",
-                            "aria-labels",
-                            "alt-texts",
-                        ]
-                    )
-                )
-                == 0
-            ):
-                rprint(
-                    "[red]The i18n-check 'checks' argument has not been defined properly. Please check the configuration file and try again.[/red]"
-                )
-                return False
-
-            return True
-
-        else:
-            rprint(
-                "[red]The i18n-check configuration file is empty. Please regenerate your config file with i18n-check -gcf.[/red]"
-            )
-            return False
+        return check_config_and_validate(config, VALIDATORS, VALID_CHECK_KEYS)
 
 
 def write_to_file(

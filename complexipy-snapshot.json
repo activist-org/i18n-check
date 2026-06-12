@@ -98,10 +98,6 @@
     "file_name": "generate_config_file.py",
     "functions": [
       {
-        "name": "config_file_is_valid",
-        "complexity": 23
-      },
-      {
         "name": "write_to_file",
         "complexity": 24
       },
