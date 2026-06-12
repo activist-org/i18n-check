@@ -170,7 +170,8 @@ def nested_files_check(
 
 # MARK: Fix
 
-def flatten_nested_files(nested_files: list[Path])->list[Path]:
+
+def flatten_nested_files(nested_files: list[Path]) -> list[Path]:
     """
     Flatten the nested JSON file paths.
 
@@ -178,7 +179,7 @@ def flatten_nested_files(nested_files: list[Path])->list[Path]:
     ----------
     nested_files : list[Path]
         A list of nested JSON file paths.
-    
+
     Returns
     -------
     list[Path]
@@ -220,6 +221,7 @@ def flatten_nested_files(nested_files: list[Path])->list[Path]:
             failed.append(file_path)
     return failed
 
+
 def nested_files_check_and_fix(
     directory: str | Path = config_i18n_directory,
 ) -> bool:
@@ -247,7 +249,6 @@ def nested_files_check_and_fix(
     )
 
     failed: list[Path] = flatten_nested_files(nested_files)
-    
 
     if failed:
         file_or_files = "file" if len(failed) == 1 else "files"

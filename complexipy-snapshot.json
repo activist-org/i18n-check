@@ -1,15 +1,5 @@
 [
   {
-    "path": "i18n-check/src/i18n_check/check/all_checks.py",
-    "file_name": "all_checks.py",
-    "functions": [
-      {
-        "name": "run_all_checks",
-        "complexity": 20
-      }
-    ]
-  },
-  {
     "path": "i18n-check/src/i18n_check/check/alt_texts.py",
     "file_name": "alt_texts.py",
     "functions": [
@@ -60,16 +50,6 @@
       {
         "name": "add_missing_keys_interactively",
         "complexity": 45
-      }
-    ]
-  },
-  {
-    "path": "i18n-check/src/i18n_check/check/nested_files.py",
-    "file_name": "nested_files.py",
-    "functions": [
-      {
-        "name": "nested_files_check_and_fix",
-        "complexity": 17
       }
     ]
   },
