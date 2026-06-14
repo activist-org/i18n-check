@@ -94,20 +94,6 @@
     ]
   },
   {
-    "path": "i18n-check/src/i18n_check/cli/generate_config_file.py",
-    "file_name": "generate_config_file.py",
-    "functions": [
-      {
-        "name": "write_to_file",
-        "complexity": 24
-      },
-      {
-        "name": "receive_data",
-        "complexity": 47
-      }
-    ]
-  },
-  {
     "path": "i18n-check/src/i18n_check/cli/main.py",
     "file_name": "main.py",
     "functions": [

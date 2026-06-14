@@ -107,6 +107,45 @@ def config_file_is_valid() -> bool:
         return check_config_and_validate(config, VALIDATORS, VALID_CHECK_KEYS)
 
 
+def check_to_str(check_name: str, check_cfg: dict) -> str:
+    """
+    To check and serialize a single check config to it's YAML string block.
+
+    Parameters
+    ----------
+    check_name : str
+        Names to be checked and passed as a str.
+    check_cfg : dict
+        Configs for the checks to be skipped.
+
+    Returns
+    -------
+    str
+        A Result of the check returned as a string.
+    """
+    lines = [f"  {check_name}:\n    active: {check_cfg['active']}"]
+
+    optional_list_fields = [
+        "directories-to-skip",
+        "files-to-skip",
+        "locales-to-check",
+        "search-dirs",
+    ]
+    for field in optional_list_fields:
+        if field in check_cfg:
+            lines.append(f"    {field}: [{', '.join(check_cfg[field])}]")
+
+    if "keys-to-ignore" in check_cfg:
+        val = check_cfg["keys-to-ignore"]
+        if isinstance(val, list):
+            formatted = ", ".join(f'"{k}"' for k in val)
+            lines.append(f"    keys-to-ignore: [{formatted}]")
+        else:
+            lines.append(f'    keys-to-ignore: "{val}"')
+
+    return "\n".join(lines) + "\n"
+
+
 def write_to_file(
     src_dir: str,
     i18n_dir: str,
@@ -137,83 +176,34 @@ def write_to_file(
     # Import here to avoid circular import.
     from i18n_check.utils import get_config_file_path
 
-    config_file_path = get_config_file_path()
-    with open(config_file_path, "w", encoding="utf-8") as file:
-        checks_str = ""
-        for c in checks:
-            checks_str += f"  {c}:\n    active: {checks[c]['active']}\n"
+    checks_str = "".join(check_to_str(name, cfg) for name, cfg in checks.items())
+    file_types_str = ", ".join(file_types_to_check) if file_types_to_check else ""
 
-            if "directories-to-skip" in checks[c]:
-                checks_str += f"    directories-to-skip: [{', '.join(checks[c]['directories-to-skip'])}]\n"
-
-            if "files-to-skip" in checks[c]:
-                checks_str += (
-                    f"    files-to-skip: [{', '.join(checks[c]['files-to-skip'])}]\n"
-                )
-
-            if "keys-to-ignore" in checks[c]:
-                if isinstance(checks[c]["keys-to-ignore"], list):
-                    keys_list = ", ".join(
-                        f'"{key}"' for key in checks[c]["keys-to-ignore"]
-                    )
-                    checks_str += f"    keys-to-ignore: [{keys_list}]\n"
-
-                else:
-                    checks_str += (
-                        f'    keys-to-ignore: "{checks[c]["keys-to-ignore"]}"\n'
-                    )
-
-            if "locales-to-check" in checks[c]:
-                checks_str += f"    locales-to-check: [{', '.join(checks[c]['locales-to-check'])}]\n"
-
-            if "search-dirs" in checks[c]:
-                checks_str += (
-                    f"    search-dirs: [{', '.join(checks[c]['search-dirs'])}]\n"
-                )
-
-        file_types_to_check_str = (
-            ", ".join(file_types_to_check) if file_types_to_check else ""
-        )
-
-        config_string = f"""# Configuration file for i18n-check validation.
+    config_string = f"""# Configuration file for i18n-check validation.
 # See https://github.com/activist-org/i18n-check for details.
-
 src-dir: {src_dir}
 i18n-dir: {i18n_dir}
 i18n-src: {i18n_src_file}
-
-file-types-to-check: [{file_types_to_check_str}]
-
+file-types-to-check: [{file_types_str}]
 checks:
   # Global configurations are applied to all checks.
 {checks_str}
 """
+    config_file_path = get_config_file_path()
+    with open(config_file_path, "w", encoding="utf-8") as f:
+        f.write(config_string)
 
-        file.write(config_string)
 
-
-def receive_data() -> None:
+def build_checks() -> dict[str, dict[str, Any]]:
     """
-    Interact with user to configure a .yml file.
+    Build a Dictionary of checks to be checked.
+
+    Returns
+    -------
+    dict[str,dict[str,Any]]
+        A dictionary containing necessary keys, directories and information to check.
     """
-    src_dir = input("Enter src dir [frontend]: ").strip() or "frontend"
-    i18n_dir = (
-        input(f"Enter i18n-dir [frontend{PATH_SEPARATOR}i18n]: ").strip()
-        or f"frontend{PATH_SEPARATOR}i18n"
-    )
-    i18n_src_file = (
-        input(
-            f"Enter i18n-src file [frontend{PATH_SEPARATOR}i18n{PATH_SEPARATOR}en.json]: "
-        ).strip()
-        or f"frontend{PATH_SEPARATOR}i18n{PATH_SEPARATOR}en.json"
-    )
-    file_types_to_check = input(
-        "Enter the file extension types to check [.ts, .js]: "
-    ).split() or [".ts", ".js"]
-
-    print("Answer using y or n to select your required checks.")
-
-    checks: dict[str, dict[str, Any]] = {
+    return {
         "global": {
             "title": "all checks",
             "active": False,
@@ -252,77 +242,162 @@ def receive_data() -> None:
         },
     }
 
-    for c, v in checks.items():
-        if not checks["global"]["active"]:
-            check_prompt = input(
-                f"{str(checks[c]['title']).capitalize()} check [y]: "
-            ).lower()
 
-        if checks["global"]["active"] or check_prompt in ["y", ""]:
-            checks[c]["active"] = True
+def prompt(msg: str, default: str = "") -> str:
+    """
+    Prompt the user for input, returning a default if the response is empty.
 
-        if "directories-to-skip" in v:
-            if c == "global":
-                directories_to_skip = input(
-                    f"Directories to skip for {checks[c]['title']} [frontend{PATH_SEPARATOR}node_modules]: "
-                ).lower()
-                checks[c]["directories-to-skip"] = (
-                    directories_to_skip
-                    if directories_to_skip != ""
-                    else [f"frontend{PATH_SEPARATOR}node_modules"]
-                )
+    Parameters
+    ----------
+    msg : str
+        The message displayed to the user as the input prompt.
+    default : str
+        The value to return if the user provides no input. Defaults to "".
 
-            else:
-                directories_to_skip = input(
-                    f"Directories to skip for {checks[c]['title']} [None]: "
-                ).lower()
-                checks[c]["directories-to-skip"] = (
-                    directories_to_skip if directories_to_skip != "" else []
-                )
+    Returns
+    -------
+    str
+        The stripped user input or default value if the response is empty.
+    """
+    return input(msg).strip() or default
 
-        if "files-to-skip" in checks[c]:
-            files_to_skip = input(
-                f"Files to skip for {checks[c]['title']} [None]: "
-            ).lower()
-            checks[c]["files-to-skip"] = files_to_skip if files_to_skip != "" else []
 
-        if "keys-to-ignore" in checks[c]:
-            keys_to_ignore_input = input(
-                f"Keys to ignore for {checks[c]['title']} (comma-separated regex patterns) [None]: "
-            )
-            if keys_to_ignore_input.strip():
-                patterns = [
-                    pattern.strip() for pattern in keys_to_ignore_input.split(",")
-                ]
-                # Filter out empty patterns.
-                checks[c]["keys-to-ignore"] = [p for p in patterns if p]
+def prompt_list(msg: str, sep: str = ",") -> list[str]:
+    """
+    Prompt the user for a list of inputs, returning a list of responses.
 
-            else:
-                checks[c]["keys-to-ignore"] = []
+    Parameters
+    ----------
+    msg : str
+        The message displayed to the user as the input prompt.
+    sep : str
+        A separator to separate the response.
 
-        if "locales-to-check" in checks[c]:
-            locales_to_check = input(
-                f"Locales to check for {checks[c]['title']} (comma-separated, e.g., fr, de) [All]: "
-            )
-            if locales_to_check.strip():
-                checks[c]["locales-to-check"] = [
-                    locale.strip() for locale in locales_to_check.split(",")
-                ]
+    Returns
+    -------
+    list[str]
+        A list of responses in string format collected from the user.
+    """
+    raw = input(msg).strip()
+    return [item.strip() for item in raw.split(sep) if item.strip()] if raw else []
 
-            else:
-                checks[c]["locales-to-check"] = []
 
-        if "search-dirs" in checks[c]:
-            search_dirs = input(
-                f"Additional search directories for {checks[c]['title']} (comma-separated, e.g., frontend/test, frontend/test-e2e) [None]: "
-            )
-            if search_dirs.strip():
-                checks[c]["search-dirs"] = [
-                    dir.strip() for dir in search_dirs.split(",")
-                ]
+def activate_check(checks: dict, key: str) -> None:
+    """
+    Prompt the user  to activate a check, unless global is already active.
 
-            else:
-                checks[c]["search-dirs"] = []
+    Parameters
+    ----------
+    checks : dict
+        A dictionary of checks passed to check.
+    key : str
+        Lookup key passed for accessing the dictionary.
+
+    Returns
+    -------
+    None
+        Looks up the checks with the lookup key if not prompts the users.
+    """
+    if checks["global"]["active"]:
+        checks[key]["active"] = True
+        return
+    answer = input(f"{str(checks[key]['title']).capitalize()} check [y]: ").lower()
+    checks[key]["active"] = answer in ("y", "")
+
+
+def directories_to_skip(key: str, title: str) -> str | list[str]:
+    """
+    Prompt the user for directories to skip for a given check.
+
+    Parameters
+    ----------
+    key : str
+        The check identifier used to determine if the global default applies.
+    title : str
+        The human-readable check name displayed in the prompt.
+
+    Returns
+    -------
+    str | list[str]
+        The user-provided directory string, or a list containing the default path.
+    """
+    if key == "global":
+        default = [f"frontend{PATH_SEPARATOR}node_modules"]
+        raw = input(
+            f"Directories to skip for {title} [frontend{PATH_SEPARATOR}node_modules]: "
+        ).lower()
+        return raw if raw else default
+    raw = input(f"Directories to skip for {title} [None]: ").lower()
+    return raw if raw else []
+
+
+def fill_optional_fields(checks: dict, key: str) -> None:
+    """
+    Populate optional configuration fields for a given check by prompting the user.
+
+    Parameters
+    ----------
+    checks : dict
+        The full checks configuration dict containing all check entries.
+    key : str
+        The lookup key identifying which check entry to populate.
+
+    Returns
+    -------
+    None
+        Prompts the users to skip the required files.
+    """
+    v = checks[key]
+
+    if "directories-to-skip" in v:
+        v["directories-to-skip"] = directories_to_skip(key, v["title"])
+
+    if "files-to-skip" in v:
+        raw = input(f"Files to skip for {v['title']} [None]: ").lower()
+        v["files-to-skip"] = raw.split() if raw else []
+
+    if "keys-to-ignore" in v:
+        v["keys-to-ignore"] = prompt_list(
+            f"Keys to ignore for {v['title']} (comma-separated regex) [None]: "
+        )
+
+    if "locales-to-check" in v:
+        v["locales-to-check"] = prompt_list(
+            f"Locales to check for {v['title']} (comma-separated, e.g., fr, de) [All]: "
+        )
+
+    if "search-dirs" in v:
+        v["search-dirs"] = prompt_list(
+            f"Additional search dirs for {v['title']} (comma-separated) [None]: "
+        )
+
+
+def receive_data() -> None:
+    """
+    Interact with user to configure a .yml file.
+    """
+    src_dir = input("Enter src dir [frontend]: ").strip() or "frontend"
+    i18n_dir = (
+        input(f"Enter i18n-dir [frontend{PATH_SEPARATOR}i18n]: ").strip()
+        or f"frontend{PATH_SEPARATOR}i18n"
+    )
+    i18n_src_file = (
+        input(
+            f"Enter i18n-src file [frontend{PATH_SEPARATOR}i18n{PATH_SEPARATOR}en.json]: "
+        ).strip()
+        or f"frontend{PATH_SEPARATOR}i18n{PATH_SEPARATOR}en.json"
+    )
+    file_types_to_check = input(
+        "Enter the file extension types to check [.ts, .js]: "
+    ).split() or [".ts", ".js"]
+
+    print("Answer using y or n to select your required checks.")
+
+    checks: dict[str, dict[str, Any]] = build_checks()
+
+    for key in checks:
+        activate_check(checks, key)
+        fill_optional_fields(checks, key)
 
     write_to_file(
         src_dir=src_dir,
