@@ -27,7 +27,55 @@ from i18n_check.utils import (
     replace_text_in_file,
 )
 
+
 # MARK: Find Issues
+def _check_json_file(
+    json_file_dict: dict,
+    aria_label_issues: dict,
+    json_file: str,
+    punctuation_to_check: str,
+) -> None:
+    """
+    Helper function to check json file and fix appropriate punctuations.
+
+    Parameters
+    ----------
+    json_file_dict : dict
+        The parsed contents of a single JSON file, as a flat dict.
+    aria_label_issues : dict
+        Running accumulator of all aria label issues found so far across all the files.
+    json_file : str
+        The path of the current JSON file being checked, as a string.
+    punctuation_to_check : str
+        The string of valid ending/leading punctuation characters.
+
+    Returns
+    -------
+    None
+        The function iterates, checks and fixes the necessary punctuations.
+    """
+    for key, value in json_file_dict.items():
+        if isinstance(value, str) and key.endswith("_aria_label"):
+            stripped_value = value.rstrip()
+            # Aria labels should not have punctuation at either end.
+            has_punctuation_at_end = (
+                stripped_value and stripped_value[-1] in punctuation_to_check
+            )
+            has_punctuation_at_start = (
+                stripped_value and stripped_value[0] in punctuation_to_check
+            )
+            if stripped_value and (has_punctuation_at_end or has_punctuation_at_start):
+                # Remove punctuation from both ends to be thorough.
+                corrected_value = stripped_value.strip(punctuation_to_check)
+
+                # Preserve any trailing whitespace from original.
+                if value.endswith(" "):
+                    corrected_value += " "
+
+                aria_label_issues.setdefault(key, {})[str(json_file)] = {
+                    "current_value": value,
+                    "correct_value": corrected_value,
+                }
 
 
 def find_aria_label_punctuation_issues(
@@ -53,38 +101,9 @@ def find_aria_label_punctuation_issues(
     aria_label_issues: dict[str, dict[str, dict[str, str]]] = {}
     for json_file in json_files:
         json_file_dict = read_json_file(file_path=json_file)
-
-        for key, value in json_file_dict.items():
-            if isinstance(value, str) and key.endswith("_aria_label"):
-                stripped_value = value.rstrip()
-
-                # Aria labels should not have punctuation at either end.
-                has_punctuation_at_end = (
-                    stripped_value and stripped_value[-1] in punctuation_to_check
-                )
-                has_punctuation_at_start = (
-                    stripped_value and stripped_value[0] in punctuation_to_check
-                )
-
-                if stripped_value and (
-                    has_punctuation_at_end or has_punctuation_at_start
-                ):
-                    # Remove punctuation from both ends to be thorough.
-                    corrected_value = stripped_value.strip(punctuation_to_check)
-
-                    # Preserve any trailing whitespace from original.
-                    if value.endswith(" "):
-                        corrected_value += " "
-
-                    if key not in aria_label_issues:
-                        aria_label_issues[key] = {}
-
-                    if json_file not in aria_label_issues[key]:
-                        aria_label_issues[key][json_file] = {}
-
-                    aria_label_issues[key][json_file]["current_value"] = value
-                    aria_label_issues[key][json_file]["correct_value"] = corrected_value
-
+        _check_json_file(
+            json_file_dict, aria_label_issues, json_file, punctuation_to_check
+        )
     return aria_label_issues
 
 

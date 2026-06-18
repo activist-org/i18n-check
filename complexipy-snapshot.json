@@ -1,15 +1,5 @@
 [
   {
-    "path": "i18n-check/src/i18n_check/check/aria_labels.py",
-    "file_name": "aria_labels.py",
-    "functions": [
-      {
-        "name": "find_aria_label_punctuation_issues",
-        "complexity": 30
-      }
-    ]
-  },
-  {
     "path": "i18n-check/src/i18n_check/check/key_formatting.py",
     "file_name": "key_formatting.py",
     "functions": [
