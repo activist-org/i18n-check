@@ -4,10 +4,6 @@
     "file_name": "key_naming.py",
     "functions": [
       {
-        "name": "audit_invalid_i18n_key_names",
-        "complexity": 20
-      },
-      {
         "name": "invalid_key_names_check_and_fix",
         "complexity": 37
       }

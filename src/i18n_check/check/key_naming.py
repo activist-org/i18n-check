@@ -123,6 +123,118 @@ def _ignore_key(key: str, keys_to_ignore_regex: list[str]) -> bool:
     return any(pattern and re.search(pattern, key) for pattern in keys_to_ignore_regex)
 
 
+def _filter_key_file_dict(
+    keys_to_ignore_regex: list[str] | None, key_file_dict: dict[str, list[str]]
+) -> dict[str, list[str]]:
+    """
+    Build and filter key file dictionary.
+
+    Parameters
+    ----------
+    keys_to_ignore_regex : list[str] | None
+        A list of regex patterns to match with keys that should be ignored during validation.
+    key_file_dict : dict[str, list[str]]
+        A dictionary where keys are i18n keys and values are lists of file paths where those keys are used.
+
+    Returns
+    -------
+    dict[str, list[str]]
+        Returns a filtered key file dictionary.
+    """
+    if keys_to_ignore_regex:
+        filtered_key_file_dict = {
+            k: v
+            for k, v in key_file_dict.items()
+            if not _ignore_key(key=k, keys_to_ignore_regex=keys_to_ignore_regex)
+        }
+        return filtered_key_file_dict
+    else:
+        filtered_key_file_dict = key_file_dict
+        return filtered_key_file_dict
+
+
+def _get_ideal_key_base_single(file_path: str) -> str:
+    """
+    Derive the ideal key base from a single path.
+
+    Parameters
+    ----------
+    file_path : str
+        The file path where i18n key is used.
+
+    Returns
+    -------
+    str
+        The ideal key base derived from the file path with a trailing period.
+    """
+    formatted_potential_key = path_to_valid_key(file_path)
+    potential_key_parts = formatted_potential_key.split(".")
+    # Is the part in the last key part such that it's a parent directory that's included in the file name.
+    valid_key_parts = filter_valid_key_parts(potential_key_parts)
+    # Get rid of repeat key parts for files that are the same name as their directory.
+    valid_key_parts = [p for p in valid_key_parts if valid_key_parts.count(p) == 1]
+    return ".".join(valid_key_parts) + "."
+
+
+def _get_ideal_key_base_multiple(file_paths: list[str]) -> str:
+    """
+    Derive the ideal key base from multiple file paths.
+
+    Finds the common parts across all file paths and builds the ideal key
+    base from them. Inserts ``_global`` where the paths diverge.
+
+    Parameters
+    ----------
+    file_paths : list[str]
+        The file paths where the i18n key is used across multiple files.
+
+    Returns
+    -------
+    str
+        The ideal key base derived from the common parts of all file paths.
+    """
+    formatted_potential_keys = [path_to_valid_key(p) for p in file_paths]
+    # Match all entries with their counterparts from other valid key parts.
+    corresponding_valid_key_parts = list(
+        zip(*(k.split(".") for k in formatted_potential_keys))
+    )
+    # Append all parts in order so long as all valid keys share the same part.
+    extended_key_base = ""
+    global_added = False
+    for current_parts in corresponding_valid_key_parts:
+        if len(set(current_parts)) != 1 and not global_added:
+            extended_key_base += "_global."
+            global_added = True
+        if len(set(current_parts)) == 1:
+            extended_key_base += f"{current_parts[0]}."
+    extended_key_base_split = extended_key_base.split()
+    # Don't include a key part if it's included in the final one (i.e. organizational sub dir).
+    valid_key_parts = filter_valid_key_parts(extended_key_base_split)
+    return ".".join(valid_key_parts)
+
+
+def _find_invalid_key_names(file_paths: list[str]) -> str:
+    """
+    Derive the ideal key base from one or more file paths.
+
+    Delegates to ``_get_ideal_key_base_single`` if the key is used in one
+    file, or ``_get_ideal_key_base_multiple`` if used across several files.
+
+    Parameters
+    ----------
+    file_paths : list[str]
+        The file paths where the i18n key is used.
+
+    Returns
+    -------
+    str
+        The ideal key base derived from the given file paths.
+    """
+    if len(file_paths) == 1:
+        return _get_ideal_key_base_single(file_paths[0])
+    return _get_ideal_key_base_multiple(file_paths)
+
+
 def audit_invalid_i18n_key_names(
     key_file_dict: dict[str, list[str]],
     keys_to_ignore_regex: list[str] | None = None,
@@ -135,7 +247,7 @@ def audit_invalid_i18n_key_names(
     key_file_dict : dict[str, list[str]]
         A dictionary where keys are i18n keys and values are lists of file paths where those keys are used.
 
-    keys_to_ignore_regex : list[str], optional, default=None
+    keys_to_ignore_regex : list[str] | None, default=None
         A list of regex patterns to match with keys that should be ignored during validation.
         Keys matching any of these patterns will be skipped during the audit.
         For backward compatibility, a single string is also accepted and will be converted to a list.
@@ -148,69 +260,12 @@ def audit_invalid_i18n_key_names(
     if keys_to_ignore_regex is None:
         keys_to_ignore_regex = []
 
-    filtered_key_file_dict = (
-        {
-            k: v
-            for k, v in key_file_dict.items()
-            if not _ignore_key(key=k, keys_to_ignore_regex=keys_to_ignore_regex)
-        }
-        if keys_to_ignore_regex
-        else key_file_dict
-    )
-
+    filtered_key_file_dict = _filter_key_file_dict(keys_to_ignore_regex, key_file_dict)
     invalid_keys_by_name: dict[str, str] = {}
-    for k in filtered_key_file_dict:
-        # Key is used in one file.
-        if len(filtered_key_file_dict[k]) == 1:
-            formatted_potential_key = path_to_valid_key(filtered_key_file_dict[k][0])
-            potential_key_parts: list[str] = formatted_potential_key.split(".")
-            # Is the part in the last key part such that it's a parent directory that's included in the file name.
-            valid_key_parts = filter_valid_key_parts(potential_key_parts)
-
-            # Get rid of repeat key parts for files that are the same name as their directory.
-            valid_key_parts = [
-                p for p in valid_key_parts if valid_key_parts.count(p) == 1
-            ]
-
-            ideal_key_base = ".".join(valid_key_parts) + "."
-
-        # Key is used in multiple files.
-        else:
-            formatted_potential_keys = [
-                path_to_valid_key(p) for p in filtered_key_file_dict[k]
-            ]
-            potential_key_parts = [
-                part for k in formatted_potential_keys for part in k.split(".")
-            ]
-
-            # Match all entries with their counterparts from other valid key parts.
-            corresponding_valid_key_parts = list(
-                zip(*(k.split(".") for k in formatted_potential_keys))
-            )
-
-            # Append all parts in order so long as all valid keys share the same part.
-            extended_key_base = ""
-            global_added = False
-            for current_parts in corresponding_valid_key_parts:
-                if len(set(current_parts)) != 1 and not global_added:
-                    extended_key_base += "_global."
-                    global_added = True
-
-                if len(set(current_parts)) == 1:
-                    extended_key_base += f"{(current_parts)[0]}."
-
-            # Don't include a key part if it's included in the final one (i.e. organizational sub dir).
-            extended_key_base_split = extended_key_base.split()
-            valid_key_parts = filter_valid_key_parts(extended_key_base_split)
-
-            ideal_key_base = ".".join(valid_key_parts)
-
-        ideal_key_base = f"i18n.{ideal_key_base}"
-
+    for k, file_paths in filtered_key_file_dict.items():
+        ideal_key_base = f"i18n.{_find_invalid_key_names(file_paths)}"
         if k[: len(ideal_key_base)] != ideal_key_base:
-            ideal_key = f"{ideal_key_base}{k.split('.')[-1]}"
-            invalid_keys_by_name[k] = ideal_key
-
+            invalid_keys_by_name[k] = f"{ideal_key_base}{k.split('.')[-1]}"
     return invalid_keys_by_name
 
 
