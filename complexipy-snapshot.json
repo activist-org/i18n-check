@@ -1,15 +1,5 @@
 [
   {
-    "path": "i18n-check/src/i18n_check/check/key_formatting.py",
-    "file_name": "key_formatting.py",
-    "functions": [
-      {
-        "name": "invalid_key_formats_check_and_fix",
-        "complexity": 37
-      }
-    ]
-  },
-  {
     "path": "i18n-check/src/i18n_check/check/key_naming.py",
     "file_name": "key_naming.py",
     "functions": [
