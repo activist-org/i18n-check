@@ -270,6 +270,114 @@ def audit_invalid_i18n_key_names(
 
 
 # MARK: Error Outputs
+def _create_message_format(invalid_keys: dict[str, str], keys: str, key: str) -> str:
+    """
+    Create message format based on the length of keys.
+
+    Parameters
+    ----------
+    invalid_keys : dict[str,str]
+        A dictionary mapping invalid keys to their corrected format.
+    keys : str
+        A string value as a message if the dictionary has more than one key.
+    key : str
+        A string value as a message if the dictionary has one key.
+
+    Returns
+    -------
+    str
+        A finalized string for message format.
+    """
+    if len(invalid_keys) > 1:
+        return keys
+    return key
+
+
+def _print_invalid_keys(
+    invalid_keys_by_name: dict,
+    invalid_keys_by_name_error: str,
+    fix: bool,
+    all_checks_enabled: bool,
+) -> None:
+    """
+    Print the results of key formatting check and exit if issues are found.
+
+    Parameters
+    ----------
+    invalid_keys_by_name : dict
+        A dictionary mapping invalid keys to their correct order.
+    invalid_keys_by_name_error : str
+        A string to print when invalid formatted keys are found.
+    fix : bool
+        If True, automatically corrects the invalid key formats in the source files.
+    all_checks_enabled : bool
+        Whether all checks are being ran by the CLI.
+
+    Returns
+    -------
+    None
+        Prints invalid formatted keys, raises ValueError and Terminates if invalid otherwise prints the validated message.
+
+    Raises
+    ------
+    ValueError, sys.exit(1)
+        An error is raised and the system prints error details if there are invalid keys by format.
+    """
+    if invalid_keys_by_name:
+        rprint(f"\n[red] {invalid_keys_by_name_error} [/red]")
+
+        if not fix:
+            rprint(
+                "\n[yellow]💡 Tip: You can automatically fix invalid key names by running the --key-naming (-kn) check with the --fix (-f) flag.[/yellow]\n"
+            )
+
+            if all_checks_enabled:
+                raise ValueError("The key naming i18n check has failed.")
+
+            else:
+                sys.exit(1)
+    else:
+        rprint(
+            "[green]✅ key-naming success: All i18n keys are named correctly in the i18n-src file.[/green]"
+        )
+
+
+def _sort_local_files(config_sorted_keys_active: bool, json_files: list[str]) -> None:
+    """
+    Check and sort the local files.
+
+    Parameters
+    ----------
+    config_sorted_keys_active : bool
+        Global boolean flag to sort local files.
+    json_files : list[str]
+        List of json_files required to be sorted.
+
+    Returns
+    -------
+    None
+        Checks, then sorts the local files if required, otherwise skips necessary repeated files.
+    """
+    if config_sorted_keys_active:
+        for json_file in json_files:
+            locale_dict = read_json_file(json_file)
+            is_sorted, _ = check_file_keys_sorted(locale_dict)
+
+            if not is_sorted:
+                if (
+                    config_repeat_keys_active
+                    and not check_file_keys_repeated(json_file)[1]
+                ):
+                    sorted_locale_dict = dict(sorted(locale_dict.items()))
+
+                    with open(json_file, "w", encoding="utf-8") as lf:
+                        json.dump(sorted_locale_dict, lf, indent=2, ensure_ascii=False)
+                        lf.write("\n")
+
+                else:
+                    rprint(
+                        "\n[yellow]⚠️  Note: JSON key sorting skipped as there are repeat keys (i18n-check -rk)[/yellow]"
+                    )
 
 
 def invalid_key_names_check_and_fix(
@@ -304,35 +412,18 @@ def invalid_key_names_check_and_fix(
     invalid_keys_by_name_string = "".join(
         f"\n{k} -> {v}" for k, v in sorted(invalid_keys_by_name.items())
     )
-    name_to_be = "are" if len(invalid_keys_by_name) > 1 else "is"
-    name_key_to_be = "keys that are" if len(invalid_keys_by_name) > 1 else "key that is"
-    name_key_or_keys = "keys" if len(invalid_keys_by_name) > 1 else "key"
+    name_to_be = _create_message_format(invalid_keys_by_name, "are", "is")
+    name_key_to_be = _create_message_format(
+        invalid_keys_by_name, "keys that are", "key that is"
+    )
+    name_key_or_keys = _create_message_format(invalid_keys_by_name, "keys", "key")
 
     invalid_keys_by_name_error = f"""❌ key-naming error: There {name_to_be} {len(invalid_keys_by_name)} i18n {name_key_to_be} not named correctly.
 Please rename the following {name_key_or_keys} \\[current_key -> suggested_correction]:\n{invalid_keys_by_name_string}"""
 
-    if not invalid_keys_by_name:
-        rprint(
-            "[green]✅ key-naming success: All i18n keys are named correctly in the i18n-src file.[/green]"
-        )
-
-    else:
-        error_string = "\n[red]"
-        error_string += invalid_keys_by_name_error
-        error_string += "[/red]"
-        rprint(error_string)
-
-        if not fix:
-            rprint(
-                "\n[yellow]💡 Tip: You can automatically fix invalid key names by running the --key-naming (-kn) check with the --fix (-f) flag.[/yellow]\n"
-            )
-
-            if all_checks_enabled:
-                raise ValueError("The key naming i18n check has failed.")
-
-            else:
-                sys.exit(1)
-
+    _print_invalid_keys(
+        invalid_keys_by_name, invalid_keys_by_name_error, fix, all_checks_enabled
+    )
     if fix and invalid_keys_by_name:
         files_to_fix = collect_files_to_check(
             directory=config_src_directory,
@@ -350,28 +441,7 @@ Please rename the following {name_key_or_keys} \\[current_key -> suggested_corre
                 replace_text_in_file(path=f, old=current, new=correct)
 
         # Sort all locale files if the sorted-keys and repeat-keys checks are activated.
-        if config_sorted_keys_active:
-            for json_file in json_files:
-                locale_dict = read_json_file(json_file)
-                is_sorted, _ = check_file_keys_sorted(locale_dict)
-
-                if not is_sorted:
-                    if (
-                        config_repeat_keys_active
-                        and not check_file_keys_repeated(json_file)[1]
-                    ):
-                        sorted_locale_dict = dict(sorted(locale_dict.items()))
-
-                        with open(json_file, "w", encoding="utf-8") as lf:
-                            json.dump(
-                                sorted_locale_dict, lf, indent=2, ensure_ascii=False
-                            )
-                            lf.write("\n")
-
-                    else:
-                        rprint(
-                            "\n[yellow]⚠️  Note: JSON key sorting skipped as there are repeat keys (i18n-check -rk)[/yellow]"
-                        )
+        _sort_local_files(config_sorted_keys_active, json_files)
 
         if all_checks_enabled:
             raise ValueError("The invalid keys i18n check has failed.")

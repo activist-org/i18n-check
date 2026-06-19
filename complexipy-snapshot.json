@@ -1,15 +1,5 @@
 [
   {
-    "path": "i18n-check/src/i18n_check/check/key_naming.py",
-    "file_name": "key_naming.py",
-    "functions": [
-      {
-        "name": "invalid_key_names_check_and_fix",
-        "complexity": 37
-      }
-    ]
-  },
-  {
     "path": "i18n-check/src/i18n_check/check/missing_keys.py",
     "file_name": "missing_keys.py",
     "functions": [
