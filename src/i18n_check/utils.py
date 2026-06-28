@@ -734,15 +734,15 @@ def is_chinese_or_japanese_text(text: str) -> bool:
 # RTL scripts are handled separately via bidirectional category in
 # get_script_terminal_punctuation, so only LTR non-Latin scripts appear here.
 _SCRIPT_TERMINAL_PUNCTUATION: dict[str, tuple[str, bool]] = {
-    "CJK": ("。", False),       # 。 ideographic full stop
+    "CJK": ("。", False),  # 。 ideographic full stop
     "HIRAGANA": ("。", False),  # 。
     "KATAKANA": ("。", False),  # 。
     "DEVANAGARI": ("।", False),  # । danda (Hindi, Sanskrit, Nepali…)
     "ETHIOPIC": ("።", False),  # ። full stop (Amharic, Tigrinya…)
     "ARMENIAN": ("։", False),  # ։ full stop
-    "MYANMAR": ("။", False),   # ။ section mark
-    "KHMER": ("។", False),     # ។ full stop
-    "TIBETAN": ("།", False),   #། shay
+    "MYANMAR": ("။", False),  # ။ section mark
+    "KHMER": ("។", False),  # ។ full stop
+    "TIBETAN": ("།", False),  # ། shay
 }
 
 # All known terminal punctuation across scripts, used for presence checks and
