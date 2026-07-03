@@ -14,10 +14,13 @@ import pytest
 
 from i18n_check.check.key_naming import map_keys_to_files
 from i18n_check.utils import (
+    ALL_TERMINAL_PUNCTUATION,
     collect_files_to_check,
     filter_valid_key_parts,
     get_all_json_files,
     get_config_file_path,
+    get_script_terminal_punctuation,
+    is_rtl_text,
     is_valid_key,
     lower_and_remove_punctuation,
     path_to_valid_key,
@@ -305,6 +308,63 @@ def test_get_config_file_path_neither_exists(tmp_path) -> None:
         result = get_config_file_path()
         assert result.name == ".i18n-check.yaml"
         assert not result.is_file()
+
+
+@pytest.mark.parametrize(
+    "text, expected_char, expected_prepend",
+    [
+        # Latin default
+        ("Hello world", ".", False),
+        # RTL Arabic
+        ("الثعلب البني", ".", True),
+        # RTL Hebrew
+        ("שלום עולם", ".", True),
+        # CJK Chinese
+        ("快速的棕色狐狸", "。", False),
+        # Japanese Hiragana
+        ("すばやい茶色のキツネ", "。", False),
+        # Devanagari (Hindi)
+        ("त्वरित भूरी लोमड़ी", "।", False),
+        # Ethiopic (Amharic)
+        ("ፈጣን ቡናማ ቀበሮ", "።", False),
+        # Armenian
+        ("Արագ շագանակագույն աղվես", "։", False),
+        # Myanmar
+        ("မြန်ဆန်သောညိုဝါရောင်မြေခွေး", "။", False),
+        # Khmer
+        ("សត្វចចៃពណ៌ត្នោត", "។", False),
+        # Tibetan
+        ("མྱུར་མོའི་སྤྱང་ཀི", "།", False),
+    ],
+)
+def test_get_script_terminal_punctuation(
+    text: str, expected_char: str, expected_prepend: bool
+) -> None:
+    char, prepend = get_script_terminal_punctuation(text)
+    assert char == expected_char
+    assert prepend == expected_prepend
+
+
+def test_all_terminal_punctuation_contains_script_chars() -> None:
+    script_chars = ["。", "।", "።", "։", "။", "។", "།"]
+    for char in script_chars:
+        assert char in ALL_TERMINAL_PUNCTUATION
+
+
+def test_is_rtl_text_arabic() -> None:
+    assert is_rtl_text("مرحبا")
+
+
+def test_is_rtl_text_hebrew() -> None:
+    assert is_rtl_text("שלום")
+
+
+def test_is_rtl_text_latin() -> None:
+    assert not is_rtl_text("Hello")
+
+
+def test_is_rtl_text_empty() -> None:
+    assert not is_rtl_text("")
 
 
 if __name__ == "__main__":

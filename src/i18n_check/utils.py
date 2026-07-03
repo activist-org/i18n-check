@@ -718,7 +718,7 @@ def is_chinese_or_japanese_text(text: str) -> bool:
         return False
 
     for char in text:
-        char_name = unicodedata.name(char)
+        char_name = unicodedata.name(char, "")
         if (
             "CJK UNIFIED IDEOGRAPH" in char_name
             or "HIRAGANA" in char_name
@@ -727,3 +727,55 @@ def is_chinese_or_japanese_text(text: str) -> bool:
             return True
 
     return False
+
+
+# Maps the first word of a Unicode character name to (terminal_char, prepend).
+# prepend=True means the character goes at the start (used for RTL scripts).
+# RTL scripts are handled separately via bidirectional category in
+# get_script_terminal_punctuation, so only LTR non-Latin scripts appear here.
+_SCRIPT_TERMINAL_PUNCTUATION: dict[str, tuple[str, bool]] = {
+    "CJK": ("。", False),  # 。 ideographic full stop
+    "HIRAGANA": ("。", False),  # 。
+    "KATAKANA": ("。", False),  # 。
+    "DEVANAGARI": ("।", False),  # । danda (Hindi, Sanskrit, Nepali…)
+    "ETHIOPIC": ("።", False),  # ። full stop (Amharic, Tigrinya…)
+    "ARMENIAN": ("։", False),  # ։ full stop
+    "MYANMAR": ("။", False),  # ။ section mark
+    "KHMER": ("។", False),  # ។ full stop
+    "TIBETAN": ("།", False),  # ། shay
+}
+
+# All known terminal punctuation across scripts, used for presence checks and
+# stripping. Derived from the mapping above plus ASCII punctuation.
+ALL_TERMINAL_PUNCTUATION: str = string.punctuation + "".join(
+    {char for char, _ in _SCRIPT_TERMINAL_PUNCTUATION.values()}
+    - set(string.punctuation)
+)
+
+
+def get_script_terminal_punctuation(text: str) -> tuple[str, bool]:
+    """
+    Return the appropriate terminal punctuation for the dominant script in text.
+
+    Parameters
+    ----------
+    text : str
+        The text whose script should be detected.
+
+    Returns
+    -------
+    tuple[str, bool]
+        A tuple of (terminal_char, prepend) where prepend=True means the character
+        should be placed at the start of the string (for RTL scripts).
+    """
+    if is_rtl_text(text):
+        return (".", True)
+
+    for char in text:
+        name = unicodedata.name(char, "")
+        if name:
+            script = name.split()[0]
+            if script in _SCRIPT_TERMINAL_PUNCTUATION:
+                return _SCRIPT_TERMINAL_PUNCTUATION[script]
+
+    return (".", False)

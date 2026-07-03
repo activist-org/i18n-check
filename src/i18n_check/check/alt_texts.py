@@ -13,18 +13,17 @@ Run the following script in terminal:
 >>> i18n-check -at -f  # to fix issues automatically
 """
 
-import string
 import sys
 from pathlib import Path
 
 from rich import print as rprint
 
 from i18n_check.utils import (
+    ALL_TERMINAL_PUNCTUATION,
     PATH_SEPARATOR,
     config_i18n_directory,
     get_all_json_files,
-    is_chinese_or_japanese_text,
-    is_rtl_text,
+    get_script_terminal_punctuation,
     read_json_file,
     replace_text_in_file,
 )
@@ -50,8 +49,6 @@ def find_alt_text_punctuation_issues(
     """
     json_files = get_all_json_files(directory=i18n_directory)
 
-    punctuation_to_check = f"{string.punctuation}\u061f\u3002"
-
     alt_text_issues: dict[str, dict[str, dict[str, str]]] = {}
     for json_file in json_files:
         json_file_dict = read_json_file(file_path=json_file)
@@ -62,34 +59,15 @@ def find_alt_text_punctuation_issues(
                 if not stripped_value:
                     continue
 
-                if is_rtl_text(stripped_value):
-                    # The period should be at position 0 for RTL text.
-                    if stripped_value[0] not in punctuation_to_check:
-                        corrected_value = f".{stripped_value}"
+                term_char, prepend = get_script_terminal_punctuation(stripped_value)
+                check_char = stripped_value[0] if prepend else stripped_value[-1]
 
-                        if key not in alt_text_issues:
-                            alt_text_issues[key] = {}
-
-                        alt_text_issues[key][str(json_file)] = {
-                            "current_value": value,
-                            "correct_value": corrected_value,
-                        }
-
-                elif is_chinese_or_japanese_text(stripped_value):
-                    # The period needs to be U+3002 (。).
-                    if stripped_value[-1] not in punctuation_to_check:
-                        corrected_value = f"{stripped_value}\u3002"
-
-                        if key not in alt_text_issues:
-                            alt_text_issues[key] = {}
-
-                        alt_text_issues[key][str(json_file)] = {
-                            "current_value": value,
-                            "correct_value": corrected_value,
-                        }
-
-                elif stripped_value[-1] not in punctuation_to_check:
-                    corrected_value = f"{stripped_value}."
+                if check_char not in ALL_TERMINAL_PUNCTUATION:
+                    corrected_value = (
+                        f"{term_char}{stripped_value}"
+                        if prepend
+                        else f"{stripped_value}{term_char}"
+                    )
 
                     if key not in alt_text_issues:
                         alt_text_issues[key] = {}
