@@ -10,7 +10,11 @@ See the [releases for i18n-check](https://github.com/activist-org/i18n-check/rel
 
 Emojis for the following are chosen based on [gitmoji](https://gitmoji.dev/).
 
-## [Upcoming] i18n-check 1.19.6
+## [Upcoming] i18n-check 1.20.0
+
+### ✨ Features
+
+- Checks for `aria-label` and `alt-text` terminal punctuation was expanded to handle more languages ([#108](https://github.com/activist-org/i18n-check/issues/108)).
 
 ### ♻️ Code Refactoring
 
