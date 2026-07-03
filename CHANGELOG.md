@@ -19,7 +19,7 @@ Emojis for the following are chosen based on [gitmoji](https://gitmoji.dev/).
 ### ♻️ Code Refactoring
 
 - The legacy Python typing system was removed in favor of the more modern approach ([#113](https://github.com/activist-org/i18n-check/issues/113)).
-- The complexity of the code was reduced to improve maintainability via checks using `complexipy` ([#115](https://github.com/activist-org/ts-backend-check/issues/115)).
+- The complexity of the code was reduced to improve maintainability via checks using `complexipy` ([#115](https://github.com/activist-org/i18n-check/issues/115)).
 
 ## i18n-check 1.19.5
 
