@@ -5,7 +5,7 @@
     "functions": [
       {
         "name": "run_all_checks",
-        "complexity": 20
+        "complexity": 21
       }
     ]
   },
@@ -15,7 +15,7 @@
     "functions": [
       {
         "name": "find_alt_text_punctuation_issues",
-        "complexity": 44
+        "complexity": 29
       }
     ]
   },
@@ -35,7 +35,7 @@
     "functions": [
       {
         "name": "invalid_key_formats_check_and_fix",
-        "complexity": 37
+        "complexity": 38
       }
     ]
   },
@@ -45,11 +45,11 @@
     "functions": [
       {
         "name": "audit_invalid_i18n_key_names",
-        "complexity": 20
+        "complexity": 36
       },
       {
         "name": "invalid_key_names_check_and_fix",
-        "complexity": 37
+        "complexity": 38
       }
     ]
   },
@@ -59,17 +59,7 @@
     "functions": [
       {
         "name": "add_missing_keys_interactively",
-        "complexity": 45
-      }
-    ]
-  },
-  {
-    "path": "i18n-check/src/i18n_check/check/nested_files.py",
-    "file_name": "nested_files.py",
-    "functions": [
-      {
-        "name": "nested_files_check_and_fix",
-        "complexity": 17
+        "complexity": 41
       }
     ]
   },
@@ -79,7 +69,7 @@
     "functions": [
       {
         "name": "non_source_keys_check_and_delete",
-        "complexity": 29
+        "complexity": 19
       }
     ]
   },
@@ -89,7 +79,7 @@
     "functions": [
       {
         "name": "add_nonexistent_keys_interactively",
-        "complexity": 23
+        "complexity": 22
       }
     ]
   },
@@ -109,7 +99,7 @@
     "functions": [
       {
         "name": "unused_keys_check_and_delete",
-        "complexity": 43
+        "complexity": 28
       }
     ]
   },
@@ -119,15 +109,15 @@
     "functions": [
       {
         "name": "config_file_is_valid",
-        "complexity": 23
+        "complexity": 17
       },
       {
         "name": "write_to_file",
-        "complexity": 24
+        "complexity": 20
       },
       {
         "name": "receive_data",
-        "complexity": 47
+        "complexity": 64
       }
     ]
   },
