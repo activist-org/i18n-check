@@ -451,6 +451,56 @@ def collect_files_to_check(
     return list(result)
 
 
+def collect_source_and_search_dir_files_to_fix(
+    src_directory: str | Path,
+    search_directories: list[Path],
+    file_types_to_check: list[str],
+    directories_to_skip: list[Path],
+    files_to_skip: list[Path],
+) -> list[str]:
+    """
+    Collect source files that should receive automatic key replacements.
+
+    Parameters
+    ----------
+    src_directory : str | Path
+        The configured source directory.
+
+    search_directories : list[Path]
+        Additional directories configured for nonexistent-keys search.
+
+    file_types_to_check : list[str]
+        The file extensions to search in.
+
+    directories_to_skip : list[Path]
+        Paths to directories to not include in the check.
+
+    files_to_skip : list[Path]
+        Paths to files to not include in the check.
+
+    Returns
+    -------
+    list[str]
+        A deduplicated list of file paths that should be fixed.
+    """
+    files_to_fix: list[str] = []
+    seen_files: set[str] = set()
+
+    for directory in [src_directory, *search_directories]:
+        for file_path in collect_files_to_check(
+            directory=directory,
+            file_types_to_check=file_types_to_check,
+            directories_to_skip=directories_to_skip,
+            files_to_skip=files_to_skip,
+        ):
+            resolved_file_path = str(Path(file_path).resolve())
+            if resolved_file_path not in seen_files:
+                seen_files.add(resolved_file_path)
+                files_to_fix.append(file_path)
+
+    return files_to_fix
+
+
 # MARK: Valid Keys
 
 

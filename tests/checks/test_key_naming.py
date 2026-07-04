@@ -5,6 +5,7 @@ Tests for invalid i18n key naming validation.
 
 import pytest
 
+import i18n_check.check.key_naming as key_naming
 from i18n_check.check.key_naming import (
     audit_invalid_i18n_key_names,
     invalid_key_names_check_and_fix,
@@ -140,6 +141,49 @@ def test_invalid_key_names_check_and_fix_fail_fix_mode(capsys):
         old="i18n.test_file.repeat_value_single_file",
         new="i18n.repeat_value_single_file",
     )
+
+
+def test_invalid_key_names_fix_updates_nonexistent_key_search_dirs(
+    tmp_path, monkeypatch
+) -> None:
+    """
+    Test that key-naming --fix also updates files in nonexistent-keys search-dirs.
+    """
+    src_dir = tmp_path / "src"
+    search_dir = tmp_path / "search"
+    i18n_dir = tmp_path / "i18n"
+    src_dir.mkdir()
+    search_dir.mkdir()
+    i18n_dir.mkdir()
+
+    src_file = src_dir / "component.ts"
+    search_file = search_dir / "external_component.ts"
+    i18n_file = i18n_dir / "source.json"
+
+    src_file.write_text('"i18n.old.name"', encoding="utf-8")
+    search_file.write_text('"i18n.old.name"', encoding="utf-8")
+    i18n_file.write_text('{"i18n.old.name": "Value"}', encoding="utf-8")
+
+    monkeypatch.setattr(key_naming, "config_src_directory", src_dir)
+    monkeypatch.setattr(key_naming, "config_i18n_directory", i18n_dir)
+    monkeypatch.setattr(key_naming, "config_file_types_to_check", [".ts"])
+    monkeypatch.setattr(key_naming, "config_global_directories_to_skip", [])
+    monkeypatch.setattr(key_naming, "config_global_files_to_skip", [])
+    monkeypatch.setattr(
+        key_naming, "config_nonexistent_keys_search_dirs", [search_dir], raising=False
+    )
+    monkeypatch.setattr(key_naming, "config_sorted_keys_active", False)
+    monkeypatch.setattr(key_naming, "config_repeat_keys_active", False)
+
+    with pytest.raises(SystemExit):
+        invalid_key_names_check_and_fix(
+            invalid_keys_by_name={"i18n.old.name": "i18n.component.name"},
+            fix=True,
+        )
+
+    assert '"i18n.component.name"' in src_file.read_text(encoding="utf-8")
+    assert '"i18n.component.name"' in search_file.read_text(encoding="utf-8")
+    assert '"i18n.component.name"' in i18n_file.read_text(encoding="utf-8")
 
 
 def test_audit_invalid_i18n_keys_regex_ignore() -> None:

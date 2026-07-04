@@ -5,6 +5,7 @@ Tests for invalid i18n key formatting validation.
 
 import pytest
 
+import i18n_check.check.key_formatting as key_formatting
 from i18n_check.check.key_formatting import (
     audit_invalid_i18n_key_formats,
     invalid_key_formats_check_and_fix,
@@ -175,6 +176,49 @@ def test_invalid_key_formats_check_and_fix_fail_fix_mode(capsys):
         old="i18n.test_file.incorrectly_formatted_key",
         new="i18n.test_file.incorrectly-formatted-key",
     )
+
+
+def test_invalid_key_formats_fix_updates_nonexistent_key_search_dirs(
+    tmp_path, monkeypatch
+) -> None:
+    """
+    Test that key-formatting --fix also updates files in nonexistent-keys search-dirs.
+    """
+    src_dir = tmp_path / "src"
+    search_dir = tmp_path / "search"
+    i18n_dir = tmp_path / "i18n"
+    src_dir.mkdir()
+    search_dir.mkdir()
+    i18n_dir.mkdir()
+
+    src_file = src_dir / "component.ts"
+    search_file = search_dir / "external_component.ts"
+    i18n_file = i18n_dir / "source.json"
+
+    src_file.write_text('"i18n.invalid-key"', encoding="utf-8")
+    search_file.write_text('"i18n.invalid-key"', encoding="utf-8")
+    i18n_file.write_text('{"i18n.invalid-key": "Value"}', encoding="utf-8")
+
+    monkeypatch.setattr(key_formatting, "config_src_directory", src_dir)
+    monkeypatch.setattr(key_formatting, "config_i18n_directory", i18n_dir)
+    monkeypatch.setattr(key_formatting, "config_file_types_to_check", [".ts"])
+    monkeypatch.setattr(key_formatting, "config_global_directories_to_skip", [])
+    monkeypatch.setattr(key_formatting, "config_global_files_to_skip", [])
+    monkeypatch.setattr(
+        key_formatting, "config_nonexistent_keys_search_dirs", [search_dir], raising=False
+    )
+    monkeypatch.setattr(key_formatting, "config_sorted_keys_active", False)
+    monkeypatch.setattr(key_formatting, "config_repeat_keys_active", False)
+
+    with pytest.raises(SystemExit):
+        invalid_key_formats_check_and_fix(
+            invalid_keys_by_format={"i18n.invalid-key": "i18n.invalid_key"},
+            fix=True,
+        )
+
+    assert '"i18n.invalid_key"' in src_file.read_text(encoding="utf-8")
+    assert '"i18n.invalid_key"' in search_file.read_text(encoding="utf-8")
+    assert '"i18n.invalid_key"' in i18n_file.read_text(encoding="utf-8")
 
 
 if __name__ == "__main__":
