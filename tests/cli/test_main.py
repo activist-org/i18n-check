@@ -15,6 +15,7 @@ from ..test_utils import (
     fail_checks_sub_dir_first_file_path,
     fail_checks_sub_dir_second_file_path,
     fail_checks_test_file_path,
+    nonexistent_keys_search_dir_file,
 )
 
 
@@ -115,6 +116,18 @@ class TestCliMain(unittest.TestCase):
         )
         replace_text_in_file(
             path=fail_checks_test_file_path,
+            old="i18n.test_file.content_reference",
+            new="i18n.wrong_identifier_path.content_reference",
+        )
+
+        # Verify that the key in the search-dirs file has been updated appropriately.
+        with open(nonexistent_keys_search_dir_file, "r", encoding="utf-8") as f:
+            search_dir_file_content = f.read()
+
+        assert "i18n.test_file.content_reference" in search_dir_file_content
+
+        replace_text_in_file(
+            path=nonexistent_keys_search_dir_file,
             old="i18n.test_file.content_reference",
             new="i18n.wrong_identifier_path.content_reference",
         )

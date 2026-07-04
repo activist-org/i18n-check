@@ -19,6 +19,7 @@ from ..test_utils import (
     fail_checks_test_file_path,
     i18n_map_fail,
     i18n_map_pass,
+    nonexistent_keys_search_dir_file,
 )
 
 invalid_format_fail = audit_invalid_i18n_key_formats(
@@ -172,6 +173,18 @@ def test_invalid_key_formats_check_and_fix_fail_fix_mode(capsys):
     )
     replace_text_in_file(
         path=fail_checks_test_file_path,
+        old="i18n.test_file.incorrectly_formatted_key",
+        new="i18n.test_file.incorrectly-formatted-key",
+    )
+
+    # Verify that the key in the search-dirs file has been updated appropriately.
+    with open(nonexistent_keys_search_dir_file, "r", encoding="utf-8") as f:
+        search_dir_file_content = f.read()
+
+    assert "i18n.test_file.incorrectly_formatted_key" in search_dir_file_content
+
+    replace_text_in_file(
+        path=nonexistent_keys_search_dir_file,
         old="i18n.test_file.incorrectly_formatted_key",
         new="i18n.test_file.incorrectly-formatted-key",
     )

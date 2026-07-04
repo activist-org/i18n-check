@@ -20,13 +20,14 @@ from i18n_check.check.key_naming import invalid_keys_key_file_dict
 from i18n_check.check.repeat_keys import check_file_keys_repeated
 from i18n_check.check.sorted_keys import check_file_keys_sorted
 from i18n_check.utils import (
-    collect_files_to_check,
+    collect_source_and_search_dir_files_to_fix,
     config_file_types_to_check,
     config_global_directories_to_skip,
     config_global_files_to_skip,
     config_i18n_directory,
     config_i18n_src_file,
     config_key_formatting_regexes_to_ignore,
+    config_nonexistent_keys_search_dirs,
     config_repeat_keys_active,
     config_sorted_keys_active,
     config_src_directory,
@@ -183,11 +184,12 @@ Please reformat the following {key_or_keys} [current_key -> suggested_correction
                 sys.exit(1)
 
     if fix and invalid_keys_by_format:
-        files_to_fix = collect_files_to_check(
-            directory=config_src_directory,
+        files_to_fix = collect_source_and_search_dir_files_to_fix(
+            src_directory=config_src_directory,
+            search_directories=config_nonexistent_keys_search_dirs,
             file_types_to_check=config_file_types_to_check,
             directories_to_skip=config_global_directories_to_skip,
-            files_to_skip=config_global_files_to_skip,
+            files_to_skip=config_global_files_to_skip,  # global to fix all instances
         )
 
         json_files = get_all_json_files(directory=config_i18n_directory)
