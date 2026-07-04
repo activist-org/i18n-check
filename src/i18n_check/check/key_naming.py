@@ -286,7 +286,7 @@ Please rename the following {name_key_or_keys} \\[current_key -> suggested_corre
             search_directories=config_nonexistent_keys_search_dirs,
             file_types_to_check=config_file_types_to_check,
             directories_to_skip=config_global_directories_to_skip,
-            files_to_skip=config_global_files_to_skip,  # global as we want to fix all instances
+            files_to_skip=config_global_files_to_skip,  # global to fix all instances
         )
 
         json_files = get_all_json_files(directory=config_i18n_directory)
