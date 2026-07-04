@@ -151,14 +151,14 @@ def invalid_key_formats_check_and_fix(
     invalid_keys_by_format_string = "".join(
         f"\n{k} -> {v}" for k, v in sorted(invalid_keys_by_format.items())
     )
-    format_to_be = "are" if len(invalid_keys_by_format) > 1 else "is"
+    format_to_be = "is" if len(invalid_keys_by_format) == 1 else "are"
     format_key_to_be = (
-        "keys that are" if len(invalid_keys_by_format) > 1 else "key that is"
+        "key that is" if len(invalid_keys_by_format) == 1 else "keys that are"
     )
-    format_key_or_keys = "keys" if len(invalid_keys_by_format) > 1 else "key"
+    key_or_keys = "key" if len(invalid_keys_by_format) == 1 else "keys"
 
     invalid_keys_by_format_error = f"""❌ key-formatting error: There {format_to_be} {len(invalid_keys_by_format)} i18n {format_key_to_be} not formatted correctly.
-Please reformat the following {format_key_or_keys} [current_key -> suggested_correction]:\n{invalid_keys_by_format_string}"""
+Please reformat the following {key_or_keys} [current_key -> suggested_correction]:\n{invalid_keys_by_format_string}"""
 
     if not invalid_keys_by_format:
         rprint(

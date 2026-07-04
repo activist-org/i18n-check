@@ -228,8 +228,11 @@ def run_all_checks(args: argparse.Namespace) -> None:
                 check_results.append(False)
 
     if not all(check_results):
+        failed_checks_count = check_results.count(False)
+        check_or_checks = "check" if failed_checks_count == 1 else "checks"
+        message_or_messages = "message" if failed_checks_count == 1 else "messages"
         rprint(
-            "\n[red]❌ i18n-check error: Some i18n checks did not pass. Please see the error messages above.[/red]"
+            f"\n[red]❌ i18n-check error: {failed_checks_count} i18n {check_or_checks} did not pass. Please see the error {message_or_messages} above.[/red]"
         )
         rprint(
             "[yellow]💡 Tip: You can bypass these checks within Git commit hooks by adding `--no-verify` to your commit command.[/yellow]"

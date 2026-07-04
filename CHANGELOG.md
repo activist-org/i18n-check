@@ -15,6 +15,7 @@ Emojis for the following are chosen based on [gitmoji](https://gitmoji.dev/).
 ### ✨ Features
 
 - Checks for `aria-label` and `alt-text` terminal punctuation was expanded to handle more languages ([#108](https://github.com/activist-org/i18n-check/issues/108)).
+- The total number of failed checks is reported to the user.
 
 ### ♻️ Code Refactoring
 

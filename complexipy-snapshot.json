@@ -5,7 +5,7 @@
     "functions": [
       {
         "name": "run_all_checks",
-        "complexity": 21
+        "complexity": 25
       }
     ]
   },

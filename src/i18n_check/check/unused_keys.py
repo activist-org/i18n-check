@@ -111,7 +111,7 @@ def unused_keys_check(unused_keys: list[str], all_checks_enabled: bool = False) 
     """
     if unused_keys:
         to_be = "are" if len(unused_keys) > 1 else "is"
-        key_or_keys = "keys" if len(unused_keys) > 1 else "key"
+        key_or_keys = "key" if len(unused_keys) == 1 else "keys"
 
         error_message = (
             "[red]\n❌ unused-keys error: There "
@@ -230,11 +230,12 @@ def unused_keys_check_and_delete(
                 rprint(
                     "[green]✨ Files sorted alphabetically as sorted-keys check is enabled.[/green]"
                 )
+
         except Exception:
             # If sorting fails, continue - deletion was successful.
             pass
 
-        key_or_keys = "keys" if len(unused_keys) > 1 else "key"
+        key_or_keys = "key" if len(unused_keys) == 1 else "keys"
         file_or_files = (
             "files" if target_files_updated > 1 or target_files_updated == 0 else "file"
         )
