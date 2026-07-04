@@ -421,13 +421,13 @@ def collect_files_to_check(
         The directory to search in.
 
     file_types_to_check : list[str]
-        The file extensions to search in.
+        The extensions for files to search in.
 
     directories_to_skip : list[Path]
-        Paths to directories to not include in the search.
+        Paths to directories to not include in the checks.
 
     files_to_skip : list[Path]
-        Paths to files to not include in the check.
+        Paths to files to not include in the checks.
 
     Returns
     -------
@@ -470,13 +470,13 @@ def collect_source_and_search_dir_files_to_fix(
         Additional directories configured for nonexistent-keys search.
 
     file_types_to_check : list[str]
-        The file extensions to search in.
+        The extensions for files to search in.
 
     directories_to_skip : list[Path]
-        Paths to directories to not include in the check.
+        Paths to directories to not include in the checks.
 
     files_to_skip : list[Path]
-        Paths to files to not include in the check.
+        Paths to files to not include in the checks.
 
     Returns
     -------
