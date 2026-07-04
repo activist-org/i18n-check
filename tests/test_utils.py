@@ -79,6 +79,9 @@ nonexistent_keys_search_dir = (
     / "test_frontends"
     / "search_dir"
 )
+nonexistent_keys_search_dir_file = (
+    nonexistent_keys_search_dir / "search_dir_test_file.ts"
+)
 
 # MARK: Utils Tests
 
