@@ -29,6 +29,7 @@ from i18n_check.utils import (
     config_repeat_keys_active,
     config_sorted_keys_active,
     config_src_directory,
+    count_keys,
     get_all_json_files,
     read_json_file,
 )
@@ -172,6 +173,115 @@ def report_missing_keys(
 # MARK: Interactive Fix
 
 
+def _check_and_add_translation_to_locale_dictionary(
+    translation: str, key: str, locale_dict: dict, locale_file_path: str
+) -> None:
+    """
+    Helper function to check and add translation to locale dictionary.
+
+    Parameters
+    ----------
+    translation : str
+        Translation keywords to add to the locale dictionary.
+
+    key : str
+        Current key index to access the locale dictionary.
+
+    locale_dict : str
+        A JSON file passed as a dictionary to check and add translation.
+
+    locale_file_path : str
+        A locale file path passed as a string to add translation.
+
+    Returns
+    -------
+    None
+        Adds translation to the locale dictionary.
+    """
+    if translation:
+        # Add the translation to the locale dictionary.
+        locale_dict[key] = translation
+
+        # Sort the file if the sorted-keys and repeat-keys checks are activated.
+        if config_sorted_keys_active:
+            if (
+                config_repeat_keys_active
+                and not check_file_keys_repeated(locale_file_path)[1]
+            ):
+                locale_dict = dict(sorted(locale_dict.items()))
+
+        else:
+            rprint(
+                "\n[yellow]⚠️  Note: JSON key sorting skipped as there are repeat keys (i18n-check -rk)[/yellow]"
+            )
+
+        with open(locale_file_path, "w", encoding="utf-8") as f:
+            json.dump(locale_dict, f, indent=2, ensure_ascii=False)
+            f.write("\n")
+
+        rprint(f"[green]✅ Added translation for '{key}': '{translation}'[/green]\n")
+
+    else:
+        rprint(f"⏭️ Skipped '{key}' (empty translation)\n")
+
+
+def _check_missing_keys_in_file(
+    sorted_missing_keys: list[str],
+    missing_keys_to_files_dict: dict[str, list[str]],
+    locale_file_path: str,
+    locale_dict: dict,
+) -> None:
+    """
+    Helper function to check missing keys in the file and mutate to locale dictionary.
+
+    Parameters
+    ----------
+    sorted_missing_keys : list[str]
+        A list of sorted missing keys to iterate and check for missing keys.
+
+    missing_keys_to_files_dict : dict[str, list[str]]
+        A dict of missing keys mapped to a list of files.
+
+    locale_file_path : str
+        A locale file path passed as a string to add translation.
+
+    locale_dict : str
+        A JSON file passed as a dictionary to check and add translation.
+
+    Returns
+    -------
+    None
+        Iterates and interactively adds translation.
+    """
+    for key in sorted_missing_keys:
+        source_value = i18n_src_dict.get(key, "")
+
+        # Skip if the result is a nested key.
+        if not isinstance(source_value, dict):
+            missing_key_files = missing_keys_to_files_dict.get(key, [])
+
+            # Skip if the key isn't used in any file.
+            if missing_key_files:
+                rprint(f"[cyan]Key:[/cyan] {key}")
+                rprint(f"[cyan]Source value:[/cyan] '{source_value}'")
+
+                missing_key_file_names = [
+                    f.split(PATH_SEPARATOR)[-1] for f in missing_key_files
+                ]
+                rprint(f"[cyan]Used in:[/cyan] {', '.join(missing_key_file_names)}")
+
+                # Get translation from user.
+                translation = Prompt.ask(
+                    f"[green]Enter translation for '{key}'[/green]",
+                    default="",
+                    show_default=False,
+                )
+
+                _check_and_add_translation_to_locale_dictionary(
+                    translation, key, locale_dict, locale_file_path
+                )
+
+
 def add_missing_keys_interactively(
     locale: str,
     i18n_src_dict: dict[str, str] = i18n_src_dict,
@@ -261,58 +371,12 @@ def add_missing_keys_interactively(
             i18n_src_dict=missing_keys_dict_for_mapping,
             src_directory=config_src_directory,
         )
-
-        for key in sorted_missing_keys:
-            source_value = i18n_src_dict.get(key, "")
-
-            # Skip if the result is a nested key.
-            if not isinstance(source_value, dict):
-                missing_key_files = missing_keys_to_files_dict.get(key, [])
-
-                # Skip if the key isn't used in any file.
-                if missing_key_files:
-                    rprint(f"[cyan]Key:[/cyan] {key}")
-                    rprint(f"[cyan]Source value:[/cyan] '{source_value}'")
-
-                    missing_key_file_names = [
-                        f.split(PATH_SEPARATOR)[-1] for f in missing_key_files
-                    ]
-                    rprint(f"[cyan]Used in:[/cyan] {', '.join(missing_key_file_names)}")
-
-                    # Get translation from user.
-                    translation = Prompt.ask(
-                        f"[green]Enter translation for '{key}'[/green]",
-                        default="",
-                        show_default=False,
-                    )
-
-                    if translation:
-                        # Add the translation to the locale dictionary.
-                        locale_dict[key] = translation
-
-                        # Sort the file if the sorted-keys and repeat-keys checks are activated.
-                        if config_sorted_keys_active:
-                            if (
-                                config_repeat_keys_active
-                                and not check_file_keys_repeated(locale_file_path)[1]
-                            ):
-                                locale_dict = dict(sorted(locale_dict.items()))
-
-                        else:
-                            rprint(
-                                "\n[yellow]⚠️  Note: JSON key sorting skipped as there are repeat keys (i18n-check -rk)[/yellow]"
-                            )
-
-                        with open(locale_file_path, "w", encoding="utf-8") as f:
-                            json.dump(locale_dict, f, indent=2, ensure_ascii=False)
-                            f.write("\n")
-
-                        rprint(
-                            f"[green]✅ Added translation for '{key}': '{translation}'[/green]\n"
-                        )
-
-                    else:
-                        rprint(f"⏭️ Skipped '{key}' (empty translation)\n")
+        _check_missing_keys_in_file(
+            sorted_missing_keys,
+            missing_keys_to_files_dict,
+            locale_file_path,
+            locale_dict,
+        )
 
     except KeyboardInterrupt:
         rprint("\n[yellow]Cancelled by user[/yellow]")
@@ -330,7 +394,7 @@ def add_missing_keys_interactively(
 
     else:
         remaining_count = len(remaining_missing[locale][0])
-        key_or_keys = "key" if remaining_count == 1 else "keys"
+        key_or_keys = count_keys(remaining_count, "key", "keys")
         rprint(
             f"[yellow]⚠️ {remaining_count} {key_or_keys} still missing in {locale}.json[/yellow]"
         )

@@ -1,15 +1,5 @@
 [
   {
-    "path": "i18n-check/src/i18n_check/check/missing_keys.py",
-    "file_name": "missing_keys.py",
-    "functions": [
-      {
-        "name": "add_missing_keys_interactively",
-        "complexity": 41
-      }
-    ]
-  },
-  {
     "path": "i18n-check/src/i18n_check/cli/main.py",
     "file_name": "main.py",
     "functions": [
