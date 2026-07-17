@@ -10,16 +10,6 @@
     ]
   },
   {
-    "path": "i18n-check/src/i18n_check/check/non_source_keys.py",
-    "file_name": "non_source_keys.py",
-    "functions": [
-      {
-        "name": "non_source_keys_check_and_delete",
-        "complexity": 19
-      }
-    ]
-  },
-  {
     "path": "i18n-check/src/i18n_check/check/nonexistent_keys.py",
     "file_name": "nonexistent_keys.py",
     "functions": [
