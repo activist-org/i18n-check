@@ -13,13 +13,13 @@ Run the following script in terminal:
 >>> i18n-check -al -f  # to fix issues automatically
 """
 
-import string
 import sys
 from pathlib import Path
 
 from rich import print as rprint
 
 from i18n_check.utils import (
+    ALL_TERMINAL_PUNCTUATION,
     PATH_SEPARATOR,
     config_i18n_directory,
     get_all_json_files,
@@ -96,14 +96,41 @@ def find_aria_label_punctuation_issues(
     """
     json_files = get_all_json_files(directory=i18n_directory)
 
-    punctuation_to_check = f"{string.punctuation}\u061f\u3002"
-
     aria_label_issues: dict[str, dict[str, dict[str, str]]] = {}
     for json_file in json_files:
         json_file_dict = read_json_file(file_path=json_file)
-        _check_json_file(
-            json_file_dict, aria_label_issues, json_file, punctuation_to_check
-        )
+
+        for key, value in json_file_dict.items():
+            if isinstance(value, str) and key.endswith("_aria_label"):
+                stripped_value = value.rstrip()
+
+                # Aria labels should not have punctuation at either end.
+                has_punctuation_at_end = (
+                    stripped_value and stripped_value[-1] in ALL_TERMINAL_PUNCTUATION
+                )
+                has_punctuation_at_start = (
+                    stripped_value and stripped_value[0] in ALL_TERMINAL_PUNCTUATION
+                )
+
+                if stripped_value and (
+                    has_punctuation_at_end or has_punctuation_at_start
+                ):
+                    # Remove punctuation from both ends to be thorough.
+                    corrected_value = stripped_value.strip(ALL_TERMINAL_PUNCTUATION)
+
+                    # Preserve any trailing whitespace from original.
+                    if value.endswith(" "):
+                        corrected_value += " "
+
+                    if key not in aria_label_issues:
+                        aria_label_issues[key] = {}
+
+                    if json_file not in aria_label_issues[key]:
+                        aria_label_issues[key][json_file] = {}
+
+                    aria_label_issues[key][json_file]["current_value"] = value
+                    aria_label_issues[key][json_file]["correct_value"] = corrected_value
+
     return aria_label_issues
 
 

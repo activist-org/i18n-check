@@ -1,11 +1,21 @@
 [
   {
+    "path": "i18n-check/src/i18n_check/check/aria_labels.py",
+    "file_name": "aria_labels.py",
+    "functions": [
+      {
+        "name": "find_aria_label_punctuation_issues",
+        "complexity": 30
+      }
+    ]
+  },
+  {
     "path": "i18n-check/src/i18n_check/check/missing_keys.py",
     "file_name": "missing_keys.py",
     "functions": [
       {
         "name": "add_missing_keys_interactively",
-        "complexity": 45
+        "complexity": 41
       }
     ]
   },
@@ -15,7 +25,7 @@
     "functions": [
       {
         "name": "non_source_keys_check_and_delete",
-        "complexity": 29
+        "complexity": 19
       }
     ]
   },
@@ -25,7 +35,7 @@
     "functions": [
       {
         "name": "add_nonexistent_keys_interactively",
-        "complexity": 23
+        "complexity": 22
       }
     ]
   },
@@ -45,7 +55,7 @@
     "functions": [
       {
         "name": "unused_keys_check_and_delete",
-        "complexity": 43
+        "complexity": 28
       }
     ]
   },

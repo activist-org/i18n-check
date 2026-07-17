@@ -24,6 +24,7 @@ from i18n_check.check.repeat_keys import check_file_keys_repeated
 from i18n_check.check.sorted_keys import check_file_keys_sorted
 from i18n_check.utils import (
     collect_files_to_check,
+    collect_source_and_search_dir_files_to_fix,
     config_file_types_to_check,
     config_global_directories_to_skip,
     config_global_files_to_skip,
@@ -32,6 +33,7 @@ from i18n_check.utils import (
     config_key_naming_directories_to_skip,
     config_key_naming_files_to_skip,
     config_key_naming_regexes_to_ignore,
+    config_nonexistent_keys_search_dirs,
     config_repeat_keys_active,
     config_sorted_keys_active,
     config_src_directory,
@@ -425,11 +427,12 @@ Please rename the following {name_key_or_keys} \\[current_key -> suggested_corre
         invalid_keys_by_name, invalid_keys_by_name_error, fix, all_checks_enabled
     )
     if fix and invalid_keys_by_name:
-        files_to_fix = collect_files_to_check(
-            directory=config_src_directory,
+        files_to_fix = collect_source_and_search_dir_files_to_fix(
+            src_directory=config_src_directory,
+            search_directories=config_nonexistent_keys_search_dirs,
             file_types_to_check=config_file_types_to_check,
             directories_to_skip=config_global_directories_to_skip,
-            files_to_skip=config_global_files_to_skip,  # global as we want to fix all instances
+            files_to_skip=config_global_files_to_skip,  # global to fix all instances
         )
 
         json_files = get_all_json_files(directory=config_i18n_directory)

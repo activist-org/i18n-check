@@ -13,76 +13,52 @@ Run the following script in terminal:
 >>> i18n-check -at -f  # to fix issues automatically
 """
 
-import string
 import sys
 from pathlib import Path
-from typing import Any
 
 from rich import print as rprint
 
 from i18n_check.utils import (
+    ALL_TERMINAL_PUNCTUATION,
     PATH_SEPARATOR,
     config_i18n_directory,
     get_all_json_files,
-    is_chinese_or_japanese_text,
-    is_rtl_text,
+    get_script_terminal_punctuation,
     read_json_file,
     replace_text_in_file,
 )
 
 
 # MARK: Find Issues
-def _assign_issue(
-    alt_text_issues: dict,
-    key: Any,
-    json_file: str,
-    value: Any,
-    corrected_value: str,
-    stripped_value: Any,
-    punctuation_to_check: str,
-    index: int,
-) -> None:
+def _get_corrected_alt_text(value: str) -> str | None:
     """
-    Assign a punctuation issue to the alt_text_issues dictionary if required.
+    Helper function to get corrected alt text value.
 
     Parameters
     ----------
-    alt_text_issues : dict
-        Running accumulator of all issues found so far across all the files.
-    key : str
-        The JSON key of the alt text value being checked.
-    json_file : str
-        The path of the current JSON file being checked, as a string.
-    value : Any
-        The original unstripped alt text value from the JSON file.
-    corrected_value : str
-        The suggested fix for the alt text value with correct punctuation applied.
-    stripped_value : str
-        The alt text value after stripping leading and trailing whitespace.
-    punctuation_to_check : str
-        The string of valid punctuation characters to check against.
-    index : int
-        The character position to check in.
+    value : str
+        Value that needs to corrected.
 
     Returns
     -------
-    None
-        Check and fix the punctuation issues in alt_text_issues dictionary.
+    str | None
+        Return the corrected alt text else None.
     """
+    stripped_value = value.strip()
+    if not stripped_value:
+        return None
+    term_char, prepend = get_script_terminal_punctuation(stripped_value)
+    check_char = stripped_value[0] if prepend else stripped_value[-1]
 
-    if stripped_value[index] in punctuation_to_check:
-        return
-    alt_text_issues.setdefault(key, {})[str(json_file)] = {
-        "current_value": value,
-        "correct_value": corrected_value,
-    }
+    if check_char in ALL_TERMINAL_PUNCTUATION:
+        return None
+    return f"{term_char}{stripped_value}" if prepend else f"{stripped_value}{term_char}"
 
 
 def _check_json_file(
     json_file_dict: dict,
     alt_text_issues: dict,
     json_file: str,
-    punctuation_to_check: str,
 ) -> None:
     """
     Helper function to check json file and fix appropriate punctuations.
@@ -95,8 +71,6 @@ def _check_json_file(
         Running accumulator of all issues found so far across all the files.
     json_file : str
         The path of the current JSON file being checked, as a string.
-    punctuation_to_check : str
-        The string of valid ending/leading punctuation characters.
 
     Returns
     -------
@@ -104,43 +78,13 @@ def _check_json_file(
         The function iterates, checks and fixes the necessary fields.
     """
     for key, value in json_file_dict.items():
-        if isinstance(value, str) and key.endswith("_alt_text"):
-            stripped_value = value.strip()
-            if not stripped_value:
-                continue
-            if is_rtl_text(stripped_value):
-                _assign_issue(
-                    alt_text_issues,
-                    key,
-                    json_file,
-                    value,
-                    f".{stripped_value}",
-                    stripped_value,
-                    punctuation_to_check,
-                    0,
-                )
-            elif is_chinese_or_japanese_text(stripped_value):
-                _assign_issue(
-                    alt_text_issues,
-                    key,
-                    json_file,
-                    value,
-                    f"{stripped_value}\u3002",
-                    stripped_value,
-                    punctuation_to_check,
-                    -1,
-                )
-            else:
-                _assign_issue(
-                    alt_text_issues,
-                    key,
-                    json_file,
-                    value,
-                    f"{stripped_value}.",
-                    stripped_value,
-                    punctuation_to_check,
-                    -1,
-                )
+        if not isinstance(value, str) and key.endswith("_alt_text"):
+            continue
+        corrected_value = _get_corrected_alt_text(value)
+        alt_text_issues.setdefault(key, {})[str(json_file)] = {
+            "current_value": value,
+            "correct_value": corrected_value,
+        }
 
 
 def find_alt_text_punctuation_issues(
@@ -161,15 +105,10 @@ def find_alt_text_punctuation_issues(
     """
     json_files = get_all_json_files(directory=i18n_directory)
 
-    punctuation_to_check = f"{string.punctuation}\u061f\u3002"
-
     alt_text_issues: dict[str, dict[str, dict[str, str]]] = {}
     for json_file in json_files:
         json_file_dict = read_json_file(file_path=json_file)
-        _check_json_file(
-            json_file_dict, alt_text_issues, json_file, punctuation_to_check
-        )
-
+        _check_json_file(json_file_dict, alt_text_issues, json_file)
     return alt_text_issues
 
 
