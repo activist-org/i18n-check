@@ -163,11 +163,11 @@ def _check_unsorted_keys_and_fix(
         )
 
         for f in unsorted_files:
-            if fix_sorted_keys(f):
-                rprint(f"[green]✅ Fixed key order in {f}[/green]")
-
-            else:
+            if not fix_sorted_keys(f):
                 rprint(f"[red]Failed to fix key order in {f}[/red]")
+                continue
+
+            rprint(f"[green]✅ Fixed key order in {f}[/green]")
 
     else:
         rprint(

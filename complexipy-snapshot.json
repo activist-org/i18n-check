@@ -10,26 +10,6 @@
     ]
   },
   {
-    "path": "i18n-check/src/i18n_check/check/sorted_keys.py",
-    "file_name": "sorted_keys.py",
-    "functions": [
-      {
-        "name": "sorted_keys_check_and_fix",
-        "complexity": 22
-      }
-    ]
-  },
-  {
-    "path": "i18n-check/src/i18n_check/check/unused_keys.py",
-    "file_name": "unused_keys.py",
-    "functions": [
-      {
-        "name": "unused_keys_check_and_delete",
-        "complexity": 28
-      }
-    ]
-  },
-  {
     "path": "i18n-check/src/i18n_check/cli/main.py",
     "file_name": "main.py",
     "functions": [

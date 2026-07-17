@@ -29,6 +29,7 @@ from i18n_check.utils import (
     config_unused_keys_directories_to_skip,
     config_unused_keys_files_to_skip,
     config_unused_keys_regexes_to_ignore,
+    count_keys,
     read_files_to_dict,
     read_json_file,
 )
@@ -140,6 +141,74 @@ def unused_keys_check(unused_keys: list[str], all_checks_enabled: bool = False) 
     return True
 
 
+def _ternary_count_keys(length: int, key: str, keys: str) -> str:
+    """
+    Helper method to count the keys in a ternary condition.
+
+    Parameters
+    ----------
+    length : int
+        Length of the keys.
+
+    key : str
+        String variable if the length of the key is less than one.
+
+    keys : str
+        String variable if the length of the keys are more than one.
+
+    Returns
+    -------
+    str
+        Returns keys if it the length is 0 or 2 else key.
+    """
+    if length == 0 or length > 1:
+        return keys
+    return key
+
+
+def _remove_unused_keys_from_all_target_files(
+    json_files: list[str], target_files_updated: int, unused_keys: list[str]
+) -> int:
+    """
+    Helper method to remove unused keys from target files.
+
+    Parameters
+    ----------
+    json_files : list[str]
+        A list of json files to remove unused keys.
+
+    target_files_updated : int
+        Number of target files updated.
+
+    unused_keys : list[str]
+        A list of unused keys to check.
+
+    Returns
+    -------
+    int
+        A  final count of target_files_updated after the keys are removed.
+    """
+    for file_path in json_files:
+        # Skip the source file.
+        if Path(file_path).resolve() == Path(config_i18n_src_file).resolve():
+            continue
+
+        target_data = read_json_file(file_path=file_path)
+        keys_removed = False
+
+        for key in unused_keys:
+            if key in target_data:
+                del target_data[key]
+                keys_removed = True
+
+        if keys_removed:
+            with open(file_path, "w", encoding="utf-8") as f:
+                json.dump(target_data, f, indent=2, ensure_ascii=False)
+                f.write("\n")
+            target_files_updated += 1
+    return target_files_updated
+
+
 def unused_keys_check_and_delete(
     unused_keys: list[str], all_checks_enabled: bool = False
 ) -> bool:
@@ -187,27 +256,10 @@ def unused_keys_check_and_delete(
         from i18n_check.utils import get_all_json_files
 
         json_files = get_all_json_files(directory=config_i18n_directory)
-
-        # Remove unused keys from all target files.
         target_files_updated = 0
-        for file_path in json_files:
-            # Skip the source file.
-            if Path(file_path).resolve() == Path(config_i18n_src_file).resolve():
-                continue
-
-            target_data = read_json_file(file_path=file_path)
-            keys_removed = False
-
-            for key in unused_keys:
-                if key in target_data:
-                    del target_data[key]
-                    keys_removed = True
-
-            if keys_removed:
-                with open(file_path, "w", encoding="utf-8") as f:
-                    json.dump(target_data, f, indent=2, ensure_ascii=False)
-                    f.write("\n")
-                target_files_updated += 1
+        target_files_updated = _remove_unused_keys_from_all_target_files(
+            json_files, target_files_updated, unused_keys
+        )
 
         # Check if sorted-keys is enabled and sort files if needed.
         try:
@@ -235,10 +287,8 @@ def unused_keys_check_and_delete(
             # If sorting fails, continue - deletion was successful.
             pass
 
-        key_or_keys = "key" if len(unused_keys) == 1 else "keys"
-        file_or_files = (
-            "files" if target_files_updated > 1 or target_files_updated == 0 else "file"
-        )
+        key_or_keys = count_keys(len(unused_keys), "key", "keys")
+        file_or_files = _ternary_count_keys(target_files_updated, "file", "files")
 
         rprint(
             f"[green]✅ unused-keys delete success: Removed {len(unused_keys)} unused {key_or_keys} "
