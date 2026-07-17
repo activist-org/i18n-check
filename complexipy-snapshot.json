@@ -10,22 +10,12 @@
     ]
   },
   {
-    "path": "i18n-check/src/i18n_check/check/nonexistent_keys.py",
-    "file_name": "nonexistent_keys.py",
-    "functions": [
-      {
-        "name": "add_nonexistent_keys_interactively",
-        "complexity": 22
-      }
-    ]
-  },
-  {
     "path": "i18n-check/src/i18n_check/check/sorted_keys.py",
     "file_name": "sorted_keys.py",
     "functions": [
       {
         "name": "sorted_keys_check_and_fix",
-        "complexity": 28
+        "complexity": 22
       }
     ]
   },

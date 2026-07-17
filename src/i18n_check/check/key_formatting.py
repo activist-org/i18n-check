@@ -31,6 +31,7 @@ from i18n_check.utils import (
     config_repeat_keys_active,
     config_sorted_keys_active,
     config_src_directory,
+    count_keys,
     get_all_json_files,
     is_valid_key,
     read_json_file,
@@ -118,31 +119,6 @@ def audit_invalid_i18n_key_formats(
 
 
 # MARK: Error Outputs
-
-
-def _create_message_format(
-    invalid_keys_by_format: dict[str, str], keys: str, key: str
-) -> str:
-    """
-    Create message format based on the length of keys.
-
-    Parameters
-    ----------
-    invalid_keys_by_format : dict[str,str]
-        A dictionary mapping invalid keys to their corrected format.
-    keys : str
-        A string value as a message if the dictionary has more than one key.
-    key : str
-        A string value as a message if the dictionary has one key.
-
-    Returns
-    -------
-    str
-        A finalized string for message format.
-    """
-    if len(invalid_keys_by_format) > 1:
-        return keys
-    return key
 
 
 def _print_invalid_keys_by_format(
@@ -264,11 +240,12 @@ def invalid_key_formats_check_and_fix(
     invalid_keys_by_format_string = "".join(
         f"\n{k} -> {v}" for k, v in sorted(invalid_keys_by_format.items())
     )
-    format_to_be = _create_message_format(invalid_keys_by_format, "are", "is")
-    format_key_to_be = _create_message_format(
-        invalid_keys_by_format, "keys that are", "key that is"
+    format_to_be = count_keys(len(invalid_keys_by_format), "is", "are")
+    format_key_to_be = count_keys(
+        len(invalid_keys_by_format), "key that is", "keys that are"
     )
-    format_key_or_keys = _create_message_format(invalid_keys_by_format, "keys", "key")
+
+    format_key_or_keys = count_keys(len(invalid_keys_by_format), "key", "keys")
 
     invalid_keys_by_format_error = f"""❌ key-formatting error: There {format_to_be} {len(invalid_keys_by_format)} i18n {format_key_to_be} not formatted correctly.
 Please reformat the following {format_key_or_keys} [current_key -> suggested_correction]:\n{invalid_keys_by_format_string}"""

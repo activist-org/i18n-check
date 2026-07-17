@@ -22,6 +22,7 @@ from i18n_check.utils import (
     config_i18n_directory,
     config_i18n_src_file,
     config_i18n_src_file_name,
+    count_keys,
     get_all_json_files,
     read_json_file,
 )
@@ -139,31 +140,6 @@ def non_source_keys_check(
     return True
 
 
-def _count_keys(length: int, key: str, keys: str) -> str:
-    """
-    Helper method to count the keys.
-
-    Parameters
-    ----------
-    length : int
-        Length of the keys.
-
-    key : str
-        String variable if the length of the key is less than one.
-
-    keys : str
-        String variable if the length of the keys are more than one.
-
-    Returns
-    -------
-    str
-        String variable based on the length of the keys.
-    """
-    if length > 1:
-        return keys
-    return key
-
-
 def _remove_non_source_keys(
     keys_to_remove: set[str], target_data: dict, keys_removed_from_file: int
 ) -> tuple[int, dict]:
@@ -268,8 +244,8 @@ def non_source_keys_check_and_delete(
             # If sorting fails, continue - deletion was successful.
             pass
 
-        key_or_keys = _count_keys(total_keys_removed, "key", "keys")
-        file_or_files = _count_keys(files_updated, "file", "files")
+        key_or_keys = count_keys(total_keys_removed, "key", "keys")
+        file_or_files = count_keys(files_updated, "file", "files")
 
         rprint(
             f"[green]✅ non-source-keys delete success: Removed {total_keys_removed} non-source {key_or_keys} "

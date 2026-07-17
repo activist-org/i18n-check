@@ -35,6 +35,7 @@ from i18n_check.utils import (
     config_repeat_keys_active,
     config_sorted_keys_active,
     config_src_directory,
+    count_keys,
     read_json_file,
 )
 
@@ -180,6 +181,77 @@ def nonexistent_keys_check(
 # MARK: Interactive Fix
 
 
+def _sort_nonexistent_keys(
+    sorted_nonexistent_keys: list[str],
+    nonexistent_keys_to_files_dict: dict[str, list[str]],
+    i18n_src_dict_updated: dict[str, str],
+    i18n_src_file: Path,
+) -> None:
+    """
+    Helper function to sort non existent keys alphabetically and mutate directly.
+
+    Parameters
+    ----------
+    sorted_nonexistent_keys : list[str]
+        Sorted Non existent keys list.
+
+    nonexistent_keys_to_files_dict : dict[str,list[str]]
+        Dictionary to get nonexistent keys to check.
+
+    i18n_src_dict_updated : dict[str,str]
+        Dictionary to update sorted keys.
+
+    i18n_src_file : Path
+        File to check and sort the keys.
+
+    Returns
+    -------
+    None
+        Sort the nonexistent keys and also update about current status interactively.
+    """
+    for key in sorted_nonexistent_keys:
+        nonexistent_key_files = nonexistent_keys_to_files_dict.get(key, [])
+
+        rprint(f"[cyan]Key:[/cyan] {key}")
+
+        # Show file names where the key is used.
+        nonexistent_key_file_names = [
+            f.split(PATH_SEPARATOR)[-1] for f in nonexistent_key_files
+        ]
+        rprint(f"[cyan]Used in:[/cyan] {', '.join(nonexistent_key_file_names)}")
+
+        if value := Prompt.ask(
+            f"[green]Enter value for '{key}'[/green]",
+            default="",
+            show_default=False,
+        ):
+            # Add the key-value pair to the dictionary.
+            i18n_src_dict_updated[key] = value
+
+            # Sort the file if the sorted-keys and repeat-keys checks are activated.
+            if config_sorted_keys_active:
+                if (
+                    config_repeat_keys_active
+                    and not check_file_keys_repeated(str(i18n_src_file))[1]
+                ):
+                    i18n_src_dict_updated = dict(sorted(i18n_src_dict_updated.items()))
+
+                else:
+                    rprint(
+                        "\n[yellow]⚠️  Note: JSON key sorting skipped as there are repeat keys (i18n-check -rk)[/yellow]"
+                    )
+
+            # Write to file.
+            with open(i18n_src_file, "w", encoding="utf-8") as f:
+                json.dump(i18n_src_dict_updated, f, indent=2, ensure_ascii=False)
+                f.write("\n")
+
+            rprint(f"[green]✅ Added '{key}': '{value}'[/green]\n")
+
+        else:
+            rprint(f"⏭️ Skipped '{key}' (empty value)\n")
+
+
 def add_nonexistent_keys_interactively(
     all_used_i18n_keys: set[str],
     i18n_src_dict: dict[str, str] = i18n_src_dict,
@@ -237,49 +309,12 @@ def add_nonexistent_keys_interactively(
             src_directory=src_directory,
         )
 
-        for key in sorted_nonexistent_keys:
-            nonexistent_key_files = nonexistent_keys_to_files_dict.get(key, [])
-
-            rprint(f"[cyan]Key:[/cyan] {key}")
-
-            # Show file names where the key is used.
-            nonexistent_key_file_names = [
-                f.split(PATH_SEPARATOR)[-1] for f in nonexistent_key_files
-            ]
-            rprint(f"[cyan]Used in:[/cyan] {', '.join(nonexistent_key_file_names)}")
-
-            if value := Prompt.ask(
-                f"[green]Enter value for '{key}'[/green]",
-                default="",
-                show_default=False,
-            ):
-                # Add the key-value pair to the dictionary.
-                i18n_src_dict_updated[key] = value
-
-                # Sort the file if the sorted-keys and repeat-keys checks are activated.
-                if config_sorted_keys_active:
-                    if (
-                        config_repeat_keys_active
-                        and not check_file_keys_repeated(str(i18n_src_file))[1]
-                    ):
-                        i18n_src_dict_updated = dict(
-                            sorted(i18n_src_dict_updated.items())
-                        )
-
-                    else:
-                        rprint(
-                            "\n[yellow]⚠️  Note: JSON key sorting skipped as there are repeat keys (i18n-check -rk)[/yellow]"
-                        )
-
-                # Write to file.
-                with open(i18n_src_file, "w", encoding="utf-8") as f:
-                    json.dump(i18n_src_dict_updated, f, indent=2, ensure_ascii=False)
-                    f.write("\n")
-
-                rprint(f"[green]✅ Added '{key}': '{value}'[/green]\n")
-
-            else:
-                rprint(f"⏭️ Skipped '{key}' (empty value)\n")
+        _sort_nonexistent_keys(
+            sorted_nonexistent_keys,
+            nonexistent_keys_to_files_dict,
+            i18n_src_dict_updated,
+            i18n_src_file,
+        )
 
     except KeyboardInterrupt:
         rprint("\n[yellow]Cancelled by user[/yellow]")
@@ -290,7 +325,7 @@ def add_nonexistent_keys_interactively(
         read_json_file(file_path=i18n_src_file).keys()
     ):
         remaining_count = len(remaining_nonexistent)
-        key_or_keys = "key" if remaining_count == 1 else "keys"
+        key_or_keys = count_keys(remaining_count, "key", "keys")
         rprint(
             f"[yellow]⚠️ {remaining_count} {key_or_keys} still missing in the {config_i18n_src_file_name} i18n source file[/yellow]"
         )
