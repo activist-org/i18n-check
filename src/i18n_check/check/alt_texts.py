@@ -78,9 +78,11 @@ def _check_json_file(
         The function iterates, checks and fixes the necessary fields.
     """
     for key, value in json_file_dict.items():
-        if not isinstance(value, str) and key.endswith("_alt_text"):
+        if not (isinstance(value, str) and key.endswith("_alt_text")):
             continue
         corrected_value = _get_corrected_alt_text(value)
+        if corrected_value is None:
+            continue
         alt_text_issues.setdefault(key, {})[str(json_file)] = {
             "current_value": value,
             "correct_value": corrected_value,
