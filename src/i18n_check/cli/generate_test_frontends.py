@@ -12,6 +12,38 @@ PATH_SEPARATOR = "\\" if os.name == "nt" else "/"
 INTERNAL_TEST_FRONTENDS_DIR_PATH = Path(__file__).parent.parent / "test_frontends"
 
 
+def prompt_yes_no(prompt: str) -> bool:
+    """
+    Prompt the user and receive a yes or no input.
+
+    Parameters
+    ----------
+    prompt : str
+        Prompt question to receive str input.
+
+    Returns
+    -------
+    bool
+        Return the boolean value.
+    """
+    while True:
+        response = input(prompt).strip().lower()
+
+        if "([y]/n)" in prompt:
+            if response in ("y", ""):
+                return True
+
+            elif response == "n":
+                return False
+
+        if "(y/[n])" in prompt:
+            if response == "y":
+                return True
+
+            if response in ("n", ""):
+                return False
+
+
 def get_test_frontend_config_file_text() -> str:
     """
     Return the text for the configuration file for the i18n-check test frontends.
@@ -68,6 +100,48 @@ def write_test_frontends_config_file(config_file_name: str) -> None:
         file.write(test_project_config_text)
 
 
+def check_and_write_frontend_config() -> None:
+    """
+    Check and write YAML file.
+
+    Returns
+    -------
+    None
+        The contents of the YAML file is either generated or overwritten.
+    """
+    yaml_file = ".i18n-check.yaml"
+    yml_file = ".i18n-check.yml"
+    if not Path(yaml_file).is_file() and not Path(yml_file).is_file():
+        print(f"No {yaml_file} configuration file found.")
+
+        generate_test_project_config_answer: bool | None = None
+        if generate_test_project_config_answer is None:
+            generate_test_project_config_answer = prompt_yes_no(
+                prompt="Would you like to generate a configuration file for the test frontends? ([y]/n): "
+            )
+
+        if generate_test_project_config_answer:
+            write_test_frontends_config_file(config_file_name=yaml_file)
+            print(
+                f"A {yaml_file} configuration file has been written to match the test frontends."
+            )
+    else:
+        config_file_name = yaml_file if Path(yaml_file).is_file() else yml_file
+        generate_test_project_config_answer: bool | None = None
+        if generate_test_project_config_answer is None:
+            generate_test_project_config_answer = prompt_yes_no(
+                prompt=f"Would you like to overwrite the {config_file_name} configuration file for the test frontends? ([y]/n): "
+            )
+
+        if generate_test_project_config_answer:
+            write_test_frontends_config_file(config_file_name=config_file_name)
+            print(
+                f"The {config_file_name} configuration file has been overwritten to match the test frontends."
+            )
+        else:
+            print(f"You can set which one to test in the {config_file_name} file.")
+
+
 def generate_test_frontends() -> None:
     """
     Copy the i18n_check/test_frontends directory to the present working directory.
@@ -85,53 +159,7 @@ def generate_test_frontends() -> None:
 
         print("The frontends have been successfully generated.")
         print("One passes all checks and one fails all checks.")
-        if (
-            not Path(".i18n-check.yaml").is_file()
-            and not Path(".i18n-check.yml").is_file()
-        ):
-            print("No .i18n-check.yaml configuration file found.")
-
-            generate_test_project_config_answer = None
-            while generate_test_project_config_answer not in ["y", "n", ""]:
-                generate_test_project_config_answer = (
-                    input(
-                        "Would you like to generate a configuration file for the test frontends? ([y]/n): "
-                    )
-                    .strip()
-                    .lower()
-                )
-
-            if generate_test_project_config_answer in ["y", ""]:
-                write_test_frontends_config_file(config_file_name=".i18n-check.yaml")
-                print(
-                    "A .i18n-check.yaml configuration file has been written to match the test frontends."
-                )
-
-        else:
-            config_file_name = (
-                ".i18n-check.yaml"
-                if Path(".i18n-check.yaml").is_file()
-                else ".i18n-check.yml"
-            )
-            generate_test_project_config_answer = None
-            while generate_test_project_config_answer not in ["y", "n", ""]:
-                generate_test_project_config_answer = (
-                    input(
-                        f"Would you like to overwrite the {config_file_name} configuration file for the test frontends? ([y]/n): "
-                    )
-                    .strip()
-                    .lower()
-                )
-
-            if generate_test_project_config_answer in ["y", ""]:
-                write_test_frontends_config_file(config_file_name=config_file_name)
-                print(
-                    f"The {config_file_name} configuration file has been overwritten to match the test frontends."
-                )
-
-            else:
-                print(f"You can set which one to test in the {config_file_name} file.")
-
+        check_and_write_frontend_config()
     else:
         print(
             f"Test frontends for i18n-check already exist in .{PATH_SEPARATOR}i18n_check_test_frontends{PATH_SEPARATOR} and will not be regenerated."

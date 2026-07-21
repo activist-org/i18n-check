@@ -21,6 +21,7 @@ from rich import print as rprint
 
 from i18n_check.utils import (
     config_i18n_directory,
+    count_keys,
     get_all_json_files,
     read_json_file,
 )
@@ -106,6 +107,74 @@ def fix_sorted_keys(file_path: str | Path) -> bool:
         return False
 
 
+def _check_unsorted_keys_and_fix(
+    unsorted_files: list[str], fix: bool, all_checks_enabled: bool
+) -> None:
+    """
+    Check unsorted keys and fix.
+
+    Parameters
+    ----------
+    unsorted_files : list[str]
+        List of unsorted files to check.
+
+    fix : bool
+        Bool flag to indicate if it's fixed or not.
+
+    all_checks_enabled : bool
+        Bool flag to indicate if all_checks_enabled to check.
+
+    Returns
+    -------
+    None
+        Iteratively checks and prints if there's unsorted files and checks if it's fixed or not.
+
+    Raises
+    ------
+    ValueError, sys.exit(1)
+        If any files have unsorted keys and fix is False.
+    """
+    if unsorted_files and not fix:
+        files_count = len(unsorted_files)
+        file_or_files = count_keys(files_count, "file", "files")
+        has_or_have = count_keys(files_count, "has", "have")
+
+        rprint(
+            f"\n[red]❌ sorted-keys error: {files_count} i18n JSON {file_or_files} {has_or_have} keys that are not sorted alphabetically.[/red]\n"
+        )
+
+        for f in unsorted_files:
+            rprint(f"[red]Keys not sorted alphabetically in: {f}[/red]")
+
+        rprint(
+            "\n[yellow]💡 Tip: Use the --fix (-f) flag to automatically sort the keys alphabetically.[/yellow]"
+        )
+
+        if all_checks_enabled:
+            raise ValueError("The sorted keys i18n check has failed.")
+
+        else:
+            sys.exit(1)
+
+    elif unsorted_files and fix:
+        file_or_files = count_keys(len(unsorted_files), "file", "files")
+        rprint(
+            f"\n[green]Fixing key sorting in {len(unsorted_files)} {file_or_files}:[/green]"
+        )
+
+        for f in unsorted_files:
+            if not fix_sorted_keys(f):
+                rprint(f"[red]Failed to fix key order in {f}[/red]")
+                continue
+
+            rprint(f"[green]✅ Fixed key order in {f}[/green]")
+
+    else:
+        rprint(
+            "[green]✅ sorted-keys success: All i18n JSON files have keys sorted alphabetically.[/green]"
+        )
+
+
 def sorted_keys_check_and_fix(
     all_checks_enabled: bool = False, fix: bool = False
 ) -> bool:
@@ -149,45 +218,6 @@ def sorted_keys_check_and_fix(
 
         if not is_sorted:
             unsorted_files.append(file_path)
-
-    if unsorted_files and not fix:
-        files_count = len(unsorted_files)
-        file_or_files = "file" if files_count == 1 else "files"
-        has_or_have = "has" if files_count == 1 else "have"
-
-        rprint(
-            f"\n[red]❌ sorted-keys error: {files_count} i18n JSON {file_or_files} {has_or_have} keys that are not sorted alphabetically.[/red]\n"
-        )
-
-        for f in unsorted_files:
-            rprint(f"[red]Keys not sorted alphabetically in: {f}[/red]")
-
-        rprint(
-            "\n[yellow]💡 Tip: Use the --fix (-f) flag to automatically sort the keys alphabetically.[/yellow]"
-        )
-
-        if all_checks_enabled:
-            raise ValueError("The sorted keys i18n check has failed.")
-
-        else:
-            sys.exit(1)
-
-    elif unsorted_files and fix:
-        file_or_files = "file" if len(unsorted_files) == 1 else "files"
-        rprint(
-            f"\n[green]Fixing key sorting in {len(unsorted_files)} {file_or_files}:[/green]"
-        )
-
-        for f in unsorted_files:
-            if fix_sorted_keys(f):
-                rprint(f"[green]✅ Fixed key order in {f}[/green]")
-
-            else:
-                rprint(f"[red]Failed to fix key order in {f}[/red]")
-
-    else:
-        rprint(
-            "[green]✅ sorted-keys success: All i18n JSON files have keys sorted alphabetically.[/green]"
-        )
+        _check_unsorted_keys_and_fix(unsorted_files, fix, all_checks_enabled)
 
     return True

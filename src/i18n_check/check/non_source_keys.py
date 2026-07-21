@@ -22,6 +22,7 @@ from i18n_check.utils import (
     config_i18n_directory,
     config_i18n_src_file,
     config_i18n_src_file_name,
+    count_keys,
     get_all_json_files,
     read_json_file,
 )
@@ -139,6 +140,35 @@ def non_source_keys_check(
     return True
 
 
+def _remove_non_source_keys(
+    keys_to_remove: set[str], target_data: dict, keys_removed_from_file: int
+) -> tuple[int, dict]:
+    """
+    Helper function to remove non source keys.
+
+    Parameters
+    ----------
+    keys_to_remove : set[str]
+        Keys to remove from the file.
+
+    target_data : dict
+        Dictionary to delete the key from.
+
+    keys_removed_from_file : int
+        Count of keys removed from file.
+
+    Returns
+    -------
+    tuple[int,dict]
+        Returns the count of keys removed from the file and the updated dictionary of removed keys.
+    """
+    for key in keys_to_remove:
+        if key in target_data:
+            del target_data[key]
+            keys_removed_from_file += 1
+    return (keys_removed_from_file, target_data)
+
+
 def non_source_keys_check_and_delete(
     non_source_keys_dict: dict[str, set[str]], all_checks_enabled: bool = False
 ) -> bool:
@@ -182,10 +212,9 @@ def non_source_keys_check_and_delete(
             keys_removed_from_file = 0
 
             # Remove non-source keys.
-            for key in keys_to_remove:
-                if key in target_data:
-                    del target_data[key]
-                    keys_removed_from_file += 1
+            keys_removed_from_file, target_data = _remove_non_source_keys(
+                keys_to_remove, target_data, keys_removed_from_file
+            )
 
             if keys_removed_from_file > 0:
                 # Write updated target file.
@@ -215,8 +244,8 @@ def non_source_keys_check_and_delete(
             # If sorting fails, continue - deletion was successful.
             pass
 
-        key_or_keys = "keys" if total_keys_removed > 1 else "key"
-        file_or_files = "files" if files_updated > 1 else "file"
+        key_or_keys = count_keys(total_keys_removed, "key", "keys")
+        file_or_files = count_keys(files_updated, "file", "files")
 
         rprint(
             f"[green]✅ non-source-keys delete success: Removed {total_keys_removed} non-source {key_or_keys} "

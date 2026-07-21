@@ -125,6 +125,118 @@ def _ignore_key(key: str, keys_to_ignore_regex: list[str]) -> bool:
     return any(pattern and re.search(pattern, key) for pattern in keys_to_ignore_regex)
 
 
+def _filter_key_file_dict(
+    keys_to_ignore_regex: list[str] | None, key_file_dict: dict[str, list[str]]
+) -> dict[str, list[str]]:
+    """
+    Build and filter key file dictionary.
+
+    Parameters
+    ----------
+    keys_to_ignore_regex : list[str] | None
+        A list of regex patterns to match with keys that should be ignored during validation.
+    key_file_dict : dict[str, list[str]]
+        A dictionary where keys are i18n keys and values are lists of file paths where those keys are used.
+
+    Returns
+    -------
+    dict[str, list[str]]
+        Returns a filtered key file dictionary.
+    """
+    if keys_to_ignore_regex:
+        filtered_key_file_dict = {
+            k: v
+            for k, v in key_file_dict.items()
+            if not _ignore_key(key=k, keys_to_ignore_regex=keys_to_ignore_regex)
+        }
+        return filtered_key_file_dict
+    else:
+        filtered_key_file_dict = key_file_dict
+        return filtered_key_file_dict
+
+
+def _get_ideal_key_base_single(file_path: str) -> str:
+    """
+    Derive the ideal key base from a single path.
+
+    Parameters
+    ----------
+    file_path : str
+        The file path where i18n key is used.
+
+    Returns
+    -------
+    str
+        The ideal key base derived from the file path with a trailing period.
+    """
+    formatted_potential_key = path_to_valid_key(file_path)
+    potential_key_parts = formatted_potential_key.split(".")
+    # Is the part in the last key part such that it's a parent directory that's included in the file name.
+    valid_key_parts = filter_valid_key_parts(potential_key_parts)
+    # Get rid of repeat key parts for files that are the same name as their directory.
+    valid_key_parts = [p for p in valid_key_parts if valid_key_parts.count(p) == 1]
+    return ".".join(valid_key_parts) + "."
+
+
+def _get_ideal_key_base_multiple(file_paths: list[str]) -> str:
+    """
+    Derive the ideal key base from multiple file paths.
+
+    Finds the common parts across all file paths and builds the ideal key
+    base from them. Inserts ``_global`` where the paths diverge.
+
+    Parameters
+    ----------
+    file_paths : list[str]
+        The file paths where the i18n key is used across multiple files.
+
+    Returns
+    -------
+    str
+        The ideal key base derived from the common parts of all file paths.
+    """
+    formatted_potential_keys = [path_to_valid_key(p) for p in file_paths]
+    # Match all entries with their counterparts from other valid key parts.
+    corresponding_valid_key_parts = list(
+        zip(*(k.split(".") for k in formatted_potential_keys))
+    )
+    # Append all parts in order so long as all valid keys share the same part.
+    extended_key_base = ""
+    global_added = False
+    for current_parts in corresponding_valid_key_parts:
+        if len(set(current_parts)) != 1 and not global_added:
+            extended_key_base += "_global."
+            global_added = True
+        if len(set(current_parts)) == 1:
+            extended_key_base += f"{current_parts[0]}."
+    extended_key_base_split = extended_key_base.split()
+    # Don't include a key part if it's included in the final one (i.e. organizational sub dir).
+    valid_key_parts = filter_valid_key_parts(extended_key_base_split)
+    return ".".join(valid_key_parts)
+
+
+def _find_invalid_key_names(file_paths: list[str]) -> str:
+    """
+    Derive the ideal key base from one or more file paths.
+
+    Delegates to ``_get_ideal_key_base_single`` if the key is used in one
+    file, or ``_get_ideal_key_base_multiple`` if used across several files.
+
+    Parameters
+    ----------
+    file_paths : list[str]
+        The file paths where the i18n key is used.
+
+    Returns
+    -------
+    str
+        The ideal key base derived from the given file paths.
+    """
+    if len(file_paths) == 1:
+        return _get_ideal_key_base_single(file_paths[0])
+    return _get_ideal_key_base_multiple(file_paths)
+
+
 def audit_invalid_i18n_key_names(
     key_file_dict: dict[str, list[str]],
     keys_to_ignore_regex: list[str] | None = None,
@@ -137,7 +249,7 @@ def audit_invalid_i18n_key_names(
     key_file_dict : dict[str, list[str]]
         A dictionary where keys are i18n keys and values are lists of file paths where those keys are used.
 
-    keys_to_ignore_regex : list[str], optional, default=None
+    keys_to_ignore_regex : list[str] | None, default=None
         A list of regex patterns to match with keys that should be ignored during validation.
         Keys matching any of these patterns will be skipped during the audit.
         For backward compatibility, a single string is also accepted and will be converted to a list.
@@ -150,73 +262,124 @@ def audit_invalid_i18n_key_names(
     if keys_to_ignore_regex is None:
         keys_to_ignore_regex = []
 
-    filtered_key_file_dict = (
-        {
-            k: v
-            for k, v in key_file_dict.items()
-            if not _ignore_key(key=k, keys_to_ignore_regex=keys_to_ignore_regex)
-        }
-        if keys_to_ignore_regex
-        else key_file_dict
-    )
-
+    filtered_key_file_dict = _filter_key_file_dict(keys_to_ignore_regex, key_file_dict)
     invalid_keys_by_name: dict[str, str] = {}
-    for k in filtered_key_file_dict:
-        # Key is used in one file.
-        if len(filtered_key_file_dict[k]) == 1:
-            formatted_potential_key = path_to_valid_key(filtered_key_file_dict[k][0])
-            potential_key_parts: list[str] = formatted_potential_key.split(".")
-            # Is the part in the last key part such that it's a parent directory that's included in the file name.
-            valid_key_parts = filter_valid_key_parts(potential_key_parts)
-
-            # Get rid of repeat key parts for files that are the same name as their directory.
-            valid_key_parts = [
-                p for p in valid_key_parts if valid_key_parts.count(p) == 1
-            ]
-
-            ideal_key_base = ".".join(valid_key_parts) + "."
-
-        # Key is used in multiple files.
-        else:
-            formatted_potential_keys = [
-                path_to_valid_key(p) for p in filtered_key_file_dict[k]
-            ]
-            potential_key_parts = [
-                part for k in formatted_potential_keys for part in k.split(".")
-            ]
-
-            # Match all entries with their counterparts from other valid key parts.
-            corresponding_valid_key_parts = list(
-                zip(*(k.split(".") for k in formatted_potential_keys))
-            )
-
-            # Append all parts in order so long as all valid keys share the same part.
-            extended_key_base = ""
-            global_added = False
-            for current_parts in corresponding_valid_key_parts:
-                if len(set(current_parts)) != 1 and not global_added:
-                    extended_key_base += "_global."
-                    global_added = True
-
-                if len(set(current_parts)) == 1:
-                    extended_key_base += f"{(current_parts)[0]}."
-
-            # Don't include a key part if it's included in the final one (i.e. organizational sub dir).
-            extended_key_base_split = extended_key_base.split()
-            valid_key_parts = filter_valid_key_parts(extended_key_base_split)
-
-            ideal_key_base = ".".join(valid_key_parts)
-
-        ideal_key_base = f"i18n.{ideal_key_base}"
-
+    for k, file_paths in filtered_key_file_dict.items():
+        ideal_key_base = f"i18n.{_find_invalid_key_names(file_paths)}"
         if k[: len(ideal_key_base)] != ideal_key_base:
-            ideal_key = f"{ideal_key_base}{k.split('.')[-1]}"
-            invalid_keys_by_name[k] = ideal_key
-
+            invalid_keys_by_name[k] = f"{ideal_key_base}{k.split('.')[-1]}"
     return invalid_keys_by_name
 
 
 # MARK: Error Outputs
+def _create_message_format(invalid_keys: dict[str, str], keys: str, key: str) -> str:
+    """
+    Create message format based on the length of keys.
+
+    Parameters
+    ----------
+    invalid_keys : dict[str,str]
+        A dictionary mapping invalid keys to their corrected format.
+    keys : str
+        A string value as a message if the dictionary has more than one key.
+    key : str
+        A string value as a message if the dictionary has one key.
+
+    Returns
+    -------
+    str
+        A finalized string for message format.
+    """
+    if len(invalid_keys) > 1:
+        return keys
+    return key
+
+
+def _print_invalid_keys(
+    invalid_keys_by_name: dict,
+    invalid_keys_by_name_error: str,
+    fix: bool,
+    all_checks_enabled: bool,
+) -> None:
+    """
+    Print the results of key formatting check and exit if issues are found.
+
+    Parameters
+    ----------
+    invalid_keys_by_name : dict
+        A dictionary mapping invalid keys to their correct order.
+    invalid_keys_by_name_error : str
+        A string to print when invalid formatted keys are found.
+    fix : bool
+        If True, automatically corrects the invalid key formats in the source files.
+    all_checks_enabled : bool
+        Whether all checks are being ran by the CLI.
+
+    Returns
+    -------
+    None
+        Prints invalid formatted keys, raises ValueError and Terminates if invalid otherwise prints the validated message.
+
+    Raises
+    ------
+    ValueError, sys.exit(1)
+        An error is raised and the system prints error details if there are invalid keys by format.
+    """
+    if invalid_keys_by_name:
+        rprint(f"\n[red] {invalid_keys_by_name_error} [/red]")
+
+        if not fix:
+            rprint(
+                "\n[yellow]💡 Tip: You can automatically fix invalid key names by running the --key-naming (-kn) check with the --fix (-f) flag.[/yellow]\n"
+            )
+
+            if all_checks_enabled:
+                raise ValueError("The key naming i18n check has failed.")
+
+            else:
+                sys.exit(1)
+    else:
+        rprint(
+            "[green]✅ key-naming success: All i18n keys are named correctly in the i18n-src file.[/green]"
+        )
+
+
+def _sort_local_files(config_sorted_keys_active: bool, json_files: list[str]) -> None:
+    """
+    Check and sort the local files.
+
+    Parameters
+    ----------
+    config_sorted_keys_active : bool
+        Global boolean flag to sort local files.
+    json_files : list[str]
+        List of json_files required to be sorted.
+
+    Returns
+    -------
+    None
+        Checks, then sorts the local files if required, otherwise skips necessary repeated files.
+    """
+    if config_sorted_keys_active:
+        for json_file in json_files:
+            locale_dict = read_json_file(json_file)
+            is_sorted, _ = check_file_keys_sorted(locale_dict)
+
+            if not is_sorted:
+                if (
+                    config_repeat_keys_active
+                    and not check_file_keys_repeated(json_file)[1]
+                ):
+                    sorted_locale_dict = dict(sorted(locale_dict.items()))
+
+                    with open(json_file, "w", encoding="utf-8") as lf:
+                        json.dump(sorted_locale_dict, lf, indent=2, ensure_ascii=False)
+                        lf.write("\n")
+
+                else:
+                    rprint(
+                        "\n[yellow]⚠️  Note: JSON key sorting skipped as there are repeat keys (i18n-check -rk)[/yellow]"
+                    )
 
 
 def invalid_key_names_check_and_fix(
@@ -251,35 +414,18 @@ def invalid_key_names_check_and_fix(
     invalid_keys_by_name_string = "".join(
         f"\n{k} -> {v}" for k, v in sorted(invalid_keys_by_name.items())
     )
-    name_to_be = "are" if len(invalid_keys_by_name) > 1 else "is"
-    name_key_to_be = "keys that are" if len(invalid_keys_by_name) > 1 else "key that is"
-    name_key_or_keys = "keys" if len(invalid_keys_by_name) > 1 else "key"
+    name_to_be = _create_message_format(invalid_keys_by_name, "are", "is")
+    name_key_to_be = _create_message_format(
+        invalid_keys_by_name, "keys that are", "key that is"
+    )
+    name_key_or_keys = _create_message_format(invalid_keys_by_name, "keys", "key")
 
     invalid_keys_by_name_error = f"""❌ key-naming error: There {name_to_be} {len(invalid_keys_by_name)} i18n {name_key_to_be} not named correctly.
 Please rename the following {name_key_or_keys} \\[current_key -> suggested_correction]:\n{invalid_keys_by_name_string}"""
 
-    if not invalid_keys_by_name:
-        rprint(
-            "[green]✅ key-naming success: All i18n keys are named correctly in the i18n-src file.[/green]"
-        )
-
-    else:
-        error_string = "\n[red]"
-        error_string += invalid_keys_by_name_error
-        error_string += "[/red]"
-        rprint(error_string)
-
-        if not fix:
-            rprint(
-                "\n[yellow]💡 Tip: You can automatically fix invalid key names by running the --key-naming (-kn) check with the --fix (-f) flag.[/yellow]\n"
-            )
-
-            if all_checks_enabled:
-                raise ValueError("The key naming i18n check has failed.")
-
-            else:
-                sys.exit(1)
-
+    _print_invalid_keys(
+        invalid_keys_by_name, invalid_keys_by_name_error, fix, all_checks_enabled
+    )
     if fix and invalid_keys_by_name:
         files_to_fix = collect_source_and_search_dir_files_to_fix(
             src_directory=config_src_directory,
@@ -298,28 +444,7 @@ Please rename the following {name_key_or_keys} \\[current_key -> suggested_corre
                 replace_text_in_file(path=f, old=current, new=correct)
 
         # Sort all locale files if the sorted-keys and repeat-keys checks are activated.
-        if config_sorted_keys_active:
-            for json_file in json_files:
-                locale_dict = read_json_file(json_file)
-                is_sorted, _ = check_file_keys_sorted(locale_dict)
-
-                if not is_sorted:
-                    if (
-                        config_repeat_keys_active
-                        and not check_file_keys_repeated(json_file)[1]
-                    ):
-                        sorted_locale_dict = dict(sorted(locale_dict.items()))
-
-                        with open(json_file, "w", encoding="utf-8") as lf:
-                            json.dump(
-                                sorted_locale_dict, lf, indent=2, ensure_ascii=False
-                            )
-                            lf.write("\n")
-
-                    else:
-                        rprint(
-                            "\n[yellow]⚠️  Note: JSON key sorting skipped as there are repeat keys (i18n-check -rk)[/yellow]"
-                        )
+        _sort_local_files(config_sorted_keys_active, json_files)
 
         if all_checks_enabled:
             raise ValueError("The invalid keys i18n check has failed.")

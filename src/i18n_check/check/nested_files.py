@@ -171,32 +171,20 @@ def nested_files_check(
 # MARK: Fix
 
 
-def nested_files_check_and_fix(
-    directory: str | Path = config_i18n_directory,
-) -> bool:
+def flatten_nested_files(nested_files: list[Path]) -> list[Path]:
     """
-    Check all JSON files in the given directory for nested structures.
+    Flatten the nested JSON file paths.
 
     Parameters
     ----------
-    directory : str | Path, default=config_i18n_directory
-        The directory path to check for JSON files.
+    nested_files : list[Path]
+        A list of nested JSON file paths.
 
     Returns
     -------
-    bool
-        True if the check is successful.
+    list[Path]
+        A list of Flattened JSON file paths.
     """
-    nested_files_check(directory=directory, fix=True)
-
-    if not (nested_files := derive_nested_files(directory=directory)):
-        return False
-
-    file_or_files = "file" if len(nested_files) == 1 else "files"
-    rprint(
-        f"\n[yellow]Flattening nested JSON in {len(nested_files)} {file_or_files}:[/yellow]"
-    )
-
     failed: list[Path] = []
     for file_path in nested_files:
         try:
@@ -231,6 +219,36 @@ def nested_files_check_and_fix(
         except Exception as e:
             rprint(f"[red]❌ Failed to flatten {file_path}: {e}[/red]")
             failed.append(file_path)
+    return failed
+
+
+def nested_files_check_and_fix(
+    directory: str | Path = config_i18n_directory,
+) -> bool:
+    """
+    Check all JSON files in the given directory for nested structures.
+
+    Parameters
+    ----------
+    directory : str | Path, default=config_i18n_directory
+        The directory path to check for JSON files.
+
+    Returns
+    -------
+    bool
+        True if the check is successful.
+    """
+    nested_files_check(directory=directory, fix=True)
+
+    if not (nested_files := derive_nested_files(directory=directory)):
+        return False
+
+    file_or_files = "file" if len(nested_files) == 1 else "files"
+    rprint(
+        f"\n[yellow]Flattening nested JSON in {len(nested_files)} {file_or_files}:[/yellow]"
+    )
+
+    failed: list[Path] = flatten_nested_files(nested_files)
 
     if failed:
         file_or_files = "file" if len(failed) == 1 else "files"

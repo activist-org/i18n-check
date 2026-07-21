@@ -31,6 +31,7 @@ from i18n_check.utils import (
     config_repeat_keys_active,
     config_sorted_keys_active,
     config_src_directory,
+    count_keys,
     get_all_json_files,
     is_valid_key,
     read_json_file,
@@ -120,6 +121,93 @@ def audit_invalid_i18n_key_formats(
 # MARK: Error Outputs
 
 
+def _print_invalid_keys_by_format(
+    invalid_keys_by_format: dict,
+    invalid_keys_by_format_error: str,
+    fix: bool,
+    all_checks_enabled: bool,
+) -> None:
+    """
+    Print the results of key formatting check and exit if issues are found.
+
+    Parameters
+    ----------
+    invalid_keys_by_format : dict
+        A dictionary mapping invalid keys to their correct order.
+    invalid_keys_by_format_error : str
+        A string to print when invalid formatted keys are found.
+    fix : bool
+        If True, automatically corrects the invalid key formats in the source files.
+    all_checks_enabled : bool
+        Whether all checks are being ran by the CLI.
+
+    Returns
+    -------
+    None
+        Prints invalid formatted keys, raises ValueError and Terminates if invalid otherwise prints the validated message.
+
+    Raises
+    ------
+    ValueError, sys.exit(1)
+        An error is raised and the system prints error details if there are invalid keys by format.
+    """
+    if invalid_keys_by_format:
+        rprint(f"\n[red] {invalid_keys_by_format_error} [/red]")
+
+        if not fix:
+            rprint(
+                "\n[yellow]💡 Tip: You can automatically fix invalid key formats by running the --key-formatting (-kf) check with the --fix (-f) flag.[/yellow]"
+            )
+
+            if all_checks_enabled:
+                raise ValueError("The key formatting i18n check has failed.")
+
+            else:
+                sys.exit(1)
+    else:
+        rprint(
+            "[green]✅ key-formatting success: All i18n keys are formatted correctly in the i18n-src file.[/green]"
+        )
+
+
+def _sort_local_files(config_sorted_keys_active: bool, json_files: list[str]) -> None:
+    """
+    Check and sort the local files.
+
+    Parameters
+    ----------
+    config_sorted_keys_active : bool
+        Global boolean flag to sort local files.
+    json_files : list[str]
+        List of json_files required to be sorted.
+
+    Returns
+    -------
+    None
+        Checks, then sorts the local files if required, otherwise skips necessary repeated files.
+    """
+    if config_sorted_keys_active:
+        for json_file in json_files:
+            locale_dict = read_json_file(json_file)
+            is_sorted, _ = check_file_keys_sorted(locale_dict)
+
+            if not is_sorted:
+                if (
+                    config_repeat_keys_active
+                    and not check_file_keys_repeated(json_file)[1]
+                ):
+                    sorted_locale_dict = dict(sorted(locale_dict.items()))
+
+                    with open(json_file, "w", encoding="utf-8") as lf:
+                        json.dump(sorted_locale_dict, lf, indent=2, ensure_ascii=False)
+                        lf.write("\n")
+
+                else:
+                    rprint(
+                        "\n[yellow]⚠️  Note: JSON key sorting skipped as there are repeat keys (i18n-check -rk)[/yellow]"
+                    )
+
+
 def invalid_key_formats_check_and_fix(
     invalid_keys_by_format: dict[str, str],
     all_checks_enabled: bool = False,
@@ -133,10 +221,10 @@ def invalid_key_formats_check_and_fix(
     invalid_keys_by_format : dict[str, str]
         A dictionary mapping i18n keys that are not formatted correctly to their suggested corrections.
 
-    all_checks_enabled : bool, optional, default=False
+    all_checks_enabled : bool | None, default=False
         Whether all checks are being ran by the CLI.
 
-    fix : bool, optional, default=False
+    fix : bool | None, default=False
         If True, automatically corrects the invalid key formats in the source files.
 
     Returns
@@ -152,37 +240,19 @@ def invalid_key_formats_check_and_fix(
     invalid_keys_by_format_string = "".join(
         f"\n{k} -> {v}" for k, v in sorted(invalid_keys_by_format.items())
     )
-    format_to_be = "is" if len(invalid_keys_by_format) == 1 else "are"
-    format_key_to_be = (
-        "key that is" if len(invalid_keys_by_format) == 1 else "keys that are"
+    format_to_be = count_keys(len(invalid_keys_by_format), "is", "are")
+    format_key_to_be = count_keys(
+        len(invalid_keys_by_format), "key that is", "keys that are"
     )
-    key_or_keys = "key" if len(invalid_keys_by_format) == 1 else "keys"
+
+    format_key_or_keys = count_keys(len(invalid_keys_by_format), "key", "keys")
 
     invalid_keys_by_format_error = f"""❌ key-formatting error: There {format_to_be} {len(invalid_keys_by_format)} i18n {format_key_to_be} not formatted correctly.
-Please reformat the following {key_or_keys} [current_key -> suggested_correction]:\n{invalid_keys_by_format_string}"""
+Please reformat the following {format_key_or_keys} [current_key -> suggested_correction]:\n{invalid_keys_by_format_string}"""
 
-    if not invalid_keys_by_format:
-        rprint(
-            "[green]✅ key-formatting success: All i18n keys are formatted correctly in the i18n-src file.[/green]"
-        )
-
-    else:
-        error_string = "\n[red]"
-        error_string += invalid_keys_by_format_error
-        error_string += "[/red]"
-        rprint(error_string)
-
-        if not fix:
-            rprint(
-                "\n[yellow]💡 Tip: You can automatically fix invalid key formats by running the --key-formatting (-kf) check with the --fix (-f) flag.[/yellow]"
-            )
-
-            if all_checks_enabled:
-                raise ValueError("The key formatting i18n check has failed.")
-
-            else:
-                sys.exit(1)
-
+    _print_invalid_keys_by_format(
+        invalid_keys_by_format, invalid_keys_by_format_error, fix, all_checks_enabled
+    )
     if fix and invalid_keys_by_format:
         files_to_fix = collect_source_and_search_dir_files_to_fix(
             src_directory=config_src_directory,
@@ -201,28 +271,7 @@ Please reformat the following {key_or_keys} [current_key -> suggested_correction
                 replace_text_in_file(path=f, old=current, new=correct)
 
         # Sort all locale files if the sorted-keys and repeat-keys checks are activated.
-        if config_sorted_keys_active:
-            for json_file in json_files:
-                locale_dict = read_json_file(json_file)
-                is_sorted, _ = check_file_keys_sorted(locale_dict)
-
-                if not is_sorted:
-                    if (
-                        config_repeat_keys_active
-                        and not check_file_keys_repeated(json_file)[1]
-                    ):
-                        sorted_locale_dict = dict(sorted(locale_dict.items()))
-
-                        with open(json_file, "w", encoding="utf-8") as lf:
-                            json.dump(
-                                sorted_locale_dict, lf, indent=2, ensure_ascii=False
-                            )
-                            lf.write("\n")
-
-                    else:
-                        rprint(
-                            "\n[yellow]⚠️  Note: JSON key sorting skipped as there are repeat keys (i18n-check -rk)[/yellow]"
-                        )
+        _sort_local_files(config_sorted_keys_active, json_files)
 
         if all_checks_enabled:
             raise ValueError("The key formatting i18n check has failed.")

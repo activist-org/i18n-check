@@ -829,3 +829,28 @@ def get_script_terminal_punctuation(text: str) -> tuple[str, bool]:
                 return _SCRIPT_TERMINAL_PUNCTUATION[script]
 
     return (".", False)
+
+
+def count_keys(length: int, key: str, keys: str) -> str:
+    """
+    Helper method to count the keys.
+
+    Parameters
+    ----------
+    length : int
+        Length of the keys.
+
+    key : str
+        String variable if the length of the key is less than one.
+
+    keys : str
+        String variable if the length of the keys are more than one.
+
+    Returns
+    -------
+    str
+        String variable based on the length of the keys.
+    """
+    if length > 1:
+        return keys
+    return key

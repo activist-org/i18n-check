@@ -27,7 +27,40 @@ from i18n_check.utils import (
     replace_text_in_file,
 )
 
+
 # MARK: Find Issues
+def _get_corrected_aria_label(value: str) -> str | None:
+    """
+    Helper function to get corrected aria labels.
+
+    Parameters
+    ----------
+    value : str
+        Value to check and get corrected value.
+
+    Returns
+    -------
+    str | None
+        Returns corrected value else None.
+    """
+    stripped_value = value.rstrip()
+    if not stripped_value:
+        return None
+
+    has_punctuation_at_end = stripped_value[-1] in ALL_TERMINAL_PUNCTUATION
+    has_punctuation_at_start = stripped_value[0] in ALL_TERMINAL_PUNCTUATION
+
+    if not (has_punctuation_at_end or has_punctuation_at_start):
+        return None
+
+    # Remove punctuation from both ends to be thorough.
+    corrected_value = stripped_value.strip(ALL_TERMINAL_PUNCTUATION)
+
+    # Preserve any trailing whitespace from original.
+    if value.endswith(" "):
+        corrected_value += " "
+
+    return corrected_value
 
 
 def find_aria_label_punctuation_issues(
@@ -53,36 +86,17 @@ def find_aria_label_punctuation_issues(
         json_file_dict = read_json_file(file_path=json_file)
 
         for key, value in json_file_dict.items():
-            if isinstance(value, str) and key.endswith("_aria_label"):
-                stripped_value = value.rstrip()
+            if not (isinstance(value, str) and key.endswith("_aria_label")):
+                continue
 
-                # Aria labels should not have punctuation at either end.
-                has_punctuation_at_end = (
-                    stripped_value and stripped_value[-1] in ALL_TERMINAL_PUNCTUATION
-                )
-                has_punctuation_at_start = (
-                    stripped_value and stripped_value[0] in ALL_TERMINAL_PUNCTUATION
-                )
+            corrected_value = _get_corrected_aria_label(value)
+            if corrected_value is None:
+                continue
 
-                if stripped_value and (
-                    has_punctuation_at_end or has_punctuation_at_start
-                ):
-                    # Remove punctuation from both ends to be thorough.
-                    corrected_value = stripped_value.strip(ALL_TERMINAL_PUNCTUATION)
-
-                    # Preserve any trailing whitespace from original.
-                    if value.endswith(" "):
-                        corrected_value += " "
-
-                    if key not in aria_label_issues:
-                        aria_label_issues[key] = {}
-
-                    if json_file not in aria_label_issues[key]:
-                        aria_label_issues[key][json_file] = {}
-
-                    aria_label_issues[key][json_file]["current_value"] = value
-                    aria_label_issues[key][json_file]["correct_value"] = corrected_value
-
+            aria_label_issues.setdefault(key, {})[str(json_file)] = {
+                "current_value": value,
+                "correct_value": corrected_value,
+            }
     return aria_label_issues
 
 
