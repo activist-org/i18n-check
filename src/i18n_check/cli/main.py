@@ -5,6 +5,8 @@ Setup and commands for the i18n-check command line interface.
 
 import argparse
 import sys
+from argparse import Namespace
+from typing import Callable
 
 from rich import print as rprint
 
@@ -42,6 +44,316 @@ from i18n_check.cli.generate_test_frontends import generate_test_frontends
 from i18n_check.cli.upgrade import upgrade_cli
 from i18n_check.cli.version import get_version_message
 
+# MARK: Dispatch Checks
+
+
+def run_all_checks_with_parameters(args: Namespace) -> None:
+    """
+    Helper method to run all i18n-checks.
+
+    Parameters
+    ----------
+    args : Namespace
+        CLI namespace args for use in the function.
+
+    Returns
+    -------
+    None
+        Runs all the i18n checks in the project.
+    """
+    run_all_checks(args=args)
+
+
+def run_key_formatting_with_parameters(args: Namespace) -> None:
+    """
+    Helper method to check proper key formatting of i18n-keys.
+
+    Parameters
+    ----------
+    args : Namespace
+        CLI namespace args for use in the function.
+
+    Returns
+    -------
+    None
+        Checks the key formatting and prints the result via the terminal.
+    """
+    invalid_key_formats_check_and_fix(
+        invalid_keys_by_format=invalid_keys_by_format,
+        all_checks_enabled=False,
+        fix=args.fix,
+    )
+
+
+def run_key_naming_with_parameters(args: Namespace) -> None:
+    """
+    Helper method to check proper key naming of i18n-keys.
+
+    Parameters
+    ----------
+    args : Namespace
+        CLI namespace args for use in the function.
+
+    Returns
+    -------
+    None
+        Checks the naming of keys and prints the result via the terminal.
+    """
+    invalid_key_names_check_and_fix(
+        invalid_keys_by_name=invalid_keys_by_name,
+        all_checks_enabled=False,
+        fix=args.fix,
+    )
+
+
+def run_nonexistent_keys_with_parameters(args: Namespace) -> None:
+    """
+    Helper method to check non existent keys.
+
+    Parameters
+    ----------
+    args : Namespace
+        CLI namespace args for use in the function.
+
+    Returns
+    -------
+    None
+        Checks if there's non existent keys and prints the result via the terminal.
+    """
+    nonexistent_keys_check_and_fix(all_used_i18n_keys=all_used_i18n_keys, fix=args.fix)
+
+
+def run_unused_keys_with_parameters(args: Namespace) -> None:
+    """
+    Helper method to check for unused i18n keys in the codebase.
+
+    Parameters
+    ----------
+    args : Namespace
+        CLI namespace args for use in the function.
+
+    Returns
+    -------
+    None
+        Checks the codebase for unused keys and prints the result via the terminal.
+    """
+    if args.delete:
+        from i18n_check.check.unused_keys import (
+            unused_keys_check_and_delete,  # needed for tests
+        )
+
+        unused_keys_check_and_delete(unused_keys=unused_keys)
+
+    else:
+        unused_keys_check(unused_keys=unused_keys)
+
+
+def run_non_source_keys_with_parameters(args: Namespace) -> None:
+    """
+    Helper method to check if i18n translation JSON files that are not present in the source files.
+
+    Parameters
+    ----------
+    args : Namespace
+        CLI namespace args for use in the function.
+
+    Returns
+    -------
+    None
+        Check the codebase for any non source keys in the JSON files and print the result via the terminal.
+    """
+
+    if args.delete:
+        from i18n_check.check.non_source_keys import non_source_keys_check_and_delete
+
+        non_source_keys_check_and_delete(non_source_keys_dict=non_source_keys_dict)
+
+    else:
+        non_source_keys_check(non_source_keys_dict=non_source_keys_dict)
+
+
+def run_repeat_keys_with_parameters(args: Namespace) -> None:
+    """
+    Check for duplicate keys in i18n JSON files.
+
+    Parameters
+    ----------
+    args : Namespace
+        Receives CLI args for the specific function.
+        Note: Included as we pass args in dispatch_i18n_checks.
+
+    Returns
+    -------
+    None
+        Checks for duplicate keys and prints the result via terminal.
+    """
+    repeat_keys_check()
+
+
+def run_repeat_values_with_parameters(args: Namespace) -> None:
+    """
+    Check if values in the i18n-src file have repeat strings.
+
+    Parameters
+    ----------
+    args : Namespace
+        CLI namespace args for use in the function.
+        Note: Included as we pass args in dispatch_i18n_checks.
+
+    Returns
+    -------
+    None
+        Checks for repeated strings and prints the result via the terminal.
+    """
+    repeat_values_check(
+        json_repeat_value_counts=json_repeat_value_counts,
+        repeat_value_error_report=repeat_value_error_report,
+    )
+
+
+def run_sorted_keys_with_parameters(args: Namespace) -> None:
+    """
+    Check if all the i8n-check's JSON files are sorted alphabetically.
+
+    Parameters
+    ----------
+    args : Namespace
+        CLI namespace args for use in the function.
+
+    Returns
+    -------
+    None
+        Checks if the keys are sorted alphabetically and prints the result via the terminal.
+    """
+    sorted_keys_check_and_fix(fix=args.fix)
+
+
+def run_nested_files_with_parameters(args: Namespace) -> None:
+    """
+    Check for nested i18n source and translation keys.
+
+    Parameters
+    ----------
+    args : Namespace
+        CLI namespace args for use in the function.
+
+    Returns
+    -------
+    None
+        Checks if the files are nested, then fixes it and prints the result via the terminal.
+    """
+    if args.fix:
+        nested_files_check_and_fix()
+
+    else:
+        nested_files_check()
+
+
+def run_missing_keys_with_parameters(args: Namespace) -> None:
+    """
+    Check for missing keys in locale files compared to the source file.
+
+    Parameters
+    ----------
+    args : Namespace
+        CLI namespace args for use in the function.
+
+    Returns
+    -------
+    None
+        Checks for the missing keys, then fixes it and prints the result via the terminal.
+    """
+    if args.fix and args.locale:
+        missing_keys_check_and_fix(fix_locale=args.locale)
+
+    elif args.fix:
+        rprint(
+            "[red]❌ Error: --locale (-l) is required when using --fix (-f) with --missing-keys (-mk)[/red]"
+        )
+        rprint("[yellow]💡 Example: i18n-check -mk -f -l ENTER_ISO_2_CODE[/yellow]")
+        sys.exit(1)
+
+    else:
+        missing_keys_check_and_fix()
+
+
+def run_aria_labels_with_parameters(args: Namespace) -> None:
+    """
+    Check for the appropriate punctuation in the keys end with '_aria_label'.
+
+    Parameters
+    ----------
+    args : Namespace
+        CLI namespace args for use in the function.
+
+    Returns
+    -------
+    None
+        Checks for the appropriate punctuations, then fixes it and prints the result via the terminal.
+    """
+    aria_labels_check_and_fix(fix=args.fix)
+
+
+def run_alt_texts_with_parameters(args: Namespace) -> None:
+    """
+    Check for the appropriate punctuation in the keys end with '_alt_text'.
+
+    Parameters
+    ----------
+    args : Namespace
+        CLI namespace args for use in the function.
+
+    Returns
+    -------
+    None
+        Checks for the appropriate punctuations, then fixes it and prints the result via the terminal.
+    """
+    alt_texts_check_and_fix(fix=args.fix)
+
+
+# MARK: Dispatch Function
+
+
+def dispatch_i18n_checks(args: Namespace) -> bool:
+    """
+    Check for the arguments and dispatches the right command to execute.
+
+    Parameters
+    ----------
+    args : Namespace
+        CLI namespace args for use in the function.
+
+    Returns
+    -------
+    bool
+        Returns the boolean value of execution status of the commands given.
+    """
+    check_fxn_dict: dict[str, Callable[[Namespace], None]] = {
+        "all_checks": run_all_checks_with_parameters,
+        "key_formatting": run_key_formatting_with_parameters,
+        "key_naming": run_key_naming_with_parameters,
+        "nonexistent_keys": run_nonexistent_keys_with_parameters,
+        "unused_keys": run_unused_keys_with_parameters,
+        "non_source_keys": run_non_source_keys_with_parameters,
+        "repeat_keys": run_repeat_keys_with_parameters,
+        "repeat_values": run_repeat_values_with_parameters,
+        "sorted_keys": run_sorted_keys_with_parameters,
+        "nested_files": run_nested_files_with_parameters,
+        "missing_keys": run_missing_keys_with_parameters,
+        "aria_labels": run_aria_labels_with_parameters,
+        "alt_texts": run_alt_texts_with_parameters,
+    }
+
+    for flag_name, handler in check_fxn_dict.items():
+        if getattr(args, flag_name):
+            handler(args)
+            return True
+
+    return False
+
+
+# MARK: Main
+
 
 def main() -> None:
     """
@@ -58,27 +370,27 @@ def main() -> None:
     Notes
     -----
     The available command line arguments are:
-    - --help (-h): Show this help message and exit.
-    - --version (-v): Show the version of the i18n-check CLI.
-    - --upgrade (-u): Upgrade the i18n-check CLI to the latest version.
-    - --generate-config-file (-gcf): Generate a configuration file for i18n-check.
-    - --generate-test-frontends (-gtf): Generate frontends to test i18n-check functionalities.
-    - --all-checks (-a): Run all available checks.
-    - --key-formatting (-kf): Check for proper formatting of i18n keys in the i18n-src file.
-    - --key-naming (-kn): Check for consistent file based naming of i18n keys in the codebase.
-    - --nonexistent-keys (-nk): Check if the codebase includes i18n keys that are not within the source file.
-    - --unused-keys (-uk): Check for unused i18n keys in the codebase.
-    - --non-source-keys (-nsk): Check if i18n translation JSON files have keys that are not in the source file.
-    - --repeat-keys (-rk): Check for duplicate keys in i18n JSON files.
-    - --repeat-values (-rv): Check if values in the i18n-src file have repeat strings.
-    - --sorted-keys (-sk): Check if all i18n JSON files have keys sorted alphabetically.
-    - --nested-files (-nf): Check for nested i18n source and translation keys.
-    - --missing-keys (-mk): Check for missing keys in locale files.
-    - --aria-labels (-al): Check for appropriate punctuation in aria label keys.
-    - --alt-texts (-at): Check for appropriate punctuation in alt text keys.
-    - --fix (-f): Automatically fix key issues. Can be used with -kf, -kn, -nk, -sk, -mk, -al, -at or -nf.
-    - --locale (-l): Specify locale for interactive key addition.
-    - --delete (-d): Delete unused keys or non-source keys from JSON files. Can be used with -uk or -nsk.
+        --help (-h): Show this help message and exit.
+        --version (-v): Show the version of the i18n-check CLI.
+        --upgrade (-u): Upgrade the i18n-check CLI to the latest version.
+        --generate-config-file (-gcf): Generate a configuration file for i18n-check.
+        --generate-test-frontends (-gtf): Generate frontends to test i18n-check functionalities.
+        --all-checks (-a): Run all available checks.
+        --key-formatting (-kf): Check for proper formatting of i18n keys in the i18n-src file.
+        --key-naming (-kn): Check for consistent file based naming of i18n keys in the codebase.
+        --nonexistent-keys (-nk): Check if the codebase includes i18n keys that are not within the source file.
+        --unused-keys (-uk): Check for unused i18n keys in the codebase.
+        --non-source-keys (-nsk): Check if i18n translation JSON files have keys that are not in the source file.
+        --repeat-keys (-rk): Check for duplicate keys in i18n JSON files.
+        --repeat-values (-rv): Check if values in the i18n-src file have repeat strings.
+        --sorted-keys (-sk): Check if all i18n JSON files have keys sorted alphabetically.
+        --nested-files (-nf): Check for nested i18n source and translation keys.
+        --missing-keys (-mk): Check for missing keys in locale files.
+        --aria-labels (-al): Check for appropriate punctuation in aria label keys.
+        --alt-texts (-at): Check for appropriate punctuation in alt text keys.
+        --fix (-f): Automatically fix key issues. Can be used with -kf, -kn, -nk, -sk, -mk, -al, -at or -nf.
+        --locale (-l): Specify locale for interactive key addition.
+        --delete (-d): Delete unused keys or non-source keys from JSON files. Can be used with -uk or -nsk.
 
     Examples
     --------
@@ -87,9 +399,9 @@ def main() -> None:
     >>> i18n-check --key-formatting --fix  # -kf -f
     >>> i18n-check --key-naming --fix  # -kn -f
     >>> i18n-check --all-checks  # -a
-    >>> i18n-check --missing-keys --fix --locale ENTER_ISO_2_CODE  # interactive mode to add missing keys
+    >>> i18n-check --missing-keys --fix --locale ISO_2_CODE  # interactive mode to add missing keys
     """
-    # MARK: CLI Base
+    # MARK: CLI Arguments
 
     parser = argparse.ArgumentParser(
         prog="i18n-check",
@@ -241,7 +553,7 @@ def main() -> None:
         help="Delete unused keys or non-source keys from JSON files. Can be used with -uk or -nsk.",
     )
 
-    # MARK: Setup CLI
+    # MARK: Run CLI
 
     args = parser.parse_args()
 
@@ -260,107 +572,5 @@ def main() -> None:
     if not config_file_is_valid():
         sys.exit(1)
 
-    # MARK: Run Checks
-
-    if args.all_checks:
-        run_all_checks(args=args)
-        return
-
-    if args.key_formatting:
-        invalid_key_formats_check_and_fix(
-            invalid_keys_by_format=invalid_keys_by_format,
-            all_checks_enabled=False,
-            fix=args.fix,
-        )
-        return
-
-    if args.key_naming:
-        invalid_key_names_check_and_fix(
-            invalid_keys_by_name=invalid_keys_by_name,
-            all_checks_enabled=False,
-            fix=args.fix,
-        )
-        return
-
-    if args.nonexistent_keys:
-        nonexistent_keys_check_and_fix(
-            all_used_i18n_keys=all_used_i18n_keys,
-            fix=args.fix,
-        )
-        return
-
-    if args.unused_keys:
-        if args.delete:
-            from i18n_check.check.unused_keys import (
-                unused_keys_check_and_delete,  # needed for tests
-            )
-
-            unused_keys_check_and_delete(unused_keys=unused_keys)
-
-        else:
-            unused_keys_check(unused_keys=unused_keys)
-
-        return
-
-    if args.non_source_keys:
-        if args.delete:
-            from i18n_check.check.non_source_keys import (
-                non_source_keys_check_and_delete,  # needed for tests
-            )
-
-            non_source_keys_check_and_delete(non_source_keys_dict=non_source_keys_dict)
-
-        else:
-            non_source_keys_check(non_source_keys_dict=non_source_keys_dict)
-
-        return
-
-    if args.repeat_keys:
-        repeat_keys_check()
-        return
-
-    if args.repeat_values:
-        repeat_values_check(
-            json_repeat_value_counts=json_repeat_value_counts,
-            repeat_value_error_report=repeat_value_error_report,
-        )
-        return
-
-    if args.sorted_keys:
-        sorted_keys_check_and_fix(fix=args.fix)
-        return
-
-    if args.nested_files:
-        if args.fix:
-            nested_files_check_and_fix()
-
-        else:
-            nested_files_check()
-
-        return
-
-    if args.missing_keys:
-        if args.fix and args.locale:
-            missing_keys_check_and_fix(fix_locale=args.locale)
-
-        elif args.fix:
-            rprint(
-                "[red]❌ Error: --locale (-l) is required when using --fix (-f) with --missing-keys (-mk)[/red]"
-            )
-            rprint("[yellow]💡 Example: i18n-check -mk -f -l ENTER_ISO_2_CODE[/yellow]")
-            sys.exit(1)
-
-        else:
-            missing_keys_check_and_fix()
-
-        return
-
-    if args.aria_labels:
-        aria_labels_check_and_fix(fix=args.fix)
-        return
-
-    if args.alt_texts:
-        alt_texts_check_and_fix(fix=args.fix)
-        return
-
-    parser.print_help()
+    if not dispatch_i18n_checks(args):
+        parser.print_help()
