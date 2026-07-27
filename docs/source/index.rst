@@ -301,7 +301,6 @@ The following details the potential contents of this file:
    src-dir: frontend
    i18n-dir: frontend/i18n
    i18n-src: frontend/i18n/en.json
-
    file-types-to-check: [.ts, .js]
 
    checks:
