@@ -61,16 +61,9 @@ def get_config_file_path() -> Path:
     yaml_path = CWD_PATH / ".i18n-check.yaml"
     yml_path = CWD_PATH / ".i18n-check.yml"
 
-    # Prefer .yaml if it exists, otherwise check for .yml.
-    if yaml_path.is_file():
-        return yaml_path
+    config_file_name = get_config_file_name()
 
-    elif yml_path.is_file():
-        return yml_path
-
-    else:
-        # Default to .yaml for new files.
-        return yaml_path
+    return yaml_path if config_file_name == ".i18n-check.yaml" else yml_path
 
 
 # Import after defining get_config_file_path to avoid circular import.
