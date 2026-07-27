@@ -28,8 +28,9 @@ from i18n_check.utils import (
     replace_text_in_file,
 )
 
-
 # MARK: Find Issues
+
+
 def _get_corrected_alt_text(value: str) -> str | None:
     """
     Helper function to get corrected alt text value.
@@ -67,8 +68,10 @@ def _check_json_file(
     ----------
     json_file_dict : dict
         The parsed contents of a single JSON file, as a flat dict.
+
     alt_text_issues : dict
         Running accumulator of all issues found so far across all the files.
+
     json_file : str
         The path of the current JSON file being checked, as a string.
 

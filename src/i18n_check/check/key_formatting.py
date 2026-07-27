@@ -31,7 +31,7 @@ from i18n_check.utils import (
     config_repeat_keys_active,
     config_sorted_keys_active,
     config_src_directory,
-    count_keys,
+    fmt_singular_or_plural,
     get_all_json_files,
     is_valid_key,
     read_json_file,
@@ -178,6 +178,7 @@ def _sort_local_files(config_sorted_keys_active: bool, json_files: list[str]) ->
     ----------
     config_sorted_keys_active : bool
         Global boolean flag to sort local files.
+
     json_files : list[str]
         List of json_files required to be sorted.
 
@@ -240,12 +241,16 @@ def invalid_key_formats_check_and_fix(
     invalid_keys_by_format_string = "".join(
         f"\n{k} -> {v}" for k, v in sorted(invalid_keys_by_format.items())
     )
-    format_to_be = count_keys(len(invalid_keys_by_format), "is", "are")
-    format_key_to_be = count_keys(
-        len(invalid_keys_by_format), "key that is", "keys that are"
-    )
 
-    format_key_or_keys = count_keys(len(invalid_keys_by_format), "key", "keys")
+    format_to_be = fmt_singular_or_plural(
+        c=len(invalid_keys_by_format), s="is", p="are"
+    )
+    format_key_to_be = fmt_singular_or_plural(
+        c=len(invalid_keys_by_format), s="key that is", p="keys that are"
+    )
+    format_key_or_keys = fmt_singular_or_plural(
+        c=len(invalid_keys_by_format), s="key", p="keys"
+    )
 
     invalid_keys_by_format_error = f"""❌ key-formatting error: There {format_to_be} {len(invalid_keys_by_format)} i18n {format_key_to_be} not formatted correctly.
 Please reformat the following {format_key_or_keys} [current_key -> suggested_correction]:\n{invalid_keys_by_format_string}"""

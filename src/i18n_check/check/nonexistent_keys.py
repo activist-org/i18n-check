@@ -35,7 +35,7 @@ from i18n_check.utils import (
     config_repeat_keys_active,
     config_sorted_keys_active,
     config_src_directory,
-    count_keys,
+    fmt_singular_or_plural,
     read_json_file,
 )
 
@@ -241,7 +241,6 @@ def _sort_nonexistent_keys(
                         "\n[yellow]⚠️  Note: JSON key sorting skipped as there are repeat keys (i18n-check -rk)[/yellow]"
                     )
 
-            # Write to file.
             with open(i18n_src_file, "w", encoding="utf-8") as f:
                 json.dump(i18n_src_dict_updated, f, indent=2, ensure_ascii=False)
                 f.write("\n")
@@ -325,7 +324,7 @@ def add_nonexistent_keys_interactively(
         read_json_file(file_path=i18n_src_file).keys()
     ):
         remaining_count = len(remaining_nonexistent)
-        key_or_keys = count_keys(remaining_count, "key", "keys")
+        key_or_keys = fmt_singular_or_plural(c=remaining_count, s="key", p="keys")
         rprint(
             f"[yellow]⚠️ {remaining_count} {key_or_keys} still missing in the {config_i18n_src_file_name} i18n source file[/yellow]"
         )

@@ -21,8 +21,9 @@ from rich import print as rprint
 
 from i18n_check.utils import (
     config_i18n_directory,
-    count_keys,
+    fmt_singular_or_plural,
     get_all_json_files,
+    get_config_file_name,
     read_json_file,
 )
 
@@ -136,8 +137,8 @@ def _check_unsorted_keys_and_fix(
     """
     if unsorted_files and not fix:
         files_count = len(unsorted_files)
-        file_or_files = count_keys(files_count, "file", "files")
-        has_or_have = count_keys(files_count, "has", "have")
+        file_or_files = fmt_singular_or_plural(c=files_count, s="file", p="files")
+        has_or_have = fmt_singular_or_plural(c=files_count, s="has", p="have")
 
         rprint(
             f"\n[red]❌ sorted-keys error: {files_count} i18n JSON {file_or_files} {has_or_have} keys that are not sorted alphabetically.[/red]\n"
@@ -157,7 +158,9 @@ def _check_unsorted_keys_and_fix(
             sys.exit(1)
 
     elif unsorted_files and fix:
-        file_or_files = count_keys(len(unsorted_files), "file", "files")
+        file_or_files = fmt_singular_or_plural(
+            c=len(unsorted_files), s="file", p="files"
+        )
         rprint(
             f"\n[green]Fixing key sorting in {len(unsorted_files)} {file_or_files}:[/green]"
         )
@@ -201,11 +204,7 @@ def sorted_keys_check_and_fix(
     """
     json_files = get_all_json_files(directory=config_i18n_directory)
 
-    if Path(".i18n-check.yaml").is_file():
-        config_file_name = ".i18n-check.yaml"
-
-    else:
-        config_file_name = ".i18n-check.yml"
+    config_file_name = get_config_file_name()
 
     if not json_files:
         ValueError(

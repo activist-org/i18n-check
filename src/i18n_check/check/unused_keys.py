@@ -29,7 +29,7 @@ from i18n_check.utils import (
     config_unused_keys_directories_to_skip,
     config_unused_keys_files_to_skip,
     config_unused_keys_regexes_to_ignore,
-    count_keys,
+    fmt_singular_or_plural,
     read_files_to_dict,
     read_json_file,
 )
@@ -139,31 +139,6 @@ def unused_keys_check(unused_keys: list[str], all_checks_enabled: bool = False) 
         )
 
     return True
-
-
-def _ternary_count_keys(length: int, key: str, keys: str) -> str:
-    """
-    Helper method to count the keys in a ternary condition.
-
-    Parameters
-    ----------
-    length : int
-        Length of the keys.
-
-    key : str
-        String variable if the length of the key is less than one.
-
-    keys : str
-        String variable if the length of the keys are more than one.
-
-    Returns
-    -------
-    str
-        Returns keys if it the length is 0 or 2 else key.
-    """
-    if length == 0 or length > 1:
-        return keys
-    return key
 
 
 def _remove_unused_keys_from_all_target_files(
@@ -287,8 +262,10 @@ def unused_keys_check_and_delete(
             # If sorting fails, continue - deletion was successful.
             pass
 
-        key_or_keys = count_keys(len(unused_keys), "key", "keys")
-        file_or_files = _ternary_count_keys(target_files_updated, "file", "files")
+        key_or_keys = fmt_singular_or_plural(c=len(unused_keys), s="key", p="keys")
+        file_or_files = fmt_singular_or_plural(
+            c=target_files_updated, s="file", p="files"
+        )
 
         rprint(
             f"[green]✅ unused-keys delete success: Removed {len(unused_keys)} unused {key_or_keys} "

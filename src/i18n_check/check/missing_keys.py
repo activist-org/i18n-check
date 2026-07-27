@@ -9,7 +9,7 @@ Examples
 Run the following script in terminal:
 
 >>> i18n-check -mk
->>> i18n-check -mk -f -l ENTER_ISO_2_CODE  # interactive mode to add missing keys
+>>> i18n-check -mk -f -l ISO_2_CODE  # interactive mode to add missing keys
 """
 
 import json
@@ -29,7 +29,7 @@ from i18n_check.utils import (
     config_repeat_keys_active,
     config_sorted_keys_active,
     config_src_directory,
-    count_keys,
+    fmt_singular_or_plural,
     get_all_json_files,
     read_json_file,
 )
@@ -394,7 +394,7 @@ def add_missing_keys_interactively(
 
     else:
         remaining_count = len(remaining_missing[locale][0])
-        key_or_keys = count_keys(remaining_count, "key", "keys")
+        key_or_keys = fmt_singular_or_plural(c=remaining_count, s="key", p="keys")
         rprint(
             f"[yellow]⚠️ {remaining_count} {key_or_keys} still missing in {locale}.json[/yellow]"
         )

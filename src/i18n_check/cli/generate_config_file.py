@@ -140,6 +140,7 @@ def check_to_str(check_name: str, check_cfg: dict) -> str:
         if isinstance(val, list):
             formatted = ", ".join(f'"{k}"' for k in val)
             lines.append(f"    keys-to-ignore: [{formatted}]")
+
         else:
             lines.append(f'    keys-to-ignore: "{val}"')
 
@@ -251,6 +252,7 @@ def prompt(msg: str, default: str = "") -> str:
     ----------
     msg : str
         The message displayed to the user as the input prompt.
+
     default : str
         The value to return if the user provides no input. Defaults to "".
 
@@ -270,6 +272,7 @@ def prompt_list(msg: str, sep: str = ",") -> list[str]:
     ----------
     msg : str
         The message displayed to the user as the input prompt.
+
     sep : str
         A separator to separate the response.
 
@@ -290,6 +293,7 @@ def activate_check(checks: dict, key: str) -> None:
     ----------
     checks : dict
         A dictionary of checks passed to check.
+
     key : str
         Lookup key passed for accessing the dictionary.
 
@@ -301,6 +305,7 @@ def activate_check(checks: dict, key: str) -> None:
     if checks["global"]["active"]:
         checks[key]["active"] = True
         return
+
     answer = input(f"{str(checks[key]['title']).capitalize()} check [y]: ").lower()
     checks[key]["active"] = answer in ("y", "")
 
@@ -326,9 +331,10 @@ def directories_to_skip(key: str, title: str) -> str | list[str]:
         raw = input(
             f"Directories to skip for {title} [frontend{PATH_SEPARATOR}node_modules]: "
         ).lower()
-        return raw if raw else default
+        return raw or default
+
     raw = input(f"Directories to skip for {title} [None]: ").lower()
-    return raw if raw else []
+    return raw or []
 
 
 def fill_optional_fields(checks: dict, key: str) -> None:

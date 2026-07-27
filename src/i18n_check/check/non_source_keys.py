@@ -22,7 +22,7 @@ from i18n_check.utils import (
     config_i18n_directory,
     config_i18n_src_file,
     config_i18n_src_file_name,
-    count_keys,
+    fmt_singular_or_plural,
     get_all_json_files,
     read_json_file,
 )
@@ -244,8 +244,8 @@ def non_source_keys_check_and_delete(
             # If sorting fails, continue - deletion was successful.
             pass
 
-        key_or_keys = count_keys(total_keys_removed, "key", "keys")
-        file_or_files = count_keys(files_updated, "file", "files")
+        key_or_keys = fmt_singular_or_plural(c=total_keys_removed, s="key", p="keys")
+        file_or_files = fmt_singular_or_plural(c=files_updated, s="file", p="files")
 
         rprint(
             f"[green]✅ non-source-keys delete success: Removed {total_keys_removed} non-source {key_or_keys} "

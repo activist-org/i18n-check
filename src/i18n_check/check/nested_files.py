@@ -219,6 +219,7 @@ def flatten_nested_files(nested_files: list[Path]) -> list[Path]:
         except Exception as e:
             rprint(f"[red]❌ Failed to flatten {file_path}: {e}[/red]")
             failed.append(file_path)
+
     return failed
 
 

@@ -27,8 +27,9 @@ from i18n_check.utils import (
     replace_text_in_file,
 )
 
-
 # MARK: Find Issues
+
+
 def _get_corrected_aria_label(value: str) -> str | None:
     """
     Helper function to get corrected aria labels.

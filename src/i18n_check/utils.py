@@ -24,6 +24,29 @@ PATH_SEPARATOR = "\\" if os.name == "nt" else "/"
 CWD_PATH = Path.cwd()
 
 
+def get_config_file_name() -> str:
+    """
+    Get the name of the i18n-check configuration file.
+
+    Returns
+    -------
+    str
+        .i18n-check.yaml or .i18n-check.yml depending on the name of the file.
+    """
+    yaml_path = CWD_PATH / ".i18n-check.yaml"
+    yml_path = CWD_PATH / ".i18n-check.yml"
+
+    # Prefer .yaml if it exists, otherwise check for .yml.
+    if yaml_path.is_file():
+        return ".i18n-check.yaml"
+
+    elif yml_path.is_file():
+        return ".i18n-check.yml"
+
+    else:
+        return ".i18n-check.yaml"
+
+
 def get_config_file_path() -> Path:
     """
     Get the path to the i18n-check configuration file.
@@ -822,8 +845,7 @@ def get_script_terminal_punctuation(text: str) -> tuple[str, bool]:
         return (".", True)
 
     for char in text:
-        name = unicodedata.name(char, "")
-        if name:
+        if name := unicodedata.name(char, ""):
             script = name.split()[0]
             if script in _SCRIPT_TERMINAL_PUNCTUATION:
                 return _SCRIPT_TERMINAL_PUNCTUATION[script]
@@ -831,26 +853,27 @@ def get_script_terminal_punctuation(text: str) -> tuple[str, bool]:
     return (".", False)
 
 
-def count_keys(length: int, key: str, keys: str) -> str:
+# MARK: Output
+
+
+def fmt_singular_or_plural(c: int, s: str, p: str) -> str:
     """
-    Helper method to count the keys.
+    Check the count that's being displayed to the user and return an appropriate string.
 
     Parameters
     ----------
-    length : int
-        Length of the keys.
+    c : int
+        The count that determines the string to return.
 
-    key : str
-        String variable if the length of the key is less than one.
+    s : str
+        The singular of the string to return if the count is one.
 
-    keys : str
-        String variable if the length of the keys are more than one.
+    p : str
+        The plural of the string to return if the count is more than one.
 
     Returns
     -------
     str
-        String variable based on the length of the keys.
+        A singular or plural string based on the passed count.
     """
-    if length > 1:
-        return keys
-    return key
+    return p if c > 1 or c == 0 else s

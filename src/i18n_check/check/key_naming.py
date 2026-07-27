@@ -135,6 +135,7 @@ def _filter_key_file_dict(
     ----------
     keys_to_ignore_regex : list[str] | None
         A list of regex patterns to match with keys that should be ignored during validation.
+
     key_file_dict : dict[str, list[str]]
         A dictionary where keys are i18n keys and values are lists of file paths where those keys are used.
 
@@ -272,6 +273,8 @@ def audit_invalid_i18n_key_names(
 
 
 # MARK: Error Outputs
+
+
 def _create_message_format(invalid_keys: dict[str, str], keys: str, key: str) -> str:
     """
     Create message format based on the length of keys.
@@ -280,8 +283,10 @@ def _create_message_format(invalid_keys: dict[str, str], keys: str, key: str) ->
     ----------
     invalid_keys : dict[str,str]
         A dictionary mapping invalid keys to their corrected format.
+
     keys : str
         A string value as a message if the dictionary has more than one key.
+
     key : str
         A string value as a message if the dictionary has one key.
 
@@ -308,10 +313,13 @@ def _print_invalid_keys(
     ----------
     invalid_keys_by_name : dict
         A dictionary mapping invalid keys to their correct order.
+
     invalid_keys_by_name_error : str
         A string to print when invalid formatted keys are found.
+
     fix : bool
         If True, automatically corrects the invalid key formats in the source files.
+
     all_checks_enabled : bool
         Whether all checks are being ran by the CLI.
 
@@ -352,6 +360,7 @@ def _sort_local_files(config_sorted_keys_active: bool, json_files: list[str]) ->
     ----------
     config_sorted_keys_active : bool
         Global boolean flag to sort local files.
+
     json_files : list[str]
         List of json_files required to be sorted.
 

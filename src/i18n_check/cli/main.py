@@ -275,8 +275,10 @@ def run_missing_keys_command(args: Namespace) -> None:
     """
     if args.fix and args.locale:
         missing_keys_check_and_fix(fix_locale=args.locale)
+
     elif args.fix:
         _missing_keys_locale_error()
+
     else:
         missing_keys_check_and_fix()
 
@@ -350,6 +352,7 @@ def dispatch_check_command(args: Namespace) -> bool:
         if getattr(args, flag_name):
             handler(args)
             return True
+
     return False
 
 
@@ -368,27 +371,27 @@ def main() -> None:
     Notes
     -----
     The available command line arguments are:
-    - --help (-h): Show this help message and exit.
-    - --version (-v): Show the version of the i18n-check CLI.
-    - --upgrade (-u): Upgrade the i18n-check CLI to the latest version.
-    - --generate-config-file (-gcf): Generate a configuration file for i18n-check.
-    - --generate-test-frontends (-gtf): Generate frontends to test i18n-check functionalities.
-    - --all-checks (-a): Run all available checks.
-    - --key-formatting (-kf): Check for proper formatting of i18n keys in the i18n-src file.
-    - --key-naming (-kn): Check for consistent file based naming of i18n keys in the codebase.
-    - --nonexistent-keys (-nk): Check if the codebase includes i18n keys that are not within the source file.
-    - --unused-keys (-uk): Check for unused i18n keys in the codebase.
-    - --non-source-keys (-nsk): Check if i18n translation JSON files have keys that are not in the source file.
-    - --repeat-keys (-rk): Check for duplicate keys in i18n JSON files.
-    - --repeat-values (-rv): Check if values in the i18n-src file have repeat strings.
-    - --sorted-keys (-sk): Check if all i18n JSON files have keys sorted alphabetically.
-    - --nested-files (-nf): Check for nested i18n source and translation keys.
-    - --missing-keys (-mk): Check for missing keys in locale files.
-    - --aria-labels (-al): Check for appropriate punctuation in aria label keys.
-    - --alt-texts (-at): Check for appropriate punctuation in alt text keys.
-    - --fix (-f): Automatically fix key issues. Can be used with -kf, -kn, -nk, -sk, -mk, -al, -at or -nf.
-    - --locale (-l): Specify locale for interactive key addition.
-    - --delete (-d): Delete unused keys or non-source keys from JSON files. Can be used with -uk or -nsk.
+        --help (-h): Show this help message and exit.
+        --version (-v): Show the version of the i18n-check CLI.
+        --upgrade (-u): Upgrade the i18n-check CLI to the latest version.
+        --generate-config-file (-gcf): Generate a configuration file for i18n-check.
+        --generate-test-frontends (-gtf): Generate frontends to test i18n-check functionalities.
+        --all-checks (-a): Run all available checks.
+        --key-formatting (-kf): Check for proper formatting of i18n keys in the i18n-src file.
+        --key-naming (-kn): Check for consistent file based naming of i18n keys in the codebase.
+        --nonexistent-keys (-nk): Check if the codebase includes i18n keys that are not within the source file.
+        --unused-keys (-uk): Check for unused i18n keys in the codebase.
+        --non-source-keys (-nsk): Check if i18n translation JSON files have keys that are not in the source file.
+        --repeat-keys (-rk): Check for duplicate keys in i18n JSON files.
+        --repeat-values (-rv): Check if values in the i18n-src file have repeat strings.
+        --sorted-keys (-sk): Check if all i18n JSON files have keys sorted alphabetically.
+        --nested-files (-nf): Check for nested i18n source and translation keys.
+        --missing-keys (-mk): Check for missing keys in locale files.
+        --aria-labels (-al): Check for appropriate punctuation in aria label keys.
+        --alt-texts (-at): Check for appropriate punctuation in alt text keys.
+        --fix (-f): Automatically fix key issues. Can be used with -kf, -kn, -nk, -sk, -mk, -al, -at or -nf.
+        --locale (-l): Specify locale for interactive key addition.
+        --delete (-d): Delete unused keys or non-source keys from JSON files. Can be used with -uk or -nsk.
 
     Examples
     --------
@@ -397,7 +400,7 @@ def main() -> None:
     >>> i18n-check --key-formatting --fix  # -kf -f
     >>> i18n-check --key-naming --fix  # -kn -f
     >>> i18n-check --all-checks  # -a
-    >>> i18n-check --missing-keys --fix --locale ENTER_ISO_2_CODE  # interactive mode to add missing keys
+    >>> i18n-check --missing-keys --fix --locale ISO_2_CODE  # interactive mode to add missing keys
     """
     # MARK: CLI Base
 
@@ -569,5 +572,6 @@ def main() -> None:
 
     if not config_file_is_valid():
         sys.exit(1)
+
     if not dispatch_check_command(args):
         parser.print_help()
