@@ -21,7 +21,7 @@ PATH_SEPARATOR = "\\" if os.name == "nt" else "/"
 
 def check_config_and_validate(
     config: dict[str, Any],
-    validators: dict[str, Callable[[Any], bool]],
+    VALIDATORS: dict[str, Callable[[Any], bool]],
     VALID_CHECK_KEYS: set[str],
 ) -> bool:
     """
@@ -31,15 +31,17 @@ def check_config_and_validate(
     ----------
     config : dict[str,Any]
         A dictionary representing the configuration file.
-    validators : dict[str,Callable[[Any],bool]]
+
+    VALIDATORS : dict[str,Callable[[Any],bool]]
         A dictionary containing necessary paths and it's instance types as Callable functions.
+
     VALID_CHECK_KEYS : set[str]
         A set of necessary keys to be checked.
 
     Returns
     -------
     bool
-        Returns True if all the check has been passed otherwise False.
+        Returns True if all the config file checks have passed, otherwise False.
     """
     if config is None:
         rprint(
@@ -47,7 +49,7 @@ def check_config_and_validate(
         )
         return False
 
-    for key, validator in validators.items():
+    for key, validator in VALIDATORS.items():
         if key == "checks":
             if (
                 key not in config
@@ -59,11 +61,13 @@ def check_config_and_validate(
                 )
                 return False
             continue
+
         if key not in config or not validator(config[key]):
             rprint(
                 f"[red]The i18n-check '{key}' argument has not been defined properly. Please check the configuration file and try again.[/red]"
             )
             return False
+
     return True
 
 
@@ -107,21 +111,22 @@ def config_file_is_valid() -> bool:
         return check_config_and_validate(config, VALIDATORS, VALID_CHECK_KEYS)
 
 
-def check_to_str(check_name: str, check_cfg: dict) -> str:
+def check_config_to_str(check_name: str, check_cfg: dict) -> str:
     """
-    To check and serialize a single check config to it's YAML string block.
+    Check and serialize a single check config to its YAML string block.
 
     Parameters
     ----------
     check_name : str
         Names to be checked and passed as a str.
+
     check_cfg : dict
         Configs for the checks to be skipped.
 
     Returns
     -------
     str
-        A Result of the check returned as a string.
+        The configuration of the check returned as a string.
     """
     lines = [f"  {check_name}:\n    active: {check_cfg['active']}"]
 
@@ -177,7 +182,7 @@ def write_to_file(
     # Import here to avoid circular import.
     from i18n_check.utils import get_config_file_path
 
-    checks_str = "".join(check_to_str(name, cfg) for name, cfg in checks.items())
+    checks_str = "".join(check_config_to_str(name, cfg) for name, cfg in checks.items())
     file_types_str = ", ".join(file_types_to_check) if file_types_to_check else ""
 
     config_string = f"""# Configuration file for i18n-check validation.
@@ -186,6 +191,7 @@ src-dir: {src_dir}
 i18n-dir: {i18n_dir}
 i18n-src: {i18n_src_file}
 file-types-to-check: [{file_types_str}]
+
 checks:
   # Global configurations are applied to all checks.
 {checks_str}
@@ -195,14 +201,14 @@ checks:
         f.write(config_string)
 
 
-def build_checks() -> dict[str, dict[str, Any]]:
+def get_base_check_dict() -> dict[str, dict[str, Any]]:
     """
-    Build a Dictionary of checks to be checked.
+    Get a base dictionary of i18n checks to be ran.
 
     Returns
     -------
     dict[str,dict[str,Any]]
-        A dictionary containing necessary keys, directories and information to check.
+        A dictionary containing necessary keys and fields to be added.
     """
     return {
         "global": {
@@ -244,7 +250,7 @@ def build_checks() -> dict[str, dict[str, Any]]:
     }
 
 
-def prompt(msg: str, default: str = "") -> str:
+def prompt_user(msg: str, default: str = "") -> str:
     """
     Prompt the user for input, returning a default if the response is empty.
 
@@ -253,8 +259,8 @@ def prompt(msg: str, default: str = "") -> str:
     msg : str
         The message displayed to the user as the input prompt.
 
-    default : str
-        The value to return if the user provides no input. Defaults to "".
+    default : str, optional, default=""
+        The value to return if the user provides no input.
 
     Returns
     -------
@@ -264,7 +270,7 @@ def prompt(msg: str, default: str = "") -> str:
     return input(msg).strip() or default
 
 
-def prompt_list(msg: str, sep: str = ",") -> list[str]:
+def prompt_user_for_list(msg: str) -> list[str]:
     """
     Prompt the user for a list of inputs, returning a list of responses.
 
@@ -273,19 +279,16 @@ def prompt_list(msg: str, sep: str = ",") -> list[str]:
     msg : str
         The message displayed to the user as the input prompt.
 
-    sep : str
-        A separator to separate the response.
-
     Returns
     -------
     list[str]
         A list of responses in string format collected from the user.
     """
     raw = input(msg).strip()
-    return [item.strip() for item in raw.split(sep) if item.strip()] if raw else []
+    return [item.strip() for item in raw.split(",") if item.strip()] if raw else []
 
 
-def activate_check(checks: dict, key: str) -> None:
+def activate_check(checks: dict, c: str) -> None:
     """
     Prompt the user  to activate a check, unless global is already active.
 
@@ -294,7 +297,7 @@ def activate_check(checks: dict, key: str) -> None:
     checks : dict
         A dictionary of checks passed to check.
 
-    key : str
+    c : str
         Lookup key passed for accessing the dictionary.
 
     Returns
@@ -303,11 +306,11 @@ def activate_check(checks: dict, key: str) -> None:
         Looks up the checks with the lookup key if not prompts the users.
     """
     if checks["global"]["active"]:
-        checks[key]["active"] = True
+        checks[c]["active"] = True
         return
 
-    answer = input(f"{str(checks[key]['title']).capitalize()} check [y]: ").lower()
-    checks[key]["active"] = answer in ("y", "")
+    answer = input(f"{str(checks[c]['title']).capitalize()} check [y]: ").lower()
+    checks[c]["active"] = answer in ("y", "")
 
 
 def directories_to_skip(key: str, title: str) -> str | list[str]:
@@ -318,6 +321,7 @@ def directories_to_skip(key: str, title: str) -> str | list[str]:
     ----------
     key : str
         The check identifier used to determine if the global default applies.
+
     title : str
         The human-readable check name displayed in the prompt.
 
@@ -337,7 +341,7 @@ def directories_to_skip(key: str, title: str) -> str | list[str]:
     return raw or []
 
 
-def fill_optional_fields(checks: dict, key: str) -> None:
+def fill_optional_fields(checks: dict, c: str) -> None:
     """
     Populate optional configuration fields for a given check by prompting the user.
 
@@ -345,7 +349,8 @@ def fill_optional_fields(checks: dict, key: str) -> None:
     ----------
     checks : dict
         The full checks configuration dict containing all check entries.
-    key : str
+
+    c : str
         The lookup key identifying which check entry to populate.
 
     Returns
@@ -353,45 +358,43 @@ def fill_optional_fields(checks: dict, key: str) -> None:
     None
         Prompts the users to skip the required files.
     """
-    v = checks[key]
+    v = checks[c]
 
     if "directories-to-skip" in v:
-        v["directories-to-skip"] = directories_to_skip(key, v["title"])
+        v["directories-to-skip"] = directories_to_skip(c, v["title"])
 
     if "files-to-skip" in v:
         raw = input(f"Files to skip for {v['title']} [None]: ").lower()
         v["files-to-skip"] = raw.split() if raw else []
 
     if "keys-to-ignore" in v:
-        v["keys-to-ignore"] = prompt_list(
+        v["keys-to-ignore"] = prompt_user_for_list(
             f"Keys to ignore for {v['title']} (comma-separated regex) [None]: "
         )
 
     if "locales-to-check" in v:
-        v["locales-to-check"] = prompt_list(
+        v["locales-to-check"] = prompt_user_for_list(
             f"Locales to check for {v['title']} (comma-separated, e.g., fr, de) [All]: "
         )
 
     if "search-dirs" in v:
-        v["search-dirs"] = prompt_list(
+        v["search-dirs"] = prompt_user_for_list(
             f"Additional search dirs for {v['title']} (comma-separated) [None]: "
         )
 
 
-def receive_data() -> None:
+def get_and_write_configuration_data() -> None:
     """
-    Interact with user to configure a .yml file.
+    Interact with the user to get the configuration file data and write it.
     """
-    src_dir = input("Enter src dir [frontend]: ").strip() or "frontend"
-    i18n_dir = (
-        input(f"Enter i18n-dir [frontend{PATH_SEPARATOR}i18n]: ").strip()
-        or f"frontend{PATH_SEPARATOR}i18n"
+    src_dir = prompt_user(msg="Enter src dir [frontend]: ", default="frontend")
+    i18n_dir = prompt_user(
+        msg=f"Enter i18n-dir [frontend{PATH_SEPARATOR}i18n]: ",
+        default=f"frontend{PATH_SEPARATOR}i18n",
     )
-    i18n_src_file = (
-        input(
-            f"Enter i18n-src file [frontend{PATH_SEPARATOR}i18n{PATH_SEPARATOR}en.json]: "
-        ).strip()
-        or f"frontend{PATH_SEPARATOR}i18n{PATH_SEPARATOR}en.json"
+    i18n_src_file = prompt_user(
+        msg=f"Enter i18n-src file [frontend{PATH_SEPARATOR}i18n{PATH_SEPARATOR}en.json]: ",
+        default=f"frontend{PATH_SEPARATOR}i18n{PATH_SEPARATOR}en.json",
     )
     file_types_to_check = input(
         "Enter the file extension types to check [.ts, .js]: "
@@ -399,11 +402,11 @@ def receive_data() -> None:
 
     print("Answer using y or n to select your required checks.")
 
-    checks: dict[str, dict[str, Any]] = build_checks()
+    checks: dict[str, dict[str, Any]] = get_base_check_dict()
 
-    for key in checks:
-        activate_check(checks, key)
-        fill_optional_fields(checks, key)
+    for c in checks:
+        activate_check(checks=checks, c=c)
+        fill_optional_fields(checks=checks, c=c)
 
     write_to_file(
         src_dir=src_dir,
@@ -427,10 +430,11 @@ def generate_config_file() -> None:
         print(
             f"An i18n-check configuration file already exists. Would you like to re-configure your {config_file_name} file?"
         )
+
         reconfigure_choice = input("Press y or n to continue [y]: ").lower()
         if reconfigure_choice in ["y", ""]:
             print("Configuring...")
-            receive_data()
+            get_and_write_configuration_data()
             print(f"Your {config_file_name} file has been generated successfully.")
             if not Path(EXTERNAL_TEST_FRONTENDS_DIR_PATH).is_dir():
                 test_frontend_choice = input(
@@ -450,6 +454,6 @@ def generate_config_file() -> None:
         print(
             "You do not have an i18n-check configuration file. Follow the commands below to generate a .i18n-check.yaml configuration file..."
         )
-        receive_data()
+        get_and_write_configuration_data()
         config_path = get_config_file_path()
         print(f"Your {config_path.name} file has been generated successfully.")

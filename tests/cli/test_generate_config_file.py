@@ -9,7 +9,7 @@ from unittest.mock import mock_open, patch
 
 from i18n_check.cli.generate_config_file import (
     generate_config_file,
-    receive_data,
+    get_and_write_configuration_data,
     write_to_file,
 )
 from i18n_check.utils import PATH_SEPARATOR, get_config_file_path
@@ -70,9 +70,9 @@ class TestGenerateConfigFile(unittest.TestCase):
 
     @patch("i18n_check.cli.generate_config_file.write_to_file")
     @patch("builtins.input")
-    def test_receive_data(self, mock_input, mock_write_to_file):
+    def test_get_and_write_configuration_data(self, mock_input, mock_write_to_file):
         """
-        Tests the receive_data function simulating a user who selects specific checks.
+        Tests the get_and_write_configuration_data function simulating a user who selects specific checks.
         """
         self.maxDiff = None
         mock_input.side_effect = [
@@ -103,10 +103,10 @@ class TestGenerateConfigFile(unittest.TestCase):
             "",  # locales-to-check
         ]
 
-        receive_data()
+        get_and_write_configuration_data()
 
         mock_write_to_file.assert_called_once()
-        # The call in receive_data() uses keyword arguments, so they appear in 'kwargs'.
+        # The call in get_and_write_configuration_data() uses keyword arguments, so they appear in 'kwargs'.
         _args, kwargs = mock_write_to_file.call_args
 
         expected_checks = {
@@ -149,7 +149,7 @@ class TestGenerateConfigFile(unittest.TestCase):
         }
         self.assertEqual(kwargs["checks"], expected_checks)
 
-    @patch("i18n_check.cli.generate_config_file.receive_data")
+    @patch("i18n_check.cli.generate_config_file.get_and_write_configuration_data")
     @patch("pathlib.Path.is_file", return_value=False)
     @patch("builtins.input", return_value="y")
     @patch("i18n_check.cli.generate_config_file.generate_test_frontends")
@@ -160,41 +160,45 @@ class TestGenerateConfigFile(unittest.TestCase):
         mock_gen_frontends,
         mock_input,
         mock_is_file,
-        mock_receive_data,
+        mock_get_and_write_configuration_data,
     ):
         """
-        Tests that if the config file does NOT exist, the receive_data function is called.
+        Tests that if the config file does NOT exist, the get_and_write_configuration_data function is called.
         """
         generate_config_file()
         # is_file is called multiple times now (checking both .yaml and .yml).
         self.assertGreater(mock_is_file.call_count, 0)
-        mock_receive_data.assert_called_once()
+        mock_get_and_write_configuration_data.assert_called_once()
 
     @patch("pathlib.Path.is_file", return_value=True)
     @patch("builtins.input", return_value="y")
-    @patch("i18n_check.cli.generate_config_file.receive_data")
+    @patch("i18n_check.cli.generate_config_file.get_and_write_configuration_data")
     @patch("i18n_check.cli.generate_config_file.generate_test_frontends")
     def test_generate_config_file_exists_reconfigure(
-        self, mock_generate_test_frontends, mock_receive_data, mock_input, mock_is_file
+        self,
+        mock_generate_test_frontends,
+        mock_get_and_write_configuration_data,
+        mock_input,
+        mock_is_file,
     ):
         """
         Test generate_config_file when the config file exists and user wants to reconfigure.
         """
         generate_config_file()
-        mock_receive_data.assert_called_once()
+        mock_get_and_write_configuration_data.assert_called_once()
         mock_generate_test_frontends.assert_called_once()
 
     @patch("pathlib.Path.is_file", return_value=True)
     @patch("builtins.input", return_value="n")
-    @patch("i18n_check.cli.generate_config_file.receive_data")
+    @patch("i18n_check.cli.generate_config_file.get_and_write_configuration_data")
     def test_generate_config_file_exists_no_reconfigure(
-        self, mock_receive_data, mock_input, mock_is_file
+        self, mock_get_and_write_configuration_data, mock_input, mock_is_file
     ):
         """
         Test generate_config_file when the config file exists and user does not want to reconfigure.
         """
         generate_config_file()
-        mock_receive_data.assert_not_called()
+        mock_get_and_write_configuration_data.assert_not_called()
 
     def test_get_config_file_path_yaml_preferred(self):
         """

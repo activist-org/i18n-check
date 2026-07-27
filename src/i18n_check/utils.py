@@ -38,13 +38,13 @@ def get_config_file_name() -> str:
 
     # Prefer .yaml if it exists, otherwise check for .yml.
     if yaml_path.is_file():
-        return ".i18n-check.yaml"
+        return yaml_path.name
 
     elif yml_path.is_file():
-        return ".i18n-check.yml"
+        return yml_path.name
 
     else:
-        return ".i18n-check.yaml"
+        return yaml_path.name
 
 
 def get_config_file_path() -> Path:
