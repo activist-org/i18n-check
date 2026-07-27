@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "i18n-check"
-version = "1.19.5"
+version = "1.20.0"
 description = "Check i18n/L10n keys and values"
 readme = "README.md"
 requires-python = ">=3.12"
@@ -37,15 +37,15 @@ dependencies = [
 
 [dependency-groups]
 dev = [
-    "complexipy>=6.0.1",
-    "prek>=0.4.6",
+    "complexipy>=6.2.0",
+    "prek>=0.4.11",
     "pytest>=9.1.1",
     "pytest-cov>=7.1.0",
-    "ruff>=0.15.20",
+    "ruff>=0.16.0",
     "setuptools>=83.0.0",
     "types-PyYAML>=6.0.12.20250915",
-    "types-requests>=2.33.0.20260518",
-    "ty>=0.0.56",
+    "types-requests>=2.33.0.20260712",
+    "ty>=0.0.63",
 ]
 docs = [
     # Keep docs dependencies formatted in this way with ruff to allow for upgrades via VS Code extension.
