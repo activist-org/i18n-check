@@ -258,10 +258,7 @@ def _check_missing_keys_in_file(
 
         # Skip if the result is a nested key.
         if not isinstance(source_value, dict):
-            missing_key_files = missing_keys_to_files_dict.get(key, [])
-
-            # Skip if the key isn't used in any file.
-            if missing_key_files:
+            if missing_key_files := missing_keys_to_files_dict.get(key, []):
                 rprint(f"[cyan]Key:[/cyan] {key}")
                 rprint(f"[cyan]Source value:[/cyan] '{source_value}'")
 
