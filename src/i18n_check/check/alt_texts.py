@@ -48,15 +48,17 @@ def _get_corrected_alt_text(value: str) -> str | None:
     stripped_value = value.strip()
     if not stripped_value:
         return None
+
     term_char, prepend = get_script_terminal_punctuation(stripped_value)
     check_char = stripped_value[0] if prepend else stripped_value[-1]
 
     if check_char in ALL_TERMINAL_PUNCTUATION:
         return None
+
     return f"{term_char}{stripped_value}" if prepend else f"{stripped_value}{term_char}"
 
 
-def _check_json_file(
+def _check_file_update_issues_dict(
     json_file_dict: dict,
     alt_text_issues: dict,
     json_file: str,
@@ -83,9 +85,11 @@ def _check_json_file(
     for key, value in json_file_dict.items():
         if not (isinstance(value, str) and key.endswith("_alt_text")):
             continue
+
         corrected_value = _get_corrected_alt_text(value)
         if corrected_value is None:
             continue
+
         alt_text_issues.setdefault(key, {})[str(json_file)] = {
             "current_value": value,
             "correct_value": corrected_value,
@@ -113,7 +117,12 @@ def find_alt_text_punctuation_issues(
     alt_text_issues: dict[str, dict[str, dict[str, str]]] = {}
     for json_file in json_files:
         json_file_dict = read_json_file(file_path=json_file)
-        _check_json_file(json_file_dict, alt_text_issues, json_file)
+        _check_file_update_issues_dict(
+            json_file_dict=json_file_dict,
+            alt_text_issues=alt_text_issues,
+            json_file=json_file,
+        )
+
     return alt_text_issues
 
 

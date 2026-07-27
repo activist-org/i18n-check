@@ -19,6 +19,9 @@ EXTERNAL_TEST_FRONTENDS_DIR_PATH = Path.cwd() / "i18n_check_test_frontends"
 PATH_SEPARATOR = "\\" if os.name == "nt" else "/"
 
 
+# MARK: Validate
+
+
 def check_config_and_validate(
     config: dict[str, Any],
     VALIDATORS: dict[str, Callable[[Any], bool]],
@@ -111,6 +114,9 @@ def config_file_is_valid() -> bool:
         return check_config_and_validate(config, VALIDATORS, VALID_CHECK_KEYS)
 
 
+# MARK: Format Entry
+
+
 def check_config_to_str(check_name: str, check_cfg: dict) -> str:
     """
     Check and serialize a single check config to its YAML string block.
@@ -150,6 +156,9 @@ def check_config_to_str(check_name: str, check_cfg: dict) -> str:
             lines.append(f'    keys-to-ignore: "{val}"')
 
     return "\n".join(lines) + "\n"
+
+
+# MARK: Write and Defaults
 
 
 def write_to_file(
@@ -250,6 +259,9 @@ def get_base_check_dict() -> dict[str, dict[str, Any]]:
     }
 
 
+# MARK: Prompt
+
+
 def prompt_user(msg: str, default: str = "") -> str:
     """
     Prompt the user for input, returning a default if the response is empty.
@@ -286,6 +298,9 @@ def prompt_user_for_list(msg: str) -> list[str]:
     """
     raw = input(msg).strip()
     return [item.strip() for item in raw.split(",") if item.strip()] if raw else []
+
+
+# MARK: Update Config
 
 
 def activate_check(checks: dict, c: str) -> None:
@@ -381,6 +396,9 @@ def fill_optional_fields(checks: dict, c: str) -> None:
         v["search-dirs"] = prompt_user_for_list(
             f"Additional search dirs for {v['title']} (comma-separated) [None]: "
         )
+
+
+# MARK: Generate Config
 
 
 def get_and_write_configuration_data() -> None:

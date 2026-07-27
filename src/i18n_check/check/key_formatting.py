@@ -242,22 +242,21 @@ def invalid_key_formats_check_and_fix(
         f"\n{k} -> {v}" for k, v in sorted(invalid_keys_by_format.items())
     )
 
-    format_to_be = fmt_singular_or_plural(
-        c=len(invalid_keys_by_format), s="is", p="are"
-    )
-    format_key_to_be = fmt_singular_or_plural(
+    is_or_are = fmt_singular_or_plural(c=len(invalid_keys_by_format), s="is", p="are")
+    key_is_or_are = fmt_singular_or_plural(
         c=len(invalid_keys_by_format), s="key that is", p="keys that are"
     )
-    format_key_or_keys = fmt_singular_or_plural(
+    key_or_keys = fmt_singular_or_plural(
         c=len(invalid_keys_by_format), s="key", p="keys"
     )
 
-    invalid_keys_by_format_error = f"""❌ key-formatting error: There {format_to_be} {len(invalid_keys_by_format)} i18n {format_key_to_be} not formatted correctly.
-Please reformat the following {format_key_or_keys} [current_key -> suggested_correction]:\n{invalid_keys_by_format_string}"""
+    invalid_keys_by_format_error = f"""❌ key-formatting error: There {is_or_are} {len(invalid_keys_by_format)} i18n {key_is_or_are} not formatted correctly.
+Please reformat the following {key_or_keys} [current_key -> suggested_correction]:\n{invalid_keys_by_format_string}"""
 
     _print_invalid_keys_by_format(
         invalid_keys_by_format, invalid_keys_by_format_error, fix, all_checks_enabled
     )
+
     if fix and invalid_keys_by_format:
         files_to_fix = collect_source_and_search_dir_files_to_fix(
             src_directory=config_src_directory,
