@@ -38,6 +38,7 @@ from i18n_check.utils import (
     config_sorted_keys_active,
     config_src_directory,
     filter_valid_key_parts,
+    fmt_singular_or_plural,
     get_all_json_files,
     path_to_valid_key,
     read_json_file,
@@ -144,19 +145,18 @@ def _filter_key_file_dict(
     dict[str, list[str]]
         Returns a filtered key file dictionary.
     """
-    if keys_to_ignore_regex:
-        filtered_key_file_dict = {
+    return (
+        {
             k: v
             for k, v in key_file_dict.items()
             if not _ignore_key(key=k, keys_to_ignore_regex=keys_to_ignore_regex)
         }
-        return filtered_key_file_dict
-    else:
-        filtered_key_file_dict = key_file_dict
-        return filtered_key_file_dict
+        if keys_to_ignore_regex
+        else key_file_dict
+    )
 
 
-def _get_ideal_key_base_single(file_path: str) -> str:
+def _get_ideal_key_base_single_path(file_path: str) -> str:
     """
     Derive the ideal key base from a single path.
 
@@ -179,7 +179,7 @@ def _get_ideal_key_base_single(file_path: str) -> str:
     return ".".join(valid_key_parts) + "."
 
 
-def _get_ideal_key_base_multiple(file_paths: list[str]) -> str:
+def _get_ideal_key_base_multiple_paths(file_paths: list[str]) -> str:
     """
     Derive the ideal key base from multiple file paths.
 
@@ -201,6 +201,7 @@ def _get_ideal_key_base_multiple(file_paths: list[str]) -> str:
     corresponding_valid_key_parts = list(
         zip(*(k.split(".") for k in formatted_potential_keys))
     )
+
     # Append all parts in order so long as all valid keys share the same part.
     extended_key_base = ""
     global_added = False
@@ -208,8 +209,10 @@ def _get_ideal_key_base_multiple(file_paths: list[str]) -> str:
         if len(set(current_parts)) != 1 and not global_added:
             extended_key_base += "_global."
             global_added = True
+
         if len(set(current_parts)) == 1:
             extended_key_base += f"{current_parts[0]}."
+
     extended_key_base_split = extended_key_base.split()
     # Don't include a key part if it's included in the final one (i.e. organizational sub dir).
     valid_key_parts = filter_valid_key_parts(extended_key_base_split)
@@ -220,8 +223,8 @@ def _find_invalid_key_names(file_paths: list[str]) -> str:
     """
     Derive the ideal key base from one or more file paths.
 
-    Delegates to ``_get_ideal_key_base_single`` if the key is used in one
-    file, or ``_get_ideal_key_base_multiple`` if used across several files.
+    Delegates to ``_get_ideal_key_base_single_path`` if the key is used in one
+    file, or ``_get_ideal_key_base_multiple_paths`` if used across several files.
 
     Parameters
     ----------
@@ -234,8 +237,9 @@ def _find_invalid_key_names(file_paths: list[str]) -> str:
         The ideal key base derived from the given file paths.
     """
     if len(file_paths) == 1:
-        return _get_ideal_key_base_single(file_paths[0])
-    return _get_ideal_key_base_multiple(file_paths)
+        return _get_ideal_key_base_single_path(file_paths[0])
+
+    return _get_ideal_key_base_multiple_paths(file_paths)
 
 
 def audit_invalid_i18n_key_names(
@@ -263,12 +267,15 @@ def audit_invalid_i18n_key_names(
     if keys_to_ignore_regex is None:
         keys_to_ignore_regex = []
 
-    filtered_key_file_dict = _filter_key_file_dict(keys_to_ignore_regex, key_file_dict)
+    filtered_key_file_dict = _filter_key_file_dict(
+        keys_to_ignore_regex=keys_to_ignore_regex, key_file_dict=key_file_dict
+    )
     invalid_keys_by_name: dict[str, str] = {}
     for k, file_paths in filtered_key_file_dict.items():
-        ideal_key_base = f"i18n.{_find_invalid_key_names(file_paths)}"
+        ideal_key_base = f"i18n.{_find_invalid_key_names(file_paths=file_paths)}"
         if k[: len(ideal_key_base)] != ideal_key_base:
             invalid_keys_by_name[k] = f"{ideal_key_base}{k.split('.')[-1]}"
+
     return invalid_keys_by_name
 
 
@@ -423,18 +430,21 @@ def invalid_key_names_check_and_fix(
     invalid_keys_by_name_string = "".join(
         f"\n{k} -> {v}" for k, v in sorted(invalid_keys_by_name.items())
     )
-    name_to_be = _create_message_format(invalid_keys_by_name, "are", "is")
-    name_key_to_be = _create_message_format(
-        invalid_keys_by_name, "keys that are", "key that is"
+    is_or_are = fmt_singular_or_plural(c=len(invalid_keys_by_name), s="is", p="are")
+    key_is_or_are = fmt_singular_or_plural(
+        c=len(invalid_keys_by_name),
+        s="key that is",
+        p="keys that are",
     )
-    name_key_or_keys = _create_message_format(invalid_keys_by_name, "keys", "key")
+    key_or_keys = fmt_singular_or_plural(c=len(invalid_keys_by_name), s="key", p="keys")
 
-    invalid_keys_by_name_error = f"""❌ key-naming error: There {name_to_be} {len(invalid_keys_by_name)} i18n {name_key_to_be} not named correctly.
-Please rename the following {name_key_or_keys} \\[current_key -> suggested_correction]:\n{invalid_keys_by_name_string}"""
+    invalid_keys_by_name_error = f"""❌ key-naming error: There {is_or_are} {len(invalid_keys_by_name)} i18n {key_is_or_are} not named correctly.
+Please rename the following {key_or_keys} \\[current_key -> suggested_correction]:\n{invalid_keys_by_name_string}"""
 
     _print_invalid_keys(
         invalid_keys_by_name, invalid_keys_by_name_error, fix, all_checks_enabled
     )
+
     if fix and invalid_keys_by_name:
         files_to_fix = collect_source_and_search_dir_files_to_fix(
             src_directory=config_src_directory,
