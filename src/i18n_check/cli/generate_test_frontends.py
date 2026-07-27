@@ -24,7 +24,7 @@ def prompt_yes_no(prompt: str) -> bool:
     Returns
     -------
     bool
-        Return the boolean value.
+        Return boolean value based on the response.
     """
     while True:
         response = input(prompt).strip().lower()
@@ -100,7 +100,7 @@ def write_test_frontends_config_file(config_file_name: str) -> None:
         file.write(test_project_config_text)
 
 
-def check_and_write_frontend_config() -> None:
+def check_and_write_test_frontends_config() -> None:
     """
     Check and write YAML file.
 
@@ -125,6 +125,7 @@ def check_and_write_frontend_config() -> None:
             print(
                 f"A {yaml_file} configuration file has been written to match the test frontends."
             )
+
     else:
         config_file_name = yaml_file if Path(yaml_file).is_file() else yml_file
         generate_test_project_config_answer: bool | None = None
@@ -138,6 +139,7 @@ def check_and_write_frontend_config() -> None:
             print(
                 f"The {config_file_name} configuration file has been overwritten to match the test frontends."
             )
+
         else:
             print(f"You can set which one to test in the {config_file_name} file.")
 
@@ -159,7 +161,8 @@ def generate_test_frontends() -> None:
 
         print("The frontends have been successfully generated.")
         print("One passes all checks and one fails all checks.")
-        check_and_write_frontend_config()
+        check_and_write_test_frontends_config()
+
     else:
         print(
             f"Test frontends for i18n-check already exist in .{PATH_SEPARATOR}i18n_check_test_frontends{PATH_SEPARATOR} and will not be regenerated."
