@@ -23,6 +23,7 @@ from i18n_check.utils import (
     config_i18n_src_file_name,
     config_key_naming_regexes_to_ignore,
     config_src_directory,
+    fmt_singular_or_plural,
     lower_and_remove_punctuation,
     read_json_file,
 )
@@ -173,13 +174,15 @@ def repeat_values_check(
         An error is raised and the system prints error details if repeat values are found.
     """
     if json_repeat_value_counts:
-        is_or_are = "is"
-        it_or_them = "it"
-        value_or_values = "value"
-        if len(json_repeat_value_counts) > 1:
-            is_or_are = "are"
-            it_or_them = "them"
-            value_or_values = "values"
+        is_or_are = fmt_singular_or_plural(
+            c=len(json_repeat_value_counts), s="is", p="are"
+        )
+        it_or_them = fmt_singular_or_plural(
+            c=len(json_repeat_value_counts), s="it", p="them"
+        )
+        value_or_values = fmt_singular_or_plural(
+            c=len(json_repeat_value_counts), s="value", p="values"
+        )
 
         error_message = "\n[red]"
         error_message += f"❌ repeat-values error: There {is_or_are} {len(json_repeat_value_counts)} repeat i18n {value_or_values} present in the {config_i18n_src_file_name} i18n source file. Please follow the directions below to combine {it_or_them} into one key:"

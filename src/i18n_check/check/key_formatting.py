@@ -243,14 +243,14 @@ def invalid_key_formats_check_and_fix(
     )
 
     is_or_are = fmt_singular_or_plural(c=len(invalid_keys_by_format), s="is", p="are")
-    key_is_or_are = fmt_singular_or_plural(
+    key_is_or_keys_are = fmt_singular_or_plural(
         c=len(invalid_keys_by_format), s="key that is", p="keys that are"
     )
     key_or_keys = fmt_singular_or_plural(
         c=len(invalid_keys_by_format), s="key", p="keys"
     )
 
-    invalid_keys_by_format_error = f"""❌ key-formatting error: There {is_or_are} {len(invalid_keys_by_format)} i18n {key_is_or_are} not formatted correctly.
+    invalid_keys_by_format_error = f"""❌ key-formatting error: There {is_or_are} {len(invalid_keys_by_format)} i18n {key_is_or_keys_are} not formatted correctly.
 Please reformat the following {key_or_keys} [current_key -> suggested_correction]:\n{invalid_keys_by_format_string}"""
 
     _print_invalid_keys_by_format(

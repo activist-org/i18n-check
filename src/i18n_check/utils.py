@@ -766,35 +766,6 @@ def is_rtl_text(text: str) -> bool:
     return False
 
 
-def is_chinese_or_japanese_text(text: str) -> bool:
-    """
-    Check if the text contains Chinese or Japanese characters.
-
-    Parameters
-    ----------
-    text : str
-        The text to check.
-
-    Returns
-    -------
-    bool
-        True if the text contains Chinese or Japanese  characters, False otherwise.
-    """
-    if not text:
-        return False
-
-    for char in text:
-        char_name = unicodedata.name(char, "")
-        if (
-            "CJK UNIFIED IDEOGRAPH" in char_name
-            or "HIRAGANA" in char_name
-            or "KATAKANA" in char_name
-        ):
-            return True
-
-    return False
-
-
 # Maps the first word of a Unicode character name to (terminal_char, prepend).
 # prepend=True means the character goes at the start (used for RTL scripts).
 # RTL scripts are handled separately via bidirectional category in

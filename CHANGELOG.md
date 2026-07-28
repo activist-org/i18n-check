@@ -10,6 +10,13 @@ See the [releases for i18n-check](https://github.com/activist-org/i18n-check/rel
 
 Emojis for the following are chosen based on [gitmoji](https://gitmoji.dev/).
 
+## i18n-check 1.20.1
+
+### ♻️ Code Refactoring
+
+- The way that singular and plural words are derived for messages to the user was standardized.
+- An unused function for determining languages for aria labels and alt texts was removed.
+
 ## i18n-check 1.20.0
 
 ### ✨ Features

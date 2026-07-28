@@ -149,11 +149,13 @@ def nonexistent_keys_check(
     """
     all_keys = i18n_src_dict.keys()
     if nonexistent_keys := list(all_used_i18n_keys - all_keys):
-        to_be = "are" if len(nonexistent_keys) > 1 else "is"
-        key_to_be = "keys that are" if len(nonexistent_keys) > 1 else "key that is"
-        key_or_keys = "keys" if len(nonexistent_keys) > 1 else "key"
+        is_or_are = fmt_singular_or_plural(c=len(nonexistent_keys), s="is", p="are")
+        key_is_or_keys_are = fmt_singular_or_plural(
+            c=len(nonexistent_keys), s="key that is", p="keys that are"
+        )
+        key_or_keys = fmt_singular_or_plural(c=len(nonexistent_keys), s="key", p="keys")
 
-        error_message = f"[red]❌ nonexistent-keys error: There {to_be} {len(nonexistent_keys)} i18n {key_to_be} not in the {config_i18n_src_file_name} i18n source file. Please check the validity of the following {key_or_keys}:"
+        error_message = f"[red]❌ nonexistent-keys error: There {is_or_are} {len(nonexistent_keys)} i18n {key_is_or_keys_are} not in the {config_i18n_src_file_name} i18n source file. Please check the validity of the following {key_or_keys}:"
         error_message += "\n\n"
         error_message += "\n".join(sorted(nonexistent_keys))
         error_message += "[/red]"

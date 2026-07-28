@@ -22,6 +22,7 @@ from i18n_check.check.repeat_keys import check_file_keys_repeated
 from i18n_check.utils import (
     config_i18n_directory,
     config_sorted_keys_active,
+    fmt_singular_or_plural,
     read_json_file,
 )
 
@@ -244,7 +245,7 @@ def nested_files_check_and_fix(
     if not (nested_files := derive_nested_files(directory=directory)):
         return False
 
-    file_or_files = "file" if len(nested_files) == 1 else "files"
+    file_or_files = fmt_singular_or_plural(c=len(nested_files), s="file", p="files")
     rprint(
         f"\n[yellow]Flattening nested JSON in {len(nested_files)} {file_or_files}:[/yellow]"
     )

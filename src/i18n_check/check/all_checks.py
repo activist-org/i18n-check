@@ -55,6 +55,7 @@ from i18n_check.utils import (
     config_repeat_values_active,
     config_sorted_keys_active,
     config_unused_keys_active,
+    fmt_singular_or_plural,
     get_config_file_name,
 )
 
@@ -264,8 +265,12 @@ def run_all_checks(args: argparse.Namespace) -> None:
 
     if not all(check_results):
         failed_checks_count = check_results.count(False)
-        check_or_checks = "check" if failed_checks_count == 1 else "checks"
-        message_or_messages = "message" if failed_checks_count == 1 else "messages"
+        check_or_checks = fmt_singular_or_plural(
+            c=failed_checks_count, s="check", p="checks"
+        )
+        message_or_messages = fmt_singular_or_plural(
+            c=failed_checks_count, s="message", p="messages"
+        )
         rprint(
             f"\n[red]❌ i18n-check error: {failed_checks_count} i18n {check_or_checks} did not pass. Please see the error {message_or_messages} above.[/red]"
         )

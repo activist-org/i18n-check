@@ -109,9 +109,15 @@ def non_source_keys_check(
             for k in non_source_keys_dict
         )
 
-        is_an_or_are = "is an" if len(non_source_keys_dict) == 1 else "are"
-        has_or_have = "has" if len(non_source_keys_dict) == 1 else "have"
-        file_or_files = "file" if len(non_source_keys_dict) == 1 else "files"
+        is_an_or_are = fmt_singular_or_plural(
+            c=len(non_source_keys_dict), s="is an", p="are"
+        )
+        has_or_have = fmt_singular_or_plural(
+            c=len(non_source_keys_dict), s="has", p="have"
+        )
+        file_or_files = fmt_singular_or_plural(
+            c=len(non_source_keys_dict), s="file", p="files"
+        )
 
         error_message = (
             "\n"

@@ -431,14 +431,14 @@ def invalid_key_names_check_and_fix(
         f"\n{k} -> {v}" for k, v in sorted(invalid_keys_by_name.items())
     )
     is_or_are = fmt_singular_or_plural(c=len(invalid_keys_by_name), s="is", p="are")
-    key_is_or_are = fmt_singular_or_plural(
+    key_is_or_keys_are = fmt_singular_or_plural(
         c=len(invalid_keys_by_name),
         s="key that is",
         p="keys that are",
     )
     key_or_keys = fmt_singular_or_plural(c=len(invalid_keys_by_name), s="key", p="keys")
 
-    invalid_keys_by_name_error = f"""❌ key-naming error: There {is_or_are} {len(invalid_keys_by_name)} i18n {key_is_or_are} not named correctly.
+    invalid_keys_by_name_error = f"""❌ key-naming error: There {is_or_are} {len(invalid_keys_by_name)} i18n {key_is_or_keys_are} not named correctly.
 Please rename the following {key_or_keys} \\[current_key -> suggested_correction]:\n{invalid_keys_by_name_string}"""
 
     _print_invalid_keys(

@@ -111,12 +111,12 @@ def unused_keys_check(unused_keys: list[str], all_checks_enabled: bool = False) 
         An error is raised and the system prints error details if there are unused keys.
     """
     if unused_keys:
-        to_be = "are" if len(unused_keys) > 1 else "is"
-        key_or_keys = "key" if len(unused_keys) == 1 else "keys"
+        is_or_are = fmt_singular_or_plural(c=len(unused_keys), s="is", p="are")
+        key_or_keys = fmt_singular_or_plural(c=len(unused_keys), s="key", p="keys")
 
         error_message = (
             "[red]\n❌ unused-keys error: There "
-            + f"{to_be} {len(unused_keys)} unused i18n {key_or_keys} in the {config_i18n_src_file_name} i18n source file. Please remove or assign the following {key_or_keys}:"
+            + f"{is_or_are} {len(unused_keys)} unused i18n {key_or_keys} in the {config_i18n_src_file_name} i18n source file. Please remove or assign the following {key_or_keys}:"
             + "\n\n"
             + "\n".join(sorted(unused_keys))
             + "[/red]"
