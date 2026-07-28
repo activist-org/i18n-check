@@ -45,7 +45,7 @@ dev = [
     "setuptools>=83.0.0",
     "types-PyYAML>=6.0.12.20250915",
     "types-requests>=2.33.0.20260712",
-    "ty>=0.0.63",
+    "ty>=0.0.64",
 ]
 docs = [
     # Keep docs dependencies formatted in this way with ruff to allow for upgrades via VS Code extension.
