@@ -217,6 +217,7 @@ def sorted_keys_check_and_fix(
 
         if not is_sorted:
             unsorted_files.append(file_path)
-        _check_unsorted_keys_and_fix(unsorted_files, fix, all_checks_enabled)
+
+    _check_unsorted_keys_and_fix(unsorted_files, fix, all_checks_enabled)
 
     return True

@@ -10,6 +10,13 @@ See the [releases for i18n-check](https://github.com/activist-org/i18n-check/rel
 
 Emojis for the following are chosen based on [gitmoji](https://gitmoji.dev/).
 
+## i18n-check 1.20.2
+
+### 🐛 Bug Fixes
+
+- The `sorted-keys` check was being ran multiple times across the various checks ([#122](https://github.com/activist-org/i18n-check/issues/122)).
+- Made directions on how to make tests pass for the `all_checks_pass` frontend more clear.
+
 ## i18n-check 1.20.1
 
 ### ♻️ Code Refactoring
