@@ -29,7 +29,7 @@ classifiers = [
 
 dependencies = [
     # Keep docs dependencies formatted in this way with ruff to allow for upgrades via VS Code extension.
-    "packaging>=26.2",
+    "packaging>=26.3",
     "pyyaml>=6.0.3",
     "requests>=2.34.2",
     "rich>=15.0.0",
@@ -38,14 +38,14 @@ dependencies = [
 [dependency-groups]
 dev = [
     "complexipy>=6.2.0",
-    "prek>=0.4.11",
+    "prek>=0.4.12",
     "pytest>=9.1.1",
     "pytest-cov>=7.1.0",
-    "ruff>=0.16.0",
+    "ruff>=0.16.2",
     "setuptools>=83.0.0",
     "types-PyYAML>=6.0.12.20250915",
     "types-requests>=2.33.0.20260712",
-    "ty>=0.0.64",
+    "ty>=0.0.69",
 ]
 docs = [
     # Keep docs dependencies formatted in this way with ruff to allow for upgrades via VS Code extension.
