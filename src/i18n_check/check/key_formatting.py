@@ -27,10 +27,10 @@ from i18n_check.utils import (
     config_i18n_directory,
     config_i18n_src_file,
     config_key_formatting_regexes_to_ignore,
-    config_nonexistent_keys_search_dirs,
+    config_nonexistent_keys_search_directories,
     config_repeat_keys_active,
     config_sorted_keys_active,
-    config_src_directory,
+    config_src_directories,
     fmt_singular_or_plural,
     get_all_json_files,
     is_valid_key,
@@ -259,8 +259,8 @@ Please reformat the following {key_or_keys} [current_key -> suggested_correction
 
     if fix and invalid_keys_by_format:
         files_to_fix = collect_source_and_search_dir_files_to_fix(
-            src_directory=config_src_directory,
-            search_directories=config_nonexistent_keys_search_dirs,
+            src_directories=config_src_directories,
+            search_directories=config_nonexistent_keys_search_directories,
             file_types_to_check=config_file_types_to_check,
             directories_to_skip=config_global_directories_to_skip,
             files_to_skip=config_global_files_to_skip,  # global to fix all instances

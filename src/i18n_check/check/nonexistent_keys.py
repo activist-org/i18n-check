@@ -31,10 +31,10 @@ from i18n_check.utils import (
     config_i18n_src_file_name,
     config_nonexistent_keys_directories_to_skip,
     config_nonexistent_keys_files_to_skip,
-    config_nonexistent_keys_search_dirs,
+    config_nonexistent_keys_search_directories,
     config_repeat_keys_active,
     config_sorted_keys_active,
-    config_src_directory,
+    config_src_directories,
     fmt_singular_or_plural,
     read_json_file,
 )
@@ -49,8 +49,8 @@ i18n_src_dict = read_json_file(file_path=config_i18n_src_file)
 
 def get_used_i18n_keys(
     i18n_src_dict: dict[str, str] = i18n_src_dict,
-    src_directory: Path = config_src_directory,
-    search_dirs: list[Path] = [],
+    src_directories: list[Path] = config_src_directories,
+    search_directories: list[Path] = [],
 ) -> set[str]:
     """
     Get all i18n keys that are used in the project.
@@ -60,10 +60,10 @@ def get_used_i18n_keys(
     i18n_src_dict : dict[str, str]
         The dictionary containing i18n source keys and their associated values.
 
-    src_directory : Path
+    src_directories : list[Path]
         The source directory where the files are located.
 
-    search_dirs : list[Path]
+    search_directories : list[Path]
         Additional directories to search for i18n key usage (e.g. test directories).
 
     Returns
@@ -81,20 +81,13 @@ def get_used_i18n_keys(
         i18n_key_pattern_back_tick,
     ]
 
+    src_and_search_directories = src_directories + search_directories
     files_to_check = collect_files_to_check(
-        directory=src_directory,
+        directories=src_and_search_directories,
         file_types_to_check=config_file_types_to_check,
         directories_to_skip=config_nonexistent_keys_directories_to_skip,
         files_to_skip=config_nonexistent_keys_files_to_skip,
     )
-
-    for search_dir in search_dirs:
-        files_to_check += collect_files_to_check(
-            directory=search_dir,
-            file_types_to_check=config_file_types_to_check,
-            directories_to_skip=config_nonexistent_keys_directories_to_skip,
-            files_to_skip=config_nonexistent_keys_files_to_skip,
-        )
 
     files_to_check_contents: dict[str, str] = {}
     for frontend_file in files_to_check:
@@ -257,7 +250,7 @@ def add_nonexistent_keys_interactively(
     all_used_i18n_keys: set[str],
     i18n_src_dict: dict[str, str] = i18n_src_dict,
     i18n_src_file: Path = config_i18n_src_file,
-    src_directory: Path = config_src_directory,
+    src_directories: list[Path] = config_src_directories,
 ) -> None:
     """
     Interactively add nonexistent keys to the i18n source file.
@@ -273,7 +266,7 @@ def add_nonexistent_keys_interactively(
     i18n_src_file : Path, default=config_i18n_src_file
         Path to the i18n source file.
 
-    src_directory : Path, default=config_src_directory
+    src_directories : list[Path], default=config_src_directories
         The source directory where the files are located.
 
     Raises
@@ -307,7 +300,7 @@ def add_nonexistent_keys_interactively(
         nonexistent_keys_dict_for_mapping = {key: "" for key in sorted_nonexistent_keys}
         nonexistent_keys_to_files_dict = map_keys_to_files(
             i18n_src_dict=nonexistent_keys_dict_for_mapping,
-            src_directory=src_directory,
+            src_directories=src_directories,
         )
 
         _sort_nonexistent_keys(
@@ -342,7 +335,7 @@ def nonexistent_keys_check_and_fix(
     all_used_i18n_keys: set[str],
     i18n_src_dict: dict[str, str] = i18n_src_dict,
     i18n_src_file: Path = config_i18n_src_file,
-    src_directory: Path = config_src_directory,
+    src_directories: list[Path] = config_src_directories,
     all_checks_enabled: bool = False,
     fix: bool = False,
 ) -> bool:
@@ -360,7 +353,7 @@ def nonexistent_keys_check_and_fix(
     i18n_src_file : Path, default=config_i18n_src_file
         Path to the i18n source file.
 
-    src_directory : Path, default=config_src_directory
+    src_directories : list[Path], default=config_src_directories
         The source directory where the files are located.
 
     all_checks_enabled : bool, optional, default=False
@@ -385,7 +378,7 @@ def nonexistent_keys_check_and_fix(
         all_used_i18n_keys=all_used_i18n_keys,
         i18n_src_dict=i18n_src_dict,
         i18n_src_file=i18n_src_file,
-        src_directory=src_directory,
+        src_directories=src_directories,
     )
     return True
 
@@ -394,6 +387,6 @@ def nonexistent_keys_check_and_fix(
 
 all_used_i18n_keys = get_used_i18n_keys(
     i18n_src_dict=i18n_src_dict,
-    src_directory=config_src_directory,
-    search_dirs=config_nonexistent_keys_search_dirs,
+    src_directories=config_src_directories,
+    search_directories=config_nonexistent_keys_search_directories,
 )

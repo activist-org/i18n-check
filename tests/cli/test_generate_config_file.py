@@ -56,7 +56,7 @@ class TestGenerateConfigFile(unittest.TestCase):
         )
         handle = mock_open_func()
         written_content = handle.write.call_args[0][0]
-        self.assertIn(f"src-dir: my_app{PATH_SEPARATOR}src", written_content)
+        self.assertIn(f"src-dirs: [my_app{PATH_SEPARATOR}src]", written_content)
         self.assertIn(f"i18n-dir: my_app{PATH_SEPARATOR}i18n", written_content)
         self.assertIn(
             f"i18n-src: my_app{PATH_SEPARATOR}i18n{PATH_SEPARATOR}en.json",
@@ -90,7 +90,7 @@ class TestGenerateConfigFile(unittest.TestCase):
             "n",  # nonexistent_keys
             "",  # nonexistent_keys directories_to_skip
             "",  # nonexistent_keys files_to_skip
-            "",  # nonexistent_keys search_dirs
+            "",  # nonexistent_keys search_directories
             "y",  # unused_keys
             "",  # unused_keys directories_to_skip
             "",  # unused_keys files_to_skip
@@ -259,12 +259,12 @@ def test_config_file_is_valid_src_dir_returns_false(tmp_path, monkeypatch, capsy
     assert result is False
 
     out = capsys.readouterr().out.replace("\n", " ")
-    assert "'src-dir' argument" in out
+    assert "'src-dirs' argument" in out
 
 
 def test_config_file_is_valid_i18n_dir_returns_false(tmp_path, monkeypatch, capsys):
     config_path = tmp_path / ".i18n-check.yaml"
-    config_path.write_text("src-dir: path/to/src/dir\n")
+    config_path.write_text("src-dirs: [path/to/src/dir]\n")
 
     monkeypatch.setattr("i18n_check.utils.YAML_CONFIG_FILE_PATH", config_path)
 
@@ -279,7 +279,7 @@ def test_config_file_is_valid_i18n_dir_returns_false(tmp_path, monkeypatch, caps
 
 def test_config_file_is_valid_i18n_src_returns_false(tmp_path, monkeypatch, capsys):
     config_path = tmp_path / ".i18n-check.yaml"
-    config_path.write_text("src-dir: path/to/src/dir\ni18n-dir: path/to/i18n/dir\n")
+    config_path.write_text("src-dirs: [path/to/src/dir]\ni18n-dir: path/to/i18n/dir\n")
 
     monkeypatch.setattr("i18n_check.utils.YAML_CONFIG_FILE_PATH", config_path)
 
@@ -297,7 +297,7 @@ def test_config_file_is_valid_file_types_to_check_returns_false(
 ):
     config_path = tmp_path / ".i18n-check.yaml"
     config_path.write_text(
-        "src-dir: path/to/src/dir\n"
+        "src-dirs: [path/to/src/dir]\n"
         "i18n-dir: path/to/i18n/dir\n"
         "i18n-src: path/to/i18n/dir/src.json\n"
     )
@@ -318,7 +318,7 @@ def test_config_file_is_valid_checks_undefined_returns_false(
 ):
     config_path = tmp_path / ".i18n-check.yaml"
     config_path.write_text(
-        "src-dir: path/to/src/dir\n"
+        "src-dirs: [path/to/src/dir]\n"
         "i18n-dir: path/to/i18n/dir\n"
         "i18n-src: path/to/i18n/dir/src.json\n"
         "file-types-to-check: [.ts]\n"
@@ -340,7 +340,7 @@ def test_config_file_is_valid_checks_not_dict_returns_false(
 ):
     config_path = tmp_path / ".i18n-check.yaml"
     config_path.write_text(
-        "src-dir: path/to/src/dir\n"
+        "src-dirs: [path/to/src/dir]\n"
         "i18n-dir: path/to/i18n/dir\n"
         "i18n-src: path/to/i18n/dir/src.json\n"
         "file-types-to-check: [.ts]\n"
@@ -363,7 +363,7 @@ def test_config_file_is_valid_checks_missing_args_returns_false(
 ):
     config_path = tmp_path / ".i18n-check.yaml"
     config_path.write_text(
-        "src-dir: path/to/src/dir\n"
+        "src-dirs: [path/to/src/dir]\n"
         "i18n-dir: path/to/i18n/dir\n"
         "i18n-src: path/to/i18n/dir/src.json\n"
         "file-types-to-check: [.ts]\n"
@@ -385,7 +385,7 @@ def test_config_file_is_valid_checks_missing_args_returns_false(
 def test_config_file_is_valid_returns_true(tmp_path, monkeypatch, capsys):
     config_path = tmp_path / ".i18n-check.yaml"
     config_path.write_text(
-        "src-dir: path/to/src/dir\n"
+        "src-dirs: [path/to/src/dir]\n"
         "i18n-dir: path/to/i18n/dir\n"
         "i18n-src: path/to/i18n/dir/src.json\n"
         "file-types-to-check: [.ts]\n"

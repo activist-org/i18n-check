@@ -231,7 +231,7 @@ The following details the potential contents of this file:
 > ```
 
 ```yaml
-src-dir: frontend
+src-dirs: [frontend]
 i18n-dir: frontend/i18n
 i18n-src: frontend/i18n/en.json
 file-types-to-check: [.ts, .js]
@@ -283,7 +283,7 @@ checks:
 
 In the `.i18n-check.yaml` or `.i18n-check.yml` [configuration](#configuration) file, provide these arguments:
 
-- `src-dir`: The directory path to your source code.
+- `src-dirs`: The directory paths to your source code.
 - `i18n-dir`: The directory path to your i18n files.
 - `i18n-src`: The name of your i18n source file.
 - `file-types-to-check`: The file types to include in the check.
@@ -315,7 +315,7 @@ This is an example of a [prek](https://prek.j178.dev/) or [pre-commit](https://g
   hooks:
     - id: run-i18n-check
       name: run i18n-check key-value checks
-      files: ^src-dir/
+      files: ^src-dirs/
       entry: uv run i18n-check -a
       language: python
       pass_filenames: false

@@ -28,7 +28,7 @@ from i18n_check.utils import (
     config_missing_keys_locales_to_check,
     config_repeat_keys_active,
     config_sorted_keys_active,
-    config_src_directory,
+    config_src_directories,
     fmt_singular_or_plural,
     get_all_json_files,
     read_json_file,
@@ -366,7 +366,7 @@ def add_missing_keys_interactively(
 
         missing_keys_to_files_dict = map_keys_to_files(
             i18n_src_dict=missing_keys_dict_for_mapping,
-            src_directory=config_src_directory,
+            src_directories=config_src_directories,
         )
         _check_missing_keys_in_file(
             sorted_missing_keys,

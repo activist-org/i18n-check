@@ -20,7 +20,7 @@ def test_yml_config_file_is_recognized():
         yml_config = tmp_path / ".i18n-check.yml"
         yml_config.write_text(
             """# Test configuration
-            src-dir: frontend
+            src-dirs: [frontend]
             i18n-dir: frontend/i18n
             i18n-src: frontend/i18n/en.json
 

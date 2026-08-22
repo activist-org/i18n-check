@@ -22,7 +22,7 @@ from i18n_check.utils import (
     config_i18n_src_file,
     config_i18n_src_file_name,
     config_key_naming_regexes_to_ignore,
-    config_src_directory,
+    config_src_directories,
     fmt_singular_or_plural,
     lower_and_remove_punctuation,
     read_json_file,
@@ -104,7 +104,7 @@ def analyze_and_generate_repeat_value_report(
                     for k, v in i18n_src_dict.items()
                     if k in repeat_value_i18n_keys
                 },
-                src_directory=config_src_directory,
+                src_directories=config_src_directories,
             )
 
             # Replace with 'repeat_key' as a dummy for if this was the key in all files.

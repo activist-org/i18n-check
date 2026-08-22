@@ -56,13 +56,13 @@ def get_test_frontend_config_file_text() -> str:
     return r"""# Configuration file for i18n-check validation.
 # See https://github.com/activist-org/i18n-check for details.
 
-src-dir: i18n_check_test_frontends/test_frontends/all_checks_fail
+src-dirs: [i18n_check_test_frontends/test_frontends/all_checks_fail]
 i18n-dir: i18n_check_test_frontends/test_frontends/all_checks_fail/test_i18n
 i18n-src: i18n_check_test_frontends/test_frontends/all_checks_fail/test_i18n/test_i18n_src.json
 
 # Note: Comment out the above lines and uncomment these to check functionality with a passing frontend.
 # Note: You also need to comment out the 'nonexistent-keys' block for all checks to pass.
-# src-dir: i18n_check_test_frontends/test_frontends/all_checks_pass
+# src-dirs: [i18n_check_test_frontends/test_frontends/all_checks_pass]
 # i18n-dir: i18n_check_test_frontends/test_frontends/all_checks_pass/test_i18n
 # i18n-src: i18n_check_test_frontends/test_frontends/all_checks_pass/test_i18n/test_i18n_src.json
 
