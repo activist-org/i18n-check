@@ -19,8 +19,8 @@ from i18n_check.check.nonexistent_keys import (
 from i18n_check.utils import read_json_file
 
 from ..test_utils import (
-    checks_fail_dir,
-    checks_pass_dir,
+    checks_fail_directories,
+    checks_pass_directories,
     fail_checks_src_json,
     nonexistent_keys_search_dir,
     pass_checks_src_json,
@@ -29,15 +29,15 @@ from ..test_utils import (
 
 i18n_used_fail = get_used_i18n_keys(
     i18n_src_dict=fail_checks_src_json,
-    src_directory=checks_fail_dir,
-    search_dirs=[nonexistent_keys_search_dir],
+    src_directories=checks_fail_directories,
+    search_directories=[nonexistent_keys_search_dir],
 )
 
 i18n_used_pass = get_used_i18n_keys(
-    i18n_src_dict=pass_checks_src_json, src_directory=checks_pass_dir
+    i18n_src_dict=pass_checks_src_json, src_directories=checks_pass_directories
 )
 
-all_i18n_used = get_used_i18n_keys(search_dirs=[nonexistent_keys_search_dir])
+all_i18n_used = get_used_i18n_keys(search_directories=[nonexistent_keys_search_dir])
 
 
 @pytest.mark.parametrize(
@@ -130,7 +130,7 @@ def test_add_nonexistent_keys_interactively_no_nonexistent_keys(capsys) -> None:
         all_used_i18n_keys=i18n_used_pass,
         i18n_src_dict=pass_checks_src_json,
         i18n_src_file=pass_checks_src_json_path,
-        src_directory=checks_pass_dir,
+        src_directories=checks_pass_directories,
     )
 
     i18n_src_dict = read_json_file(file_path=pass_checks_src_json_path)
@@ -192,7 +192,7 @@ def test_add_nonexistent_keys_interactively_with_values_when_keys_were_originall
         all_used_i18n_keys=used_keys,
         i18n_src_dict=i18n_src_dict,
         i18n_src_file=i18n_src_file,
-        src_directory=src_dir,
+        src_directories=[src_dir],
     )
 
     updated_i18n_src_dict = read_json_file(file_path=i18n_src_file)
@@ -261,7 +261,7 @@ def test_add_nonexistent_keys_interactively_with_values_when_keys_were_originall
         all_used_i18n_keys=used_keys,
         i18n_src_dict=i18n_src_dict,
         i18n_src_file=i18n_src_file,
-        src_directory=src_dir,
+        src_directories=[src_dir],
     )
 
     updated_i18n_src_dict = read_json_file(file_path=i18n_src_file)
@@ -324,7 +324,7 @@ def test_add_nonexistent_keys_interactively_skip(
         all_used_i18n_keys=used_keys,
         i18n_src_dict=i18n_src_dict,
         i18n_src_file=i18n_src_file,
-        src_directory=src_dir,
+        src_directories=[src_dir],
     )
 
     updated_i18n_src_dict = read_json_file(file_path=i18n_src_file)
@@ -392,7 +392,7 @@ def test_add_nonexistent_keys_interactively_keyboard_interrupt(
             all_used_i18n_keys=used_keys,
             i18n_src_dict=i18n_src_dict,
             i18n_src_file=i18n_src_file,
-            src_directory=src_dir,
+            src_directories=[src_dir],
         )
 
     updated_i18n_src_dict = read_json_file(file_path=i18n_src_file)
@@ -410,41 +410,41 @@ def test_add_nonexistent_keys_interactively_keyboard_interrupt(
     assert "Cancelled by user" in captured.out.replace("\n", "")
 
 
-def test_get_used_i18n_keys_search_dirs_empty() -> None:
+def test_get_used_i18n_keys_search_directories_empty() -> None:
     """
-    Test that get_used_i18n_keys with an empty search_dirs list returns only keys from src_directory,
+    Test that get_used_i18n_keys with an empty search_directories list returns only keys from src_directories,
     and does not include keys found in sub-directories like search_dir.
     """
     result = get_used_i18n_keys(
         i18n_src_dict=fail_checks_src_json,
-        src_directory=checks_fail_dir,
-        search_dirs=[],
+        src_directories=checks_fail_directories,
+        search_directories=[],
     )
 
     assert "i18n.search_dir_test_file.not_in_i18n_source_file" not in result
 
 
-def test_get_used_i18n_keys_search_dirs_includes_keys() -> None:
+def test_get_used_i18n_keys_search_directories_includes_keys() -> None:
     """
-    Test that keys found in a search_dir are included alongside keys from src_directory.
+    Test that keys found in a search_dir are included alongside keys from src_directories.
     """
     result_with = get_used_i18n_keys(
         i18n_src_dict=fail_checks_src_json,
-        src_directory=checks_fail_dir,
-        search_dirs=[nonexistent_keys_search_dir],
+        src_directories=checks_fail_directories,
+        search_directories=[nonexistent_keys_search_dir],
     )
 
     assert "i18n.search_dir_test_file.not_in_i18n_source_file" in result_with
 
 
-def test_get_used_i18n_keys_search_dirs_no_duplicate_keys() -> None:
+def test_get_used_i18n_keys_search_directories_no_duplicate_keys() -> None:
     """
-    Test that a key referenced in both src_directory and a search_dir is not duplicated in the result.
+    Test that a key referenced in both src_directories and a search_dir is not duplicated in the result.
     """
     result = get_used_i18n_keys(
         i18n_src_dict=fail_checks_src_json,
-        src_directory=checks_fail_dir,
-        search_dirs=[nonexistent_keys_search_dir],
+        src_directories=checks_fail_directories,
+        search_directories=[nonexistent_keys_search_dir],
     )
 
     # i18n._global.hello_global appears in both the main src and the search_dir file.
@@ -458,8 +458,8 @@ def test_nonexistent_keys_check_fails_for_key_only_in_search_dir(capsys) -> None
     """
     used_keys = get_used_i18n_keys(
         i18n_src_dict=fail_checks_src_json,
-        src_directory=checks_fail_dir,
-        search_dirs=[nonexistent_keys_search_dir],
+        src_directories=checks_fail_directories,
+        search_directories=[nonexistent_keys_search_dir],
     )
 
     assert "i18n.search_dir_test_file.not_in_i18n_source_file" in used_keys
@@ -476,7 +476,7 @@ def test_nonexistent_keys_check_fails_for_key_only_in_search_dir(capsys) -> None
 
 def test_nonexistent_keys_check_passes_when_search_dir_keys_exist(capsys) -> None:
     """
-    Test that nonexistent_keys_check passes when all keys from search_dirs exist in the i18n source.
+    Test that nonexistent_keys_check passes when all keys from search_directories exist in the i18n source.
     The search_dir file also references i18n._global.hello_global which is in the source.
     """
     # Only use the key from search_dir that exists in the source.
@@ -515,7 +515,7 @@ def test_nonexistent_keys_check_and_fix_no_fix(
         all_used_i18n_keys=used_keys,
         i18n_src_dict=i18n_src_dict,
         i18n_src_file=i18n_src_file,
-        src_directory=src_dir,
+        src_directories=src_dir,
         all_checks_enabled=True,
         fix=False,
     )
@@ -550,7 +550,7 @@ def test_nonexistent_keys_check_and_fix_with_fix(
         all_used_i18n_keys=used_keys,
         i18n_src_dict=i18n_src_dict,
         i18n_src_file=i18n_src_file,
-        src_directory=src_dir,
+        src_directories=src_dir,
         fix=True,
     )
 
@@ -559,7 +559,7 @@ def test_nonexistent_keys_check_and_fix_with_fix(
         all_used_i18n_keys=used_keys,
         i18n_src_dict=i18n_src_dict,
         i18n_src_file=i18n_src_file,
-        src_directory=src_dir,
+        src_directories=src_dir,
     )
 
 

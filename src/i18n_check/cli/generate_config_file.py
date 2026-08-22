@@ -102,7 +102,7 @@ def config_file_is_valid() -> bool:
     }
 
     VALIDATORS: dict[str, Callable[[Any], bool]] = {
-        "src-dir": lambda v: isinstance(v, str),
+        "src-dirs": lambda v: isinstance(v, list),
         "i18n-dir": lambda v: isinstance(v, str),
         "i18n-src": lambda v: isinstance(v, str),
         "file-types-to-check": lambda v: isinstance(v, list),
@@ -196,7 +196,7 @@ def write_to_file(
 
     config_string = f"""# Configuration file for i18n-check validation.
 # See https://github.com/activist-org/i18n-check for details.
-src-dir: {src_dir}
+src-dirs: [{src_dir}]
 i18n-dir: {i18n_dir}
 i18n-src: {i18n_src_file}
 file-types-to-check: [{file_types_str}]

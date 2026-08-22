@@ -33,10 +33,10 @@ from i18n_check.utils import (
     config_key_naming_directories_to_skip,
     config_key_naming_files_to_skip,
     config_key_naming_regexes_to_ignore,
-    config_nonexistent_keys_search_dirs,
+    config_nonexistent_keys_search_directories,
     config_repeat_keys_active,
     config_sorted_keys_active,
-    config_src_directory,
+    config_src_directories,
     filter_valid_key_parts,
     fmt_singular_or_plural,
     get_all_json_files,
@@ -52,9 +52,77 @@ i18n_src_dict = read_json_file(file_path=config_i18n_src_file)
 # MARK: Key-Files Dict
 
 
+def _return_filepath_from_src_directory(filepath: str, src_directory: str):
+    """
+    Return the passed filepath relative to the passed src_directory.
+
+    # Note: The filepath is definitely in the src_directory.
+
+    Parameters
+    ----------
+    filepath : str
+        A string representation of the filepath.
+
+    src_directory : str
+        A string representation of one of the project source directories.
+
+    Returns
+    -------
+    str
+        The file path proceeding from the given src_directory.
+    """
+    filepath_from_src = filepath.split(src_directory)[1]
+    filepath_from_src = filepath_from_src[1:]
+    for file_type in config_file_types_to_check:
+        filepath_from_src = filepath_from_src.replace(file_type, "")
+
+    return filepath_from_src
+
+
+def _derive_key_to_file_dict(
+    all_keys: list[str],
+    files_to_check_contents: dict[str, str],
+    src_directories: list[Path],
+):
+    """
+    Derive a dictionary of i18n keys to their corresponding files.
+
+    Parameters
+    ----------
+    all_keys : list[str]
+        All i18n keys from the i18n source file.
+
+    files_to_check_contents : dict[str, str]
+        A map of files to their contents.
+
+    src_directories : list[Path]
+        The source directory where the files are located.
+
+    Returns
+    -------
+    dict[str, list[str]]
+        A dictionary where keys are i18n keys and values are lists of file paths where those keys are used.
+        Note: At this stage the dictionary does include empty lists, which represent unused keys.
+    """
+    key_file_dict: dict[str, list[str]] = defaultdict(list)
+    for k in all_keys:
+        key_file_dict[k] = []
+        for f, c in files_to_check_contents.items():
+            if k in c:
+                for d in src_directories:
+                    if str(d) in f:
+                        filepath_from_src = _return_filepath_from_src_directory(
+                            filepath=f, src_directory=str(d)
+                        )
+
+                        key_file_dict[k].append(filepath_from_src)
+
+    return key_file_dict
+
+
 def map_keys_to_files(
     i18n_src_dict: dict[str, str] = i18n_src_dict,
-    src_directory: Path = config_src_directory,
+    src_directories: list[Path] = config_src_directories,
 ) -> dict[str, list[str]]:
     """
     Map i18n keys to the files they are used in.
@@ -64,7 +132,7 @@ def map_keys_to_files(
     i18n_src_dict : dict[str, str]
         The dictionary containing i18n source keys and their associated values.
 
-    src_directory : Path
+    src_directories : list[Path]
         The source directory where the files are located.
 
     Returns
@@ -73,7 +141,7 @@ def map_keys_to_files(
         A dictionary where keys are i18n keys and values are lists of file paths where those keys are used.
     """
     files_to_check = collect_files_to_check(
-        directory=src_directory,
+        directories=src_directories,
         file_types_to_check=config_file_types_to_check,
         directories_to_skip=config_key_naming_directories_to_skip,
         files_to_skip=config_key_naming_files_to_skip,
@@ -85,20 +153,14 @@ def map_keys_to_files(
             files_to_check_contents[frontend_file] = f.read()
 
     all_keys = list(i18n_src_dict.keys())
-    key_file_dict: dict[str, list[str]] = defaultdict(list)
-    for k in all_keys:
-        key_file_dict[k] = []
-        for i, v in files_to_check_contents.items():
-            if k in v:
-                filepath_from_src = i.split(str(src_directory))[1]
-                filepath_from_src = filepath_from_src[1:]
-                for file_type in config_file_types_to_check:
-                    filepath_from_src = filepath_from_src.replace(file_type, "")
-
-                key_file_dict[k].append(filepath_from_src)
+    key_to_file_dict = _derive_key_to_file_dict(
+        all_keys=all_keys,
+        files_to_check_contents=files_to_check_contents,
+        src_directories=src_directories,
+    )
 
     # Note: This removes empty lists that are unused keys as this is handled by i18n_check_unused_keys.
-    return {k: list(set(v)) for k, v in key_file_dict.items() if len(v) > 0}
+    return {k: list(set(v)) for k, v in key_to_file_dict.items() if len(v) > 0}
 
 
 # MARK: Reduce Keys
@@ -447,8 +509,8 @@ Please rename the following {key_or_keys} \\[current_key -> suggested_correction
 
     if fix and invalid_keys_by_name:
         files_to_fix = collect_source_and_search_dir_files_to_fix(
-            src_directory=config_src_directory,
-            search_directories=config_nonexistent_keys_search_dirs,
+            src_directories=config_src_directories,
+            search_directories=config_nonexistent_keys_search_directories,
             file_types_to_check=config_file_types_to_check,
             directories_to_skip=config_global_directories_to_skip,
             files_to_skip=config_global_files_to_skip,  # global to fix all instances
@@ -478,7 +540,7 @@ Please rename the following {key_or_keys} \\[current_key -> suggested_correction
 
 invalid_keys_key_file_dict = map_keys_to_files(
     i18n_src_dict=i18n_src_dict,
-    src_directory=config_src_directory,
+    src_directories=config_src_directories,
 )
 invalid_keys_by_name = audit_invalid_i18n_key_names(
     key_file_dict=invalid_keys_key_file_dict,

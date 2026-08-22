@@ -38,6 +38,7 @@ checks_fail_dir = (
     / "test_frontends"
     / "all_checks_fail"
 )
+checks_fail_directories = [checks_fail_dir]
 checks_fail_json_dir = checks_fail_dir / "test_i18n"
 
 fail_checks_src_json_path = checks_fail_json_dir / "test_i18n_src.json"
@@ -53,7 +54,7 @@ fail_checks_sub_dir_second_file_path = (
 fail_checks_src_json = read_json_file(file_path=fail_checks_src_json_path)
 fail_checks_locale_json = read_json_file(file_path=fail_checks_src_locale_path)
 i18n_map_fail = map_keys_to_files(
-    i18n_src_dict=fail_checks_src_json, src_directory=checks_fail_dir
+    i18n_src_dict=fail_checks_src_json, src_directories=checks_fail_directories
 )
 
 checks_pass_dir = (
@@ -63,13 +64,14 @@ checks_pass_dir = (
     / "test_frontends"
     / "all_checks_pass"
 )
+checks_pass_directories = [checks_pass_dir]
 checks_pass_json_dir = checks_pass_dir / "test_i18n"
 
 pass_checks_src_json_path = checks_pass_json_dir / "test_i18n_src.json"
 
 pass_checks_src_json = read_json_file(file_path=pass_checks_src_json_path)
 i18n_map_pass = map_keys_to_files(
-    i18n_src_dict=pass_checks_src_json, src_directory=checks_pass_dir
+    i18n_src_dict=pass_checks_src_json, src_directories=checks_pass_directories
 )
 
 nonexistent_keys_search_dir = (
@@ -121,7 +123,7 @@ class TestUtils(unittest.TestCase):
                 f.write("test")
 
             result = collect_files_to_check(
-                directory=temp_dir,
+                directories=[temp_dir],
                 file_types_to_check=[".txt"],
                 directories_to_skip=[Path(temp_dir) / "skip_dir"],
                 files_to_skip=[Path(temp_dir) / "skip.txt"],

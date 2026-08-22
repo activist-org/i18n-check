@@ -88,10 +88,12 @@ with open(YAML_CONFIG_FILE_PATH, "r", encoding="utf-8") as file:
 
 # MARK: Paths
 
-config_src_directory = (
-    CWD_PATH
-    / Path(config["src-dir"].replace("/", PATH_SEPARATOR).replace("\\", PATH_SEPARATOR))
-).resolve()
+config_src_directories = [
+    (
+        CWD_PATH / Path(d.replace("/", PATH_SEPARATOR).replace("\\", PATH_SEPARATOR))
+    ).resolve()
+    for d in config["src-dirs"]
+]
 config_i18n_directory = (
     CWD_PATH
     / Path(
@@ -197,7 +199,7 @@ if "key-naming" in config["checks"]:
 config_nonexistent_keys_active = config_global_active
 config_nonexistent_keys_directories_to_skip = config_global_directories_to_skip.copy()
 config_nonexistent_keys_files_to_skip = config_global_files_to_skip.copy()
-config_nonexistent_keys_search_dirs = []
+config_nonexistent_keys_search_directories = []
 
 if "nonexistent-keys" in config["checks"]:
     if "active" in config["checks"]["nonexistent-keys"]:
@@ -218,7 +220,7 @@ if "nonexistent-keys" in config["checks"]:
         ]
 
     if "search-dirs" in config["checks"]["nonexistent-keys"]:
-        config_nonexistent_keys_search_dirs = [
+        config_nonexistent_keys_search_directories = [
             CWD_PATH
             / Path(d.replace("/", PATH_SEPARATOR).replace("\\", PATH_SEPARATOR))
             for d in config["checks"]["nonexistent-keys"]["search-dirs"]
@@ -359,43 +361,36 @@ def read_json_file(file_path: str | Path) -> Any:
 # MARK: Collect Files
 
 
-@lru_cache(maxsize=128)
-def _collect_files_to_check_cached(
-    directory: str,
+def _walk_directory_return_files_to_check(
+    directory: Path,
     file_types_to_check: tuple[str, ...],
-    directories_to_skip: tuple[str, ...],
-    files_to_skip: tuple[str, ...],
-) -> tuple[str, ...]:
+    skip_dirs_resolved: list[Path],
+    skip_files_resolved: list[Path],
+):
     """
-    Cached implementation of collect_files_to_check.
-
-    This internal function uses hashable types (tuples and strings) to enable caching.
+    Walk a directory and return files to check based on passed file requirements.
 
     Parameters
     ----------
-    directory : str
-        The resolved directory path to search in.
+    directory : Path
+        The directory path to search in.
 
     file_types_to_check : tuple[str, ...]
         Tuple of file extensions to search for.
 
-    directories_to_skip : tuple[str, ...]
-        Tuple of resolved directory paths to skip.
+    skip_dirs_resolved : list[Path]
+        List of file paths to skip.
 
-    files_to_skip : tuple[str, ...]
-        Tuple of resolved file paths to skip.
+    skip_files_resolved : list[Path]
+        List of directory paths to skip.
 
     Returns
     -------
-    tuple[str, ...]
-        Tuple of file paths that match the given extensions.
+    list[str]
+        List of file paths that match the given extensions.
     """
-    directory_path = Path(directory).resolve()
-    skip_dirs_resolved = [Path(d).resolve() for d in directories_to_skip]
-    skip_files_resolved = [Path(f).resolve() for f in files_to_skip]
-    files_to_check: list[str] = []
-
-    for root, dirs, files in os.walk(directory_path):
+    dir_files_to_check: list[str] = []
+    for root, dirs, files in os.walk(directory):
         root_path = Path(root).resolve()
 
         # Skip directories in directories_to_skip and later files in files_to_skip.
@@ -414,27 +409,75 @@ def _collect_files_to_check_cached(
                 )
                 and file_path not in skip_files_resolved
             ):
-                files_to_check.append(str(file_path))
+                dir_files_to_check.append(str(file_path))
+
+    return dir_files_to_check
+
+
+@lru_cache(maxsize=128)
+def _collect_files_to_check_cached(
+    directories: list[Path],
+    file_types_to_check: tuple[str, ...],
+    directories_to_skip: tuple[str, ...],
+    files_to_skip: tuple[str, ...],
+) -> tuple[str, ...]:
+    """
+    Cached implementation of collect_files_to_check.
+
+    This internal function uses hashable types (tuples and strings) to enable caching.
+
+    Parameters
+    ----------
+    directories : str
+        The directory paths to search in.
+
+    file_types_to_check : tuple[str, ...]
+        Tuple of file extensions to search for.
+
+    directories_to_skip : tuple[str, ...]
+        Tuple of resolved directory paths to skip.
+
+    files_to_skip : tuple[str, ...]
+        Tuple of resolved file paths to skip.
+
+    Returns
+    -------
+    tuple[str, ...]
+        Tuple of file paths that match the given extensions.
+    """
+    directories_path = [Path(f).resolve() for f in directories]
+    skip_dirs_resolved = [Path(d).resolve() for d in directories_to_skip]
+    skip_files_resolved = [Path(f).resolve() for f in files_to_skip]
+    files_to_check: list[str] = []
+
+    for d in directories_path:
+        dir_files_to_check = _walk_directory_return_files_to_check(
+            directory=d,
+            file_types_to_check=file_types_to_check,
+            skip_dirs_resolved=skip_dirs_resolved,
+            skip_files_resolved=skip_files_resolved,
+        )
+        files_to_check += dir_files_to_check
 
     return tuple(files_to_check)
 
 
 def collect_files_to_check(
-    directory: str | Path,
+    directories: list[Path],
     file_types_to_check: list[str],
     directories_to_skip: list[Path],
     files_to_skip: list[Path],
 ) -> list[str]:
     """
-    Collect all files with a given extension from a directory and its subdirectories.
+    Collect all files with a given extension from directories and their subdirectories.
 
     This function is cached, so repeated calls with the same parameters will return
     the cached result without re-scanning the filesystem.
 
     Parameters
     ----------
-    directory : str
-        The directory to search in.
+    directories : list[Path]
+        The directories to search in.
 
     file_types_to_check : list[str]
         The extensions for files to search in.
@@ -451,24 +494,26 @@ def collect_files_to_check(
         A list of file paths that match the given extension.
     """
     # Convert to hashable types and call cached implementation.
-    directory_str = str(Path(directory).resolve())
+    directories_tuple = tuple(str(Path(d).resolve()) for d in directories)
     file_types_tuple = tuple(file_types_to_check)
-    directories_tuple = tuple(str(Path(d).resolve()) for d in directories_to_skip)
-    files_tuple = tuple(str(Path(f).resolve()) for f in files_to_skip)
+    directories_to_skip_tuple = tuple(
+        str(Path(d).resolve()) for d in directories_to_skip
+    )
+    files_to_skip_tuple = tuple(str(Path(f).resolve()) for f in files_to_skip)
 
-    result = _collect_files_to_check_cached(
-        directory_str,
-        file_types_tuple,
-        directories_tuple,
-        files_tuple,
+    file_paths = _collect_files_to_check_cached(
+        directories=directories_tuple,
+        file_types_to_check=file_types_tuple,
+        directories_to_skip=directories_to_skip_tuple,
+        files_to_skip=files_to_skip_tuple,
     )
 
     # Convert back to list for backward compatibility.
-    return list(result)
+    return list(file_paths)
 
 
 def collect_source_and_search_dir_files_to_fix(
-    src_directory: str | Path,
+    src_directories: list[Path],
     search_directories: list[Path],
     file_types_to_check: list[str],
     directories_to_skip: list[Path],
@@ -479,7 +524,7 @@ def collect_source_and_search_dir_files_to_fix(
 
     Parameters
     ----------
-    src_directory : str | Path
+    src_directories : list[Path]
         The configured source directory.
 
     search_directories : list[Path]
@@ -502,17 +547,17 @@ def collect_source_and_search_dir_files_to_fix(
     files_to_fix: list[str] = []
     seen_files: set[str] = set()
 
-    for directory in [src_directory, *search_directories]:
-        for file_path in collect_files_to_check(
-            directory=directory,
-            file_types_to_check=file_types_to_check,
-            directories_to_skip=directories_to_skip,
-            files_to_skip=files_to_skip,
-        ):
-            resolved_file_path = str(Path(file_path).resolve())
-            if resolved_file_path not in seen_files:
-                seen_files.add(resolved_file_path)
-                files_to_fix.append(file_path)
+    src_and_search_directories = src_directories + search_directories
+    for file_path in collect_files_to_check(
+        directories=src_and_search_directories,
+        file_types_to_check=file_types_to_check,
+        directories_to_skip=directories_to_skip,
+        files_to_skip=files_to_skip,
+    ):
+        resolved_file_path = str(Path(file_path).resolve())
+        if resolved_file_path not in seen_files:
+            seen_files.add(resolved_file_path)
+            files_to_fix.append(file_path)
 
     return files_to_fix
 

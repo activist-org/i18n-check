@@ -10,6 +10,20 @@ See the [releases for i18n-check](https://github.com/activist-org/i18n-check/rel
 
 Emojis for the following are chosen based on [gitmoji](https://gitmoji.dev/).
 
+## i18n-check 1.21.0
+
+### ✨ Features
+
+- The `src-dir` argument was changed to `src-dirs` to allow for multiple director paths to be passed ([#123](https://github.com/activist-org/i18n-check/issues/123)).
+
+### 📝 Documentation
+
+- The documentation was updated to reflect the new list argument being passed for `src-dirs`.
+
+### ⬆️ Dependencies
+
+- All production and development dependencies were updated.
+
 ## i18n-check 1.20.2
 
 ### 🐛 Bug Fixes
