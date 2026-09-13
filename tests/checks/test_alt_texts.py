@@ -11,6 +11,7 @@ from unittest.mock import patch
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "../..")))
 
 from i18n_check.check.alt_texts import (
+    _get_corrected_alt_text,
     find_alt_text_punctuation_issues,
     report_and_fix_alt_texts,
 )
@@ -19,6 +20,21 @@ from ..test_utils import checks_fail_json_dir, checks_pass_json_dir
 
 
 class TestAltTexts(unittest.TestCase):
+    def test_corrected_value_uses_danda_for_devanagari(self):
+        """
+        Devanagari alt text should receive a danda, not an ASCII period.
+        """
+        self.assertEqual(
+            _get_corrected_alt_text("त्वरित भूरी लोमड़ी"),
+            "त्वरित भूरी लोमड़ी।",
+        )
+
+    def test_existing_devanagari_danda_is_not_reported(self):
+        """
+        A correctly punctuated Hindi alt text must remain unchanged.
+        """
+        self.assertIsNone(_get_corrected_alt_text("त्वरित भूरी लोमड़ी।"))
+
     def test_find_alt_text_punctuation_issues_with_problems(self):
         """
         Test finding alt text punctuation issues.
