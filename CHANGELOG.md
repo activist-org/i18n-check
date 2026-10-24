@@ -10,6 +10,10 @@ See the [releases for i18n-check](https://github.com/activist-org/i18n-check/rel
 
 Emojis for the following are chosen based on [gitmoji](https://gitmoji.dev/).
 
+## i18n-check 1.21.1
+
+- Development dependencies were updated across the project.
+
 ## i18n-check 1.21.0
 
 ### ✨ Features
