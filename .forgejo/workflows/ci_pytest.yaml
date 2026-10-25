@@ -1,5 +1,4 @@
 name: ci_pytest
-
 on:
   workflow_dispatch:
   pull_request:
@@ -24,36 +23,22 @@ on:
       - "uv.lock"
 
 jobs:
-  build:
-    strategy:
-      fail-fast: true
-      matrix:
-        os:
-          - macos-latest
-          - ubuntu-latest
-          - windows-latest
-        python-version:
-          - "3.12"
-
-    runs-on: ${{ matrix.os }}
-
-    defaults:
-      run:
-        shell: bash
-
+  run_ci_pytest:
+    name: Run CI Pytest
+    runs-on: codeberg-tiny
     steps:
       - name: Checkout
         uses: actions/checkout@v6
 
-      - name: Set up Python ${{ matrix.python-version }}
+      - name: Set up Python Environment
         uses: actions/setup-python@v6
         with:
-          python-version: ${{ matrix.python-version }}
+          python-version: "3.12"
 
       - name: Install uv
         uses: astral-sh/setup-uv@v7
 
-      - name: Sync environment and install dependencies
+      - name: Sync Environment and Install Dependencies
         run: uv sync --frozen --all-groups
 
       - name: Run pytest - Unit Tests

@@ -23,9 +23,9 @@ on:
       - "uv.lock"
 
 jobs:
-  ci:
-    name: Run CI Static Check
-    runs-on: ubuntu-latest
+  run_ci_static_analysis:
+    name: Run CI Static Analysis
+    runs-on: codeberg-tiny
     steps:
       - name: Checkout Project
         uses: actions/checkout@v6
@@ -38,7 +38,7 @@ jobs:
       - name: Install uv
         uses: astral-sh/setup-uv@v7
 
-      - name: Sync environment and install dependencies
+      - name: Sync Environment and Install Dependencies
         run: uv sync --frozen --all-groups
 
       - name: Run Ruff Format - Formatting Check

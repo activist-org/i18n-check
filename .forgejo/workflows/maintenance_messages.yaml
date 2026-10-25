@@ -10,7 +10,7 @@ on:
 
 jobs:
   send_maintenance_messages:
-    runs-on: ubuntu-latest
+    runs-on: codeberg-tiny
     name: Send Maintenance Messages
     permissions:
       pull-requests: write
