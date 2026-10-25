@@ -17,6 +17,7 @@
 
 # Contents
 
+- [Maintenance](#maintenance)
 - [About i18n-check](#about-i18n-check)
 - [Installation](#installation)
   - [Users](#users)
@@ -35,6 +36,10 @@
 - [Contributing](#contributing)
   - [Contact the Team](#contact-the-team)
   - [Contributors](#contributors)
+
+# Maintenance
+
+`i18n-check` is maintained at [codeberg.org/activist-org/i18n-check](https://codeberg.org/activist-org/i18n-check). Please visit this remote repository for issues and pull requests.
 
 # About i18n-check
 
