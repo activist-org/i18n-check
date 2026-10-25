@@ -10,7 +10,7 @@
 >
 > By following this guide, you show respect for the time of those who manage and develop this open-source project.
 >
-> In return, and in accordance with this project's [code of conduct](https://github.com/activist-org/i18n-check/tree/main/.github/CODE_OF_CONDUCT.md), other contributors will reciprocate that respect as they address your issue or assess patches / features.
+> In return, and in accordance with this project's [code of conduct](https://codeberg.org/activist-org/i18n-check/src/branch/main/.forgejo/CODE_OF_CONDUCT.md), other contributors will reciprocate that respect as they address your issue or assess patches / features.
 >
 > To contact us, [join our public Matrix chat rooms](https://matrix.to/#/#activist_community:matrix.org). We'd be happy to hear from you!
 
@@ -44,11 +44,11 @@ We recommend these first steps for anyone interested in joining us:
 
 ### Choose Your First Issue
 
-Issues labelled [`good first issue`](https://github.com/activist-org/i18n-check/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22) are the best choice for new contributors.
+Issues labelled [`good first issue`](https://codeberg.org/activist-org/i18n-check/issues?q=&type=all&sort=relevance&labels=2281934&state=open) are the best choice for new contributors.
 
-Just because an issue is assigned doesn't mean you can't contribute. Write [in the issues](https://github.com/activist-org/i18n-check/issues) and we may reassign it to you.
+Just because an issue is assigned doesn't mean you can't contribute. Write [in the issues](https://codeberg.org/activist-org/i18n-check/issues) and we may reassign it to you.
 
-Check the [`-next release-`](https://github.com/activist-org/i18n-check/labels/-next%20release-) and [`-priority-`](https://github.com/activist-org/i18n-check/labels/-priority-) labels to find the most important [issues](https://github.com/activist-org/i18n-check/issues).
+Check the [`-next release-`](https://codeberg.org/activist-org/i18n-check/issues?q=&type=all&sort=relevance&labels=2281907&state=open) and [`-priority-`](https://codeberg.org/activist-org/i18n-check/issues?q=&type=all&sort=relevance&labels=2281910&state=open) labels to find the most important [issues](https://codeberg.org/activist-org/i18n-check/issues).
 
 We would be happy to discuss granting you further rights as a contributor after your first pull requests, with a maintainer role then being possible after continued interest in the project. activist seeks to be an inclusive, diverse, and supportive organization. We'd love to have you on the team!
 
@@ -114,7 +114,7 @@ This is a select list of documentation to help you understand the technologies w
 > </p>
 > </details>
 
-2. [Fork](https://docs.github.com/en/get-started/quickstart/fork-a-repo) the [i18n-check repo](https://github.com/activist-org/i18n-check), clone your fork, and configure the remotes:
+2. [Fork](https://docs.codeberg.org/collaborating/pull-requests-and-git-flow/) the [i18n-check repo](https://codeberg.org/activist-org/i18n-check), clone your fork, and configure the remotes:
 
 > [!TIP]
 >
@@ -122,24 +122,24 @@ This is a select list of documentation to help you understand the technologies w
 >
 > <p>
 >
-> Alternatively to using HTTPS as in the instructions below, consider SSH to interact with GitHub from the terminal. SSH allows you to connect without a user-pass authentication flow.
+> Alternatively to using HTTPS as in the instructions below, consider SSH to interact with Codeberg from the terminal. SSH allows you to connect without a user-pass authentication flow.
 >
-> To run git commands with SSH, remember then to substitute the HTTPS URL, `https://github.com/...`, with the SSH one, `git@github.com:...`.
+> To run git commands with SSH, remember then to substitute the HTTPS URL, `https://codeberg.org/...`, with the SSH one, `ssh://git@codeberg.org/...`.
 >
-> - e.g. Cloning now becomes `git clone git@github.com:<your-username>/i18n-check.git`
+> - e.g. Cloning now becomes `git clone ssh://git@codeberg.org/<your-username>/i18n-check.git`
 >
-> GitHub also has their documentation on how to [Generate a new SSH key](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent) 🔑
+> Codeberg also has their documentation on how to [Generate a new SSH key](https://docs.codeberg.org/security/ssh-key/) 🔑
 >
 > </p>
 > </details>
 
 ```bash
 # Clone your fork of the repo into the current directory.
-git clone https://github.com/<your-username>/i18n-check.git
+git clone https://codeberg.org/<your-username>/i18n-check.git
 # Navigate to the newly cloned directory.
 cd i18n-check
 # Assign the original repo to a remote called "upstream".
-git remote add upstream https://github.com/activist-org/i18n-check.git
+git remote add upstream https://codeberg.org/activist-org/i18n-check.git
 ```
 
 - Now, if you run `git remote -v` you should see two remote repositories named:
@@ -227,9 +227,9 @@ pytest . --cov=src --cov-report=term-missing --cov-config=./pyproject.toml
 
 ## Creating Issues
 
-The GitHub [issue tracker](https://github.com/activist-org/i18n-check/issues) is our preferred channel for [bug reports](#bug-reports), [features requests](#feature-requests) and [submitting pull requests](#pull-requests).
+The Codeberg [issue tracker](https://codeberg.org/activist-org/i18n-check/issues) is our preferred channel for [bug reports](#bug-reports), [features requests](#feature-requests) and [submitting pull requests](#pull-requests).
 
-We also organize related issues into [projects](https://github.com/activist-org/i18n-check/projects).
+We also organize related issues into [projects](https://codeberg.org/activist-org/i18n-check/projects).
 
 ### Bug Reports
 
@@ -240,13 +240,13 @@ Good bug reports are extremely helpful, and we greatly appreciate them.
 
 To submit a bug report:
 
-1. Check if the bug has already been reported by searching issues on GitHub. Filter for issues marked with the marked with the [`Bug`](https://github.com/activist-org/i18n-check/issues?q=is%3Aissue%20state%3Aopen%20type%3ABug) type.
+1. Check if the bug has already been reported by searching issues on Codeberg. Filter for issues marked with the marked with the [`bug`](https://codeberg.org/activist-org/i18n-check/issues?q=&type=all&sort=relevance&labels=2281916&state=open) label.
 
 2. Try to reproduce the bug using the latest `main` or development branch in the repository. This ensures it hasn't already been fixed.
 
 3. Isolate the problem to make sure that the code in the repository is definitely responsible for the bug.
 
-4. If you're confident you've found a bug, report it using the [bug report template](https://github.com/activist-org/i18n-check/issues/new?assignees=&labels=bug&projects=activist-org%2F1&template=bug_report.yml).
+4. If you're confident you've found a bug, report it using the [bug report template](https://codeberg.org/activist-org/i18n-check/issues/new?template=.forgejo%2fISSUE_TEMPLATE%2fbug_report.yml).
 
 We thank you for the time you take to report bugs!
 
@@ -259,16 +259,16 @@ Feature requests are welcome!
 
 When you submit a feature request, provide as much detail and context as possible. Please also let us know whether you would like to contribute to the development.
 
-Submit your request using the [issue tracker](https://github.com/activist-org/i18n-check/issues).
+Submit your request using the [feature template](https://codeberg.org/activist-org/i18n-check/issues/new?template=.forgejo%2fISSUE_TEMPLATE%2ffeature_request.yml).
 
-We mark feature requests with the [`Feature`](https://github.com/activist-org/i18n-check/issues?q=is%3Aissue%20state%3Aopen%20type%3AFeature) type.
+We mark feature requests with the [`feature`](https://codeberg.org/activist-org/i18n-check/issues?q=&type=all&sort=relevance&labels=2281931&state=open) label.
 
 ### Pull Requests
 
 > [!IMPORTANT]
-> All contributions to this project will be made under [the specified license](https://github.com/activist-org/i18n-check/blob/main/LICENSE.txt) and should follow the coding formatting and style standards (contact the community if unsure).
+> All contributions to this project will be made under [the specified license](https://codeberg.org/activist-org/i18n-check/src/branch/main/LICENSE.txt) and should follow the coding formatting and style standards (contact the community if unsure).
 >
-> The best way to get your work merged is to follow the [GitHub flow](https://docs.github.com/en/get-started/quickstart/github-flow) process.
+> The best way to get your work merged is to follow the [Codeberg PR and Git flow](https://docs.codeberg.org/collaborating/pull-requests-and-git-flow/) process.
 
 Good pull requests should remain focused in scope and avoid containing unrelated commits.
 
@@ -302,7 +302,7 @@ git commit --no-verify -m "COMMIT_MESSAGE"
 > These are some tools and methods to help you write good commit messages:
 >
 > - [commitlint](https://commitlint.io/) helps write [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/).
-> - Git's [interactive rebase](https://docs.github.com/en/github/getting-started-with-github/about-git-rebase) cleans up commits.
+> - Git's [interactive rebase](https://docs.codeberg.org/collaborating/pull-requests-and-git-flow/) cleans up commits.
 
 To commit changes and submit a pull request:
 
@@ -333,7 +333,7 @@ To commit changes and submit a pull request:
    git push origin <topic-branch-name>
    ```
 
-6. [Open a Pull Request](https://help.github.com/articles/using-pull-requests/) with a clear title and description.
+6. [Open a Pull Request](https://docs.codeberg.org/collaborating/pull-requests-and-git-flow/) with a clear title and description.
 
 Thank you in advance for your contributions!
 
@@ -345,7 +345,7 @@ Find the `i18n-check` documentation at [i18n-check.readthedocs.io](https://i18n-
 
 Documentation is an invaluable way to contribute to coding projects. It enables others to better understand and contribute to the project.
 
-Search for open documentation issues on GitHub by filtering for the [`documentation`](https://github.com/activist-org/i18n-check/labels/documentation) label.
+Search for open documentation issues on Codeberg by filtering for the [`documentation`](https://codeberg.org/activist-org/i18n-check/issues?q=&type=all&sort=relevance&labels=2281925&state=open) label.
 
 ### Function Docstrings
 

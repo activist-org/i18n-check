@@ -30,7 +30,7 @@ def upgrade_cli() -> None:
 
     if latest_version_message == UNKNOWN_VERSION_NOT_FETCHED:
         print(
-            "Unable to fetch the latest version from GitHub. Please check the GitHub repository or your internet connection."
+            "Unable to fetch the latest version from Codeberg. Please check the Codeberg repository or your internet connection."
         )
         return
 
@@ -54,7 +54,9 @@ def upgrade_cli() -> None:
         latest_ver = version.parse(latest_version_clean)
 
     except InvalidVersion:
-        print("Unable to parse the latest version. Please check the GitHub repository.")
+        print(
+            "Unable to parse the latest version. Please check the Codeberg repository."
+        )
         return
 
     if local_ver == latest_ver:
@@ -62,7 +64,7 @@ def upgrade_cli() -> None:
 
     elif local_ver > latest_ver:
         print(
-            f"i18n-check v{local_version_clean} is higher than the currently released version i18n-check v{latest_version_clean}. Hopefully this is a development build, and if so, thanks for your work on i18n-check! If not, please report this to the team at https://github.com/activist-org/i18n-check/issues."
+            f"i18n-check v{local_version_clean} is higher than the currently released version i18n-check v{latest_version_clean}. Hopefully this is a development build, and if so, thanks for your work on i18n-check! If not, please report this to the team at https://codeberg.org/activist-org/i18n-check/issues."
         )
 
     else:
@@ -76,5 +78,5 @@ def upgrade_cli() -> None:
 
         except subprocess.CalledProcessError as e:
             print(
-                f"Failed to install the latest version of i18n-check with error {e}. Please check the error message and report any issues to the team at https://github.com/activist-org/i18n-check/issues."
+                f"Failed to install the latest version of i18n-check with error {e}. Please check the error message and report any issues to the team at https://codeberg.org/activist-org/i18n-check/issues."
             )

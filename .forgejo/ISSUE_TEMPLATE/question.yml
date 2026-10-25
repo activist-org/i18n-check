@@ -8,9 +8,9 @@ body:
     attributes:
       label: Terms
       options:
-        - label: I have searched [open and closed issues](https://github.com/activist-org/i18n-check/issues?q=is%3Aissue)
+        - label: I have searched [open and closed issues](https://codeberg.org/activist-org/i18n-check/issues?q=&type=all&sort=relevance&state=all)
           required: true
-        - label: I agree to follow activist's [Code of Conduct](.github/CODE_OF_CONDUCT.md)
+        - label: I agree to follow activist's [Code of Conduct](https://codeberg.org/activist-org/i18n-check/src/branch/main/.forgejo/CODE_OF_CONDUCT.md)
           required: true
   - type: textarea
     id: issue

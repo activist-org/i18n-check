@@ -1,7 +1,7 @@
 i18n-check
 ==========
 
-`View code on Github <https://github.com/activist-org/i18n-check/tree/main/src/i18n_check>`_
+`View code on Codeberg <https://codeberg.org/activist-org/i18n-check/src/branch/main/src/i18n_check>`_
 
 .. toctree::
     :maxdepth: 2

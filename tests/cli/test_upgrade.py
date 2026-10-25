@@ -23,7 +23,7 @@ class TestUpgradeCLI:
         self, mock_print, mock_get_latest, mock_get_local
     ):
         """
-        Test upgrade_cli when unable to fetch latest version from GitHub.
+        Test upgrade_cli when unable to fetch latest version from Codeberg.
         """
         mock_get_latest.return_value = UNKNOWN_VERSION_NOT_FETCHED
         mock_get_local.return_value = "5.0.0"
@@ -31,7 +31,7 @@ class TestUpgradeCLI:
         upgrade_cli()
 
         mock_print.assert_called_once_with(
-            "Unable to fetch the latest version from GitHub. Please check the GitHub repository or your internet connection."
+            "Unable to fetch the latest version from Codeberg. Please check the Codeberg repository or your internet connection."
         )
 
     @patch("i18n_check.cli.upgrade.get_local_version")
@@ -69,7 +69,7 @@ class TestUpgradeCLI:
         expected_message = (
             "i18n-check v5.2.0 is higher than the currently released version i18n-check v5.1.0. "
             "Hopefully this is a development build, and if so, thanks for your work on i18n-check! "
-            "If not, please report this to the team at https://github.com/activist-org/i18n-check/issues."
+            "If not, please report this to the team at https://codeberg.org/activist-org/i18n-check/issues."
         )
         mock_print.assert_called_once_with(expected_message)
 
@@ -167,7 +167,7 @@ class TestUpgradeCLI:
         expected_message = (
             "i18n-check v5.10.0 is higher than the currently released version i18n-check v5.2.0. "
             "Hopefully this is a development build, and if so, thanks for your work on i18n-check! "
-            "If not, please report this to the team at https://github.com/activist-org/i18n-check/issues."
+            "If not, please report this to the team at https://codeberg.org/activist-org/i18n-check/issues."
         )
         mock_print.assert_called_once_with(expected_message)
 
@@ -189,7 +189,7 @@ class TestUpgradeCLI:
         expected_message = (
             "i18n-check v6.0.0 is higher than the currently released version i18n-check v5.1.0. "
             "Hopefully this is a development build, and if so, thanks for your work on i18n-check! "
-            "If not, please report this to the team at https://github.com/activist-org/i18n-check/issues."
+            "If not, please report this to the team at https://codeberg.org/activist-org/i18n-check/issues."
         )
         mock_print.assert_called_once_with(expected_message)
 

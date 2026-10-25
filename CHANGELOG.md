@@ -1,6 +1,6 @@
 # Changelog
 
-See the [releases for i18n-check](https://github.com/activist-org/i18n-check/releases) for an up to date list of versions and their release dates.
+See the [releases for i18n-check](https://codeberg.org/activist-org/i18n-check/releases) for an up to date list of versions and their release dates.
 
 `i18n-check` tries to follow [semantic versioning](https://semver.org/), a `MAJOR.MINOR.PATCH` version where increments are made of the:
 
@@ -10,7 +10,15 @@ See the [releases for i18n-check](https://github.com/activist-org/i18n-check/rel
 
 Emojis for the following are chosen based on [gitmoji](https://gitmoji.dev/).
 
+## i18n-check 1.22.0
+
+### ✨ Features
+
+- Development of the project was switched to [codeberg.org/activist-org/i18n-check](https://codeberg.org/activist-org/i18n-check).
+
 ## i18n-check 1.21.1
+
+### ⬆️ Dependencies
 
 - Development dependencies were updated across the project.
 
@@ -18,7 +26,7 @@ Emojis for the following are chosen based on [gitmoji](https://gitmoji.dev/).
 
 ### ✨ Features
 
-- The `src-dir` argument was changed to `src-dirs` to allow for multiple director paths to be passed ([#123](https://github.com/activist-org/i18n-check/issues/123)).
+- The `src-dir` argument was changed to `src-dirs` to allow for multiple director paths to be passed ([#123](https://codeberg.org/activist-org/i18n-check/issues/123)).
 
 ### 📝 Documentation
 
@@ -32,7 +40,7 @@ Emojis for the following are chosen based on [gitmoji](https://gitmoji.dev/).
 
 ### 🐛 Bug Fixes
 
-- The `sorted-keys` check was being ran multiple times across the various checks ([#122](https://github.com/activist-org/i18n-check/issues/122)).
+- The `sorted-keys` check was being ran multiple times across the various checks ([#122](https://codeberg.org/activist-org/i18n-check/issues/122)).
 - Made directions on how to make tests pass for the `all_checks_pass` frontend more clear.
 
 ## i18n-check 1.20.1
@@ -46,23 +54,23 @@ Emojis for the following are chosen based on [gitmoji](https://gitmoji.dev/).
 
 ### ✨ Features
 
-- Checks for `aria-label` and `alt-text` terminal punctuation was expanded to handle more languages ([#108](https://github.com/activist-org/i18n-check/issues/108)).
+- Checks for `aria-label` and `alt-text` terminal punctuation was expanded to handle more languages ([#108](https://codeberg.org/activist-org/i18n-check/issues/108)).
 - The total number of failed checks is reported to the user.
 
 ### 🐛 Bug Fixes
 
-- The `key-formatting` and `key-naming` `--fix` options now also update key usage in configured `nonexistent-keys` `search-dirs` ([#118](https://github.com/activist-org/i18n-check/issues/118)).
+- The `key-formatting` and `key-naming` `--fix` options now also update key usage in configured `nonexistent-keys` `search-dirs` ([#118](https://codeberg.org/activist-org/i18n-check/issues/118)).
 
 ### ♻️ Code Refactoring
 
-- The legacy Python typing system was removed in favor of the more modern approach ([#113](https://github.com/activist-org/i18n-check/issues/113)).
-- The complexity of the code was reduced to improve maintainability via checks using `complexipy` ([#115](https://github.com/activist-org/i18n-check/issues/115)).
+- The legacy Python typing system was removed in favor of the more modern approach ([#113](https://codeberg.org/activist-org/i18n-check/issues/113)).
+- The complexity of the code was reduced to improve maintainability via checks using `complexipy` ([#115](https://codeberg.org/activist-org/i18n-check/issues/115)).
 
 ## i18n-check 1.19.5
 
 ### ♻️ Code Refactoring
 
-- The project was switched over to use `ty` for linting instead of `mypy` [#109](https://github.com/activist-org/i18n-check/issues/109).
+- The project was switched over to use `ty` for linting instead of `mypy` [#109](https://codeberg.org/activist-org/i18n-check/issues/109).
 
 ### ⬆️ Dependencies
 
@@ -90,11 +98,11 @@ The `non-source-keys` and `unused-keys` checks now notify the user that these ke
 
 ### ✨ Features
 
-- The user is prompted to regenerate their `.i18n-check.yaml` if the file is found to be empty or is missing required arguments ([#106](https://github.com/activist-org/i18n-check/issues/106)).
+- The user is prompted to regenerate their `.i18n-check.yaml` if the file is found to be empty or is missing required arguments ([#106](https://codeberg.org/activist-org/i18n-check/issues/106)).
 
 ### 📝 Documentation
 
-- The GIFs in the readme were updated to show the current state of the package ([#107](https://github.com/activist-org/i18n-check/issues/107)).
+- The GIFs in the readme were updated to show the current state of the package ([#107](https://codeberg.org/activist-org/i18n-check/issues/107)).
 
 ### ⬆️ Dependencies
 
@@ -104,14 +112,14 @@ The `non-source-keys` and `unused-keys` checks now notify the user that these ke
 
 ### ✨ Features
 
-- Added the `--delete` (`-d`) flag for automatic deletion of unused keys and non-source keys from JSON files ([#92](https://github.com/activist-org/i18n-check/issues/92)).
+- Added the `--delete` (`-d`) flag for automatic deletion of unused keys and non-source keys from JSON files ([#92](https://codeberg.org/activist-org/i18n-check/issues/92)).
   - Users can now use `i18n-check -uk -d` to automatically remove unused keys from source and target files.
   - Users can now use `i18n-check -nsk -d` to automatically remove non-source keys from target files only.
   - Delete operations integrate with sorted-keys check for consistent file formatting.
-- Added the `--fix` (`-f`) flag for the nested files check to automatically flatten the files ([#99](https://github.com/activist-org/i18n-check/issues/99)).
-- The `nonexistent-keys` check can now be configured with a `search-dirs` argument that adds directories will be searched for used keys ([#93](https://github.com/activist-org/i18n-check/issues/93)).
+- Added the `--fix` (`-f`) flag for the nested files check to automatically flatten the files ([#99](https://codeberg.org/activist-org/i18n-check/issues/99)).
+- The `nonexistent-keys` check can now be configured with a `search-dirs` argument that adds directories will be searched for used keys ([#93](https://codeberg.org/activist-org/i18n-check/issues/93)).
   - This allows keys to be used in testing directories without the need to rename them to a `_global` context.
-- The user is prompted to write a configuration file for the test frontends on generation ([#105](https://github.com/activist-org/i18n-check/issues/105)).
+- The user is prompted to write a configuration file for the test frontends on generation ([#105](https://codeberg.org/activist-org/i18n-check/issues/105)).
 
 ### 🐛 Bug Fixes
 
@@ -123,7 +131,7 @@ The `non-source-keys` and `unused-keys` checks now notify the user that these ke
 
 ### ♻️ Code Refactoring
 
-- All empty lists and dictionaries were typed in the project ([#96](https://github.com/activist-org/i18n-check/issues/96)).
+- All empty lists and dictionaries were typed in the project ([#96](https://codeberg.org/activist-org/i18n-check/issues/96)).
 
 ## i18n-check 1.18.1
 
@@ -133,7 +141,7 @@ The `non-source-keys` and `unused-keys` checks now notify the user that these ke
 
 ### 📝 Documentation
 
-- All documentation for the package was updated to improve clarity ([#87](https://github.com/activist-org/i18n-check/issues/87)).
+- All documentation for the package was updated to improve clarity ([#87](https://codeberg.org/activist-org/i18n-check/issues/87)).
 
 ## i18n-check 1.18.0
 
@@ -183,8 +191,8 @@ The `non-source-keys` and `unused-keys` checks now notify the user that these ke
 
 ### 🐞 Bug Fixes
 
-- Fixed a bug where the `repeat-values` check would fail if keys were not used in files as some projects may not be using the `key-naming` check ([#84](https://github.com/activist-org/i18n-check/issues/84)).
-- The way in which a `repeat-values` suggested key is derived was improved to assure that having different keys with the same value across multiple files is properly accounted for in the suggestion ([#84](https://github.com/activist-org/i18n-check/issues/84)).
+- Fixed a bug where the `repeat-values` check would fail if keys were not used in files as some projects may not be using the `key-naming` check ([#84](https://codeberg.org/activist-org/i18n-check/issues/84)).
+- The way in which a `repeat-values` suggested key is derived was improved to assure that having different keys with the same value across multiple files is properly accounted for in the suggestion ([#84](https://codeberg.org/activist-org/i18n-check/issues/84)).
 
 ### ✅ Tests
 
@@ -223,7 +231,7 @@ The `non-source-keys` and `unused-keys` checks now notify the user that these ke
 
 ### ✨ Features
 
-- The `invalid-keys` check was split into `key-naming` and `key-formatting` checks ([#81](https://github.com/activist-org/i18n-check/issues/81)).
+- The `invalid-keys` check was split into `key-naming` and `key-formatting` checks ([#81](https://codeberg.org/activist-org/i18n-check/issues/81)).
 - CLI outputs of check names are now kebab-case instead of snake_case for consistency with the `--help` functionality messages.
 
 ### 🐞 Bug Fixes
@@ -242,13 +250,13 @@ The `non-source-keys` and `unused-keys` checks now notify the user that these ke
 
 ### ✨ Features
 
-- The CLI now sorts all required locale files if the `sorted-keys` check is activated when `--fix` options are used for the `invalid-keys`, `missing-keys` and `nonexistent-keys` checks ([#78](https://github.com/activist-org/i18n-check/issues/78)).
+- The CLI now sorts all required locale files if the `sorted-keys` check is activated when `--fix` options are used for the `invalid-keys`, `missing-keys` and `nonexistent-keys` checks ([#78](https://codeberg.org/activist-org/i18n-check/issues/78)).
 - The `sorted-keys` check only functions if the `repeat-keys` check has passed for the given JSON file.
   - The user is warned if there are repeated keys so these can be fixed before sorting.
 
 ### 🐞 Bug Fixes
 
-- The `aria-labels` and `alt-texts` checks now function properly for RTL and LTR languages ([#70](https://github.com/activist-org/i18n-check/issues/70)).
+- The `aria-labels` and `alt-texts` checks now function properly for RTL and LTR languages ([#70](https://codeberg.org/activist-org/i18n-check/issues/70)).
 
 ### ✅ Tests
 
@@ -258,8 +266,8 @@ The `non-source-keys` and `unused-keys` checks now notify the user that these ke
 
 ### ✨ Features
 
-- The CLI can now be configured with either a `.yaml` or `.yml` file ([#75](https://github.com/activist-org/i18n-check/issues/75)).
-- The `nonexistent-keys` check now has a `--fix` argument that allows the user to add missing keys to the i18n source file ([#69](https://github.com/activist-org/i18n-check/issues/69)).
+- The CLI can now be configured with either a `.yaml` or `.yml` file ([#75](https://codeberg.org/activist-org/i18n-check/issues/75)).
+- The `nonexistent-keys` check now has a `--fix` argument that allows the user to add missing keys to the i18n source file ([#69](https://codeberg.org/activist-org/i18n-check/issues/69)).
 
 ### ♻️ Code Refactoring
 
@@ -271,13 +279,13 @@ The `non-source-keys` and `unused-keys` checks now notify the user that these ke
 
 - `i18n-check --all --fix` (`i18n-check -a -f`) can be ran to fix all checks that do not require user input.
   - The user is warned if there are failing checks that require user input to fix or don't have a fix option.
-- The results of the `collect_files_to_check` and `get_all_json_files` utility functions have been cached using `@lru_cache` on private functions that are called within them ([#72](https://github.com/activist-org/i18n-check/issues/72)).
+- The results of the `collect_files_to_check` and `get_all_json_files` utility functions have been cached using `@lru_cache` on private functions that are called within them ([#72](https://codeberg.org/activist-org/i18n-check/issues/72)).
 
 ### 🐞 Bug Fixes
 
-- Removed `run_check` from the codebase as certain operating systems are not able to set their `__name__` variable appropriately to run Python files as scripts via the CLI ([#68](https://github.com/activist-org/i18n-check/issues/68)).
+- Removed `run_check` from the codebase as certain operating systems are not able to set their `__name__` variable appropriately to run Python files as scripts via the CLI ([#68](https://codeberg.org/activist-org/i18n-check/issues/68)).
   - All checks are now ran as functions rather than as scripts.
-- All configuration paths are loaded and appended to the current working directory to assure accurate path derivations ([#68](https://github.com/activist-org/i18n-check/issues/68)).
+- All configuration paths are loaded and appended to the current working directory to assure accurate path derivations ([#68](https://codeberg.org/activist-org/i18n-check/issues/68)).
   - Path separators are also normalized across operating systems.
 - The path for generated configuration files is now set to the current working directory instead of relative to the configuration generation file.
 
@@ -300,7 +308,7 @@ The `non-source-keys` and `unused-keys` checks now notify the user that these ke
 
 ### 🐞 Bug Fixes
 
-- The manner in which paths to be skipped are derived has been switched from strings to `pathlib.Path` objects to assurer that it works across operating systems ([#68](https://github.com/activist-org/i18n-check/issues/68)).
+- The manner in which paths to be skipped are derived has been switched from strings to `pathlib.Path` objects to assurer that it works across operating systems ([#68](https://codeberg.org/activist-org/i18n-check/issues/68)).
 
 ### ✅ Tests
 
@@ -345,20 +353,20 @@ The `non-source-keys` and `unused-keys` checks now notify the user that these ke
 
 ### ✨ Features
 
-- A new missing keys check has been added to validate if any of the locale JSON files are missing keys that are present in the source file ([#38](https://github.com/activist-org/i18n-check/issues/38)).
-  - The `--fix` argument for this check uses an interactive mode to add translations that the user enters into the terminal into a locale file of choice ([#41](https://github.com/activist-org/i18n-check/issues/41)).
-- A new sorted keys check has been added to make sure that the i18n JSON files are alphabetical ([#40](https://github.com/activist-org/i18n-check/issues/40)).
+- A new missing keys check has been added to validate if any of the locale JSON files are missing keys that are present in the source file ([#38](https://codeberg.org/activist-org/i18n-check/issues/38)).
+  - The `--fix` argument for this check uses an interactive mode to add translations that the user enters into the terminal into a locale file of choice ([#41](https://codeberg.org/activist-org/i18n-check/issues/41)).
+- A new sorted keys check has been added to make sure that the i18n JSON files are alphabetical ([#40](https://codeberg.org/activist-org/i18n-check/issues/40)).
   - The `--fix` argument sorts the i18n JSON files for the user.
-- A new aria label check has been added to make sure that i18n keys that end in `_aria_label` dom't have values that end in punctuation ([#48](https://github.com/activist-org/i18n-check/issues/48)).
+- A new aria label check has been added to make sure that i18n keys that end in `_aria_label` dom't have values that end in punctuation ([#48](https://codeberg.org/activist-org/i18n-check/issues/48)).
   - The `--fix` argument removes all punctuation in these values.
-- A new alt text check has been added to make sure that i18n keys that end in `_alt_text` have values that end in a period ([#49](https://github.com/activist-org/i18n-check/issues/49)).
+- A new alt text check has been added to make sure that i18n keys that end in `_alt_text` have values that end in a period ([#49](https://codeberg.org/activist-org/i18n-check/issues/49)).
   - The `--fix` argument adds periods to these values.
-- The user can now ignore certain regex patterns in their i18n keys within the `invalid-keys` check ([#52](https://github.com/activist-org/i18n-check/issues/52), [#58](https://github.com/activist-org/i18n-check/issues/58)).
-- In the `invalid-keys` check the `--fix` argument now uses just the global directories and files to skip to assure that all instances of keys are replaced even if their locations should not be factored into the names of the key ([#59](https://github.com/activist-org/i18n-check/issues/59)).
+- The user can now ignore certain regex patterns in their i18n keys within the `invalid-keys` check ([#52](https://codeberg.org/activist-org/i18n-check/issues/52), [#58](https://codeberg.org/activist-org/i18n-check/issues/58)).
+- In the `invalid-keys` check the `--fix` argument now uses just the global directories and files to skip to assure that all instances of keys are replaced even if their locations should not be factored into the names of the key ([#59](https://codeberg.org/activist-org/i18n-check/issues/59)).
 
 ### 🐞 Bug Fixes
 
-- Fixed an issue where the repeat values check was providing a suggestion for the new key that was sometimes invalid when checked against the `invalid-keys` check when the key was used in multiple files ([#50](https://github.com/activist-org/i18n-check/issues/50)).
+- Fixed an issue where the repeat values check was providing a suggestion for the new key that was sometimes invalid when checked against the `invalid-keys` check when the key was used in multiple files ([#50](https://codeberg.org/activist-org/i18n-check/issues/50)).
 - Fixed a bug where repeat values with `_lower` at the end of their keys were not being removed from the count of repeats for value.
 
 ### 📝 Documentation
@@ -369,7 +377,7 @@ The `non-source-keys` and `unused-keys` checks now notify the user that these ke
 
 ### ✨ Features
 
-- The user is made aware of how to skip the i18n-check errors within Git commit hooks via the `--no-verify` option ([#55](https://github.com/activist-org/i18n-check/issues/55)).
+- The user is made aware of how to skip the i18n-check errors within Git commit hooks via the `--no-verify` option ([#55](https://codeberg.org/activist-org/i18n-check/issues/55)).
 
 ### ♻️ Code Refactoring
 
@@ -379,15 +387,15 @@ The `non-source-keys` and `unused-keys` checks now notify the user that these ke
 
 ### ✨ Features
 
-- The user can now fix invalid key names via a `--fix` (`-f`) option on the `invalid-keys` check ([#37](https://github.com/activist-org/i18n-check/issues/37)).
+- The user can now fix invalid key names via a `--fix` (`-f`) option on the `invalid-keys` check ([#37](https://codeberg.org/activist-org/i18n-check/issues/37)).
 
 ### ♻️ Code Refactoring
 
-- The `key-identifiers` check was renamed `invalid-keys` and the `invalid-keys` check was renamed `non-existent-keys` ([#53](https://github.com/activist-org/i18n-check/issues/53)).
+- The `key-identifiers` check was renamed `invalid-keys` and the `invalid-keys` check was renamed `non-existent-keys` ([#53](https://codeberg.org/activist-org/i18n-check/issues/53)).
 
 ### 📝 Documentation
 
-- The docs were updated to reflect the name changes of the checks ([#53](https://github.com/activist-org/i18n-check/issues/53)).
+- The docs were updated to reflect the name changes of the checks ([#53](https://codeberg.org/activist-org/i18n-check/issues/53)).
 
 ## i18n-check 1.7.1
 
@@ -399,7 +407,7 @@ The `non-source-keys` and `unused-keys` checks now notify the user that these ke
 
 ### 🐞 Bug Fixes
 
-- Improved CLI output for `i18n-check -a` (all checks) by suppressing redundant subprocess error messages while preserving actual check error details ([#45](https://github.com/activist-org/i18n-check/issues/45)).
+- Improved CLI output for `i18n-check -a` (all checks) by suppressing redundant subprocess error messages while preserving actual check error details ([#45](https://codeberg.org/activist-org/i18n-check/issues/45)).
 
 ### ✅ Tests
 
@@ -441,8 +449,8 @@ The `non-source-keys` and `unused-keys` checks now notify the user that these ke
 
 ### ✨ Features
 
-- Individual checks can now be explicitly disabled even when the global.active option in the configuration YAML is set to true, allowing for more concise configuration files ([#39](https://github.com/activist-org/i18n-check/issues/39)).
-- Rich text support has been added to CLI outputs such that error messages are red and successes are green ([#36](https://github.com/activist-org/i18n-check/issues/36)).
+- Individual checks can now be explicitly disabled even when the global.active option in the configuration YAML is set to true, allowing for more concise configuration files ([#39](https://codeberg.org/activist-org/i18n-check/issues/39)).
+- Rich text support has been added to CLI outputs such that error messages are red and successes are green ([#36](https://codeberg.org/activist-org/i18n-check/issues/36)).
 - Emojis have been added to error and success messages to make the sections more clear.
 - Check errors are now registered with `sys.exit(1)` rather than `ValueError` so that the output doesn't have the value error texts printed.
   - This makes seeing the actual check errors much easier as they're the main outputs now.
@@ -451,7 +459,7 @@ The `non-source-keys` and `unused-keys` checks now notify the user that these ke
 ### 🐞 Bug Fixes
 
 - All checks now raises a `sys.exit(1)` as with individual checks so that GitHub workflows, pre-commit and other systems running `i18n-check` will fail.
-- The error messages are now combined into one message to assure that they're not mixed together with other parallel error outputs ([#44](https://github.com/activist-org/i18n-check/issues/44)).
+- The error messages are now combined into one message to assure that they're not mixed together with other parallel error outputs ([#44](https://codeberg.org/activist-org/i18n-check/issues/44)).
 - The pseudo code in the test frontends has been fixed so that the `all_checks_pass` frontend passes all checks.
 
 ### ✅ Tests
@@ -482,27 +490,27 @@ The `non-source-keys` and `unused-keys` checks now notify the user that these ke
 
 ### 🐞 Bug Fixes
 
-- Fix to the subprocess call for running package modules and assuring that file names in run command arguments don't include `.py` ([#35](https://github.com/activist-org/i18n-check/issues/35)).
+- Fix to the subprocess call for running package modules and assuring that file names in run command arguments don't include `.py` ([#35](https://codeberg.org/activist-org/i18n-check/issues/35)).
 
 ## i18n-check 1.3.2
 
 ### 🐞 Bug Fixes
 
-- The calls to checks is now done via `python -m` and the package module path rather than the path to the file itself to make it work more effectively in other environments ([#35](https://github.com/activist-org/i18n-check/issues/35)).
+- The calls to checks is now done via `python -m` and the package module path rather than the path to the file itself to make it work more effectively in other environments ([#35](https://codeberg.org/activist-org/i18n-check/issues/35)).
 
 ## i18n-check 1.3.1
 
 ### 🐞 Bug Fixes
 
-- The path to the configuration file uses `Path` to make the location of the file more explicit ([#35](https://github.com/activist-org/i18n-check/issues/35)).
+- The path to the configuration file uses `Path` to make the location of the file more explicit ([#35](https://codeberg.org/activist-org/i18n-check/issues/35)).
 
 ## i18n-check 1.3.0
 
 ### 🐞 Bug Fixes
 
 - The `i18n-check` source file is referred to generally in error outputs instead of using a specific localization for the source file.
-- The upgrade tests were removed to avoid tar balls rewriting local development files during testing ([#34](https://github.com/activist-org/i18n-check/issues/34)).
-- The path to the configuration file now no longer requires a call to `Path` to make it work more seamlessly with GitHub Actions ([#35](https://github.com/activist-org/i18n-check/issues/35)).
+- The upgrade tests were removed to avoid tar balls rewriting local development files during testing ([#34](https://codeberg.org/activist-org/i18n-check/issues/34)).
+- The path to the configuration file now no longer requires a call to `Path` to make it work more seamlessly with GitHub Actions ([#35](https://codeberg.org/activist-org/i18n-check/issues/35)).
 
 ### ♻️ Code Refactoring
 
@@ -528,21 +536,21 @@ The `non-source-keys` and `unused-keys` checks now notify the user that these ke
 
 ### ✨ Features
 
-- Python files that were used to check i18n files and the frontend code have been moved from the [activist repo](https://github.com/activist-org/activist/) to their own codebase ([#1](https://github.com/activist-org/i18n-check/issues/1)).
+- Python files that were used to check i18n files and the frontend code have been moved from the [activist repo](https://github.com/activist-org/activist/) to their own codebase ([#1](https://codeberg.org/activist-org/i18n-check/issues/1)).
   - Checks brought over include:
     - Whether key identifiers match naming standards
     - Whether the frontend includes keys that are not in the i18n source file
     - Whether the i18n source file includes keys that aren't used in the frontend
     - Whether target locale files include keys that are not in the i18n source file
     - Whether there are repeat values in the i18n source file
-- A CLI has been been written to easily run the checks based on a YAML configuration file ([#4](https://github.com/activist-org/i18n-check/issues/4)).
+- A CLI has been been written to easily run the checks based on a YAML configuration file ([#4](https://codeberg.org/activist-org/i18n-check/issues/4)).
   - All checks can be ran via the CLI both individually and together
   - The CLI can be used to upgrade itself
-- The original checks were expanded with warnings for nested JSON files and that i18n keys were repeated ([#5](https://github.com/activist-org/i18n-check/issues/5), [#15](https://github.com/activist-org/i18n-check/issues/15)).
-- The user can generate test frontends for easier onboarding to the project ([#23](https://github.com/activist-org/i18n-check/issues/23)).
-- The config file is checked for and an interactive workflow is used to create one if it's missing ([#24](https://github.com/activist-org/i18n-check/issues/24)).
-- Directories to skip and files to skip are based on a global and per-check basis for those checks that do read in frontend files ([#29](https://github.com/activist-org/i18n-check/issues/29)).
-- When running all checks they are ran in parallel ([#31](https://github.com/activist-org/i18n-check/issues/31)).
+- The original checks were expanded with warnings for nested JSON files and that i18n keys were repeated ([#5](https://codeberg.org/activist-org/i18n-check/issues/5), [#15](https://codeberg.org/activist-org/i18n-check/issues/15)).
+- The user can generate test frontends for easier onboarding to the project ([#23](https://codeberg.org/activist-org/i18n-check/issues/23)).
+- The config file is checked for and an interactive workflow is used to create one if it's missing ([#24](https://codeberg.org/activist-org/i18n-check/issues/24)).
+- Directories to skip and files to skip are based on a global and per-check basis for those checks that do read in frontend files ([#29](https://codeberg.org/activist-org/i18n-check/issues/29)).
+- When running all checks they are ran in parallel ([#31](https://codeberg.org/activist-org/i18n-check/issues/31)).
 
 ### 🎨 Design
 
@@ -555,7 +563,7 @@ The `non-source-keys` and `unused-keys` checks now notify the user that these ke
 
 ### ✅ Tests
 
-- Testing has been written for both the checks and the CLI functionalities ([#2](https://github.com/activist-org/i18n-check/issues/2), [#14](https://github.com/activist-org/i18n-check/issues/14)).
+- Testing has been written for both the checks and the CLI functionalities ([#2](https://codeberg.org/activist-org/i18n-check/issues/2), [#14](https://codeberg.org/activist-org/i18n-check/issues/14)).
   - The testing process uses the test frontends that the user can experiment with.
 - GitHub Actions based checks are used to validate file license headers, ruff based code formatting, mypy static type checking and pytest based tests on each pull request.
 - pre-commit hooks are used to enforce code quality before commits during development.
@@ -563,9 +571,9 @@ The `non-source-keys` and `unused-keys` checks now notify the user that these ke
 ### 📝 Documentation
 
 - All onboarding documentation has been written including an extensive readme, a contributing guide and GitHub templates to help people contribute effectively.
-- Read the Docs documentation has been generated for the project and can be found at [i18n-check.readthedocs.io](https://i18n-check.readthedocs.io/en/latest/) ([#21](https://github.com/activist-org/i18n-check/issues/21)).
-- All docstrings for functions and classes were standardized based on numpydoc ([#19](https://github.com/activist-org/i18n-check/issues/19)).
+- Read the Docs documentation has been generated for the project and can be found at [i18n-check.readthedocs.io](https://i18n-check.readthedocs.io/en/latest/) ([#21](https://codeberg.org/activist-org/i18n-check/issues/21)).
+- All docstrings for functions and classes were standardized based on numpydoc ([#19](https://codeberg.org/activist-org/i18n-check/issues/19)).
 
 ### ♻️ Code Refactoring
 
-- Reusable code was moved into common utility functions ([#6](https://github.com/activist-org/i18n-check/issues/6)).
+- Reusable code was moved into common utility functions ([#6](https://codeberg.org/activist-org/i18n-check/issues/6)).

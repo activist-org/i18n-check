@@ -1,18 +1,18 @@
 <a id="top"></a>
 
 <div align="center">
-  <a href="https://github.com/activist-org/i18n-check"><img src="https://raw.githubusercontent.com/activist-org/i18n-check/main/.github/resources/images/i18nCheckGitHubBanner.png" width=1024 alt="i18n check logo"></a>
+  <a href="https://codeberg.org/activist-org/i18n-check"><img src="https://codeberg.org/activist-org/i18n-check/raw/branch/main/.forgejo/resources/images/i18nCheckBanner.png" style="width: 100%; max-width: 100%;" alt="i18n check logo"></a>
 </div>
 
 [![rtd](https://img.shields.io/readthedocs/i18n-check.svg?label=%20&logo=read-the-docs&logoColor=ffffff)](http://i18n-check.readthedocs.io/en/latest/)
-[![ci_static_analysis](https://img.shields.io/github/actions/workflow/status/activist-org/i18n-check/ci_static_analysis.yaml?branch=main&label=%20&logo=ruff&logoColor=ffffff)](https://github.com/activist-org/i18n-check/actions/workflows/ci_static_analysis.yaml)
-[![ci_pytest](https://img.shields.io/github/actions/workflow/status/activist-org/i18n-check/ci_pytest.yaml?branch=main&label=%20&logo=pytest&logoColor=ffffff)](https://github.com/activist-org/i18n-check/actions/workflows/ci_pytest.yaml)
-[![issues](https://img.shields.io/github/issues/activist-org/i18n-check?label=%20&logo=github)](https://github.com/activist-org/i18n-check/issues)
-[![python](https://img.shields.io/badge/Python-4B8BBE.svg?logo=python&logoColor=ffffff)](https://github.com/activist-org/i18n-check/blob/main/CONTRIBUTING.md)
+[![ci_static_analysis](https://codeberg.org/activist-org/i18n-check/actions/workflows/ci_static_analysis.yaml/badge.svg?branch=main&label=%20&logo=ruff&logoColor=ffffff)](https://codeberg.org/activist-org/i18n-check/actions?workflow=ci_static_analysis.yaml)
+[![ci_pytest](https://codeberg.org/activist-org/i18n-check/actions/workflows/ci_pytest.yaml/badge.svg?branch=main&label=%20&logo=pytest&logoColor=ffffff)](https://codeberg.org/activist-org/i18n-check/actions/?workflow=ci_pytest.yaml)
+[![issues](https://img.shields.io/gitea/issues/open/activist-org/i18n-check?gitea_url=https://codeberg.org&label=%20&logo=codeberg&logoColor=ffffff)](https://codeberg.org/activist-org/i18n-check/issues)
+[![python](https://img.shields.io/badge/Python-4B8BBE.svg?logo=python&logoColor=ffffff)](https://codeberg.org/activist-org/i18n-check/src/branch/main/CONTRIBUTING.md)
 [![pypi](https://img.shields.io/pypi/v/i18n-check.svg?label=%20&color=4B8BBE)](https://pypi.org/project/i18n-check/)
 [![pypistatus](https://img.shields.io/pypi/status/i18n-check.svg?label=%20)](https://pypi.org/project/i18n-check/)
-[![license](https://img.shields.io/github/license/activist-org/i18n-check.svg?label=%20)](https://github.com/activist-org/i18n-check/blob/main/LICENSE.txt)
-[![coc](https://img.shields.io/badge/Contributor%20Covenant-ff69b4.svg)](https://github.com/activist-org/i18n-check/blob/main/.github/CODE_OF_CONDUCT.md)
+[![license](https://img.shields.io/github/license/activist-org/i18n-check.svg?label=%20)](https://codeberg.org/activist-org/i18n-check/src/branch/main/LICENSE.txt)
+[![coc](https://img.shields.io/badge/Contributor%20Covenant-ff69b4.svg)](https://codeberg.org/activist-org/i18n-check/src/branch/main/.forgejo/CODE_OF_CONDUCT.md)
 [![matrix](https://img.shields.io/badge/Matrix-000000.svg?logo=matrix&logoColor=ffffff)](https://matrix.to/#/#activist_community:matrix.org)
 
 # Contents
@@ -32,7 +32,7 @@
   - [Arguments](#arguments)
   - [Additional Arguments](#additional-arguments)
   - [pre-commit](#pre-commit)
-  - [GitHub Action](#github-action)
+  - [CI Action](#ci-action)
 - [Contributing](#contributing)
   - [Contact the Team](#contact-the-team)
   - [Contributors](#contributors)
@@ -48,7 +48,7 @@
 
 `i18n-check` is a Python package that automates the validation of keys and values for your internationalization and localization processes.
 
-Developed by the [activist community](https://github.com/activist-org), this package helps keep development and i18n/L10n teams in sync when using JSON-based localization processes.
+Developed by the [activist community](https://codeberg.org/activist-org), this package helps keep development and i18n/L10n teams in sync when using JSON-based localization processes.
 
 # Installation
 
@@ -77,7 +77,7 @@ You can install the latest development build using uv, pip, or by cloning the re
 ### Clone the Repository (Development Build)
 
 ```bash
-git clone https://github.com/activist-org/i18n-check.git  # or ideally your fork
+git clone https://codeberg.org/activist-org/i18n-check.git  # or ideally your fork
 cd i18n-check
 ```
 
@@ -326,9 +326,9 @@ This is an example of a [prek](https://prek.j178.dev/) or [pre-commit](https://g
       pass_filenames: false
 ```
 
-## GitHub Action
+## CI Action
 
-This is an example YAML file for a GitHub Action to check your `i18n-files` on PRs and commits:
+This is an example YAML file for a Codeberg or GitHub Action to check your `i18n-files` on PRs and commits:
 
 ```yaml
 name: ci_i18n_check
@@ -378,7 +378,7 @@ See the [contribution guidelines](CONTRIBUTING.md) before contributing. You can 
 - ✨ Working with us on new features.
 - 📝 Improving the documentation.
 
-We track work that is in progress or may be implemented in the [issues](https://github.com/activist-org/i18n-check/issues) and [projects](https://github.com/activist-org/i18n-check/projects).
+We track work that is in progress or may be implemented in the [issues](https://codeberg.org/activist-org/i18n-check/issues) and [projects](https://codeberg.org/activist-org/i18n-check/projects).
 
 ## Contact the Team
 

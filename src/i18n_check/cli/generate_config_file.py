@@ -195,7 +195,7 @@ def write_to_file(
     file_types_str = ", ".join(file_types_to_check) if file_types_to_check else ""
 
     config_string = f"""# Configuration file for i18n-check validation.
-# See https://github.com/activist-org/i18n-check for details.
+# See https://codeberg.org/activist-org/i18n-check for details.
 src-dirs: [{src_dir}]
 i18n-dir: {i18n_dir}
 i18n-src: {i18n_src_file}

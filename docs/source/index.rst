@@ -1,24 +1,24 @@
-.. image:: https://raw.githubusercontent.com/activist-org/i18n-check/main/.github/resources/images/i18nCheckGitHubBanner.png
+.. image:: https://codeberg.org/activist-org/i18n-check/raw/branch/main/.forgejo/resources/images/i18nCheckBanner.png
     :width: 100%
     :align: center
-    :target: https://github.com/activist-org/i18n-check
+    :target: https://codeberg.org/activist-org/i18n-check
 
 |rtd| |ci_static_analysis| |ci_pytest| |issues| |python| |pypi| |pypistatus| |license| |coc| |matrix|
 
 .. |rtd| image:: https://img.shields.io/readthedocs/i18n-check.svg?label=%20&logo=read-the-docs&logoColor=ffffff
     :target: http://i18n-check.readthedocs.io/en/latest/
 
-.. |ci_static_analysis| image:: https://img.shields.io/github/actions/workflow/status/activist-org/i18n-check/ci_static_analysis.yaml?branch=main&label=%20&logo=ruff&logoColor=ffffff
-    :target: https://github.com/activist-org/i18n-check/actions/workflows/ci_static_analysis.yaml
+.. |ci_static_analysis| image:: https://codeberg.org/activist-org/i18n-check/actions/workflows/ci_static_analysis.yaml/badge.svg?branch=main&label=%20&logo=ruff&logoColor=ffffff
+    :target: https://codeberg.org/activist-org/i18n-check/actions?workflow=ci_static_analysis.yaml
 
-.. |ci_pytest| image:: https://img.shields.io/github/actions/workflow/status/activist-org/i18n-check/ci_pytest.yaml?branch=main&label=%20&logo=pytest&logoColor=ffffff
-    :target: https://github.com/activist-org/i18n-check/actions/workflows/ci_pytest.yaml
+.. |ci_pytest| image:: https://codeberg.org/activist-org/i18n-check/actions/workflows/ci_pytest.yaml/badge.svg?branch=main&label=%20&logo=pytest&logoColor=ffffff
+    :target: https://codeberg.org/activist-org/i18n-check/actions/?workflow=ci_pytest.yaml
 
-.. |issues| image:: https://img.shields.io/github/issues/activist-org/i18n-check?label=%20&logo=github
-    :target: https://github.com/activist-org/i18n-check/issues
+.. |issues| image:: https://img.shields.io/gitea/issues/open/activist-org/i18n-check?gitea_url=https://codeberg.org&label=%20&logo=codeberg&logoColor=ffffff
+    :target: https://codeberg.org/activist-org/i18n-check/issues
 
 .. |python| image:: https://img.shields.io/badge/Python%203-306998.svg?logo=python&logoColor=ffffff
-    :target: https://github.com/activist-org/i18n-check/blob/main/CONTRIBUTING.md
+    :target: https://codeberg.org/activist-org/i18n-check/src/branch/main/CONTRIBUTING.md
 
 .. |pypi| image:: https://img.shields.io/pypi/v/i18n-check.svg?label=%20&color=4B8BBE
     :target: https://pypi.org/project/i18n-check/
@@ -27,10 +27,10 @@
     :target: https://pypi.org/project/i18n-check/
 
 .. |license| image:: https://img.shields.io/github/license/activist-org/i18n-check.svg?label=%20
-    :target: https://github.com/activist-org/i18n-check/blob/main/LICENSE.txt
+    :target: https://codeberg.org/activist-org/i18n-check/src/branch/main/LICENSE.txt
 
 .. |coc| image:: https://img.shields.io/badge/Contributor%20Covenant-ff69b4.svg
-    :target: https://github.com/activist-org/i18n-check/blob/main/.github/CODE_OF_CONDUCT.md
+    :target: https://codeberg.org/activist-org/i18n-check/src/branch/main/.forgejo/CODE_OF_CONDUCT.md
 
 .. |matrix| image:: https://img.shields.io/badge/Matrix-000000.svg?logo=matrix&logoColor=ffffff
     :target: https://matrix.to/#/#activist_community:matrix.org
@@ -50,7 +50,7 @@ About i18n-check
 
 ``i18n-check`` is a Python package that automates the validation of keys and values for your internationalization and localization processes.
 
-Developed by the `activist community <https://github.com/activist-org>`_, this package helps keep development and i18n/L10n teams in sync when using JSON-based localization processes.
+Developed by the `activist community <https://codeberg.org/activist-org>`_, this package helps keep development and i18n/L10n teams in sync when using JSON-based localization processes.
 
 Installation
 ============
@@ -86,7 +86,7 @@ Clone the Repository (Development Build)
 
 .. code-block:: bash
 
-   git clone https://github.com/activist-org/i18n-check.git  # or ideally your fork
+   git clone https://codeberg.org/activist-org/i18n-check.git  # or ideally your fork
    cd i18n-check
 
 uv (Development Build)
@@ -394,10 +394,10 @@ This is an example of a `prek <https://prek.j178.dev/>`_ or `pre-commit <https:/
          language: python
          pass_filenames: false
 
-GitHub Action
--------------
+CI Action
+---------
 
-This is an example YAML file for a GitHub Action to check your ``i18n-files`` on PRs and commits:
+This is an example YAML file for a Codeberg or GitHub Action to check your ``i18n-files`` on PRs and commits:
 
 .. code-block:: yaml
 
@@ -446,7 +446,7 @@ See the `contribution guidelines <CONTRIBUTING.md>`_ before contributing. You ca
 - ✨ Working with us on new features.
 - 📝 Improving the documentation.
 
-We track work that is in progress or may be implemented in the `issues <https://github.com/activist-org/i18n-check/issues>`_ and `projects <https://github.com/activist-org/i18n-check/projects>`_.
+We track work that is in progress or may be implemented in the `issues <https://codeberg.org/activist-org/i18n-check/issues>`_ and `projects <https://codeberg.org/activist-org/i18n-check/projects>`_.
 
 Contact the Team
 ----------------

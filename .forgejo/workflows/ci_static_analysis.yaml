@@ -1,4 +1,5 @@
 name: ci_static_analysis
+
 on:
   workflow_dispatch:
   pull_request:
@@ -13,6 +14,7 @@ on:
       - "tests/**"
       - "pyproject.toml"
       - "uv.lock"
+      - ".forgejo/workflows/ci_static_analysis.yaml"
   push:
     branches:
       - main
@@ -21,11 +23,13 @@ on:
       - "tests/**"
       - "pyproject.toml"
       - "uv.lock"
+      - ".forgejo/workflows/ci_static_analysis.yaml"
 
 jobs:
   run_ci_static_analysis:
     name: Run CI Static Analysis
     runs-on: codeberg-tiny
+
     steps:
       - name: Checkout Project
         uses: actions/checkout@v6

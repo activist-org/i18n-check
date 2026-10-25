@@ -54,7 +54,7 @@ def get_test_frontend_config_file_text() -> str:
         The text for the configuration file for the i18n-check test frontends.
     """
     return r"""# Configuration file for i18n-check validation.
-# See https://github.com/activist-org/i18n-check for details.
+# See https://codeberg.org/activist-org/i18n-check for details.
 
 src-dirs: [i18n_check_test_frontends/test_frontends/all_checks_fail]
 i18n-dir: i18n_check_test_frontends/test_frontends/all_checks_fail/test_i18n

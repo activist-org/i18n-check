@@ -32,7 +32,7 @@ def get_local_version() -> str:
 
 def get_latest_version() -> Any:
     """
-    Get the latest version of the i18n-check package from GitHub.
+    Get the latest version of the i18n-check package from Codeberg.
 
     Returns
     -------
@@ -42,7 +42,7 @@ def get_latest_version() -> Any:
     """
     try:
         response = requests.get(
-            "https://api.github.com/repos/activist-org/i18n-check/releases/latest"
+            "https://codeberg.org/api/v1/repos/activist-org/i18n-check/releases/latest"
         )
         response_data: dict[str, Any] = response.json()
         return response_data["name"]
@@ -77,7 +77,7 @@ def get_version_message() -> str:
         return f"i18n-check v{local_version_clean}"
 
     elif local_version_clean > latest_version_clean:
-        return f"i18n-check v{local_version_clean} is higher than the currently released version i18n-check v{latest_version_clean}. Hopefully this is a development build, and if so, thanks for your work on i18n-check! If not, please report this to the team at https://github.com/activist-org/i18n-check/issues."
+        return f"i18n-check v{local_version_clean} is higher than the currently released version i18n-check v{latest_version_clean}. Hopefully this is a development build, and if so, thanks for your work on i18n-check! If not, please report this to the team at https://codeberg.org/activist-org/i18n-check/issues."
 
     else:
         return f"i18n-check v{local_version_clean} (Upgrade available: i18n-check v{latest_version_clean}). To upgrade: i18n-check -u"

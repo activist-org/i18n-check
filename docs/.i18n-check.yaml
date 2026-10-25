@@ -1,5 +1,5 @@
 # Configuration file for i18n-check validation.
-# See https://github.com/activist-org/i18n-check for details.
+# See https://codeberg.org/activist-org/i18n-check for details.
 
 src-dirs: [../src/i18n_check/test_frontends/all_checks_fail]
 i18n-dir: ../src/i18n_check/test_frontends/all_checks_fail/test_i18n
