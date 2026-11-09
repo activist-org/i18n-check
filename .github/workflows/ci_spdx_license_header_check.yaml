@@ -15,7 +15,7 @@ on:
 
 jobs:
   run_ci_spdx_license_header_check:
-    if: github.repository == 'scribe-org/Scribe-Data'
+    if: github.repository == 'activist-org/i18n-check'
     runs-on: ubuntu-latest
 
     steps:
