@@ -15,11 +15,12 @@ on:
 
 jobs:
   run_ci_spdx_license_header_check:
-    runs-on: codeberg-tiny
+    if: github.repository == 'scribe-org/Scribe-Data'
+    runs-on: ubuntu-latest
 
     steps:
       - name: Checkout Project
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
 
       - name: Check SPDX Licenses
         uses: to-sta/spdx-checker-action@v0.0.3
